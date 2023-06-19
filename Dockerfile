@@ -32,7 +32,8 @@ EXPOSE 1317 3000 4500 5000 26657
 
 WORKDIR /dredd-secure
 
-COPY go.mod /checkers/go.mod
+COPY go.mod /dredd-secure/go.mod
+COPY . /dredd-secure/
 RUN go mod download
-RUN rm /checkers/go.mod
+RUN rm /dredd-secure/go.mod
 
