@@ -27,6 +27,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCreateEscrow int = 100
 
+	opWeightMsgFulfillEscrow = "op_weight_msg_fulfill_escrow"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgFulfillEscrow int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -66,6 +70,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 		escrowsimulation.SimulateMsgCreateEscrow(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
+	var weightMsgFulfillEscrow int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgFulfillEscrow, &weightMsgFulfillEscrow, nil,
+		func(_ *rand.Rand) {
+			weightMsgFulfillEscrow = defaultWeightMsgFulfillEscrow
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgFulfillEscrow,
+		escrowsimulation.SimulateMsgFulfillEscrow(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
 	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations
@@ -79,6 +94,14 @@ func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.Wei
 			defaultWeightMsgCreateEscrow,
 			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
 				escrowsimulation.SimulateMsgCreateEscrow(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgFulfillEscrow,
+			defaultWeightMsgFulfillEscrow,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				escrowsimulation.SimulateMsgFulfillEscrow(am.accountKeeper, am.bankKeeper, am.keeper)
 				return nil
 			},
 		),
