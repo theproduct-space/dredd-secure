@@ -1,0 +1,7 @@
+syntax = "proto3";
+package dreddsecure.escrow;
+
+option go_package = "dredd-secure/x/escrow/types";
+
+// Msg defines the Msg service.
+service Msg {}
