@@ -1,7 +1,23 @@
 syntax = "proto3";
+
 package dreddsecure.escrow;
+
+import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
 
 option go_package = "dredd-secure/x/escrow/types";
 
 // Msg defines the Msg service.
-service Msg {}
+service Msg {
+  rpc CreateEscrow (MsgCreateEscrow) returns (MsgCreateEscrowResponse);
+}
+message MsgCreateEscrow {
+  string                   creator       = 1;
+  cosmos.base.v1beta1.Coin initiatorCoin = 2 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin fulfillerCoin = 3 [(gogoproto.nullable) = false];
+  string                   startDate     = 4;
+  string                   endDate       = 5;
+}
+
+message MsgCreateEscrowResponse {}
+

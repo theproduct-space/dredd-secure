@@ -35,6 +35,8 @@ export interface EscrowEscrow {
   endDate?: string;
 }
 
+export type EscrowMsgCreateEscrowResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */

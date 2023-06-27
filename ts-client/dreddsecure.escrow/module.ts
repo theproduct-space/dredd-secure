@@ -7,12 +7,23 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
+import { MsgCreateEscrow } from "./types/dreddsecure/escrow/tx";
 
 import { Escrow as typeEscrow} from "./types"
 import { Params as typeParams} from "./types"
 
-export {  };
+export { MsgCreateEscrow };
 
+type sendMsgCreateEscrowParams = {
+  value: MsgCreateEscrow,
+  fee?: StdFee,
+  memo?: string
+};
+
+
+type msgCreateEscrowParams = {
+  value: MsgCreateEscrow,
+};
 
 
 export const registry = new Registry(msgTypes);
@@ -44,6 +55,28 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
+		async sendMsgCreateEscrow({ value, fee, memo }: sendMsgCreateEscrowParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgCreateEscrow: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgCreateEscrow({ value: MsgCreateEscrow.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgCreateEscrow: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		
+		msgCreateEscrow({ value }: msgCreateEscrowParams): EncodeObject {
+			try {
+				return { typeUrl: "/dreddsecure.escrow.MsgCreateEscrow", value: MsgCreateEscrow.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgCreateEscrow: Could not create message: ' + e.message)
+			}
+		},
 		
 	}
 };
