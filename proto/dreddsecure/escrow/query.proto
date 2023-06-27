@@ -28,6 +28,12 @@ service Query {
     option (google.api.http).get = "/dredd-secure/escrow/escrow";
   
   }
+  
+  // Queries a list of EscrowsByAddress items.
+  rpc EscrowsByAddress (QueryEscrowsByAddressRequest) returns (QueryEscrowsByAddressResponse) {
+    option (google.api.http).get = "/dredd-secure/escrow/escrows_by_address/{address}";
+  
+  }
 }
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
@@ -55,4 +61,10 @@ message QueryAllEscrowResponse {
   repeated Escrow                                 Escrow     = 1 [(gogoproto.nullable) = false];
            cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
+
+message QueryEscrowsByAddressRequest {
+  string address = 1;
+}
+
+message QueryEscrowsByAddressResponse {}
 
