@@ -24,6 +24,14 @@ export interface MsgFulfillEscrow {
 export interface MsgFulfillEscrowResponse {
 }
 
+export interface MsgCancelEscrow {
+  creator: string;
+  id: number;
+}
+
+export interface MsgCancelEscrowResponse {
+}
+
 function createBaseMsgCreateEscrow(): MsgCreateEscrow {
   return { creator: "", initiatorCoin: undefined, fulfillerCoin: undefined, startDate: "", endDate: "" };
 }
@@ -251,10 +259,108 @@ export const MsgFulfillEscrowResponse = {
   },
 };
 
+function createBaseMsgCancelEscrow(): MsgCancelEscrow {
+  return { creator: "", id: 0 };
+}
+
+export const MsgCancelEscrow = {
+  encode(message: MsgCancelEscrow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.id !== 0) {
+      writer.uint32(16).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCancelEscrow {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCancelEscrow();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCancelEscrow {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      id: isSet(object.id) ? Number(object.id) : 0,
+    };
+  },
+
+  toJSON(message: MsgCancelEscrow): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgCancelEscrow>, I>>(object: I): MsgCancelEscrow {
+    const message = createBaseMsgCancelEscrow();
+    message.creator = object.creator ?? "";
+    message.id = object.id ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgCancelEscrowResponse(): MsgCancelEscrowResponse {
+  return {};
+}
+
+export const MsgCancelEscrowResponse = {
+  encode(_: MsgCancelEscrowResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCancelEscrowResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCancelEscrowResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgCancelEscrowResponse {
+    return {};
+  },
+
+  toJSON(_: MsgCancelEscrowResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgCancelEscrowResponse>, I>>(_: I): MsgCancelEscrowResponse {
+    const message = createBaseMsgCancelEscrowResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   CreateEscrow(request: MsgCreateEscrow): Promise<MsgCreateEscrowResponse>;
   FulfillEscrow(request: MsgFulfillEscrow): Promise<MsgFulfillEscrowResponse>;
+  CancelEscrow(request: MsgCancelEscrow): Promise<MsgCancelEscrowResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -263,6 +369,7 @@ export class MsgClientImpl implements Msg {
     this.rpc = rpc;
     this.CreateEscrow = this.CreateEscrow.bind(this);
     this.FulfillEscrow = this.FulfillEscrow.bind(this);
+    this.CancelEscrow = this.CancelEscrow.bind(this);
   }
   CreateEscrow(request: MsgCreateEscrow): Promise<MsgCreateEscrowResponse> {
     const data = MsgCreateEscrow.encode(request).finish();
@@ -274,6 +381,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgFulfillEscrow.encode(request).finish();
     const promise = this.rpc.request("dreddsecure.escrow.Msg", "FulfillEscrow", data);
     return promise.then((data) => MsgFulfillEscrowResponse.decode(new _m0.Reader(data)));
+  }
+
+  CancelEscrow(request: MsgCancelEscrow): Promise<MsgCancelEscrowResponse> {
+    const data = MsgCancelEscrow.encode(request).finish();
+    const promise = this.rpc.request("dreddsecure.escrow.Msg", "CancelEscrow", data);
+    return promise.then((data) => MsgCancelEscrowResponse.decode(new _m0.Reader(data)));
   }
 }
 
