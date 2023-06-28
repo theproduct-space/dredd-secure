@@ -25,14 +25,14 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Escrow struct {
-	Id                uint64     `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Status            string     `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
-	Initiator         string     `protobuf:"bytes,3,opt,name=initiator,proto3" json:"initiator,omitempty"`
-	Fulfiller         string     `protobuf:"bytes,4,opt,name=fulfiller,proto3" json:"fulfiller,omitempty"`
-	InitiatorCoin     string     `protobuf:"bytes,3,opt,name=initiatorCoin,proto3" json:"initiatorCoin,omitempty"`
-	FulfillerCoin     string     `protobuf:"bytes,4,opt,name=fulfillerCoin,proto3" json:"fulfillerCoin,omitempty"`
-	StartDate         string     `protobuf:"bytes,7,opt,name=startDate,proto3" json:"startDate,omitempty"`
-	EndDate           string     `protobuf:"bytes,8,opt,name=endDate,proto3" json:"endDate,omitempty"`
+	Id            uint64     `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Status        string     `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
+	Initiator     string     `protobuf:"bytes,3,opt,name=initiator,proto3" json:"initiator,omitempty"`
+	Fulfiller     string     `protobuf:"bytes,4,opt,name=fulfiller,proto3" json:"fulfiller,omitempty"`
+	InitiatorCoin types.Coin `protobuf:"bytes,5,opt,name=initiatorCoin,proto3" json:"initiatorCoin"`
+	FulfillerCoin types.Coin `protobuf:"bytes,6,opt,name=fulfillerCoin,proto3" json:"fulfillerCoin"`
+	StartDate     string     `protobuf:"bytes,7,opt,name=startDate,proto3" json:"startDate,omitempty"`
+	EndDate       string     `protobuf:"bytes,8,opt,name=endDate,proto3" json:"endDate,omitempty"`
 }
 
 func (m *Escrow) Reset()         { *m = Escrow{} }
@@ -96,18 +96,18 @@ func (m *Escrow) GetFulfiller() string {
 	return ""
 }
 
-func (m *Escrow) GetInitiatorCoin() string {
+func (m *Escrow) GetInitiatorCoin() types.Coin {
 	if m != nil {
 		return m.InitiatorCoin
 	}
-	return ""
+	return types.Coin{}
 }
 
-func (m *Escrow) GetFulfillerCoin() string {
+func (m *Escrow) GetFulfillerCoin() types.Coin {
 	if m != nil {
 		return m.FulfillerCoin
 	}
-	return ""
+	return types.Coin{}
 }
 
 func (m *Escrow) GetStartDate() string {
@@ -188,20 +188,26 @@ func (m *Escrow) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x3a
 	}
-	if len(m.FulfillerCoin) > 0 {
-		i -= len(m.FulfillerCoin)
-		copy(dAtA[i:], m.FulfillerCoin)
-		i = encodeVarintEscrow(dAtA, i, uint64(len(m.FulfillerCoin)))
-		i--
-		dAtA[i] = 0x3a
+	{
+		size, err := m.FulfillerCoin.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintEscrow(dAtA, i, uint64(size))
 	}
-	if len(m.InitiatorCoin) > 0 {
-		i -= len(m.InitiatorCoin)
-		copy(dAtA[i:], m.InitiatorCoin)
-		i = encodeVarintEscrow(dAtA, i, uint64(len(m.InitiatorCoin)))
-		i--
-		dAtA[i] = 0x3a
+	i--
+	dAtA[i] = 0x32
+	{
+		size, err := m.InitiatorCoin.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintEscrow(dAtA, i, uint64(size))
 	}
+	i--
+	dAtA[i] = 0x2a
 	if len(m.Fulfiller) > 0 {
 		i -= len(m.Fulfiller)
 		copy(dAtA[i:], m.Fulfiller)
@@ -263,14 +269,10 @@ func (m *Escrow) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovEscrow(uint64(l))
 	}
-	l = len(m.InitiatorCoin)
-	if l > 0 {
-		n += 1 + l + sovEscrow(uint64(l))
-	}
-	l = len(m.FulfillerCoin)
-	if l > 0 {
-		n += 1 + l + sovEscrow(uint64(l))
-	}
+	l = m.InitiatorCoin.Size()
+	n += 1 + l + sovEscrow(uint64(l))
+	l = m.FulfillerCoin.Size()
+	n += 1 + l + sovEscrow(uint64(l))
 	l = len(m.StartDate)
 	if l > 0 {
 		n += 1 + l + sovEscrow(uint64(l))
@@ -434,9 +436,9 @@ func (m *Escrow) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field FulfillerCoin", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field InitiatorCoin", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEscrow
@@ -446,29 +448,30 @@ func (m *Escrow) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthEscrow
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthEscrow
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.FulfillerCoin = string(dAtA[iNdEx:postIndex])
+			if err := m.InitiatorCoin.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		case 6:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field InitiatorCoin", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field FulfillerCoin", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowEscrow
@@ -478,23 +481,24 @@ func (m *Escrow) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthEscrow
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthEscrow
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.InitiatorCoin = string(dAtA[iNdEx:postIndex])
+			if err := m.FulfillerCoin.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		case 7:
 			if wireType != 2 {
