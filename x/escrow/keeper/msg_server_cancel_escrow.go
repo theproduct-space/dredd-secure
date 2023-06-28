@@ -27,8 +27,7 @@ func (k msgServer) CancelEscrow(goCtx context.Context, msg *types.MsgCancelEscro
 	}
 
 	initiator, _ := sdk.AccAddressFromBech32(escrow.Initiator)
-	collateral := escrow.InitiatorCoins
-	err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, initiator, collateral)
+	err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, initiator, escrow.InitiatorCoins)
 
 	if err != nil {
 		return nil, err
