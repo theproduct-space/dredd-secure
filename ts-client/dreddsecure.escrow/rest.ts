@@ -47,6 +47,8 @@ export interface EscrowQueryAllEscrowResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export type EscrowQueryEscrowsByAddressResponse = object;
+
 export interface EscrowQueryGetEscrowResponse {
   Escrow?: EscrowEscrow;
 }
@@ -314,6 +316,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryEscrow = (id: string, params: RequestParams = {}) =>
     this.request<EscrowQueryGetEscrowResponse, RpcStatus>({
       path: `/dredd-secure/escrow/escrow/${id}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryEscrowsByAddress
+   * @summary Queries a list of EscrowsByAddress items.
+   * @request GET:/dredd-secure/escrow/escrows_by_address/{address}
+   */
+  queryEscrowsByAddress = (address: string, params: RequestParams = {}) =>
+    this.request<EscrowQueryEscrowsByAddressResponse, RpcStatus>({
+      path: `/dredd-secure/escrow/escrows_by_address/${address}`,
       method: "GET",
       format: "json",
       ...params,

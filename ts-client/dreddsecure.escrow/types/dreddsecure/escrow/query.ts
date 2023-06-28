@@ -34,6 +34,13 @@ export interface QueryAllEscrowResponse {
   pagination: PageResponse | undefined;
 }
 
+export interface QueryEscrowsByAddressRequest {
+  address: string;
+}
+
+export interface QueryEscrowsByAddressResponse {
+}
+
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
@@ -333,6 +340,92 @@ export const QueryAllEscrowResponse = {
   },
 };
 
+function createBaseQueryEscrowsByAddressRequest(): QueryEscrowsByAddressRequest {
+  return { address: "" };
+}
+
+export const QueryEscrowsByAddressRequest = {
+  encode(message: QueryEscrowsByAddressRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryEscrowsByAddressRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryEscrowsByAddressRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryEscrowsByAddressRequest {
+    return { address: isSet(object.address) ? String(object.address) : "" };
+  },
+
+  toJSON(message: QueryEscrowsByAddressRequest): unknown {
+    const obj: any = {};
+    message.address !== undefined && (obj.address = message.address);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryEscrowsByAddressRequest>, I>>(object: I): QueryEscrowsByAddressRequest {
+    const message = createBaseQueryEscrowsByAddressRequest();
+    message.address = object.address ?? "";
+    return message;
+  },
+};
+
+function createBaseQueryEscrowsByAddressResponse(): QueryEscrowsByAddressResponse {
+  return {};
+}
+
+export const QueryEscrowsByAddressResponse = {
+  encode(_: QueryEscrowsByAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryEscrowsByAddressResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryEscrowsByAddressResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryEscrowsByAddressResponse {
+    return {};
+  },
+
+  toJSON(_: QueryEscrowsByAddressResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryEscrowsByAddressResponse>, I>>(_: I): QueryEscrowsByAddressResponse {
+    const message = createBaseQueryEscrowsByAddressResponse();
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -340,6 +433,8 @@ export interface Query {
   /** Queries a list of Escrow items. */
   Escrow(request: QueryGetEscrowRequest): Promise<QueryGetEscrowResponse>;
   EscrowAll(request: QueryAllEscrowRequest): Promise<QueryAllEscrowResponse>;
+  /** Queries a list of EscrowsByAddress items. */
+  EscrowsByAddress(request: QueryEscrowsByAddressRequest): Promise<QueryEscrowsByAddressResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -349,6 +444,7 @@ export class QueryClientImpl implements Query {
     this.Params = this.Params.bind(this);
     this.Escrow = this.Escrow.bind(this);
     this.EscrowAll = this.EscrowAll.bind(this);
+    this.EscrowsByAddress = this.EscrowsByAddress.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -366,6 +462,12 @@ export class QueryClientImpl implements Query {
     const data = QueryAllEscrowRequest.encode(request).finish();
     const promise = this.rpc.request("dreddsecure.escrow.Query", "EscrowAll", data);
     return promise.then((data) => QueryAllEscrowResponse.decode(new _m0.Reader(data)));
+  }
+
+  EscrowsByAddress(request: QueryEscrowsByAddressRequest): Promise<QueryEscrowsByAddressResponse> {
+    const data = QueryEscrowsByAddressRequest.encode(request).finish();
+    const promise = this.rpc.request("dreddsecure.escrow.Query", "EscrowsByAddress", data);
+    return promise.then((data) => QueryEscrowsByAddressResponse.decode(new _m0.Reader(data)));
   }
 }
 

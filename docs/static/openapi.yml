@@ -35177,6 +35177,40 @@ paths:
           format: uint64
       tags:
         - Query
+  /dredd-secure/escrow/escrows_by_address/{address}:
+    get:
+      summary: Queries a list of EscrowsByAddress items.
+      operationId: DreddsecureEscrowEscrowsByAddress
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /dredd-secure/escrow/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -70955,6 +70989,8 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  dreddsecure.escrow.QueryEscrowsByAddressResponse:
+    type: object
   dreddsecure.escrow.QueryGetEscrowResponse:
     type: object
     properties:
