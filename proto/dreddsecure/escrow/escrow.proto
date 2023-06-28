@@ -1,0 +1,18 @@
+syntax = "proto3";
+package dreddsecure.escrow;
+
+option go_package = "dredd-secure/x/escrow/types";
+import "gogoproto/gogo.proto"; 
+import "cosmos/base/v1beta1/coin.proto"; 
+
+message Escrow {
+  uint64 id = 1;
+  string status = 2; 
+  string initiator = 3; 
+  string fulfiller = 4; 
+  repeated cosmos.base.v1beta1.Coin initiatorCoins = 5 [(gogoproto.nullable) = false]; 
+  repeated cosmos.base.v1beta1.Coin fulfillerCoins = 6 [(gogoproto.nullable) = false]; 
+  string startDate = 7; 
+  string endDate = 8; 
+  
+}
