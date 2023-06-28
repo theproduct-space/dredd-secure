@@ -70865,6 +70865,8 @@ definitions:
         type: string
       endDate:
         type: string
+  dreddsecure.escrow.MsgCancelEscrowResponse:
+    type: object
   dreddsecure.escrow.MsgCreateEscrowResponse:
     type: object
   dreddsecure.escrow.Params:

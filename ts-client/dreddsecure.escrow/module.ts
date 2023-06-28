@@ -8,11 +8,12 @@ import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
 import { MsgCreateEscrow } from "./types/dreddsecure/escrow/tx";
+import { MsgCancelEscrow } from "./types/dreddsecure/escrow/tx";
 
 import { Escrow as typeEscrow} from "./types"
 import { Params as typeParams} from "./types"
 
-export { MsgCreateEscrow };
+export { MsgCreateEscrow, MsgCancelEscrow };
 
 type sendMsgCreateEscrowParams = {
   value: MsgCreateEscrow,
@@ -20,9 +21,19 @@ type sendMsgCreateEscrowParams = {
   memo?: string
 };
 
+type sendMsgCancelEscrowParams = {
+  value: MsgCancelEscrow,
+  fee?: StdFee,
+  memo?: string
+};
+
 
 type msgCreateEscrowParams = {
   value: MsgCreateEscrow,
+};
+
+type msgCancelEscrowParams = {
+  value: MsgCancelEscrow,
 };
 
 
@@ -69,12 +80,34 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		async sendMsgCancelEscrow({ value, fee, memo }: sendMsgCancelEscrowParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgCancelEscrow: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgCancelEscrow({ value: MsgCancelEscrow.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgCancelEscrow: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		
 		msgCreateEscrow({ value }: msgCreateEscrowParams): EncodeObject {
 			try {
 				return { typeUrl: "/dreddsecure.escrow.MsgCreateEscrow", value: MsgCreateEscrow.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgCreateEscrow: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgCancelEscrow({ value }: msgCancelEscrowParams): EncodeObject {
+			try {
+				return { typeUrl: "/dreddsecure.escrow.MsgCancelEscrow", value: MsgCancelEscrow.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgCancelEscrow: Could not create message: ' + e.message)
 			}
 		},
 		

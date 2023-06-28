@@ -21,6 +21,8 @@ export interface EscrowEscrow {
   endDate?: string;
 }
 
+export type EscrowMsgCancelEscrowResponse = object;
+
 export type EscrowMsgCreateEscrowResponse = object;
 
 /**
