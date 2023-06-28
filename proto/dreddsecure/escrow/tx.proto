@@ -9,8 +9,9 @@ option go_package = "dredd-secure/x/escrow/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc CreateEscrow (MsgCreateEscrow) returns (MsgCreateEscrowResponse);
-  rpc CancelEscrow (MsgCancelEscrow) returns (MsgCancelEscrowResponse);
+  rpc CreateEscrow  (MsgCreateEscrow ) returns (MsgCreateEscrowResponse );
+  rpc CancelEscrow  (MsgCancelEscrow ) returns (MsgCancelEscrowResponse );
+  rpc FulfillEscrow (MsgFulfillEscrow) returns (MsgFulfillEscrowResponse);
 }
 message MsgCreateEscrow {
            string                   creator        = 1;
@@ -28,4 +29,11 @@ message MsgCancelEscrow {
 }
 
 message MsgCancelEscrowResponse {}
+
+message MsgFulfillEscrow {
+  string creator = 1;
+  uint64 id      = 2;
+}
+
+message MsgFulfillEscrowResponse {}
 
