@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package dreddsecure.escrow;
+
+import "gogoproto/gogo.proto";
+import "dreddsecure/escrow/params.proto";
+import "dreddsecure/escrow/escrow.proto";
+
+option go_package = "dredd-secure/x/escrow/types";
+
+// GenesisState defines the escrow module's genesis state.
+message GenesisState {
+           Params params      = 1 [(gogoproto.nullable) = false];
+  repeated Escrow escrowList  = 2 [(gogoproto.nullable) = false];
+           uint64 escrowCount = 3;
+}
+
