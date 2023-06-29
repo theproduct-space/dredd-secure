@@ -41,9 +41,11 @@ func (msg *MsgCreateEscrow) GetSignBytes() []byte {
 }
 
 func (msg *MsgCreateEscrow) ValidateBasic() error {
+	// PSTODO: validate the start_date and end_date
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+   
 	return nil
 }

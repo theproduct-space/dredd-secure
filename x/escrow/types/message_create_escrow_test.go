@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"dredd-secure/testutil/sample"
+
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
 )

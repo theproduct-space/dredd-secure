@@ -7,6 +7,7 @@ import (
 	"dredd-secure/testutil/nullify"
 	"dredd-secure/x/escrow"
 	"dredd-secure/x/escrow/types"
+
 	"github.com/stretchr/testify/require"
 )
 
@@ -16,10 +17,10 @@ func TestGenesis(t *testing.T) {
 
 		EscrowList: []types.Escrow{
 			{
-				Id: 0,
+				Id: 1,
 			},
 			{
-				Id: 1,
+				Id: 0,
 			},
 		},
 		EscrowCount: 2,
