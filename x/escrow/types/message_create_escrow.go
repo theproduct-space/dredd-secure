@@ -3,6 +3,9 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
+	"strconv"
+	"time"
 )
 
 const TypeMsgCreateEscrow = "create_escrow"
@@ -41,9 +44,52 @@ func (msg *MsgCreateEscrow) GetSignBytes() []byte {
 }
 
 func (msg *MsgCreateEscrow) ValidateBasic() error {
+	// Account validation
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+
+	// Validating InitiatorCoins & FulfillerCoins are defined
+	if (msg.InitiatorCoins == nil) {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "InitiatorCoins does not contain any Coin")
+	}
+	if (msg.FulfillerCoins == nil) {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "FulfillerCoins does not contain any Coin")
+	}
+
+	// Validating every coins
+	for i := 0; i < len(msg.InitiatorCoins); i++ {
+		if (!msg.InitiatorCoins[i].IsValid()) {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins , "InitiatorCoins with denom %v is not a valid Coin object", msg.InitiatorCoins[i].Denom)
+		}
+		if (!msg.FulfillerCoins[i].IsValid()) {
+			return sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins , "FulfillerCoins with denom %v is not a valid Coin object", msg.FulfillerCoins[i].Denom)
+		}
+	}
+
+	// Dates validation
+	now := time.Now()
+	unixTimeNow := now.Unix()
+
+	endDateInt, errParseIntEndDate := strconv.ParseInt(msg.EndDate, 10, 64)
+	if errParseIntEndDate != nil {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest , "Invalid endDate")
+	}
+	startDateInt, errParseIntStartDate := strconv.ParseInt(msg.StartDate, 10, 64)
+	if errParseIntStartDate != nil {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest , "Invalid startdate")
+	}
+
+	// Validating end_date is in the future
+	if (endDateInt < unixTimeNow) {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest , "End date is not in the future")
+	}
+
+	// Validating start_date is before end_date
+	if (endDateInt < startDateInt) {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest , "End date is before start date")
+	}
+
 	return nil
 }

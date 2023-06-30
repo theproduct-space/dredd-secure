@@ -12,7 +12,7 @@ func (k msgServer) CreateEscrow(goCtx context.Context, msg *types.MsgCreateEscro
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	var escrow = types.Escrow{
-		Status: "created",
+		Status: "open",
 		Initiator: msg.Creator,
 		Fulfiller: "",
 		InitiatorCoins: msg.InitiatorCoins,
