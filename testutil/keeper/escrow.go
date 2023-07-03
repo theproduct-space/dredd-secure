@@ -4,7 +4,9 @@ import (
 	"testing"
 
 	"dredd-secure/x/escrow/keeper"
+	"dredd-secure/x/escrow/testutil"
 	"dredd-secure/x/escrow/types"
+
 	tmdb "github.com/cometbft/cometbft-db"
 	"github.com/cometbft/cometbft/libs/log"
 	tmproto "github.com/cometbft/cometbft/proto/tendermint/types"
@@ -18,6 +20,10 @@ import (
 )
 
 func EscrowKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
+	return EscrowKeeperWithMocks(t, nil)
+}
+
+func EscrowKeeperWithMocks(t testing.TB, bank *testutil.MockBankKeeper) (*keeper.Keeper, sdk.Context) {
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
 
@@ -37,11 +43,11 @@ func EscrowKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		"EscrowParams",
 	)
 	k := keeper.NewKeeper(
+		bank,
 		cdc,
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
-		nil,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

@@ -8,6 +8,7 @@ import (
 
 // x/escrow module sentinel errors
 var (
-	ErrSample            = errors.Register(ModuleName, 1100, "sample error")
-	ErrWrongEscrowStatus = errors.Register(ModuleName, 2, "Wrong escrow status")
+	ErrSample            = errors.Register(ModuleName, 1110, "sample error")
+	ErrWrongEscrowStatus = errors.Register(ModuleName, 1111, "Wrong escrow status")
+	ErrInitiatorCannotPay    = errors.Register(ModuleName, 1112, "Initiator cannot pay")
 )

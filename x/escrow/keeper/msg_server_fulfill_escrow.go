@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"dredd-secure/x/escrow/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -15,3 +16,4 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 
 	return &types.MsgFulfillEscrowResponse{}, nil
 }
+

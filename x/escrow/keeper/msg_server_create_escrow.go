@@ -5,6 +5,8 @@ import (
 
 	"dredd-secure/x/escrow/types"
 
+	"cosmossdk.io/errors"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -26,9 +28,9 @@ func (k msgServer) CreateEscrow(goCtx context.Context, msg *types.MsgCreateEscro
         panic(err)
     }
 
-	sdkError := k.bankKeeper.SendCoinsFromAccountToModule(ctx, initiator, types.ModuleName, escrow.InitiatorCoins)
-    if sdkError != nil {
-        return nil, sdkError
+	errSendCoins := k.bank.SendCoinsFromAccountToModule(ctx, initiator, types.ModuleName, escrow.InitiatorCoins)
+    if errSendCoins != nil {
+		return nil, errors.Wrapf(errSendCoins, types.ErrInitiatorCannotPay.Error())
     }
     k.AppendEscrow(ctx, escrow)
 
