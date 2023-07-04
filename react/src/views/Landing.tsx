@@ -11,14 +11,14 @@ function Landing() {
                 </blockquote>
             </div>
             <div>
-                <div className="text-3xl font-bold">What is Dredd-Secure</div>
+                <div className="text-3xl font-bold">What is Dredd-Secure?</div>
                 <blockquote>
                     "Experience secure, automated contracts allowing parties to transact confidently.
                     By holding assets until specific conditions are met, we eliminate the risk of fraud and disputes for smoother, safer transactions."
                 </blockquote>
             </div>
             <div>
-                <div className="text-3xl font-bold">Why use our escrow service</div>
+                <div className="text-3xl font-bold">Why use our escrow service?</div>
                 <ul>
                     <li><b>Trust</b>: Assets are only released when agreed conditions are met, fostering trust between parties.</li>
                     <li><b>Security</b>: Built on the Cosmos SDK, our service follows the latest security best practices, keeping your assets safe.</li>
@@ -26,7 +26,7 @@ function Landing() {
                 </ul>
             </div>
             <div>
-                <div className="text-3xl font-bold">How does it works</div>
+                <div className="text-3xl font-bold">How does it works?</div>
                 <div>
                     <div className="text-2xl font-bold">Step 1: Create the Escrow Contract</div>
                     <div>
