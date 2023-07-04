@@ -1,23 +1,22 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
-
-import IgntHeader from "../components/IgntHeader";
+import Home from "../components/layouts/Home";
 import DataView from "../views/DataView";
-import PortfolioView from "../views/PortfolioView";
+import Header from "../components/layouts/Header";
 
 const items = [
   {
-    label: "Portfolio",
+    label: "Home",
     to: "/",
   },
   {
-    label: "Data",
-    to: "/data",
+    label: "App",
+    to: "/app",
   },
 ];
 const Layout = () => {
   return (
     <>
-      <IgntHeader navItems={items} />
+      <Header navItems={items} />
       <Outlet />
     </>
   );
@@ -27,8 +26,8 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-      { path: "/", element: <PortfolioView /> },
-      { path: "/data", element: <DataView /> },
+      { path: "/", element: <Home /> },
+      { path: "/app", element: <DataView /> },
     ],
   },
 ]);
