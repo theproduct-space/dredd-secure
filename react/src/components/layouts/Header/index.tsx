@@ -18,7 +18,7 @@ export default function Header(props: HeaderProps) {
         <header className="flex p-5">
             <Link to={navHome.to || "/"} className="logo-link">
                 <div className="logo"></div>
-                <IgntLogo className="mx-2.5"></IgntLogo> {/* TODO: Replace that line when you will have the logo. */}
+                <IgntLogo className="mx-2.5"></IgntLogo> {/* TODO (Design): Remove that line when you will have the logo. */}
             </Link>
             <nav className="flex flex-1 justify-between">
                 <ul>

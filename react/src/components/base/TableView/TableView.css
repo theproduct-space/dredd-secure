@@ -1,6 +1,7 @@
 .table {
     display: flex;
     flex-direction: column;
+    padding: 10px;
 }
 
 .table-row {
@@ -12,7 +13,7 @@
 }
 
 .table-cell {
-    flex: 1;
+    flex: 2;
     border: 1px solid gray;
     padding: 8px;
 }
