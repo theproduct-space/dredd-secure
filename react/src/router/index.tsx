@@ -1,7 +1,8 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
-import Home from "../components/layouts/Home";
-import DataView from "../views/DataView";
+import Home from "../views/Home";
 import Header from "../components/layouts/Header";
+import FAQ from "../views/FAQ";
+import Dashboard from "../views/Dashboard";
 
 const items = [
   {
@@ -9,10 +10,15 @@ const items = [
     to: "/",
   },
   {
-    label: "App",
+    label: "DashBoard",
     to: "/app",
   },
+  {
+    label: "FAQ",
+    to: "/faq",
+  },
 ];
+
 const Layout = () => {
   return (
     <>
@@ -27,7 +33,8 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { path: "/", element: <Home /> },
-      { path: "/app", element: <DataView /> },
+      { path: "/app", element: <Dashboard /> },
+      { path: "/faq", element: <FAQ /> },
     ],
   },
 ]);

@@ -2,12 +2,12 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useEffect, useState } from "react";
-import useKeplr from "../def-hooks/useKeplr";
-import { useDispatchWalletContext, useWalletContext } from "../def-hooks/walletContext";
-import { useClient } from "../hooks/useClient";
+import useKeplr from "../../../def-hooks/useKeplr";
+import { useDispatchWalletContext, useWalletContext } from "../../../def-hooks/walletContext";
+import { useClient } from "../../../hooks/useClient";
 
-import useCosmosBaseTendermintV1Beta1 from "../hooks/useCosmosBaseTendermintV1Beta1";
-import { Wallet } from "../utils/interfaces";
+import useCosmosBaseTendermintV1Beta1 from "../../../hooks/useCosmosBaseTendermintV1Beta1";
+import { Wallet } from "../../../utils/interfaces";
 import {
   IgntProfileIcon,
   IgntWarningIcon,
@@ -17,7 +17,7 @@ import {
   IgntExternalArrowIcon,
   IgntSpinner,
 } from "@ignt/react-library";
-import IgntAccDropdown from "./IgntAccDropdown";
+import IgntAccDropdown from "./AccountDropdown";
 
 export interface State {
   modalPage: string;
