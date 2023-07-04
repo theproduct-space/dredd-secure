@@ -1,0 +1,18 @@
+.table {
+    display: flex;
+    flex-direction: column;
+}
+
+.table-row {
+    display: flex;
+}
+
+.header-row {
+    font-weight: bold;
+}
+
+.table-cell {
+    flex: 1;
+    border: 1px solid gray;
+    padding: 8px;
+}
