@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 export default function Home() {
   return (
-    <div className="w-full min-h-screen bg-black">
+    <div className="w-full min-h-screen">
       <div className="container mx-auto">
         <div className="">
           <div>

@@ -14,6 +14,7 @@ module.exports = {
       DEFAULT: "16px 32px 128px -8px rgba(0, 0, 0, 0.07)",
     },
     fontFamily: {
+      revalia: ["Revalia", "cursive"],
       sans: ["Inter", "sans-serif"],
     },
     extend: {
@@ -30,13 +31,11 @@ module.exports = {
         coolSilver: "#F0FBFF",
         orange: "#FF8A00",
         yellow: "#FFC75A",
-        primary: "#094EFD",
-        secondary: "#95DCFD",
         // functional colors
-        bg: "#fff",
-        title: "#000",
-        text: "#000",
-        inverse: "#fff",
+        bg: "#11100B",
+        title: "#ffffff",
+        text: "#ffffff",
+        inverse: "#000",
         muted: "rgba(0, 0, 0, 0.667)",
         inactive: "rgba(0, 0, 0, 0.33)",
         link: "#000",
