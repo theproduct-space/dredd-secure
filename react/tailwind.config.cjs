@@ -22,9 +22,10 @@ module.exports = {
         transparent: "transparent",
         current: "currentColor",
         white: {
+          200: "rgba(255,255,255,0.2)",
           500: "rgba(255,255,255,0.5)",
           800: "rgba(255,255,255,0.82)",
-          1000: "#fff",
+          1000: "#f9f9f9",
         },
         black: "#11100B",
         gray: "#241F16",
@@ -34,7 +35,7 @@ module.exports = {
         // functional colors
         bg: "#11100B",
         title: "#ffffff",
-        text: "#ffffff",
+        text: "#f9f9f9",
         inverse: "#000",
         muted: "rgba(0, 0, 0, 0.667)",
         inactive: "rgba(0, 0, 0, 0.33)",
@@ -58,6 +59,9 @@ module.exports = {
         std: "3px 9px 32px -4px rgb(0 0 0 / 7%)",
       },
       fontSize: {
+        h1: "4rem",
+        h2: "2.75rem",
+        p1: "1.5rem",
         xxs: "0.625rem",
       },
       inset: {
