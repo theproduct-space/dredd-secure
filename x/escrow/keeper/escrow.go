@@ -120,13 +120,14 @@ func (k Keeper) ValidateConditions(ctx sdk.Context, escrow types.Escrow) bool {
 	return true
 }
 
+// Release assets to the respective parties. The Initiator receives the FulfillerCoins, vice-versa
 func (k Keeper) ReleaseAssets(ctx sdk.Context, escrow types.Escrow) {
 	// Release initiator assets
 	initiator, err := sdk.AccAddressFromBech32(escrow.Initiator)
     if err != nil {
         panic(err)
     }
-	errSendCoinsInitiator := k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, initiator, escrow.InitiatorCoins)
+	errSendCoinsInitiator := k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, initiator, escrow.FulfillerCoins)
 	if errSendCoinsInitiator != nil {
 		panic(fmt.Sprintf(types.ErrCannotReleaseInitiatorAssets.Error(), errSendCoinsInitiator.Error()))
 	}
@@ -136,7 +137,7 @@ func (k Keeper) ReleaseAssets(ctx sdk.Context, escrow types.Escrow) {
 	if err != nil {
 		panic(err)
 	}
-	errSendCoinsFulfiller := k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, fulfiller, escrow.FulfillerCoins)
+	errSendCoinsFulfiller := k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, fulfiller, escrow.InitiatorCoins)
 	if errSendCoinsFulfiller != nil {
 		panic(fmt.Sprintf(types.ErrCannotReleaseFulfillerAssets.Error(), errSendCoinsFulfiller.Error()))
 	}
