@@ -4,6 +4,8 @@ import (
 	"context"
 	"dredd-secure/x/escrow/types"
 
+	"fmt"
+
 	"cosmossdk.io/errors"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -29,7 +31,7 @@ func (k msgServer) CancelEscrow(goCtx context.Context, msg *types.MsgCancelEscro
 	initiator, _ := sdk.AccAddressFromBech32(escrow.Initiator)
 	err := k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, initiator, escrow.InitiatorCoins)
 	if err != nil {
-		return nil, err
+		panic(fmt.Sprintf(types.ErrCannotReleaseInitiatorAssets.Error(), err.Error()))
 	}
 
 	escrow.Status = "cancelled"
