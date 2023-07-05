@@ -2,6 +2,7 @@ package keeper_test
 
 import (
 	"context"
+	"errors"
 	"testing"
 
 	"dredd-secure/x/escrow"
@@ -110,27 +111,21 @@ func TestCancelEscrowWrongStatus (t *testing.T) {
 	require.ErrorIs(t, errSecondCancel, types.ErrWrongEscrowStatus)
 }
 
-// func TestCancelEscrowModuleCannotPay(t *testing.T) {
-// 	msgServer, _, context, ctrl, bankMock := setupMsgServerCreateEscrow(t)
-// 	defer ctrl.Finish()
+func TestCancelEscrowModuleCannotPay(t *testing.T) {
+	msgServer, _, context, ctrl, bankMock := setupMsgServerCreateEscrow(t)
+	defer ctrl.Finish()
 
-// 	initiator, _ := sdk.AccAddressFromBech32(testutil.Alice)
-//     bankMock.EXPECT().
-//         SendCoinsFromAccountToModule(context, initiator, types.ModuleName, gomock.Any()).
-//         Return(errors.New("oops"))
-// 	_, err := msgServer.CreateEscrow(context, &types.MsgCreateEscrow{
-// 		Creator: testutil.Alice,
-// 		InitiatorCoins: []sdk.Coin{{
-// 			Denom: "token",
-// 			Amount: sdk.NewInt(1000),
-// 		}},
-// 		FulfillerCoins: []sdk.Coin{{
-// 			Denom: "stake",
-// 			Amount: sdk.NewInt(9000),
-// 		}},
-// 		StartDate:      "1588148578",
-// 		EndDate:        "2788148978",
-// 	})
-//     require.NotNil(t, err)
-//     require.EqualError(t, err, "Initiator cannot pay: oops")
-// }
+	initiator, _ := sdk.AccAddressFromBech32(testutil.Alice)
+    bankMock.EXPECT().
+		SendCoinsFromModuleToAccount(context, initiator, types.ModuleName, gomock.Any()).
+        Return(errors.New("oops"))
+	defer func() {
+		r := recover()
+		require.NotNil(t, r, "The code did not panic")
+		require.Equal(t, r, "Module cannot release Initiator assets: oops")
+	}()
+	msgServer.CancelEscrow(context, &types.MsgCancelEscrow{
+		Creator: testutil.Alice,
+		Id: 0,
+	})
+}
