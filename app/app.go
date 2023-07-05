@@ -113,6 +113,7 @@ import (
 	escrowmodule "dredd-secure/x/escrow"
 	escrowmodulekeeper "dredd-secure/x/escrow/keeper"
 	escrowmoduletypes "dredd-secure/x/escrow/types"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	appparams "dredd-secure/app/params"
@@ -187,7 +188,8 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
-		escrowmoduletypes.ModuleName:   {authtypes.Minter, authtypes.Burner, authtypes.Staking},
+		// escrowmoduletypes.ModuleName:   {authtypes.Minter, authtypes.Burner, authtypes.Staking}, // PSTODO: according to https://tutorials.cosmos.network/hands-on-exercise/2-ignite-cli-adv/6-payment-winning.html#:~:text=Finally%2C%20inform%20the%20app%20that%20your%20checkers%20module%20is%20going%20to%20hold%20balances%20in%20escrow%20by%20adding%20it%20to%20the%20whitelist%20of%20permitted%20modules%3A this should be set to nil
+		escrowmoduletypes.ModuleName:   nil, // PSTODO: according to https://tutorials.cosmos.network/hands-on-exercise/2-ignite-cli-adv/6-payment-winning.html#:~:text=Finally%2C%20inform%20the%20app%20that%20your%20checkers%20module%20is%20going%20to%20hold%20balances%20in%20escrow%20by%20adding%20it%20to%20the%20whitelist%20of%20permitted%20modules%3A this should be set to nil
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -521,12 +523,11 @@ func New(
 	)
 
 	app.EscrowKeeper = *escrowmodulekeeper.NewKeeper(
+		app.BankKeeper,
 		appCodec,
 		keys[escrowmoduletypes.StoreKey],
 		keys[escrowmoduletypes.MemStoreKey],
 		app.GetSubspace(escrowmoduletypes.ModuleName),
-
-		app.BankKeeper,
 	)
 	escrowModule := escrowmodule.NewAppModule(appCodec, app.EscrowKeeper, app.AccountKeeper, app.BankKeeper)
 

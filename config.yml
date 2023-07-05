@@ -11,8 +11,8 @@ accounts:
 faucet:
   name: bob
   coins:
-  - 5token
-  - 100000stake
+  - 4000token
+  - 400000000stake
 client:
   typescript:
     path: ts-client
