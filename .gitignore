@@ -1,8 +1,7 @@
-vue/node_modules
+react/node_modules
 vue/dist
 release/
 .idea/
 .vscode/
 .DS_Store
-react/
-ts-client/
+ts-client/node_modules
