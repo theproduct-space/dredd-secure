@@ -1,6 +1,7 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
 
 import Header from "~layouts/Header";
+import CreateContractPage from "~views/CreateContract";
 import Dashboard from "~views/Dashboard";
 import FAQ from "~views/FAQ";
 import Landing from "~views/Landing";
@@ -14,14 +15,19 @@ const navPages = [
     {
         label: "FAQ",
         to: "/faq",
-        view: <FAQ/>
+        view: <FAQ />
     }
 ]
 const otherPages = [
     {
-        label: "DashBoard",
+        label: "Dashboard",
         to: "/dashboard",
         view: <Dashboard />
+    },
+    {
+        label: "CreateContract",
+        to: "/escrow/create",
+        view: <CreateContractPage />
     }
 ];
 const allPages = otherPages.concat(home).concat(navPages);
