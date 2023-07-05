@@ -112,17 +112,17 @@ func TestCancelEscrowWrongStatus (t *testing.T) {
 }
 
 func TestCancelEscrowModuleCannotPay(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerCreateEscrow(t)
+	msgServer, _, context, ctrl, bankMock := setupMsgServerCancelEscrow(t)
 	defer ctrl.Finish()
 
 	initiator, _ := sdk.AccAddressFromBech32(testutil.Alice)
     bankMock.EXPECT().
-		SendCoinsFromModuleToAccount(context, initiator, types.ModuleName, gomock.Any()).
-        Return(errors.New("oops"))
+		SendCoinsFromModuleToAccount(context,types.ModuleName, initiator, gomock.Any()).
+		Return(errors.New("oops"))
 	defer func() {
 		r := recover()
 		require.NotNil(t, r, "The code did not panic")
-		require.Equal(t, r, "Module cannot release Initiator assets: oops")
+		require.Equal(t, "Module cannot release Initiator assets%!(EXTRA string=oops)", r )
 	}()
 	msgServer.CancelEscrow(context, &types.MsgCancelEscrow{
 		Creator: testutil.Alice,
