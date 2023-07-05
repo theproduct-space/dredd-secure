@@ -2,8 +2,12 @@ package keeper
 
 import (
 	"encoding/binary"
+	"fmt"
+	"strconv"
+	"time"
 
 	"dredd-secure/x/escrow/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -93,6 +97,51 @@ func (k Keeper) GetAllEscrow(ctx sdk.Context) (list []types.Escrow) {
 	return
 }
 
+// Validate the escrow conditions
+func (k Keeper) ValidateConditions(ctx sdk.Context, escrow types.Escrow) bool {
+	// Validate time conditions
+	now := time.Now()
+	unixTimeNow := now.Unix()
+
+	endDateInt, errParseIntEndDate := strconv.ParseInt(escrow.EndDate, 10, 64)
+	startDateInt, errParseIntStartDate := strconv.ParseInt(escrow.StartDate, 10, 64)
+	if (errParseIntEndDate != nil) {
+		panic(errParseIntEndDate.Error())
+	}
+	if (errParseIntStartDate != nil) {
+		panic(errParseIntStartDate.Error())
+	}
+	
+	// If the current date is before start date or after end date, time conditions are not met
+	if (unixTimeNow < startDateInt || unixTimeNow > endDateInt) {
+		return false
+	}
+
+	return true
+}
+
+func (k Keeper) ReleaseAssets(ctx sdk.Context, escrow types.Escrow) {
+	// Release initiator assets
+	initiator, err := sdk.AccAddressFromBech32(escrow.Initiator)
+    if err != nil {
+        panic(err)
+    }
+	errSendCoinsInitiator := k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, initiator, escrow.InitiatorCoins)
+	if errSendCoinsInitiator != nil {
+		panic(fmt.Sprintf(types.ErrCannotReleaseInitiatorAssets.Error(), errSendCoinsInitiator.Error()))
+	}
+
+	// Release fulfiller assets
+	fulfiller, err := sdk.AccAddressFromBech32(escrow.Fulfiller)
+	if err != nil {
+		panic(err)
+	}
+	errSendCoinsFulfiller := k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, fulfiller, escrow.FulfillerCoins)
+	if errSendCoinsFulfiller != nil {
+		panic(fmt.Sprintf(types.ErrCannotReleaseFulfillerAssets.Error(), errSendCoinsFulfiller.Error()))
+	}
+}
+
 // GetEscrowIDBytes returns the byte representation of the ID
 func GetEscrowIDBytes(id uint64) []byte {
 	bz := make([]byte, 8)
@@ -104,3 +153,5 @@ func GetEscrowIDBytes(id uint64) []byte {
 func GetEscrowIDFromBytes(bz []byte) uint64 {
 	return binary.BigEndian.Uint64(bz)
 }
+
+
