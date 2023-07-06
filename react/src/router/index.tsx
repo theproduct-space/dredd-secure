@@ -1,4 +1,7 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
+import Home from "../views/Home";
+import Header from "../components/layouts/Header";
+import Dashboard from "../views/Dashboard";
 
 import Header from "~layouts/Header";
 import CreateContractPage from "~views/CreateContract";
@@ -33,21 +36,22 @@ const otherPages = [
 const allPages = otherPages.concat(home).concat(navPages);
 
 const Layout = () => {
-    return (
-        <>
-            <Header navHome={home} navPages={navPages} />
-            <Outlet />
-        </>
-    );
+  return (
+    <div className="relative">
+      <Header />
+      <Outlet />
+    </div>
+  );
 };
 const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <Layout />,
-        children: allPages.map((item) => {
-            return { path: item.to, element: item.view };
-        }),
-    },
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      { path: "/", element: <Home /> },
+      { path: "/app", element: <Dashboard /> },
+    ],
+  },
 ]);
 
 export default router;
