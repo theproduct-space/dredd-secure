@@ -11,7 +11,7 @@ export default function HeroLanding() {
       <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center">
         <div className="container mx-auto">
           <div className="max-w-2xl py-6">
-            <h1 className="text-h1 text-white-1000 font-revalia py-6">Dredd-Secure</h1>
+            <h1 className="text-h1 text-white-1000 font-revalia py-6">DreddSecure</h1>
             <blockquote className="text-white-1000 text-p1">
               Discover our innovative escrow service designed for the Cosmos Hub ecosystem. Using the powerful Cosmos
               SDK, we bring enhanced security and efficiency to transactions within the ecosystem.
