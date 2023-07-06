@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useQuery, type UseQueryOptions, useInfiniteQuery, type UseInfiniteQueryOptions } from "@tanstack/react-query";
+import { useQuery, useInfiniteQuery} from "@tanstack/react-query";
 import { useClient } from '../useClient';
-import type { Ref } from 'vue'
 
 export default function useIbcApplicationsTransferV1() {
   const client = useClient();
@@ -23,8 +21,8 @@ export default function useIbcApplicationsTransferV1() {
       query['pagination.count_total']= true;
       return  client.IbcApplicationsTransferV1.query.queryDenomTraces(query ?? undefined).then( res => ({...res.data,pageParam}) );
     }, {...options,
-      getNextPageParam: (lastPage, allPages) => { if ((lastPage.pagination?.total ?? 0) >((lastPage.pageParam ?? 0) * perPage)) {return lastPage.pageParam+1 } else {return undefined}},
-      getPreviousPageParam: (firstPage, allPages) => { if (firstPage.pageParam==1) { return undefined } else { return firstPage.pageParam-1}}
+      getNextPageParam: (lastPage) => { if ((lastPage.pagination?.total ?? 0) >((lastPage.pageParam ?? 0) * perPage)) {return lastPage.pageParam+1 } else {return undefined}},
+      getPreviousPageParam: (firstPage) => { if (firstPage.pageParam==1) { return undefined } else { return firstPage.pageParam-1}}
     }
     );
   }

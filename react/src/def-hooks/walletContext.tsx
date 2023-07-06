@@ -39,7 +39,7 @@ export default function WalletProvider({ children }: Props) {
         accounts: [],
       };
       await client.useKeplr();
-      const [account] = await client.signer.getAccounts();
+      const [account] = await (client?.signer?.getAccounts() ?? []);
       wallet.accounts.push({ address: account.address, pathIncrement: null });
 
       setActiveWallet(wallet);
