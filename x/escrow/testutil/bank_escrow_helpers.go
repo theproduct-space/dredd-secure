@@ -30,3 +30,15 @@ func (escrow *MockBankKeeper) ExpectRefund(context context.Context, who string, 
 	}
 	return escrow.EXPECT().SendCoinsFromModuleToAccount(sdk.UnwrapSDKContext(context), types.ModuleName, whoAddr, coins)
 }
+
+func (escrow *MockBankKeeper) ExpectSend(context context.Context, from string, to string, coins []sdk.Coin) *gomock.Call {
+	fromAddr, errFrom := sdk.AccAddressFromBech32(from)
+	toAddr, errTo := sdk.AccAddressFromBech32(to)
+	if errFrom != nil {
+		panic(errFrom)
+	}
+	if errTo != nil {
+		panic(errTo)
+	}
+	return escrow.EXPECT().SendCoins(sdk.UnwrapSDKContext(context), fromAddr, toAddr, coins)
+}

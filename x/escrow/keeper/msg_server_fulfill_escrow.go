@@ -42,7 +42,7 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 
 		// release the initiator assets and send them to the fulfiller
 		errReleaseInitiatorCoins := k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, fulfiller, escrow.InitiatorCoins)
-		if errSendCoins != nil {
+		if errReleaseInitiatorCoins != nil {
 			panic(fmt.Sprintf(types.ErrCannotReleaseInitiatorAssets.Error(), errReleaseInitiatorCoins.Error()))
 		}
 
