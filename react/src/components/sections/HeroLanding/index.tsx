@@ -1,12 +1,13 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable react/no-unescaped-entities */
 import { Link } from "react-router-dom";
-import bgImage from "~assets/bg1.png";
+import bgImage from "~assets/bg3.png";
 import Button from "~baseComponents/Button";
 export default function HeroLanding() {
   return (
     <div className="relative h-[1024px]">
-      <img src={bgImage} alt="Dredd-Secure" className="w-[1024px] absolute bottom-0 right-0" />
+      <img src={bgImage} alt="Dredd-Secure" className="w-full absolute bottom-0 left-96" />
+      {/* <div className="absolute w-[]" /> */}
       <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center">
         <div className="container mx-auto">
           <div className="max-w-2xl py-6">
