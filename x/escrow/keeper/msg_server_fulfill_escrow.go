@@ -2,16 +2,65 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	"dredd-secure/x/escrow/types"
+
+	"cosmossdk.io/errors"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEscrow) (*types.MsgFulfillEscrowResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+	escrow, found := k.GetEscrow(ctx, msg.Id)
 
-	// TODO: Handling the message
-	_ = ctx
+	if !found {
+		return nil, errors.Wrapf(sdkerrors.ErrKeyNotFound, "The escrow with key %d doesn't exist", msg.Id)
+	}
 
+	if escrow.Initiator == msg.Creator {
+		return nil, errors.Wrap(sdkerrors.ErrUnauthorized, "Initator of the escrow can not fulfill it.")
+	}
+
+	if escrow.Status != "open" {
+		return nil, errors.Wrapf(types.ErrWrongEscrowStatus, "%v", escrow.Status)
+	}
+
+	initiator, _ := sdk.AccAddressFromBech32(escrow.Initiator)
+	fulfiller, _ := sdk.AccAddressFromBech32(msg.Creator)
+
+	conditionsValidity := k.ValidateConditions(ctx, escrow)
+
+	if (conditionsValidity) {
+		// If all the conditions are met, send fulfiller coins to initator
+		errSendCoins := k.bank.SendCoins(ctx, fulfiller, initiator, escrow.FulfillerCoins)
+		if errSendCoins != nil {
+			return nil, errors.Wrapf(errSendCoins, types.ErrFulfillerCannotPay.Error())
+		}
+
+		// release the initiator assets and send them to the fulfiller
+		errReleaseInitiatorCoins := k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, fulfiller, escrow.InitiatorCoins)
+		if errSendCoins != nil {
+			panic(fmt.Sprintf(types.ErrCannotReleaseInitiatorAssets.Error(), errReleaseInitiatorCoins.Error()))
+		}
+
+		// change the escrow status to "closed"
+		escrow.Status = "closed"
+	} else {
+		// If not all conditions are met, escrow the fulfiller assets
+		errEscrowInitiatorCoins := k.bank.SendCoinsFromAccountToModule(ctx, fulfiller, types.ModuleName, escrow.FulfillerCoins)
+		if errEscrowInitiatorCoins != nil {
+			return nil, errors.Wrapf(errEscrowInitiatorCoins, types.ErrFulfillerCannotPay.Error())
+		}
+
+		// change the escrow status to "pending"
+		escrow.Status = "pending"
+	}
+
+	escrow.Fulfiller = msg.Creator
+	k.SetEscrow(ctx, escrow)
 	return &types.MsgFulfillEscrowResponse{}, nil
 }
+

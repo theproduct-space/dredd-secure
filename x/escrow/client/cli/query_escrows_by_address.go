@@ -24,11 +24,17 @@ func CmdEscrowsByAddress() *cobra.Command {
 				return err
 			}
 
+			pageReq, err := client.ReadPageRequest(cmd.Flags())
+			if err != nil {
+				return err
+			}
+
 			queryClient := types.NewQueryClient(clientCtx)
 
 			params := &types.QueryEscrowsByAddressRequest{
 
 				Address: reqAddress,
+				Pagination: pageReq,
 			}
 
 			res, err := queryClient.EscrowsByAddress(cmd.Context(), params)
@@ -40,6 +46,7 @@ func CmdEscrowsByAddress() *cobra.Command {
 		},
 	}
 
+	flags.AddPaginationFlagsToCmd(cmd, cmd.Use)
 	flags.AddQueryFlagsToCmd(cmd)
 
 	return cmd

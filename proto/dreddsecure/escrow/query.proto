@@ -64,7 +64,11 @@ message QueryAllEscrowResponse {
 
 message QueryEscrowsByAddressRequest {
   string address = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
 }
 
-message QueryEscrowsByAddressResponse {}
+message QueryEscrowsByAddressResponse {
+  repeated Escrow                                 Escrow     = 1 [(gogoproto.nullable) = false]; 
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
 

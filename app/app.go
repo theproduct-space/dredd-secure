@@ -113,6 +113,7 @@ import (
 	escrowmodule "dredd-secure/x/escrow"
 	escrowmodulekeeper "dredd-secure/x/escrow/keeper"
 	escrowmoduletypes "dredd-secure/x/escrow/types"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	appparams "dredd-secure/app/params"
@@ -187,7 +188,7 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
-		escrowmoduletypes.ModuleName:   {authtypes.Minter, authtypes.Burner, authtypes.Staking},
+		escrowmoduletypes.ModuleName:   nil, 
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -521,12 +522,11 @@ func New(
 	)
 
 	app.EscrowKeeper = *escrowmodulekeeper.NewKeeper(
+		app.BankKeeper,
 		appCodec,
 		keys[escrowmoduletypes.StoreKey],
 		keys[escrowmoduletypes.MemStoreKey],
 		app.GetSubspace(escrowmoduletypes.ModuleName),
-
-		app.BankKeeper,
 	)
 	escrowModule := escrowmodule.NewAppModule(appCodec, app.EscrowKeeper, app.AccountKeeper, app.BankKeeper)
 
