@@ -1,13 +1,10 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import Home from "../views/Home";
-import Header from "../components/layouts/Header";
-import Dashboard from "../views/Dashboard";
-
 import Header from "~layouts/Header";
 import CreateContractPage from "~views/CreateContract";
 import Dashboard from "~views/Dashboard";
 import FAQ from "~views/FAQ";
-import Landing from "~views/Landing";
+import Landing from "~views/Home";
 
 const home = {
     label: "Landing",
