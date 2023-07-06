@@ -5,7 +5,7 @@ import bgImage from "~assets/bg3.png";
 import Button from "~baseComponents/Button";
 export default function HeroLanding() {
   return (
-    <div className="relative h-[1024px]">
+    <div className="relative h-[1024px] overflow-hidden">
       <img src={bgImage} alt="Dredd-Secure" className="w-full absolute bottom-0 left-96" />
       {/* <div className="absolute w-[]" /> */}
       <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center">
