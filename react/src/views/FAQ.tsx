@@ -26,11 +26,11 @@ function FAQ() {
   return (
     <section className="bg-gray">
       <ContentContainer>
-        <div className="py-20 flex flex-col md:flex-row gap-12">
+        <div className="py-20 flex flex-col md:flex-row md:justify-between gap-12">
           <h2 className="text-4xl font-bold text-white-1000 font-revalia">
             Frequently asked questions
           </h2>
-          <div className="flex flex-col gap-4 w-full md:w-1/2">
+          <div className="flex flex-col gap-4 w-full ">
             <FAQItem
               question="What is DreddSecure?"
               answer="Experience secure, automated contracts allowing parties to transact confidently. By holding assets until specific conditions are met, we eliminate the risk of fraud and disputes for smoother, safer transactions."

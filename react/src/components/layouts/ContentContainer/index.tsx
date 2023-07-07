@@ -10,7 +10,9 @@ const ContentContainer: React.FC<ContentContainerProps> = ({
   className,
 }) => {
   return (
-    <div className={`w-full max-w-app-max px-3 lg:px-6 mx-auto ${className}`}>
+    <div
+      className={`w-full max-w-app-max px-4 md:px-8 xl:px-16 mx-auto ${className}`}
+    >
       {children}
     </div>
   );
