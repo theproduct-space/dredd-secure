@@ -32,7 +32,7 @@ function FAQ() {
           </h2>
           <div className="flex flex-col gap-4 w-full md:w-1/2">
             <FAQItem
-              question="What is Dredd-Secure?"
+              question="What is DreddSecure?"
               answer="Experience secure, automated contracts allowing parties to transact confidently. By holding assets until specific conditions are met, we eliminate the risk of fraud and disputes for smoother, safer transactions."
               isOpen={toggles[3]}
               onToggle={() => handleToggle(3)}

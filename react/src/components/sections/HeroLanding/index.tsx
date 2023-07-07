@@ -51,6 +51,7 @@ export default function HeroLanding() {
               {/* <Link to="/app"> */}
               <Button
                 text="join waitlist"
+                icon={<LockIcon />}
                 secondary
                 disabled
                 className="font-revalia rounded-full border-solid border"

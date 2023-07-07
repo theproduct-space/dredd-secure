@@ -26,14 +26,14 @@ export default function Header() {
                 className="hover:fill-orange"
               />
             </a>
-            <Link to="/app">
-              <Button
-                text="Lauch App"
-                icon={<LockIcon />}
-                disabled
-                className="font-revalia rounded-full border-solid border-2"
-              />
-            </Link>
+            {/* <Link to="/app"> */}
+            <Button
+              text="Lauch App"
+              icon={<LockIcon />}
+              disabled
+              className="font-revalia rounded-full border-solid border-2"
+            />
+            {/* </Link> */}
           </div>
         ) : (
           <div>
