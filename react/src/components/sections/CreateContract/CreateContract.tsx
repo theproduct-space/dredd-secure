@@ -1,7 +1,20 @@
+import { Coin } from 'dredd-secure-client-ts/cosmos.bank.v1beta1/types/cosmos/base/v1beta1/coin';
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { TokenElement } from '~baseComponents/TokenElement';
-import { IToken, TokenSelector } from '~baseComponents/TokenSelector';
+import { TokenSelector } from '~baseComponents/TokenSelector';
+
+export interface ICondition {
+    type: string;
+    value: string;
+}
+
+export interface IContract {
+    initiatorCoins: Coin;
+    fulfillerCoins: Coin;
+    conditions: ICondition[];
+    tips?: Coin;
+}
 
 function CreateContract() {
     enum Modals {
@@ -11,11 +24,11 @@ function CreateContract() {
     };
 
     const [modalToOpen, setModalToOpen] = useState<Modals | undefined>();
-    const [selectedOwnToken, setSelectedOwnToken] = useState<IToken | undefined>();
-    const [selectedWantedToken, setSelectedWantedToken] = useState<IToken | undefined>();
-    const [selectedTokenTips, setSelectedTokenTips] = useState<IToken | undefined>();
+    const [selectedOwnToken, setSelectedOwnToken] = useState<Coin | undefined>();
+    const [selectedWantedToken, setSelectedWantedToken] = useState<Coin | undefined>();
+    const [selectedTokenTips, setSelectedTokenTips] = useState<Coin | undefined>();
 
-    const handleSaving = (t: IToken | undefined) => {
+    const handleSaving = (t: Coin | undefined) => {
         let func;
         switch (modalToOpen) {
             case Modals.Own:
@@ -58,7 +71,7 @@ function CreateContract() {
         return conditionTypes.map((type) => { return <option value={type}>{type}</option> });
     }
     // This is for testing purposes
-    const conditions = [
+    const conditions: ICondition[] = [
         {
             type: "Deadline",
             value: "07/26/2025"
@@ -121,6 +134,7 @@ function CreateContract() {
                     </div>
                 </div>
             </div>
+            <Link to={"/escrow/pay"} state={{initiatorCoins: selectedOwnToken, fulfillerCoins: selectedWantedToken, conditions: conditions}}>Continue</Link>
             {
                 modalToOpen != undefined && displayModal()
             }
