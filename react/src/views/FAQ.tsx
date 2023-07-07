@@ -106,7 +106,7 @@ function FAQ() {
             />
             <FAQItem
               question="What types of assets can I put in an escrow?"
-              answer="Any digital asset accessible through the Cosmos Hub, including native tokens, wrapped tokens, can be put in escrow."
+              answer="Any digital asset accessible through the Cosmos Hub, including native tokens & wrapped tokens can be put in escrow."
               isOpen={toggles[1]}
               onToggle={() => handleToggle(1)}
             />
