@@ -17,7 +17,7 @@ export default function HeroLanding() {
           className="object-contain absolute opacity-70 
           bottom-0 scale-[3]
           sm:scale-[2]
-          md:-right-[200px] md:scale-150 md:top-unset
+          md:-right-[200px] md:scale-125 md:top-unset
           xl:opacity-100"
         />
         <div className="absolute top-0 left-0 w-full h-full flex flex-col py-40 lg:justify-center items-start">

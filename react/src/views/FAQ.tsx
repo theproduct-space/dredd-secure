@@ -1,28 +1,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable import/no-unresolved */
-import React, { useState } from "react";
 import FAQItem from "~baseComponents/FAQItem/FAQItem";
 import ContentContainer from "~layouts/ContentContainer";
 
 function FAQ() {
-  const [toggles, setToggles] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-
-  const handleToggle = (index: number) => {
-    setToggles((prevState) => {
-      const updatedToggles = [...prevState];
-      updatedToggles[index] = !updatedToggles[index];
-      return updatedToggles;
-    });
-  };
-
   return (
     <section className="bg-gray">
       <ContentContainer>
@@ -34,13 +16,11 @@ function FAQ() {
             <FAQItem
               question="What is DreddSecure?"
               answer="Experience secure, automated contracts allowing parties to transact confidently. By holding assets until specific conditions are met, we eliminate the risk of fraud and disputes for smoother, safer transactions."
-              isOpen={toggles[3]}
-              onToggle={() => handleToggle(3)}
             />
             <FAQItem
               question="Why use our escrow service?"
               answer={
-                <ul className="text-white-1000">
+                <ul className="flex flex-col gap-2">
                   <li>
                     <b>Trust</b>: Assets are only released when agreed
                     conditions are met, fostering trust between parties.
@@ -56,15 +36,13 @@ function FAQ() {
                   </li>
                 </ul>
               }
-              isOpen={toggles[4]}
-              onToggle={() => handleToggle(4)}
             />
             <FAQItem
               question="How does it work?"
               answer={
-                <div>
+                <div className="flex flex-col gap-2">
                   <div>
-                    <div className="text-2xl font-bold">
+                    <div className="font-bold">
                       Step 1: Create the Escrow Contract
                     </div>
                     <div>
@@ -75,18 +53,14 @@ function FAQ() {
                     </div>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold">
-                      Step 2: Check Conditions
-                    </div>
+                    <div className="font-bold">Step 2: Check Conditions</div>
                     <div>
                       Our smart contract evaluates predefined conditions to
                       ensure agreed-upon terms are met before asset transfer.
                     </div>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold">
-                      Step 3: Release Assets
-                    </div>
+                    <div className="font-bold">Step 3: Release Assets</div>
                     <div>
                       Upon satisfying all conditions, assets are automatically
                       released to the respective parties, ensuring a seamless,
@@ -95,26 +69,18 @@ function FAQ() {
                   </div>
                 </div>
               }
-              isOpen={toggles[5]}
-              onToggle={() => handleToggle(5)}
             />
             <FAQItem
               question="How is the escrow service secure?"
               answer="The escrow service, developed with the Cosmos SDK, is secure as it uses a two-party Escrow Contract to hold assets until agreed conditions are met. It adheres to the latest security practices and undergoes third-party audits to ensure asset security."
-              isOpen={toggles[0]}
-              onToggle={() => handleToggle(0)}
             />
             <FAQItem
               question="What types of assets can I put in an escrow?"
               answer="Any digital asset accessible through the Cosmos Hub, including native tokens & wrapped tokens can be put in escrow."
-              isOpen={toggles[1]}
-              onToggle={() => handleToggle(1)}
             />
             <FAQItem
               question="How is Cosmos SDK beneficial for the escrow service?"
               answer="The Cosmos SDK enhances the escrow service by providing scalability, seamless integration with the Cosmos ecosystem, robust security mechanisms, support for cross-chain transactions, and developer-friendly tools for easy development and deployment."
-              isOpen={toggles[2]}
-              onToggle={() => handleToggle(2)}
             />
           </div>
         </div>

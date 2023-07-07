@@ -1,25 +1,49 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { Typography } from "~baseComponents/Typography";
 import minus from "../../../assets/minusIcon.svg";
 import plus from "../../../assets/plusIcon.svg";
 
 interface FAQItemProps {
   question: string;
   answer: string | JSX.Element;
-  isOpen: boolean;
-  onToggle: () => void;
 }
 
-const FAQItem: React.FC<FAQItemProps> = ({ question, answer, isOpen, onToggle }) => {
+const FAQItem: React.FC<FAQItemProps> = ({ question, answer }) => {
+  const [isSelected, setIsSelected] = useState(false);
+  const [maxHeight, setMaxHeight] = useState("");
+  const heightRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (heightRef.current) {
+      setMaxHeight(
+        isSelected ? `${heightRef?.current?.scrollHeight}px` : "0px",
+      );
+    }
+  }, [isSelected]);
+
   return (
     <div className="bg-white-200 rounded-xl p-4">
-      <div className="flex justify-between items-center cursor-pointer" onClick={onToggle}>
-        <p className="text-p1 text-white-1000">{question}</p>
-        <img src={isOpen ? minus : plus} alt="toggle icon" />
+      <div
+        className="flex justify-between items-center cursor-pointer"
+        onClick={() => {
+          setIsSelected((prev) => !prev);
+        }}
+      >
+        <Typography variant="h6">{question}</Typography>
+        <img src={isSelected ? minus : plus} alt="toggle icon" />
       </div>
-      {isOpen && <p className="text-white-1000 pt-4">{answer}</p>}
+      <div
+        ref={heightRef}
+        style={{ maxHeight }}
+        className={` transition-max-height overflow-hidden duration-100 ease-in`}
+      >
+        <Typography variant="body-small" as="p" className="pt-4">
+          {answer}
+        </Typography>
+      </div>
     </div>
   );
 };
