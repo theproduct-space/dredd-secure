@@ -7,46 +7,47 @@ import FAQ from "~views/FAQ";
 import Landing from "~views/Home";
 
 const home = {
-    label: "Landing",
-    to: "/",
-    view: <Landing />
+  label: "Landing",
+  to: "/",
+  view: <Landing />,
 };
 const navPages = [
-    {
-        label: "FAQ",
-        to: "/faq",
-        view: <FAQ />
-    }
-]
+  {
+    label: "FAQ",
+    to: "/faq",
+    view: <FAQ />,
+  },
+];
 const otherPages = [
-    {
-        label: "Dashboard",
-        to: "/dashboard",
-        view: <Dashboard />
-    },
-    {
-        label: "CreateContract",
-        to: "/escrow/create",
-        view: <CreateContractPage />
-    }
+  {
+    label: "Dashboard",
+    to: "/dashboard",
+    view: <Dashboard />,
+  },
+  {
+    label: "CreateContract",
+    to: "/escrow/create",
+    view: <CreateContractPage />,
+  },
 ];
 const allPages = otherPages.concat(home).concat(navPages);
 
 const Layout = () => {
   return (
-    <div className="relative">
+    <div className="relative overflow-hidden">
       <Header />
       <Outlet />
     </div>
   );
 };
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
       { path: "/", element: <Home /> },
-      { path: "/app", element: <Dashboard /> },
+      // { path: "/app", element: <Dashboard /> },
     ],
   },
 ]);
