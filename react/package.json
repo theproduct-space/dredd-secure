@@ -60,7 +60,7 @@
   "name": "@ignt/react-template",
   "private": true,
   "scripts": {
-    "build": "tsc && vite build",
+    "build": "cd ../ts-client && npm install && cd ../react && tsc && vite build",
     "dev": "npm i && vite",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "postinstall": "node postinstall.cjs",
