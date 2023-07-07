@@ -1,3 +1,4 @@
+import { Coin } from 'dredd-secure-client-ts/cosmos.bank.v1beta1/types/cosmos/base/v1beta1/coin';
 import React, { useState } from 'react'
 import TokenItem from '~baseComponents/TokenItem';
 
@@ -8,9 +9,9 @@ export interface IToken {
 }
 
 export interface TokenSelectorProps {
-    onSave: (token: IToken | undefined) => void;
+    onSave: (token: Coin | undefined) => void;
     address?: string;
-    selectedToken?: IToken;
+    selectedToken?: Coin;
 }
 
 export function TokenSelector(props: TokenSelectorProps) {
