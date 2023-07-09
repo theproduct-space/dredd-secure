@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { TokenElement } from '~baseComponents/TokenElement';
 import { TokenSelector } from '~baseComponents/TokenSelector';
+import TipsSection from '~sections/Tips';
 
 export interface ICondition {
     type: string;
@@ -12,8 +13,10 @@ export interface ICondition {
 export interface IContract {
     initiatorCoins: Coin;
     fulfillerCoins: Coin;
-    conditions: ICondition[];
+    conditions?: ICondition[];
     tips?: Coin;
+    status?: string;
+    id?: string;
 }
 
 function CreateContract() {
@@ -124,14 +127,7 @@ function CreateContract() {
                             </div>
                         </div>
                     </div>
-                    <div className="tips-section">
-                        <span>Tips and donations go a long way.</span>
-                        <div>
-                            <span>We are a free service. Lorem ipsum</span>
-                            {/* Will take as a prop another component for the base display. Here, it will be a "Add Tip" link or button */}
-                            <TokenElement selectedToken={selectedTokenTips} onClick={() => setModalToOpen(Modals.Tips)} baseButton={<span>Add Tip</span>} />
-                        </div>
-                    </div>
+                    <TipsSection selectedToken={selectedTokenTips} onClick={() => setModalToOpen(Modals.Tips)} />
                 </div>
             </div>
             <Link to={"/escrow/pay"} state={{initiatorCoins: selectedOwnToken, fulfillerCoins: selectedWantedToken, conditions: conditions}}>Continue</Link>
