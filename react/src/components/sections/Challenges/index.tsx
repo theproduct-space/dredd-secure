@@ -4,7 +4,7 @@ import LayersImage from "~assets/layers.png";
 
 const Challenges = () => {
   return (
-    <ContentContainer className="py-20 md:py-32 relative">
+    <ContentContainer className="py-20 md:py-32 relative min-h-screen flex items-center">
       <div className="relative w-full flex justify-start items-center">
         <div className="flex flex-col lg:max-w-[50%] z-10">
           <Typography variant="h2" className="font-revalia pt-6 pb-12">
@@ -22,13 +22,13 @@ const Challenges = () => {
             and integration to overcome these challenges.
           </Typography>
         </div>
-      </div>
-      <img
-        src={LayersImage}
-        alt="Dredd-Secure"
-        className="object-cover absolute z-0 scale-150 -right-20 top-44 opacity-50 
+        <img
+          src={LayersImage}
+          alt="Dredd-Secure"
+          className="object-cover absolute z-0 scale-150 -right-20 top-44 opacity-50 
           md:w-[50%] md:scale-100 md:right-0 md:top-0 "
-      />
+        />
+      </div>
     </ContentContainer>
   );
 };

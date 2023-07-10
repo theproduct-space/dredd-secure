@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable react/no-unescaped-entities */
 import { Link } from "react-router-dom";
-import DreddLogo from "~assets/dredd-3d-logo.png";
+import LayersImage from "~assets/layers-and-logo.png";
 import Button from "~baseComponents/Button";
 import LockIcon from "~icons/LockIcon";
 import ContentContainer from "~layouts/ContentContainer";
@@ -14,7 +14,7 @@ export default function HeroLanding() {
       <div className="relative min-h-screen w-full flex flex-col overflow-y-clip pt-20 lg:flex-row-reverse">
         <div className="flex flex-1 items-center justify-center">
           <img
-            src={DreddLogo}
+            src={LayersImage}
             alt="Dredd-Secure"
             className="object-cover w-full max-w-lg lg:max-w-full relative drop-shadow-[0_35px_35px_rgba(255,199,90,0.25)]
           "
