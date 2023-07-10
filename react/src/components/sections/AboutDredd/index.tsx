@@ -14,12 +14,12 @@ export default function AboutDredd() {
             src={bgImage}
             alt="Dredd-Secure"
             className="object-contain absolute opacity-70 
-          bottom-[15%] scale-[3]
-          sm:scale-[2]
-          md:scale-125 md:top-unset md:-bottom-[5%]
-          lg:bottom-[25%] lg:-left-[35%]
-          xl:opacity-100 xl:bottom-[20%]
-          z-0"
+              bottom-[15%] scale-[3]
+              sm:scale-[2]
+              md:scale-125 md:top-unset md:-bottom-[5%]
+              lg:bottom-[25%] lg:-left-[35%]
+              xl:opacity-100 xl:bottom-[20%]
+              z-0"
           />
           <div className="flex flex-col z-10 lg:max-w-[50%]">
             <Typography variant="h2" className="text-white-1000 font-revalia py-6">
