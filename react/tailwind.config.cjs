@@ -49,6 +49,9 @@ module.exports = {
         negative: "#D80228",
         notification: "#FE475F",
       },
+      maxWidth: {
+        "app-max": "1600px",
+      },
       boxShadow: {
         border: "0px 0.5px 0px #CBCBCB",
         border_double: "0px -0.5px 0px #CBCBCB, 0px 0.5px 0px #CBCBCB",
@@ -78,6 +81,9 @@ module.exports = {
         "5sm": "14px",
         "6sm": "16px",
       },
+      // height: {
+      //   screen: ["100vh /* fallback for Opera, IE and etc. */", "100dvh"],
+      // },
     },
     letterSpacing: {
       tighter: "-.007em",
