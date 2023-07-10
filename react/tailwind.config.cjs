@@ -17,6 +17,9 @@ module.exports = {
       revalia: ["Revalia", "cursive"],
       sans: ["Inter", "sans-serif"],
     },
+    orangeOnHover: {
+      DEFAULT: "hover:text-orange",
+    },
     extend: {
       colors: {
         transparent: "transparent",
