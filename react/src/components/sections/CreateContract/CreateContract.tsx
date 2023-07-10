@@ -3,11 +3,12 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { TokenElement } from '~baseComponents/TokenElement';
 import { TokenSelector } from '~baseComponents/TokenSelector';
+import { ConditionTypes } from '~sections/ReviewContract';
 import TipsSection from '~sections/Tips';
 
 export interface ICondition {
     type: string;
-    value: string;
+    prop: string;
 }
 
 export interface IContract {
@@ -69,21 +70,30 @@ function CreateContract() {
 
 
     const displayConditionTypes = () => {
-        const conditionTypes = ["Deadline", "Milestone"];
-
-        return conditionTypes.map((type) => { return <option value={type}>{type}</option> });
+        return ConditionTypes.map((condition) => { return <option value={condition.type}>{condition.type}</option> });
     }
     // This is for testing purposes
-    const conditions: ICondition[] = [
-        {
-            type: "Deadline",
-            value: "07/26/2025"
-        },
-        {
-            type: "Milestone",
-            value: "08/02/2024"
-        },
-    ]
+    const [conditions, setConditions] = useState<{condition: ICondition, value: string}[]>([]);
+
+    const handleAddNewEmptyCondition = () => {
+        const array = [...conditions].concat({
+            condition: ConditionTypes[0],
+            value: ""
+        });
+        console.log(array);
+        setConditions(array);
+    };
+
+    const handleRemoveCondition = (id: number) => {
+        const array = conditions.slice(0, id).concat(conditions.slice(id+1));
+        setConditions(array);
+    }
+
+    const handleChangeCondition = (e: React.ChangeEvent<HTMLSelectElement>, id: number) => {
+        const array = [...conditions];
+        array[id].condition = ConditionTypes.find(element => element.type == e.target.value) ?? ConditionTypes[0];
+        setConditions(array);
+    }
 
     return (
         <div>
@@ -100,17 +110,17 @@ function CreateContract() {
                                     <div className="condition"> {/* Might be a component for a condition and maybe a section for condition-list */}
                                         <div className="condition-number">Condition #{index + 1}</div>
                                         <div className="condition-value">
-                                            <select value={condition.type}>
+                                            <select value={condition.condition.type} onChange={(e) => handleChangeCondition(e, index)}>
                                                 {displayConditionTypes()}
                                             </select>
                                             <input value={condition.value}></input>
-                                            <span>-</span>
+                                            <span onClick={() => handleRemoveCondition(index)}>-</span>
                                         </div>
                                     </div>
                                 )
                             })
                         }
-                        <div className="add-condition">Add Another Condition</div>
+                        <div className="add-condition" onClick={handleAddNewEmptyCondition}>Add Another Condition</div>
                     </div>
                     <div className="assets-management">
                         <div className="subtitle">Choose Assets for Exchange</div>

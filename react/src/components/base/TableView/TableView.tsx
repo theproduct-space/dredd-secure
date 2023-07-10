@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './TableView.css';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { MsgCancelEscrowResponse } from 'dredd-secure-client-ts/dreddsecure.escrow/types/dreddsecure/escrow/tx';
 
 export interface TableHeader {
     label: string;
@@ -7,26 +9,49 @@ export interface TableHeader {
 }
 
 export interface TableData {
-    [key: string]: any;
+    id: string;
+    deadline: string;
+    status: string;
+    assetsInvolved: string;
 }
 
 export interface TableViewProps {
     headers: TableHeader[];
     data: TableData[];
-    sortingFunction: (param: string, orderAsc: boolean) => void;
+    filterOptions: {
+        prop: string;
+        value: string | undefined;
+    }[];
 }
 
 export default function TableView(props: TableViewProps) {
-    const { headers, data, sortingFunction } = props;
+    const navigate = useNavigate();
+    const { data, headers, filterOptions } = props;
 
-    let sortedBy = {
-        param: headers[0].dataProp,
-        orderedAsc: false
-    }
+    const [sortKey, setSortKey] = useState(headers[0].dataProp);
+    const [sortAscending, setSortAscending] = useState(false);
 
     const handleSortingChange = (param: string) => {
-        // TODO: Handle sorting function call here.
-        console.log("Change sorting to '%s'", param);
+        if (sortKey == param) {
+            setSortAscending(!sortAscending);
+        }
+        else {
+            setSortKey(param);
+            setSortAscending(false);
+        }
+    }
+
+    const sortedData = [...data].sort((a, b) => {
+        const valueA = a[sortKey];
+        const valueB = b[sortKey];
+
+        if (valueA < valueB) return sortAscending ? -1 : 1;
+        if (valueA > valueB) return sortAscending ? 1 : -1;
+        return 0;
+    });
+
+    const handleOnClickRow = (id: string) => {
+        navigate(`/escrow/${id}`);
     }
 
     return (
@@ -36,14 +61,14 @@ export default function TableView(props: TableViewProps) {
                     {
                         headers.map((header) => {
                             return (
-                                <div className="table-cell header-cell" onClick={() => handleSortingChange(header.dataProp)}>
+                                <div key={"header-" + header.label} className="table-cell header-cell" onClick={() => handleSortingChange(header.dataProp)}>
                                     {header.label}
                                     {
                                         /* TODO (Design): Replace A & D by an actual icon */
-                                        sortedBy.param === header.dataProp && sortedBy.orderedAsc ?
+                                        sortKey === header.dataProp && sortAscending ?
                                             <span className="icon-ascending"><b>A</b></span>
                                             :
-                                            sortedBy.param === header.dataProp && !sortedBy.orderedAsc ?
+                                            sortKey === header.dataProp && !sortAscending ?
                                                 <span className="icon-descending"><b>D</b></span>
                                                 :
                                                 null
@@ -54,12 +79,16 @@ export default function TableView(props: TableViewProps) {
                     }
                 </div>
                 {
-                    data.map((element) => {
+                    sortedData.map((element, index) => {
+                        for (const filter of filterOptions) {
+                            if (filter.value != "" && element[filter.prop] != filter.value) return;
+                        }
+
                         return (
-                            <div className="table-row">
+                            <div key={`data-${index}`} className="table-row" onClick={() => handleOnClickRow(element.id)}>
                                 {
                                     headers.map((header) => {
-                                        return <div className="table-cell">{element[header.dataProp]}</div>
+                                        return <div key={`data-${index}-${header.dataProp}`} className="table-cell">{element[header.dataProp]}</div>
                                     })
                                 }
                             </div>
