@@ -22,7 +22,7 @@ const Footer = () => {
             <img src={DreddLogo} alt="Dredd Logo" className="w-40" />
           </Link>
 
-          <div className="flex gap-3 flex-col sm:flex-row">
+          <div className="flex gap-3 md:gap-8 lg:gap-12 flex-col sm:flex-row">
             <a href={URL_WAITLISTFORM} target="_blank">
               <Typography variant="body-med" className="hover:text-orange">
                 Get Started
