@@ -9,17 +9,19 @@ export default function AboutDredd() {
   return (
     <section className="bg-black">
       <ContentContainer>
-        <div className="relative h-screen w-full overflow-y-clip flex justify-end items-center">
-          {/* <img
+        <div className="relative min-h-screen w-full overflow-y-clip flex justify-end items-center">
+          <img
             src={bgImage}
             alt="Dredd-Secure"
             className="object-contain absolute opacity-70 
-          bottom-0 scale-[3]
+          bottom-[15%] scale-[3]
           sm:scale-[2]
-          md:-left-[50%] md:scale-125 md:top-unset
-          xl:opacity-100"
-          /> */}
-          <div className="flex flex-col lg:max-w-[50%]">
+          md:scale-125 md:top-unset md:-bottom-[5%]
+          lg:bottom-[25%] lg:-left-[35%]
+          xl:opacity-100 xl:bottom-[20%]
+          z-0"
+          />
+          <div className="flex flex-col z-10 lg:max-w-[50%]">
             <Typography variant="h2" className="text-white-1000 font-revalia py-6">
               About DreddSecure
             </Typography>
