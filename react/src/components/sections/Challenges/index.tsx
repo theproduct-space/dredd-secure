@@ -25,8 +25,8 @@ const Challenges = () => {
         <img
           src={LayersImage}
           alt="Dredd-Secure"
-          className="object-cover absolute z-0 scale-150 -right-20 top-44 opacity-50 
-          md:w-[50%] md:scale-100 md:right-0 md:top-0 "
+          className="object-cover drop-shadow-lightOrange absolute z-0 -right-10 top-[7rem] opacity-50 max-w-[500px]
+          lg:w-[50%] lg:right-0 lg:top-auto lg:bottom-auto lg:opacity-100 lg:max-w-full"
         />
       </div>
     </ContentContainer>

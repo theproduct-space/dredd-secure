@@ -10,17 +10,9 @@ import { URL_MEDIUM, URL_WAITLISTFORM } from "~utils/urls";
 
 export default function HeroLanding() {
   return (
-    <ContentContainer>
-      <div className="relative min-h-screen w-full flex flex-col overflow-y-clip pt-20 lg:flex-row-reverse">
-        <div className="flex flex-1 items-center justify-center">
-          <img
-            src={LayersImage}
-            alt="Dredd-Secure"
-            className="object-cover w-full max-w-[20%] lg:max-w-full relative drop-shadow-[0_35px_35px_rgba(255,199,90,0.25)]
-          "
-          />
-        </div>
-        <div className="flex-1 relative -top-12 left-0 w-full flex flex-col lg:justify-center items-start">
+    <ContentContainer className="">
+      <div className="relative min-h-screen w-full flex flex-col overflow-y-clip pt-32 lg:flex-row lg:pb-[8rem] ">
+        <div className="flex-1 relative -top-12 left-0 w-full flex flex-col lg:justify-center items-start z-10">
           <div className="max-w-2xl py-6">
             <Typography variant="h1" className="font-revalia pt-6 md:pb-3">
               DreddSecure
@@ -49,6 +41,16 @@ export default function HeroLanding() {
               />
             </a>
           </div>
+        </div>
+        <div className="flex flex-1 items-center justify-center">
+          <img
+            src={LayersImage}
+            alt="Dredd-Secure"
+            className="object-cover w-full max-w-[400px] -top-[12rem] opacity-50 relative drop-shadow-lightOrange z-0
+              lg:max-w-[100%] lg:top-0 lg:opacity-100
+              llg:max-w-[70%]
+            "
+          />
         </div>
       </div>
     </ContentContainer>

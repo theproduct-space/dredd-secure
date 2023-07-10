@@ -69,6 +69,10 @@ module.exports = {
           "-35px 35px 85px rgba(255, 199, 90, 0.75)",
           "35px 35px 25px rgba(255, 138, 0, 0.75)",
         ],
+        lightOrange: [
+          "-35px 35px 35px rgba(255, 199, 90, 0.15)",
+          "35px 35px 15px rgba(255, 138, 0, 0.05)",
+        ],
       },
       fontSize: {
         h1: "4rem",
@@ -106,6 +110,7 @@ module.exports = {
       sm: `${pxToRem(576)}rem`,
       md: `${pxToRem(768)}rem`,
       lg: `${pxToRem(1024)}rem`,
+      llg: `${pxToRem(1200)}rem`,
       xl: `${pxToRem(1380)}rem`,
     },
   },
