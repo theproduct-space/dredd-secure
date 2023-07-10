@@ -24,7 +24,7 @@ function PaymentSection(props: PaymentSectionProps) {
                 <div className="card-subtitle">Conditions</div>
 
                 {
-                    contract.conditions.map((condition) => {
+                    contract?.conditions?.map((condition) => {
                         return (
                             <div>
                                 <div className="condition-name">{condition.type}</div>
