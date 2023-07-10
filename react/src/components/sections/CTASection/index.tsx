@@ -6,7 +6,7 @@ import { URL_WAITLISTFORM } from "~utils/urls";
 
 const CTASection = () => {
   return (
-    <ContentContainer className="py-20 md:py-32 relative">
+    <ContentContainer className="pt-20 pb-40 md:pt-32 md:pb-52 relative">
       <div className="relative w-full flex justify-center ">
         <div className="flex flex-col z-10 items-center text-center">
           <Typography variant="h2" className="font-revalia pt-6 pb-6 md:pb-12">
