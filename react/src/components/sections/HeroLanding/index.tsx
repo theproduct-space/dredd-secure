@@ -16,7 +16,7 @@ export default function HeroLanding() {
           <img
             src={LayersImage}
             alt="Dredd-Secure"
-            className="object-cover w-full max-w-lg lg:max-w-full relative drop-shadow-[0_35px_35px_rgba(255,199,90,0.25)]
+            className="object-cover w-full max-w-[20%] lg:max-w-full relative drop-shadow-[0_35px_35px_rgba(255,199,90,0.25)]
           "
           />
         </div>
