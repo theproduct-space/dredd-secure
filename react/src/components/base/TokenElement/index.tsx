@@ -1,9 +1,9 @@
+import { Coin } from 'dredd-secure-client-ts/cosmos.bank.v1beta1/types/cosmos/base/v1beta1/coin';
 import React from 'react'
-import { IToken } from '~baseComponents/TokenSelector';
 
 export interface TokenElementProps {
     onClick?: () => void;
-    selectedToken?: IToken;
+    selectedToken?: Coin;
     baseButton?: JSX.Element;
 }
 
@@ -23,7 +23,7 @@ export function TokenElement(props: TokenElementProps) {
                         <div className="token-info" onClick={() => handleOnClick()}>
                             <div className="token-img"></div>
                             <div className="token">
-                                <div className="token-name">{selectedToken.name}</div>
+                                <div className="token-name">{selectedToken.denom}</div>
                                 <div className="token-denom">{selectedToken.denom}</div>
                             </div>
                         </div>

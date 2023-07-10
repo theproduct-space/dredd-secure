@@ -5,6 +5,7 @@ import CreateContractPage from "~views/CreateContract";
 import Dashboard from "~views/Dashboard";
 import FAQ from "~views/FAQ";
 import Landing from "~views/Home";
+import PaymentView from "~views/Payment";
 
 const home = {
   label: "Landing",
@@ -20,15 +21,20 @@ const navPages = [
 ];
 const otherPages = [
   {
-    label: "Dashboard",
-    to: "/dashboard",
-    view: <Dashboard />,
+      label: "Dashboard",
+      to: "/dashboard",
+      view: <Dashboard />
   },
   {
-    label: "CreateContract",
-    to: "/escrow/create",
-    view: <CreateContractPage />,
+      label: "CreateContract",
+      to: "/escrow/create",
+      view: <CreateContractPage />
   },
+  {
+      label: "PayEscrow",
+      to: "/escrow/pay",
+      view: <PaymentView />
+  }
 ];
 const allPages = otherPages.concat(home).concat(navPages);
 
@@ -50,6 +56,13 @@ const router = createBrowserRouter([
       // { path: "/app", element: <Dashboard /> },
     ],
   },
+//   {
+//       path: "/",
+//       element: <Layout />,
+//       children: allPages.map((page) => {
+//           return { path: page.to, element: page.view };
+//       }),
+//   },
 ]);
 
 export default router;
