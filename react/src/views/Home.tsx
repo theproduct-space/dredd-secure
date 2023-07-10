@@ -2,10 +2,10 @@
 /* eslint-disable react/no-unescaped-entities */
 import HeroLanding from "~sections/HeroLanding";
 import FAQ from "./FAQ";
-import AboutUs from "~sections/AboutUs/AboutUs";
-import AboutDredd from "~sections/AboutDredd/AboutDredd";
-import WhyCosmos from "~sections/WhyCosmos/WhyCosmos";
-import Features from "~sections/Features/Features";
+import AboutUs from "~sections/AboutUs";
+import AboutDredd from "~sections/AboutDredd";
+import WhyCosmos from "~sections/WhyCosmos";
+import Features from "~sections/Features";
 
 export default function Home() {
   return (
