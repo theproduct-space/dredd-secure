@@ -63,7 +63,12 @@ module.exports = {
         select: "40px 64px 128px -8px rgba(0, 0, 0, 0.14)",
         outline: "inset 0 0 0 1px rgba(9, 78, 253, 1)",
         std: "3px 9px 32px -4px rgb(0 0 0 / 7%)",
-        orange: "filter: drop-shadow(0 25px 25px rgb(255 199 90 / 0.15));",
+      },
+      dropShadow: {
+        orange: [
+          "-35px 35px 85px rgba(255, 199, 90, 0.75)",
+          "35px 35px 25px rgba(255, 138, 0, 0.75)",
+        ],
       },
       fontSize: {
         h1: "4rem",
