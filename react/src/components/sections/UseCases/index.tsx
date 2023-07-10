@@ -4,12 +4,14 @@ import BlockPyramidImage from "~assets/block-pyramid.png";
 
 const UseCases = () => {
   return (
-    <ContentContainer className="py-20 md:py-32 relative min-h-screen flex items-center">
+    <ContentContainer className="py-20 relative min-h-screen flex items-start md:py-44 ">
       <div className="relative w-full flex justify-end items-center">
         <img
           src={BlockPyramidImage}
           alt="Dredd-Secure"
-          className="object-cover absolute left-0 z-0 top-44 scale-150 opacity-50 md:w-[50%] md:scale-100 md:left-0 md:top-0 md:opacity-100"
+          className="object-cover absolute left-0 z-0 top-44 scale-125 max-w-[400px] opacity-50 drop-shadow-lightOrange 
+            lg:w-[60%] lg:max-w-[700px] lg:scale-100 lg:-left-20 lg:-top-20 lg:opacity-100
+            xl:-top-44 xl:left-0"
         />
         <div className="flex flex-col lg:max-w-[50%] z-10">
           <Typography variant="h2" className="font-revalia pt-6 pb-12">
