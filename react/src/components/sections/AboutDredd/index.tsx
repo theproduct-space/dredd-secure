@@ -3,24 +3,14 @@
 import { Typography } from "~baseComponents/Typography";
 import ContentContainer from "~layouts/ContentContainer";
 
-import bgImage from "~assets/3d-logoFull.png";
+import logoImage from "~assets/3d-logoNoBg.png";
 
 export default function AboutDredd() {
   return (
     <section className="bg-black">
       <ContentContainer>
         <div className="relative min-h-screen w-full overflow-y-clip flex justify-end items-center">
-          <img
-            src={bgImage}
-            alt="Dredd-Secure"
-            className="object-contain absolute opacity-70 
-              bottom-[15%] scale-[3]
-              sm:scale-[2]
-              md:scale-125 md:top-unset md:-bottom-[5%]
-              lg:bottom-[25%] lg:-left-[35%]
-              xl:opacity-100 xl:bottom-[20%]
-              z-0"
-          />
+          <img src={logoImage} alt="Dredd-Secure" className="object-cover absolute left-0 z-0 w-[35%]" />
           <div className="flex flex-col z-10 lg:max-w-[50%]">
             <Typography variant="h2" className="text-white-1000 font-revalia py-6">
               About DreddSecure

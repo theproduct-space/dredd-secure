@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import HeroLanding from "~sections/HeroLanding";
 import FAQ from "./FAQ";
 import AboutUs from "~sections/AboutUs";
@@ -18,7 +19,6 @@ export default function Home() {
       <Features />
       <Challenges />
       <UseCases />
-      {/* <AboutUs /> */}
       <FAQ />
       <CTASection />
     </div>
