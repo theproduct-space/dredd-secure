@@ -1,53 +1,28 @@
+/* eslint-disable import/no-unresolved */
 /* eslint-disable react/no-unescaped-entities */
+import { Typography } from "~baseComponents/Typography";
+import ContentContainer from "~layouts/ContentContainer";
+
 export default function AboutUs() {
   return (
-    <div className="bg-gray">
-      <div>
-        <div className="text-3xl font-bold">What is Dredd-Secure ?</div>
-        <blockquote>
-          Experience secure, automated contracts allowing parties to transact confidently. By holding assets until
-          specific conditions are met, we eliminate the risk of fraud and disputes for smoother, safer transactions.
-        </blockquote>
-      </div>
-      <div>
-        <div className="text-3xl font-bold">Why use our escrow service ?</div>
-        <ul>
-          <li>
-            <b>Trust</b>: Assets are only released when agreed conditions are met, fostering trust between parties.
-          </li>
-          <li>
-            <b>Security</b>: Built on the Cosmos SDK, our service follows the latest security best practices, keeping
-            your assets safe.
-          </li>
-          <li>
-            <b>Efficiency</b>: Our escrow service eliminates the middleman, making transactions faster and cheaper.
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div className="text-3xl font-bold">How does it works ?</div>
-        <div>
-          <div className="text-2xl font-bold">Step 1: Create the Escrow Contract</div>
-          <div>
-            Begin a secure transaction by creating an escrow contract. Input necessary parameters and transfer assets
-            into the contract. Initiations are possible as both buyer or seller.
-          </div>
-        </div>
-        <div>
-          <div className="text-2xl font-bold">Step 2: Check Conditions</div>
-          <div>
-            Our smart contract evaluates predefined conditions to ensure agreed-upon terms are met before asset
-            transfer.
-          </div>
-        </div>
-        <div>
-          <div className="text-2xl font-bold">Step 3: Release Assets</div>
-          <div>
-            Upon satisfying all conditions, assets are automatically released to the respective parties, ensuring a
-            seamless, secure process.
-          </div>
-        </div>
-      </div>
-    </div>
+    <section className="bg-gray">
+      <ContentContainer>
+        <Typography variant="h2" className="text-white-1000 font-revalia py-6">
+          About Us
+        </Typography>
+        <Typography variant="h6" as={"blockquote"} className="text-white-1000 text-p1">
+          ProductShop is a web development studio based in Montréal, Canada. We’re a team of skilled engineers and
+          professionals with expertise in payment solutions, blockchain development, and smart contract creation. We are
+          committed to delivering high-quality and customized solutions for our diverse clientele across various
+          industries. Our team consistently innovates, plans, and strategizes to create cutting-edge solutions.
+        </Typography>
+        <Typography variant="h6" as={"blockquote"} className="text-white-1000 text-p1">
+          Our recent venture, DreddSecure, is a testament to our commitment. An advanced blockchain-based escrow app for
+          the Cosmos Hub ecosystem, designed to enhance secure, reliable, and scalable blockchain transactions. At
+          ProductShop, we're not just adapting to the digital revolution, we're actively shaping it, and creating a
+          safer digital transaction landscape.
+        </Typography>
+      </ContentContainer>
+    </section>
   );
 }

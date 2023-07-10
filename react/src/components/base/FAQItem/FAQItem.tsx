@@ -18,9 +18,7 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer }) => {
 
   useEffect(() => {
     if (heightRef.current) {
-      setMaxHeight(
-        isSelected ? `${heightRef?.current?.scrollHeight}px` : "0px",
-      );
+      setMaxHeight(isSelected ? `${heightRef?.current?.scrollHeight}px` : "0px");
     }
   }, [isSelected]);
 

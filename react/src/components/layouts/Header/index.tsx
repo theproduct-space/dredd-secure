@@ -19,20 +19,16 @@ export default function Header() {
         </Link>
         {location.pathname !== "/app" ? (
           <div className="flex items-center gap-3">
-            <a target="_blank" href={URL_TWITTER}>
-              <TwitterIcon
-                width="32"
-                height="26"
-                className="hover:fill-orange"
-              />
+            <a target="_blank" href={URL_TWITTER} rel="noreferrer">
+              <TwitterIcon width="32" height="26" className="hover:fill-orange" />
             </a>
             {/* <Link to="/app"> */}
-            <Button
+            {/* <Button
               text="Lauch App"
               icon={<LockIcon />}
               disabled
               className="font-revalia rounded-full border-solid border-2"
-            />
+            /> */}
             {/* </Link> */}
           </div>
         ) : (

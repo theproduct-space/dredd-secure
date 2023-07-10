@@ -6,81 +6,49 @@ import ContentContainer from "~layouts/ContentContainer";
 
 function FAQ() {
   return (
-    <section className="bg-gray">
+    <section className="bg-black">
       <ContentContainer>
         <div className="py-20 flex flex-col md:flex-row md:justify-between gap-12">
-          <h2 className="text-4xl font-bold text-white-1000 font-revalia">
-            Frequently asked questions
-          </h2>
+          <h2 className="text-4xl font-bold text-white-1000 font-revalia">Frequently asked questions</h2>
           <div className="flex flex-col gap-4 w-full ">
             <FAQItem
-              question="What is DreddSecure?"
-              answer="Experience secure, automated contracts allowing parties to transact confidently. By holding assets until specific conditions are met, we eliminate the risk of fraud and disputes for smoother, safer transactions."
+              question="What is an Escrow Contract?"
+              answer="An Escrow Contract is a self-executing contract with the agreement terms directly written into code. It holds the assets involved in a transaction and only releases them when the specified conditions are met, eliminating the need for a trusted intermediary."
             />
             <FAQItem
               question="Why use our escrow service?"
               answer={
                 <ul className="flex flex-col gap-2">
                   <li>
-                    <b>Trust</b>: Assets are only released when agreed
-                    conditions are met, fostering trust between parties.
+                    <b>Trust</b>: Assets are only released when agreed conditions are met, fostering trust between
+                    parties.
                   </li>
                   <li>
-                    <b>Security</b>: Built on the Cosmos SDK, our service
-                    follows the latest security best practices, keeping your
-                    assets safe.
+                    <b>Security</b>: Built on the Cosmos SDK, our service follows the latest security best practices,
+                    keeping your assets safe.
                   </li>
                   <li>
-                    <b>Efficiency</b>: Our escrow service eliminates the
-                    middleman, making transactions faster and cheaper.
+                    <b>Efficiency</b>: Our escrow service eliminates the middleman, making transactions faster and
+                    cheaper.
                   </li>
                 </ul>
               }
             />
             <FAQItem
+              question="What assets are compatible with DreddSecure?"
+              answer="Any assets that can be accessed through the Cosmos Hub, including native token and wrapped tokens are compatible with DreddSecure."
+            />
+            <FAQItem
+              question="What are some use cases of DreddSecure?"
+              answer="DreddSecure can be used for peer-to-peer exchanges, token offerings, cross-chain asset swaps, decentralized marketplaces, decentralized crowdfunding, peer-to-peer lending, and decentralized insurance."
+            />
+            <FAQItem
               question="How does it work?"
-              answer={
-                <div className="flex flex-col gap-2">
-                  <div>
-                    <div className="font-bold">
-                      Step 1: Create the Escrow Contract
-                    </div>
-                    <div>
-                      Begin a secure transaction by creating an escrow contract.
-                      Input necessary parameters and transfer assets into the
-                      contract. Initiations are possible as both buyer or
-                      seller.
-                    </div>
-                  </div>
-                  <div>
-                    <div className="font-bold">Step 2: Check Conditions</div>
-                    <div>
-                      Our smart contract evaluates predefined conditions to
-                      ensure agreed-upon terms are met before asset transfer.
-                    </div>
-                  </div>
-                  <div>
-                    <div className="font-bold">Step 3: Release Assets</div>
-                    <div>
-                      Upon satisfying all conditions, assets are automatically
-                      released to the respective parties, ensuring a seamless,
-                      secure process.
-                    </div>
-                  </div>
-                </div>
-              }
+              answer="Initiate a secure transaction in DreddSecure by creating an escrow contract, input parameters and transfer assets, allow our smart contract to evaluate predefined conditions, and assets will be automatically be released to the respective parties upon satisfying all conditions, ensuring a seamless, secure process."
             />
             <FAQItem
-              question="How is the escrow service secure?"
-              answer="The escrow service, developed with the Cosmos SDK, is secure as it uses a two-party Escrow Contract to hold assets until agreed conditions are met. It adheres to the latest security practices and undergoes third-party audits to ensure asset security."
-            />
-            <FAQItem
-              question="What types of assets can I put in an escrow?"
-              answer="Any digital asset accessible through the Cosmos Hub, including native tokens & wrapped tokens can be put in escrow."
-            />
-            <FAQItem
-              question="How is Cosmos SDK beneficial for the escrow service?"
-              answer="The Cosmos SDK enhances the escrow service by providing scalability, seamless integration with the Cosmos ecosystem, robust security mechanisms, support for cross-chain transactions, and developer-friendly tools for easy development and deployment."
+              question="How can I start using DreddSecure?"
+              answer="DreddSecure is still in the development stage. Once it is implemented, users will be able to initiate transactions through the DreddSecure web interface, integrating with popular wallet solutions for easy access to the escrow app. Stay tuned for updates."
             />
           </div>
         </div>
