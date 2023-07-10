@@ -28,7 +28,7 @@ function PaymentSection(props: PaymentSectionProps) {
                         return (
                             <div>
                                 <div className="condition-name">{condition.type}</div>
-                                <div className="condition-value">{condition.value}</div>
+                                <div className="condition-value">{contract[condition.prop]}</div>
                             </div>
                         )
                     })
