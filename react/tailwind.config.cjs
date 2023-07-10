@@ -65,10 +65,8 @@ module.exports = {
         std: "3px 9px 32px -4px rgb(0 0 0 / 7%)",
       },
       dropShadow: {
-        orange: [
-          "-35px 35px 85px rgba(255, 199, 90, 0.75)",
-          "35px 35px 25px rgba(255, 138, 0, 0.75)",
-        ],
+        orange: ["-35px 35px 85px rgba(255, 199, 90, 0.75)", "35px 35px 25px rgba(255, 138, 0, 0.75)"],
+        yellow: ["-35px 35px 100px rgba(255, 199, 90, 0.25)", "35px 35px 25px rgba(255, 138, 0, 0.25)"],
       },
       fontSize: {
         h1: "4rem",
