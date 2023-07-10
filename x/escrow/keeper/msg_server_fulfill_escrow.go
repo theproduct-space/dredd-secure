@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"dredd-secure/x/escrow/constants"
 	"dredd-secure/x/escrow/types"
 
 	"cosmossdk.io/errors"
@@ -24,7 +25,7 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 		return nil, errors.Wrap(sdkerrors.ErrUnauthorized, "Initator of the escrow can not fulfill it.")
 	}
 
-	if escrow.Status != "open" {
+	if escrow.Status != constants.StatusOpen {
 		return nil, errors.Wrapf(types.ErrWrongEscrowStatus, "%v", escrow.Status)
 	}
 
@@ -47,7 +48,7 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 		}
 
 		// change the escrow status to "closed"
-		escrow.Status = "closed"
+		escrow.Status = constants.StatusClosed 
 	} else {
 		// If not all conditions are met, escrow the fulfiller assets
 		errEscrowInitiatorCoins := k.bank.SendCoinsFromAccountToModule(ctx, fulfiller, types.ModuleName, escrow.FulfillerCoins)
@@ -56,7 +57,7 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 		}
 
 		// change the escrow status to "pending"
-		escrow.Status = "pending"
+		escrow.Status = constants.StatusPending
 	}
 
 	escrow.Fulfiller = msg.Creator

@@ -1,18 +1,18 @@
 version: 1
 accounts:
-- name: alice
-  coins:
-  - 20000token
-  - 200000000stake
-- name: bob
-  coins:
-  - 10000token
-  - 100000000stake
+  - name: alice
+    coins:
+      - 20000token
+      - 200000000stake
+  - name: bob
+    coins:
+      - 30000token
+      - 300000000stake
 faucet:
   name: bob
   coins:
-  - 4000token
-  - 400000000stake
+    - 4000token
+    - 400000000stake
 client:
   typescript:
     path: ts-client
@@ -21,5 +21,5 @@ client:
   openapi:
     path: docs/static/openapi.yml
 validators:
-- name: alice
-  bonded: 100000000stake
+  - name: alice
+    bonded: 100000000stake
