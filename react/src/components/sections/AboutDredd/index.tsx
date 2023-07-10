@@ -3,7 +3,7 @@
 import { Typography } from "~baseComponents/Typography";
 import ContentContainer from "~layouts/ContentContainer";
 
-import bgImage from "~assets/bg2.png";
+import bgImage from "~assets/3d-logoFull.png";
 
 export default function AboutDredd() {
   return (
