@@ -2,6 +2,8 @@ package keeper
 
 import (
 	"context"
+
+	"dredd-secure/x/escrow/constants"
 	"dredd-secure/x/escrow/types"
 
 	"fmt"
@@ -24,7 +26,7 @@ func (k msgServer) CancelEscrow(goCtx context.Context, msg *types.MsgCancelEscro
 		return nil, errors.Wrap(sdkerrors.ErrUnauthorized, "Cannot cancel: not from the initiator")
 	}
 
-	if escrow.Status != "open" {
+	if escrow.Status != constants.StatusOpen {
 		return nil, errors.Wrapf(types.ErrWrongEscrowStatus, "%v", escrow.Status)
 	}
 
@@ -34,7 +36,7 @@ func (k msgServer) CancelEscrow(goCtx context.Context, msg *types.MsgCancelEscro
 		panic(fmt.Sprintf(types.ErrCannotReleaseInitiatorAssets.Error(), err.Error()))
 	}
 
-	escrow.Status = "cancelled"
+	escrow.Status = constants.StatusCancelled
 	k.SetEscrow(ctx, escrow)
 	return &types.MsgCancelEscrowResponse{}, nil
 }

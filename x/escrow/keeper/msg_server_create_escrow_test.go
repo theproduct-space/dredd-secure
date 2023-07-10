@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"dredd-secure/x/escrow"
+	"dredd-secure/x/escrow/constants"
 	"dredd-secure/x/escrow/keeper"
 	"dredd-secure/x/escrow/testutil"
 	"dredd-secure/x/escrow/types"
@@ -54,7 +55,7 @@ func TestCreateEscrow(t *testing.T) {
     require.True(t, found)
     require.EqualValues(t, types.Escrow{
 		Id: 0,
-		Status: "open",
+		Status: constants.StatusOpen,
 		Initiator: testutil.Bob,
 		Fulfiller: "",
 		InitiatorCoins: []sdk.Coin{{
