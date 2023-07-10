@@ -8,7 +8,7 @@ function FAQ() {
   return (
     <section className="bg-black">
       <ContentContainer>
-        <div className="py-20 flex flex-col md:flex-row md:justify-between gap-12">
+        <div className="py-20 flex flex-col lg:flex-row lg:justify-between gap-12">
           <h2 className="text-4xl font-bold text-white-1000 font-revalia">Frequently asked questions</h2>
           <div className="flex flex-col gap-4 w-full ">
             <FAQItem
