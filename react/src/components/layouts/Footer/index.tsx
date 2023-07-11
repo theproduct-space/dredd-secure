@@ -23,22 +23,27 @@ const Footer = () => {
           </Link>
 
           <div className="flex gap-3 md:gap-8 lg:gap-12 flex-col sm:flex-row">
-            <a href={URL_WAITLISTFORM} target="_blank">
+            <a href={URL_WAITLISTFORM} target="_blank" rel="noreferrer">
               <Typography variant="body-med" className="hover:text-orange">
-                Get Started
+                Join Waitlist
               </Typography>
             </a>
-            <a href={URL_WHITEPAPER} target="_blank">
+            <a href={URL_WHITEPAPER} target="_blank" rel="noreferrer">
               <Typography variant="body-med" className="hover:text-orange">
                 Whitepaper
               </Typography>
             </a>
-            <a href={URL_MEDIUM} target="_blank">
+            <a href={URL_MEDIUM} target="_blank" rel="noreferrer">
               <Typography variant="body-med" className="hover:text-orange">
                 Medium
               </Typography>
             </a>
-            <a target="_blank" href={URL_TWITTER} className="flex items-center">
+            <a
+              target="_blank"
+              href={URL_TWITTER}
+              className="flex items-center"
+              rel="noreferrer"
+            >
               <Typography variant="body-med" className="hover:text-orange">
                 Twitter
               </Typography>
@@ -52,6 +57,7 @@ const Footer = () => {
               href={URL_PRODUCTSHOP}
               target="_blank"
               className="hover:text-orange"
+              rel="noreferrer"
             >
               ProductShop
             </a>
