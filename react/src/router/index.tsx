@@ -60,7 +60,7 @@ const router = createBrowserRouter([
         path: "/",
         element: <Layout />,
         children: allPages.map((page) => {
-            return { path: page.t, element: page.view };
+            return { path: page.to, element: page.view };
         }),
     },
 ]);
