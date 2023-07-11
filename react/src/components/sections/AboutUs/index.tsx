@@ -6,14 +6,10 @@ const AboutUs = () => {
   return (
     <section className="bg-gray">
       <ContentContainer>
-        <Typography variant="h2" className="text-white-1000 font-revalia py-6">
+        <Typography variant="h2" className="font-revalia py-6">
           About Us
         </Typography>
-        <Typography
-          variant="h6"
-          as={"blockquote"}
-          className="text-white-1000 text-p1"
-        >
+        <Typography variant="h6" as={"blockquote"} className="text-p1">
           ProductShop is a web development studio based in Montréal, Canada.
           We’re a team of skilled engineers and professionals with expertise in
           payment solutions, blockchain development, and smart contract
@@ -22,11 +18,7 @@ const AboutUs = () => {
           team consistently innovates, plans, and strategizes to create
           cutting-edge solutions.
         </Typography>
-        <Typography
-          variant="h6"
-          as={"blockquote"}
-          className="text-white-1000 text-p1"
-        >
+        <Typography variant="h6" as={"blockquote"} className="text-p1">
           Our recent venture, DreddSecure, is a testament to our commitment. An
           advanced blockchain-based escrow app for the Cosmos Hub ecosystem,
           designed to enhance secure, reliable, and scalable blockchain
