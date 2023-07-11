@@ -19,7 +19,7 @@ const CTASection = () => {
           </Typography>
           <a href={URL_WAITLISTFORM} target="_blank">
             <Button
-              text="Get Started"
+              text="Join Waitlist"
               className="font-revalia rounded-full border-solid border"
             />
           </a>
