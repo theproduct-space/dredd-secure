@@ -26,14 +26,14 @@ export default function HeroLanding() {
           <div className="flex gap-3">
             <a href={URL_WAITLISTFORM} target="_blank" rel="noreferrer">
               <Button
-                text="get started"
+                text="Join Waitlist"
+                secondary
                 className="font-revalia rounded-full border-solid border"
               />
             </a>
             <a href={URL_MEDIUM} target="_blank" rel="noreferrer">
               <Button
-                text="Join Waitlist"
-                secondary
+                text="Learn More"
                 className="font-revalia rounded-full border-solid border"
               />
             </a>
