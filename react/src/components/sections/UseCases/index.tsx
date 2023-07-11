@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import { Typography } from "~baseComponents/Typography";
 import ContentContainer from "~layouts/ContentContainer";
-import BlockPyramidImage from "~assets/block-pyramid.webp";
+import BlockPyramidImage from "~assets/random-cubes.webp";
 
 const UseCases = () => {
   return (

@@ -3,7 +3,7 @@
 import { Typography } from "~baseComponents/Typography";
 import ContentContainer from "~layouts/ContentContainer";
 
-import CubesImage from "~assets/random-cubes.webp";
+import CubesImage from "~assets/block-pyramid.webp";
 
 export default function WhyCosmos() {
   return (
@@ -27,7 +27,7 @@ export default function WhyCosmos() {
         <img
           src={CubesImage}
           alt="Dredd-Secure"
-          className="object-cover absolute right-0 z-0 drop-shadow-orange opacity-40 mt-[400px] md:max-w-[75%] lg:mt-0 lg:opacity-100 lg:w-[42%] lg:mt-0"
+          className="object-cover absolute right-0 z-0 drop-shadow-lightOrange opacity-40 mt-[400px] md:max-w-[75%] lg:mt-0 lg:opacity-100 lg:w-[42%] lg:mt-0"
           loading="lazy"
         />
       </div>
