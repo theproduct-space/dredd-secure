@@ -21,5 +21,7 @@ const DenomContext = createContext(context);
 export const useDenomContext = () => useContext(DenomContext);
 
 export default function DenomProvider({ children }: Props) {
-  return <DenomContext.Provider value={context}>{children}</DenomContext.Provider>;
+  return (
+    <DenomContext.Provider value={context}>{children}</DenomContext.Provider>
+  );
 }

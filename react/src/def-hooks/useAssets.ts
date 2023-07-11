@@ -11,7 +11,9 @@ export const useAssets = (perPage: number) => {
     return address != "";
   }, [address]);
   const query = QueryAllBalances(address, {}, { enabled }, perPage);
-  type HelperBalances = NonNullable<NonNullable<Required<typeof query.data>>["pages"][0]["balances"]>;
+  type HelperBalances = NonNullable<
+    NonNullable<Required<typeof query.data>>["pages"][0]["balances"]
+  >;
 
   const balancesRaw = query.data?.pages.reduce((bals, page) => {
     if (page.balances) {

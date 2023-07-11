@@ -1,10 +1,11 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable react/no-unescaped-entities */
-import { Typography } from "~baseComponents/Typography";
+// Custom Imports
+import Typography from "~baseComponents/Typography";
 import ContentContainer from "~layouts/ContentContainer";
+
+// Assets Imports
 import logoImage from "~assets/3d-logoNoBg.webp";
 
-export default function AboutDredd() {
+const AboutDredd = () => {
   return (
     <ContentContainer className="-mt-20 relative min-h-screen flex items-start lg:-mt-8 lg:items-center">
       <div className="relative w-full flex justify-end items-center">
@@ -37,4 +38,6 @@ export default function AboutDredd() {
       </div>
     </ContentContainer>
   );
-}
+};
+
+export default AboutDredd;

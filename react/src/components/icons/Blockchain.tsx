@@ -1,6 +1,13 @@
 export default function BlockChain(props: any): JSX.Element {
   return (
-    <svg width="62" height="60" viewBox="0 0 62 60" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+      width="62"
+      height="60"
+      viewBox="0 0 62 60"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
       <g id="a" clipPath="url(#clip0_482_235)">
         <g id="Group">
           <path
@@ -83,7 +90,12 @@ export default function BlockChain(props: any): JSX.Element {
       </g>
       <defs>
         <clipPath id="clip0_482_235">
-          <rect width="62" height="59" fill="white" transform="translate(0 0.5)" />
+          <rect
+            width="62"
+            height="59"
+            fill="white"
+            transform="translate(0 0.5)"
+          />
         </clipPath>
       </defs>
     </svg>

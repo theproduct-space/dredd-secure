@@ -1,6 +1,8 @@
-/* eslint-disable import/no-unresolved */
-import { Typography } from "~baseComponents/Typography";
+// Custom Imports
+import Typography from "~baseComponents/Typography";
 import ContentContainer from "~layouts/ContentContainer";
+
+// Assets Imports
 import BlockPyramidImage from "~assets/block-pyramid.webp";
 
 const UseCases = () => {

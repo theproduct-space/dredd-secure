@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function GradientDiv() {
+const GradientDiv = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   // Mouse move event handler
@@ -19,4 +19,6 @@ export default function GradientDiv() {
       onMouseMove={handleMouseMove}
     />
   );
-}
+};
+
+export default GradientDiv;

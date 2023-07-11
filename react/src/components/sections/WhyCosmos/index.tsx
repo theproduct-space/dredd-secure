@@ -1,11 +1,11 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable import/no-unresolved */
-import { Typography } from "~baseComponents/Typography";
+// Custom Imports
+import Typography from "~baseComponents/Typography";
 import ContentContainer from "~layouts/ContentContainer";
 
+// Assets Imports
 import CubesImage from "~assets/random-cubes.webp";
 
-export default function WhyCosmos() {
+const WhyCosmos = () => {
   return (
     <ContentContainer className="-mt-16 md:mt-0">
       <div className="relative min-h-screen w-full overflow-y-clip flex justify-start items-center pb-[20rem] sm:pb-[35rem] md:pb-[24rem] lg:pb-[4rem]">
@@ -33,4 +33,6 @@ export default function WhyCosmos() {
       </div>
     </ContentContainer>
   );
-}
+};
+
+export default WhyCosmos;

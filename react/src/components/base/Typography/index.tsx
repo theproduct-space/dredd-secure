@@ -45,7 +45,7 @@ const sizes: Record<Variant, string> = {
   small: "text-xxs sm:text-xs",
 };
 
-export const Typography = ({ variant, children, className, as }: Props) => {
+const Typography = ({ variant, children, className, as }: Props) => {
   const sizeClasses = sizes[variant];
   const Tag = as || tags[variant];
 
@@ -55,3 +55,5 @@ export const Typography = ({ variant, children, className, as }: Props) => {
     </Tag>
   );
 };
+
+export default Typography;

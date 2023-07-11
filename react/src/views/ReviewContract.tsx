@@ -1,34 +1,38 @@
-import { queryClient } from 'dredd-secure-client-ts/dreddsecure.escrow';
-import { EscrowEscrow } from 'dredd-secure-client-ts/dreddsecure.escrow/rest';
-import React, { useEffect, useState } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
-import { IContract } from '~sections/CreateContract/CreateContract';
-import ReviewContractSection from '~sections/ReviewContract';
+// React Imports
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-function ReviewContract() {
-    const { id } = useParams<{ id: string }>();
-    const [contract, setContract] = useState<EscrowEscrow>();
+// Redredd-secure-client-tsact Imports
+import { queryClient } from "dredd-secure-client-ts/dreddsecure.escrow";
+import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
 
-    useEffect(() => {
-        const fetchEscrow = async () => {
-            try {
-                const response = await queryClient().queryEscrow(id ?? "");
-                setContract(response.data.Escrow)
-            } catch (error) {
-                console.error(error);
-            }
-        };
+// Custom Imports
+import ReviewContractSection from "~sections/ReviewContractSection";
 
-        fetchEscrow();
-    });
+const ReviewContract = () => {
+  const { id } = useParams<{ id: string }>();
+  const [contract, setContract] = useState<EscrowEscrow>();
 
-    return (
-        <div>
-            <div className="messages">Success message here</div>
-            <div className="title">Review escrow Contract #{contract?.id}</div>
-            <ReviewContractSection contract={contract} />
-        </div>
-    )
-}
+  useEffect(() => {
+    const fetchEscrow = async () => {
+      try {
+        const response = await queryClient().queryEscrow(id ?? "");
+        setContract(response.data.Escrow);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-export default ReviewContract
+    fetchEscrow();
+  });
+
+  return (
+    <div>
+      <div className="messages">Success message here</div>
+      <div className="title">Review escrow Contract #{contract?.id}</div>
+      <ReviewContractSection contract={contract} />
+    </div>
+  );
+};
+
+export default ReviewContract;
