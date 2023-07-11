@@ -1,4 +1,8 @@
-import React from 'react';
+import { txClient } from 'dredd-secure-client-ts/dreddsecure.escrow';
+import { OfflineAminoSigner } from "dredd-secure-client-ts/node_modules/@cosmjs/amino";
+import { OfflineDirectSigner } from "dredd-secure-client-ts/node_modules/@cosmjs/proto-signing";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './TableView.css';
 
 export interface TableHeader {
@@ -7,26 +11,64 @@ export interface TableHeader {
 }
 
 export interface TableData {
-    [key: string]: any;
+    id: number;
+    deadline: string;
+    status: string;
+    assetsInvolved: string;
+    initiator: string;
 }
 
 export interface TableViewProps {
     headers: TableHeader[];
     data: TableData[];
-    sortingFunction: (param: string, orderAsc: boolean) => void;
+    wallet: {
+        address: string;
+        offlineSigner: OfflineAminoSigner & OfflineDirectSigner | undefined;
+    }
+    filterOptions: {
+        prop: string;
+        value: string | undefined;
+    }[];
 }
 
 export default function TableView(props: TableViewProps) {
-    const { headers, data, sortingFunction } = props;
+    const navigate = useNavigate();
+    const { data, headers, filterOptions, wallet } = props;
 
-    let sortedBy = {
-        param: headers[0].dataProp,
-        orderedAsc: false
-    }
+    const [sortKey, setSortKey] = useState(headers[0].dataProp);
+    const [sortAscending, setSortAscending] = useState(false);
+
+    const messageClient = txClient({ signer: wallet.offlineSigner, prefix: "cosmos", addr: "http://localhost:26657" });
 
     const handleSortingChange = (param: string) => {
-        // TODO: Handle sorting function call here.
-        console.log("Change sorting to '%s'", param);
+        if (sortKey == param) {
+            setSortAscending(!sortAscending);
+        }
+        else {
+            setSortKey(param);
+            setSortAscending(false);
+        }
+    }
+
+    const sortedData = [...data].sort((a, b) => {
+        const valueA = a[sortKey];
+        const valueB = b[sortKey];
+
+        if (valueA < valueB) return sortAscending ? -1 : 1;
+        if (valueA > valueB) return sortAscending ? 1 : -1;
+        return 0;
+    });
+
+    const handleCancelEscrow = (id: number) => {
+        // Creator here is for testing only. 
+        // With a wallet connector, we will put the offline signer into the txClient above.
+        console.log(id);
+        messageClient.sendMsgCancelEscrow({ value: { creator: wallet.address, id: id } })
+        console.log("clicked");
+    }
+
+    const handleOnClickRow = (id: number) => {
+        navigate(`/escrow/${id}`);
     }
 
     return (
@@ -36,14 +78,14 @@ export default function TableView(props: TableViewProps) {
                     {
                         headers.map((header) => {
                             return (
-                                <div className="table-cell header-cell" onClick={() => handleSortingChange(header.dataProp)}>
+                                <div key={"header-" + header.label} className="table-cell header-cell" onClick={() => handleSortingChange(header.dataProp)}>
                                     {header.label}
                                     {
                                         /* TODO (Design): Replace A & D by an actual icon */
-                                        sortedBy.param === header.dataProp && sortedBy.orderedAsc ?
+                                        sortKey === header.dataProp && sortAscending ?
                                             <span className="icon-ascending"><b>A</b></span>
                                             :
-                                            sortedBy.param === header.dataProp && !sortedBy.orderedAsc ?
+                                            sortKey === header.dataProp && !sortAscending ?
                                                 <span className="icon-descending"><b>D</b></span>
                                                 :
                                                 null
@@ -54,15 +96,27 @@ export default function TableView(props: TableViewProps) {
                     }
                 </div>
                 {
-                    data.map((element) => {
+                    sortedData.map((element, index) => {
+                        for (const filter of filterOptions) {
+                            if (filter.value != "" && element[filter.prop] != filter.value) return;
+                        }
+
                         return (
-                            <div className="table-row">
+                            <React.Fragment key={`data-${index}`}>
+                                <div className="table-row" onClick={() => handleOnClickRow(element.id)} >
+                                    {
+                                        headers.map((header) => {
+                                            return <div key={`data-${index}-${header.dataProp}`} className="table-cell">{element[header.dataProp]}</div>
+                                        })
+                                    }
+                                </div>
                                 {
-                                    headers.map((header) => {
-                                        return <div className="table-cell">{element[header.dataProp]}</div>
-                                    })
+                                    element.initiator === wallet.address &&
+                                    <span key={`initiator-${index}`} className="table-cell">
+                                        <button onClick={() => handleCancelEscrow(element.id)}>Cancel</button>
+                                    </span>
                                 }
-                            </div>
+                            </React.Fragment>
                         )
                     })}
             </div>

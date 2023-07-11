@@ -16,7 +16,7 @@ function PaymentSection(props: PaymentSectionProps) {
     const displayTipsSelection = () => {
         return (<TokenSelector selectedToken={selectedTokenTips} onSave={setSelectedTokenTips} />)
     }
-    console.log(contract)
+    
     return (
         <div>
             <div className="Title">Review and Confirm Exchange</div>
@@ -28,7 +28,7 @@ function PaymentSection(props: PaymentSectionProps) {
                         return (
                             <div>
                                 <div className="condition-name">{condition.type}</div>
-                                <div className="condition-value">{condition.value}</div>
+                                <div className="condition-value">{contract[condition.prop]}</div>
                             </div>
                         )
                     })
