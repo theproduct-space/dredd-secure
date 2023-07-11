@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { Typography } from "~baseComponents/Typography";
 import ContentContainer from "~layouts/ContentContainer";
-import logoImage from "~assets/3d-logoNoBg.png";
+import logoImage from "~assets/3d-logoNoBg.webp";
 
 export default function AboutDredd() {
   return (

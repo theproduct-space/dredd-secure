@@ -1,6 +1,7 @@
+/* eslint-disable import/no-unresolved */
 import { Typography } from "~baseComponents/Typography";
 import ContentContainer from "~layouts/ContentContainer";
-import LayersImage from "~assets/layers.png";
+import LayersImage from "~assets/layers.webp";
 
 const Challenges = () => {
   return (

@@ -1,5 +1,5 @@
 /* eslint-disable import/no-unresolved */
-import LayersImage from "~assets/layers-and-logo.png";
+import LayersImage from "~assets/layers-and-logo.webp";
 import Button from "~baseComponents/Button";
 import ContentContainer from "~layouts/ContentContainer";
 import { Typography } from "~baseComponents/Typography";
