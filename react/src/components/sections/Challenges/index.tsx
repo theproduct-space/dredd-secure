@@ -7,7 +7,7 @@ import LayersImage from "~assets/layers.webp";
 
 const Challenges = () => {
   return (
-    <ContentContainer className="py-20 pb-32 relative min-h-screen flex items-center md:py-72">
+    <ContentContainer className="py-20 pb-32 relative min-h-[750px] h-screen flex items-center md:py-72">
       <div className="relative w-full flex justify-start items-center">
         <div className="flex flex-col lg:max-w-[50%] z-10">
           <Typography variant="h2" className="font-revalia pt-6 pb-12">
