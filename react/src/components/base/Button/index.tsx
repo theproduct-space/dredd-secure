@@ -27,7 +27,7 @@ const Button: React.FC<ButtonProps> = ({
       } 
         ${disabled && "opacity-50 pointer-events-none"} 
         transition duration-300 ease-in-out hover:-translate-y-0.5 active:-translate-y-0.5
-        text-white-1000 py-2 px-3 rounded uppercase flex gap-3 items-center sm:py-3 sm:px-6${className}`}
+        text-white-1000 py-3 px-5 rounded uppercase flex gap-3 items-center sm:py-3 sm:px-6 ${className}`}
       onClick={onClick}
     >
       {icon}

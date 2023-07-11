@@ -1,64 +1,53 @@
 /* eslint-disable import/no-unresolved */
-/* eslint-disable react/no-unescaped-entities */
-import { Link } from "react-router-dom";
-import bgImage from "~assets/bg3.png";
+import LayersImage from "~assets/layers-and-logo.png";
 import Button from "~baseComponents/Button";
-import LockIcon from "~icons/LockIcon";
 import ContentContainer from "~layouts/ContentContainer";
 import { Typography } from "~baseComponents/Typography";
+import { URL_MEDIUM, URL_WAITLISTFORM } from "~utils/urls";
 
 export default function HeroLanding() {
   return (
     <ContentContainer>
-      <div className="relative h-screen w-full overflow-y-clip">
-        <img
-          src={bgImage}
-          alt="Dredd-Secure"
-          className="object-contain absolute opacity-70 
-          bottom-0 scale-[3]
-          sm:scale-[2]
-          md:-right-[200px] md:scale-125 md:top-unset
-          xl:opacity-100"
-        />
-        <div className="absolute top-0 left-0 w-full h-full flex flex-col py-40 lg:justify-center items-start">
-          <div className="">
-            <div className="max-w-2xl py-6">
-              <Typography
-                variant="h1"
-                className="text-white-1000 font-revalia py-6"
-              >
-                DreddSecure
-              </Typography>
-              <Typography
-                variant="body"
-                className="text-white-1000 text-p1"
-                as={"blockquote"}
-              >
-                Discover our innovative escrow service designed for the Cosmos
-                Hub ecosystem. Using the powerful Cosmos SDK, we bring enhanced
-                security and efficiency to transactions within the ecosystem.
-              </Typography>
-            </div>
-            <div className="flex gap-3">
-              {/* <Link to="/app"> */}
-              <Button
-                text="lauch app"
-                icon={<LockIcon />}
-                disabled
-                className="font-revalia rounded-full border-solid border"
-              />
-              {/* </Link> */}
-              {/* <Link to="/app"> */}
-              <Button
-                text="join waitlist"
-                icon={<LockIcon />}
-                secondary
-                disabled
-                className="font-revalia rounded-full border-solid border"
-              />
-              {/* </Link> */}
-            </div>
+      <div className="relative min-h-screen w-full flex flex-col overflow-y-clip pt-32 lg:flex-row lg:pb-[8rem] ">
+        <div className="flex-1 relative -top-12 left-0 w-full flex flex-col lg:justify-center items-start z-10">
+          <div className="max-w-2xl py-6">
+            <Typography variant="h1" className="font-revalia pt-6 md:pb-3">
+              DreddSecure
+            </Typography>
+            <Typography variant="h4" className="text-orange py-6 font-semibold">
+              Secure Escrow Services for the Cosmos Ecosystem
+            </Typography>
+            <Typography variant="body" className="pb-3" as={"blockquote"}>
+              Mitigating fraud and disputes by securely holding assets until
+              pre-determined conditions are met. Facilitating smooth, safe, and
+              confident transactions within the Cosmos Hub ecosystem.
+            </Typography>
           </div>
+          <div className="flex gap-3">
+            <a href={URL_WAITLISTFORM} target="_blank" rel="noreferrer">
+              <Button
+                text="get started"
+                className="font-revalia rounded-full border-solid border"
+              />
+            </a>
+            <a href={URL_MEDIUM} target="_blank" rel="noreferrer">
+              <Button
+                text="learn more"
+                secondary
+                className="font-revalia rounded-full border-solid border"
+              />
+            </a>
+          </div>
+        </div>
+        <div className="flex flex-1 items-center justify-center">
+          <img
+            src={LayersImage}
+            alt="Dredd-Secure"
+            className="object-cover w-full max-w-[400px] left-20 -top-[20rem] opacity-50 relative drop-shadow-lightOrange z-0
+              lg:max-w-[100%] lg:top-0 lg:opacity-100 lg:left-0
+              llg:max-w-[70%]
+            "
+          />
         </div>
       </div>
     </ContentContainer>
