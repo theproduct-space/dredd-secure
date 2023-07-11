@@ -16,6 +16,7 @@ export default function AboutDredd() {
             md:left-1/2 md:-translate-x-1/4
             lg:w-[60%] lg:max-w-[500px] lg:scale-100 lg:left-4 lg:top-4 lg:opacity-100 lg:translate-x-0
             xl:-top-20 xl:left-0 xl:max-w-[600px]"
+          loading="lazy"
         />
         <div className="flex flex-col lg:max-w-[50%] z-10">
           <Typography variant="h2" className="font-revalia pt-6 pb-12">
