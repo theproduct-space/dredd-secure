@@ -1,6 +1,13 @@
 export default function DigitalAsset(props: any): JSX.Element {
   return (
-    <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+      width="52"
+      height="52"
+      viewBox="0 0 52 52"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
       <g id="a" clipPath="url(#clip0_482_272)">
         <g id="Group">
           <path
@@ -11,12 +18,36 @@ export default function DigitalAsset(props: any): JSX.Element {
             strokeMiterlimit="10"
           />
           <g id="Group_2">
-            <path id="Vector_2" d="M24.4297 12.4199V15.9999" stroke="#FF8A00" strokeWidth="2" strokeMiterlimit="10" />
-            <path id="Vector_3" d="M27.5693 12.4199V15.9999" stroke="#FF8A00" strokeWidth="2" strokeMiterlimit="10" />
+            <path
+              id="Vector_2"
+              d="M24.4297 12.4199V15.9999"
+              stroke="#FF8A00"
+              strokeWidth="2"
+              strokeMiterlimit="10"
+            />
+            <path
+              id="Vector_3"
+              d="M27.5693 12.4199V15.9999"
+              stroke="#FF8A00"
+              strokeWidth="2"
+              strokeMiterlimit="10"
+            />
           </g>
           <g id="Group_3">
-            <path id="Vector_4" d="M24.4297 36V39.58" stroke="#FF8A00" strokeWidth="2" strokeMiterlimit="10" />
-            <path id="Vector_5" d="M27.5693 36V39.58" stroke="#FF8A00" strokeWidth="2" strokeMiterlimit="10" />
+            <path
+              id="Vector_4"
+              d="M24.4297 36V39.58"
+              stroke="#FF8A00"
+              strokeWidth="2"
+              strokeMiterlimit="10"
+            />
+            <path
+              id="Vector_5"
+              d="M27.5693 36V39.58"
+              stroke="#FF8A00"
+              strokeWidth="2"
+              strokeMiterlimit="10"
+            />
           </g>
         </g>
         <path

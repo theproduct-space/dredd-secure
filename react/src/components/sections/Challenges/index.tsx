@@ -1,11 +1,13 @@
-/* eslint-disable import/no-unresolved */
-import { Typography } from "~baseComponents/Typography";
+// Custom Imports
+import Typography from "~baseComponents/Typography";
 import ContentContainer from "~layouts/ContentContainer";
+
+// Assets Imports
 import LayersImage from "~assets/layers.webp";
 
 const Challenges = () => {
   return (
-    <ContentContainer className="py-20 pb-32 relative min-h-screen flex items-center md:py-72">
+    <ContentContainer className="py-20 pb-32 relative min-h-[750px] h-screen flex items-center md:py-72">
       <div className="relative w-full flex justify-start items-center">
         <div className="flex flex-col lg:max-w-[50%] z-10">
           <Typography variant="h2" className="font-revalia pt-6 pb-12">
@@ -26,7 +28,7 @@ const Challenges = () => {
         <img
           src={LayersImage}
           alt="Dredd-Secure"
-          className="object-cover drop-shadow-lightOrange absolute z-0 -right-10 top-[7rem] opacity-50 max-w-[500px] w-full
+          className="object-cover drop-shadow-lightOrange absolute z-0 -right-10 top-[7rem] opacity-30 max-w-[500px] w-full
           lg:w-[50%] lg:right-0 lg:top-auto lg:bottom-auto lg:opacity-100 lg:max-w-full"
           loading="lazy"
         />

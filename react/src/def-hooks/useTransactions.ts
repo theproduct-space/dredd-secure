@@ -10,7 +10,9 @@ export const useTransactions = () => {
   const RECEIVED_EVENT = `transfer.recipient='${address}'`;
   const sentQuery = ServiceGetTxsEvent({ events: SENT_EVENT }, {}, 100);
   const receivedQuery = ServiceGetTxsEvent({ events: RECEIVED_EVENT }, {}, 100);
-  type HelperTxs = NonNullable<NonNullable<Required<typeof sentQuery.data>>["pages"][0]["tx_responses"]>;
+  type HelperTxs = NonNullable<
+    NonNullable<Required<typeof sentQuery.data>>["pages"][0]["tx_responses"]
+  >;
   const allSent =
     sentQuery.data?.pages.reduce((txs, page) => {
       if (page.tx_responses) {
@@ -45,7 +47,8 @@ export const useTransactions = () => {
     return txs?.filter((x) =>
       ((x.tx as any)?.body.messages as any[]).some(
         (x) =>
-          x["@type"] == "/cosmos.bank.v1beta1.MsgSend" || x["@type"] == "/ibc.applications.transfer.v1.MsgTransfer",
+          x["@type"] == "/cosmos.bank.v1beta1.MsgSend" ||
+          x["@type"] == "/ibc.applications.transfer.v1.MsgTransfer",
       ),
     );
   }, [txs]);

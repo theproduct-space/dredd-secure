@@ -1,10 +1,7 @@
-import React from 'react'
-import FailureSection, { FailureSectionProps } from '~sections/Status/Failure'
+import FailureSection, { FailureSectionProps } from "~sections/FailureSection";
 
-function Failure(props: FailureSectionProps) {
-    return (
-        <FailureSection {...props} />
-    )
-}
+const Failure = (props: FailureSectionProps) => {
+  return <FailureSection {...props} />;
+};
 
-export default Failure
+export default Failure;

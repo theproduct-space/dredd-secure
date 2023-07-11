@@ -1,14 +1,15 @@
-/* eslint-disable import/no-unresolved */
-import React from "react";
+// React imports
 import { Link, useLocation } from "react-router-dom";
+
+// Custom Imports
 import Account from "~sections/Account";
-import DreddLogo from "../../../assets/Dredd-logo.png";
-import Button from "~baseComponents/Button";
-import TwitterIcon from "~icons/TwitterIcon";
-import LockIcon from "~icons/LockIcon";
 import { URL_TWITTER } from "~utils/urls";
 
-export default function Header() {
+// Assets Imports
+import DreddLogo from "~assets/Dredd-logo.png";
+import TwitterIcon from "~icons/TwitterIcon";
+
+const Header = () => {
   const location = useLocation();
 
   return (
@@ -20,7 +21,11 @@ export default function Header() {
         {location.pathname !== "/app" ? (
           <div className="flex items-center gap-3">
             <a target="_blank" href={URL_TWITTER} rel="noreferrer">
-              <TwitterIcon width="32" height="26" className="hover:fill-orange" />
+              <TwitterIcon
+                width="32"
+                height="26"
+                className="hover:fill-orange"
+              />
             </a>
             {/* <Link to="/app"> */}
             {/* <Button
@@ -39,4 +44,6 @@ export default function Header() {
       </div>
     </header>
   );
-}
+};
+
+export default Header;
