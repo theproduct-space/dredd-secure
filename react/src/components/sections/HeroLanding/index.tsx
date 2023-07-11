@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import LayersImage from "~assets/layers-and-logo.png";
 import Button from "~baseComponents/Button";
 import ContentContainer from "~layouts/ContentContainer";
@@ -23,13 +24,13 @@ export default function HeroLanding() {
             </Typography>
           </div>
           <div className="flex gap-3">
-            <a href={URL_WAITLISTFORM} target="_blank">
+            <a href={URL_WAITLISTFORM} target="_blank" rel="noreferrer">
               <Button
                 text="get started"
                 className="font-revalia rounded-full border-solid border"
               />
             </a>
-            <a href={URL_MEDIUM} target="_blank">
+            <a href={URL_MEDIUM} target="_blank" rel="noreferrer">
               <Button
                 text="learn more"
                 secondary
@@ -46,7 +47,6 @@ export default function HeroLanding() {
               lg:max-w-[100%] lg:top-0 lg:opacity-100 lg:left-0
               llg:max-w-[70%]
             "
-            loading="lazy"
           />
         </div>
       </div>
