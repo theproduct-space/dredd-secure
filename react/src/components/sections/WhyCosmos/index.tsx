@@ -1,5 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable react/no-unescaped-entities */
 import { Typography } from "~baseComponents/Typography";
 import ContentContainer from "~layouts/ContentContainer";
 
@@ -7,8 +5,8 @@ import CubesImage from "~assets/random-cubes.png";
 
 export default function WhyCosmos() {
   return (
-    <ContentContainer className="mt-20">
-      <div className="relative min-h-screen w-full overflow-y-clip flex justify-start items-center pb-[20rem] sm:pb-[22rem] md:pb-[32rem] lg:pt-[4rem] lg:pb-[8rem]">
+    <ContentContainer className="-mt-16 md:mt-0">
+      <div className="relative min-h-screen w-full overflow-y-clip flex justify-start items-center pb-[20rem] sm:pb-[35rem] md:pb-[24rem] lg:pb-[4rem]">
         <div className="flex flex-col lg:max-w-[50%] z-10">
           <Typography variant="h2" className="font-revalia py-6">
             Why Cosmos?
@@ -27,7 +25,7 @@ export default function WhyCosmos() {
         <img
           src={CubesImage}
           alt="Dredd-Secure"
-          className="object-cover absolute right-0 z-0 drop-shadow-orange opacity-40 mt-[400px] lg:mt-0 lg:opacity-100 lg:w-[42%] lg:mt-0"
+          className="object-cover absolute right-0 z-0 drop-shadow-orange opacity-40 mt-[400px] md:max-w-[75%] lg:mt-0 lg:opacity-100 lg:w-[42%] lg:mt-0"
           loading="lazy"
         />
       </div>

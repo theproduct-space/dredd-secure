@@ -20,7 +20,8 @@ const featuresData: Feature[] = [
   {
     icon: <CosmosSDK />,
     title: "Cosmos SDK Module",
-    description: "Seamless integration with the Cosmos Hub and other chains in the Cosmos ecosystem.",
+    description:
+      "Seamless integration with the Cosmos Hub and other chains in the Cosmos ecosystem.",
   },
   {
     icon: <Transaction />,
@@ -56,21 +57,22 @@ const featuresData: Feature[] = [
 
 export default function Features() {
   return (
-    <section className="bg-black">
-      <ContentContainer>
-        <div className="relative min-h-screen w-full overflow-y-clip flex justify-center items-center">
-          <div className="flex flex-col">
-            <Typography variant="h2" className="py-16 text-white-1000 font-revalia md:py-32">
-              Key Features of DreddSecure
-            </Typography>
-            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 grid-rows-3 lg:grid-cols-3 grid-rows-2">
-              {featuresData.map((feature, index) => (
-                <FeatureCard key={index} {...feature} />
-              ))}
-            </div>
+    <ContentContainer className="md:py-16 xl:pb-28">
+      <div className="relative min-h-screen w-full overflow-y-clip flex justify-center items-center">
+        <div className="flex flex-col">
+          <Typography
+            variant="h2"
+            className="py-16 text-white-1000 font-revalia md:py-32"
+          >
+            Key Features of DreddSecure
+          </Typography>
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2 grid-rows-3 lg:grid-cols-3 grid-rows-2">
+            {featuresData.map((feature, index) => (
+              <FeatureCard key={index} {...feature} />
+            ))}
           </div>
         </div>
-      </ContentContainer>
-    </section>
+      </div>
+    </ContentContainer>
   );
 }

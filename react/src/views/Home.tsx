@@ -1,7 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import HeroLanding from "~sections/HeroLanding";
 import FAQ from "./FAQ";
-import AboutUs from "~sections/AboutUs";
 import AboutDredd from "~sections/AboutDredd";
 import WhyCosmos from "~sections/WhyCosmos";
 import Features from "~sections/Features";
