@@ -59,14 +59,9 @@ const router = createBrowserRouter([
     {
         path: "/",
         element: <Layout />,
-        children: 
-        [
-            {path: "/", element: <Landing />},
-            {path: "/dashboard", element: <Dashboard />}
-        ]/*
-        allPages.map((page) => {
+        children: allPages.map((page) => {
             return { path: page.to, element: page.view };
-        }),*/
+        }),
     },
 ]);
 
