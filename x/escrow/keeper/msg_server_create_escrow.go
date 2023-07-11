@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 
+	"dredd-secure/x/escrow/constants"
 	"dredd-secure/x/escrow/types"
 
 	"cosmossdk.io/errors"
@@ -14,7 +15,7 @@ func (k msgServer) CreateEscrow(goCtx context.Context, msg *types.MsgCreateEscro
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	var escrow = types.Escrow{
-		Status: "open",
+		Status: constants.StatusOpen,
 		Initiator: msg.Creator,
 		Fulfiller: "",
 		InitiatorCoins: msg.InitiatorCoins,

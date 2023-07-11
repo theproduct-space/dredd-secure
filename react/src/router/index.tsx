@@ -7,6 +7,7 @@ import FAQ from "~views/FAQ";
 import Landing from "~views/Home";
 import PaymentView from "~views/Payment";
 import ReviewContract from "~views/ReviewContract";
+import Footer from "~layouts/Footer";
 
 const home = {
     label: "Landing",
@@ -49,6 +50,7 @@ const Layout = () => {
         <div className="relative overflow-hidden">
             <Header />
             <Outlet />
+            <Footer />
         </div>
     );
 };
