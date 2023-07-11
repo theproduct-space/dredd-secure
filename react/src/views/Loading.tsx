@@ -1,4 +1,4 @@
-function Loading() {
+const Loading = () => {
   return (
     <div className="card">
       <div className="loading-animation"></div>
@@ -6,6 +6,6 @@ function Loading() {
       <div className="card-body">We are check for the necessary asset(s)</div>
     </div>
   );
-}
+};
 
 export default Loading;

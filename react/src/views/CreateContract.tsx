@@ -1,7 +1,7 @@
 import CreateContract from "~sections/CreateContract";
 
-function CreateContractPage() {
+const CreateContractPage = () => {
   return <CreateContract />;
-}
+};
 
 export default CreateContractPage;

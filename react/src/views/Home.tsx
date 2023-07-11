@@ -1,5 +1,6 @@
+// Custom Imports
 import HeroLanding from "~sections/HeroLanding";
-import FAQ from "./FAQ";
+import FAQ from "~sections/FAQ";
 import AboutDredd from "~sections/AboutDredd";
 import WhyCosmos from "~sections/WhyCosmos";
 import Features from "~sections/Features";
@@ -7,7 +8,7 @@ import Challenges from "~sections/Challenges";
 import UseCases from "~sections/UseCases";
 import CTASection from "~sections/CTASection";
 
-export default function Home() {
+const Home = () => {
   return (
     <div className="w-full min-h-screen bg-black">
       <HeroLanding />
@@ -20,4 +21,6 @@ export default function Home() {
       <CTASection />
     </div>
   );
-}
+};
+
+export default Home;

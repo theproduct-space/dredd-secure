@@ -1,11 +1,15 @@
+// React Imports
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+// Redredd-secure-client-tsact Imports
 import { queryClient } from "dredd-secure-client-ts/dreddsecure.escrow";
 import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
-import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import { IContract } from "~sections/CreateContract";
+
+// Custom Imports
 import ReviewContractSection from "~sections/ReviewContractSection";
 
-function ReviewContract() {
+const ReviewContract = () => {
   const { id } = useParams<{ id: string }>();
   const [contract, setContract] = useState<EscrowEscrow>();
 
@@ -29,6 +33,6 @@ function ReviewContract() {
       <ReviewContractSection contract={contract} />
     </div>
   );
-}
+};
 
 export default ReviewContract;

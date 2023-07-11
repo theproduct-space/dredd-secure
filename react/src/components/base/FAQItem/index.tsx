@@ -29,7 +29,7 @@ const FAQItem = ({ question, answer }: FAQItemProps) => {
   return (
     <div className="bg-white-200 rounded-xl p-4">
       <button
-        className="flex justify-between w-full items-center text-left cursor-pointer"
+        className="flex justify-between w-full items-center text-left"
         onClick={() => {
           setIsSelected((prev) => !prev);
         }}

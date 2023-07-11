@@ -14,13 +14,6 @@ const home = {
   to: "/",
   view: <Landing />,
 };
-const navPages = [
-  {
-    label: "FAQ",
-    to: "/faq",
-    view: <FAQ />,
-  },
-];
 const otherPages = [
   {
     label: "Dashboard",
@@ -43,7 +36,7 @@ const otherPages = [
     view: <ReviewContract />,
   },
 ];
-const allPages = otherPages.concat(home).concat(navPages);
+const allPages = otherPages.concat(home);
 
 const Layout = () => {
   return (

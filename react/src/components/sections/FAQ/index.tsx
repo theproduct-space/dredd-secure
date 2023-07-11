@@ -1,7 +1,8 @@
+// Custom Imports
 import FAQItem from "~baseComponents/FAQItem";
 import ContentContainer from "~layouts/ContentContainer";
 
-function FAQ() {
+const FAQ = () => {
   return (
     <ContentContainer className="py-20 md:py-40">
       <div className="py-20 flex flex-col lg:flex-row lg:justify-between gap-12">
@@ -52,6 +53,6 @@ function FAQ() {
       </div>
     </ContentContainer>
   );
-}
+};
 
 export default FAQ;

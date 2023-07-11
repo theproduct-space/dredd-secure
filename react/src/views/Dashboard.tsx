@@ -1,15 +1,21 @@
-import { queryClient } from "dredd-secure-client-ts/dreddsecure.escrow";
-import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
+// React Imports
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+
+// dredd-secure-client-ts Imports
+import { queryClient } from "dredd-secure-client-ts/dreddsecure.escrow";
+import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
+// Hooks Imports
 import useKeplr from "~def-hooks/useKeplr";
+
+// Custom Imports
 import Account from "~sections/Account";
 import FilterDropDown, {
   FilterDropDownProps,
-} from "../components/base/FilterDropDown";
-import TableView, { TableData } from "../components/base/TableView";
+} from "~baseComponents/FilterDropDown";
+import TableView, { TableData } from "~baseComponents/TableView";
 
-function Dashboard() {
+const Dashboard = () => {
   const [selectedStatus, setSelectedStatus] = useState<string>("");
   const [onlyOwnDisplayed, setOnlyOwnDisplayed] = useState(false);
   const [escrows, setEscrows] = useState<EscrowEscrow[]>([]);
@@ -170,6 +176,6 @@ function Dashboard() {
       <Account />
     </>
   );
-}
+};
 
 export default Dashboard;
