@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import FAQItem from "~baseComponents/FAQItem/FAQItem";
 import ContentContainer from "~layouts/ContentContainer";
 

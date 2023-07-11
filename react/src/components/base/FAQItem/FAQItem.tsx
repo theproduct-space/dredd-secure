@@ -3,8 +3,8 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useRef, useEffect } from "react";
 import { Typography } from "~baseComponents/Typography";
-import minus from "../../../assets/minusIcon.svg";
-import plus from "../../../assets/plusIcon.svg";
+import Plus from "~icons/Plus";
+import Minus from "~icons/minus";
 
 interface FAQItemProps {
   question: string;
@@ -33,7 +33,7 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer }) => {
         }}
       >
         <Typography variant="h6">{question}</Typography>
-        <img src={isSelected ? minus : plus} alt="toggle icon" />
+        {isSelected ? <Minus /> : <Plus />}
       </div>
       <div
         ref={heightRef}

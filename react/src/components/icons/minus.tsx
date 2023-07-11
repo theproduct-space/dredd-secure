@@ -1,4 +1,6 @@
-export default function Minus(props: any): JSX.Element {
+import React from "react";
+
+const Minus: React.FC<any> = (props) => {
   return (
     <svg
       width="20"
@@ -6,6 +8,7 @@ export default function Minus(props: any): JSX.Element {
       viewBox="0 0 20 3"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="text-white-1000 hover:text-orange"
       {...props}
     >
       <path
@@ -16,4 +19,6 @@ export default function Minus(props: any): JSX.Element {
       />
     </svg>
   );
-}
+};
+
+export default Minus;
