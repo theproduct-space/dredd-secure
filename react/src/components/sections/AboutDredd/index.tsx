@@ -6,7 +6,7 @@ import logoImage from "~assets/3d-logoNoBg.webp";
 
 export default function AboutDredd() {
   return (
-    <ContentContainer className="-mt-20 relative min-h-screen flex items-start lg:-mt-8 lg:items-center">
+    <ContentContainer className="-mt-20 relative min-h-[1024px] h-screen flex items-start lg:-mt-8 lg:items-center">
       <div className="relative w-full flex justify-end items-center">
         <img
           src={logoImage}

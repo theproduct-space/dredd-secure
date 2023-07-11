@@ -5,7 +5,7 @@ import BlockPyramidImage from "~assets/block-pyramid.webp";
 
 const UseCases = () => {
   return (
-    <ContentContainer className="py-20 relative min-h-screen flex items-start md:py-[20rem]">
+    <ContentContainer className="py-20 relative min-h-[1024px] h-screen flex items-start md:py-[20rem]">
       <div className="relative w-full flex justify-end items-center">
         <img
           src={BlockPyramidImage}

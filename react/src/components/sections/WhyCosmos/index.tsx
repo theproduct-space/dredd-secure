@@ -8,7 +8,7 @@ import CubesImage from "~assets/random-cubes.webp";
 export default function WhyCosmos() {
   return (
     <ContentContainer className="-mt-16 md:mt-0">
-      <div className="relative min-h-screen w-full overflow-y-clip flex justify-start items-center pb-[20rem] sm:pb-[35rem] md:pb-[24rem] lg:pb-[4rem]">
+      <div className="relative min-h-[1024px] h-screen w-full overflow-y-clip flex justify-start items-center pb-[20rem] sm:pb-[35rem] md:pb-[24rem] lg:pb-[4rem]">
         <div className="flex flex-col lg:max-w-[50%] z-10">
           <Typography variant="h2" className="font-revalia py-6">
             Why Cosmos?
