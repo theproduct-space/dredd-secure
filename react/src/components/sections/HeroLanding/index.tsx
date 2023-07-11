@@ -50,6 +50,7 @@ export default function HeroLanding() {
               lg:max-w-[100%] lg:top-0 lg:opacity-100
               llg:max-w-[70%]
             "
+            loading="lazy"
           />
         </div>
       </div>

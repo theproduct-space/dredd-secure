@@ -28,6 +28,7 @@ export default function WhyCosmos() {
           src={CubesImage}
           alt="Dredd-Secure"
           className="object-cover absolute right-0 z-0 drop-shadow-orange opacity-40 mt-[400px] lg:mt-0 lg:opacity-100 lg:w-[42%] lg:mt-0"
+          loading="lazy"
         />
       </div>
     </ContentContainer>

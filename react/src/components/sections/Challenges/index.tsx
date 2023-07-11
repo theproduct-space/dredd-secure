@@ -27,6 +27,7 @@ const Challenges = () => {
           alt="Dredd-Secure"
           className="object-cover drop-shadow-lightOrange absolute z-0 -right-10 top-[7rem] opacity-50 max-w-[500px] w-full
           lg:w-[50%] lg:right-0 lg:top-auto lg:bottom-auto lg:opacity-100 lg:max-w-full"
+          loading="lazy"
         />
       </div>
     </ContentContainer>
