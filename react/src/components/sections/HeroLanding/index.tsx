@@ -1,9 +1,5 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable react/no-unescaped-entities */
-import { Link } from "react-router-dom";
 import LayersImage from "~assets/layers-and-logo.png";
 import Button from "~baseComponents/Button";
-import LockIcon from "~icons/LockIcon";
 import ContentContainer from "~layouts/ContentContainer";
 import { Typography } from "~baseComponents/Typography";
 import { URL_MEDIUM, URL_WAITLISTFORM } from "~utils/urls";
@@ -46,8 +42,8 @@ export default function HeroLanding() {
           <img
             src={LayersImage}
             alt="Dredd-Secure"
-            className="object-cover w-full max-w-[400px] -top-[12rem] opacity-50 relative drop-shadow-lightOrange z-0
-              lg:max-w-[100%] lg:top-0 lg:opacity-100
+            className="object-cover w-full max-w-[400px] left-20 -top-[20rem] opacity-50 relative drop-shadow-lightOrange z-0
+              lg:max-w-[100%] lg:top-0 lg:opacity-100 lg:left-0
               llg:max-w-[70%]
             "
           />
