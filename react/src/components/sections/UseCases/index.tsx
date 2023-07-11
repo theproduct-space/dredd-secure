@@ -10,7 +10,7 @@ const UseCases = () => {
         <img
           src={BlockPyramidImage}
           alt="Dredd-Secure"
-          className="object-cover absolute left-0 z-0 top-44 scale-125 max-w-[400px] opacity-50 drop-shadow-orange
+          className="object-cover absolute left-0 z-0 top-44 scale-125 max-w-[400px] opacity-50 drop-shadow-lightOrange
             lg:w-[60%] lg:max-w-[700px] lg:scale-100 lg:-left-20 lg:-top-20 lg:opacity-100
             xl:-top-44 xl:left-0"
           loading="lazy"
