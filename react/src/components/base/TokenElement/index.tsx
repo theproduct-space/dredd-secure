@@ -19,16 +19,16 @@ const TokenElement = (props: TokenElementProps) => {
       {selectedToken ? (
         <div className="token-display">
           <div className="token-amount">{selectedToken.amount}</div>
-          <div className="token-info" onClick={() => handleOnClick()}>
+          <button className="token-info" onClick={() => handleOnClick()}>
             <div className="token-img"></div>
             <div className="token">
               <div className="token-name">{selectedToken.denom}</div>
               <div className="token-denom">{selectedToken.denom}</div>
             </div>
-          </div>
+          </button>
         </div>
       ) : (
-        <span onClick={() => handleOnClick()}>{baseButton}</span>
+        <button onClick={() => handleOnClick()}>{baseButton}</button>
       )}
     </>
   );

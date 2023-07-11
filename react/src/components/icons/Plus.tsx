@@ -11,14 +11,14 @@ export default function Plus(props: any): JSX.Element {
       <path
         d="M9.75 2.25V18.75"
         stroke="#FAFAFA"
-        stroke-width="3"
-        stroke-linecap="round"
+        strokeWidth="3"
+        strokeLinecap="round"
       />
       <path
         d="M1.5 10.5L18 10.5"
         stroke="#FAFAFA"
-        stroke-width="3"
-        stroke-linecap="round"
+        strokeWidth="3"
+        strokeLinecap="round"
       />
     </svg>
   );

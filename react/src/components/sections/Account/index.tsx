@@ -91,7 +91,7 @@ function Account() {
   return (
     <div className="sp-acc">
       {wallet ? (
-        <div
+        <button
           className={
             "shadow-std acc-dd-btn flex items-center p-3 rounded-lg mr-3 hover:bg-gray-100 text-sm font-bold " +
             (state.accountDropdown ? "active" : "")
@@ -107,7 +107,7 @@ function Account() {
             <IgntProfileIcon address={state.keplrParams?.bech32Address} />
             <span className="mx-2">{getAccName()}</span>
           </div>
-        </div>
+        </button>
       ) : (
         <IgntButton
           aria-label="Connect wallet"

@@ -76,8 +76,12 @@ const CreateContract = () => {
   };
 
   const displayConditionTypes = () => {
-    return ConditionTypes.map((condition) => {
-      return <option value={condition.type}>{condition.type}</option>;
+    return ConditionTypes.map((condition, index) => {
+      return (
+        <option key={`condition-${index}`} value={condition.type}>
+          {condition.type}
+        </option>
+      );
     });
   };
   // This is for testing purposes
@@ -121,7 +125,7 @@ const CreateContract = () => {
             <div className="subtitle">Add Conditions</div>
             {conditions.map((condition, index) => {
               return (
-                <div className="condition">
+                <div className="condition" key={`add-condition-${index}`}>
                   {" "}
                   {/* Might be a component for a condition and maybe a section for condition-list */}
                   <div className="condition-number">Condition #{index + 1}</div>
@@ -133,14 +137,19 @@ const CreateContract = () => {
                       {displayConditionTypes()}
                     </select>
                     <input value={condition.value}></input>
-                    <span onClick={() => handleRemoveCondition(index)}>-</span>
+                    <button onClick={() => handleRemoveCondition(index)}>
+                      -
+                    </button>
                   </div>
                 </div>
               );
             })}
-            <div className="add-condition" onClick={handleAddNewEmptyCondition}>
+            <button
+              className="add-condition"
+              onClick={handleAddNewEmptyCondition}
+            >
               Add Another Condition
-            </div>
+            </button>
           </div>
           <div className="assets-management">
             <div className="subtitle">Choose Assets for Exchange</div>

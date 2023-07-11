@@ -49,11 +49,11 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
         <TokenPreview token={contract?.initiatorCoins?.[0]} />
         <div className="card-subtitle">Conditions</div>
         <div className="conditions">
-          {ConditionTypes.map((condition) => {
+          {ConditionTypes.map((condition, index) => {
             if (!contract?.[condition.prop]) return;
 
             return (
-              <div className="condition">
+              <div className="condition" key={`condition-${index}`}>
                 <div className="condition-type bold">{condition.type}</div>
                 <div className="condition-value">
                   {contract[condition.prop]}
@@ -86,7 +86,13 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
             <input type="checkbox"></input>
             by checking this box ......
           </label>
-          <button onClick={() => {}}>Confirm Exchange</button>{" "}
+          <button
+            onClick={() => {
+              console.log("confirm exchange");
+            }}
+          >
+            Confirm Exchange
+          </button>{" "}
           {/* TODO: Confirmation logic */}
         </div>
       )}

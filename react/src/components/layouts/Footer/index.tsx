@@ -57,7 +57,7 @@ const Footer = () => {
         </div>
         <div className="flex justify-between items-center pt-3 gap-1">
           <Typography variant="body-small">
-            Made with 🧡 by{" "}
+            Made with 🧡 by{" "}
             <a
               href={URL_PRODUCTSHOP}
               target="_blank"

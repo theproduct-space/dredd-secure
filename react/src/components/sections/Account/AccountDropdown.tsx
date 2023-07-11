@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 // PSTODO: code cleanup this file
 import useCosmosBaseTendermintV1Beta1 from "~hooks/useCosmosBaseTendermintV1Beta1";
 import { useConnectionStatus } from "~def-hooks/useConnectionStatus";
@@ -69,24 +70,24 @@ const IgntAccDropdown = (props: AccountDropdownProps) => {
             <IgntProfileIcon address={address} />
             <div className="flex flex-col ml-3">
               <span className="text-[13px] font-bold">{props.accName}</span>
-              <span
+              <button
                 className="text-[13px] leading-normal text-gray-660 copy-address flex items-center"
                 title="Copy address"
                 onClick={() => copy(address)}
               >
                 {shortAddress}
                 <IgntCopyIcon className="ml-2 cursor-pointer hover:text-black" />
-              </span>
+              </button>
             </div>
           </div>
-          <div
+          <button
             className="flex justify-between items-center cursor-pointer hover:text-gray-660"
             onClick={() => props.disconnect()}
           >
             <span> Disconnect wallet </span>
-          </div>
+          </button>
           <hr className="divide-y my-3 -mx-7" />
-          <div
+          <button
             className="flex justify-between items-center cursor-pointer hover:text-gray-660"
             onClick={() => {
               setState((oldState) => ({
@@ -97,7 +98,7 @@ const IgntAccDropdown = (props: AccountDropdownProps) => {
           >
             <span> Settings </span>
             <IgntChevronRightIcon className="text-sm" />
-          </div>
+          </button>
           <hr className="divide-y my-3 -mx-7" />
           <a
             href="#"
@@ -146,7 +147,7 @@ const IgntAccDropdown = (props: AccountDropdownProps) => {
       ) : (
         <div className="top-20 right-8 shadow-std bg-white rounded absolute max-w-xs p-7 z-50 w-full box-border acc-dd">
           <header className="flex items-center -mx-7 -mt-7 px-3 pt-3 pb-7">
-            <div
+            <button
               className="cursor-pointer"
               onClick={() => {
                 setState((oldState) => ({
@@ -170,7 +171,7 @@ const IgntAccDropdown = (props: AccountDropdownProps) => {
                   strokeLinejoin="round"
                 />
               </svg>
-            </div>
+            </button>
             <div className="text-xl font-semibold text-center flex-1">
               Settings
             </div>

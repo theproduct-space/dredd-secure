@@ -11,8 +11,8 @@ export default function Minus(props: any): JSX.Element {
       <path
         d="M1.5 1.5L18 1.5"
         stroke="#FAFAFA"
-        stroke-width="3"
-        stroke-linecap="round"
+        strokeWidth="3"
+        strokeLinecap="round"
       />
     </svg>
   );

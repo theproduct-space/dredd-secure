@@ -86,7 +86,7 @@ const TableView = (props: TableViewProps) => {
       <div className="table-row header-row">
         {headers.map((header) => {
           return (
-            <div
+            <button
               key={"header-" + header.label}
               className="table-cell header-cell"
               onClick={() => handleSortingChange(header.dataProp)}
@@ -104,7 +104,7 @@ const TableView = (props: TableViewProps) => {
                   </span>
                 ) : null
               }
-            </div>
+            </button>
           );
         })}
       </div>
@@ -116,7 +116,7 @@ const TableView = (props: TableViewProps) => {
 
         return (
           <React.Fragment key={`data-${index}`}>
-            <div
+            <button
               className="table-row"
               onClick={() => handleOnClickRow(element.id)}
             >
@@ -130,7 +130,7 @@ const TableView = (props: TableViewProps) => {
                   </div>
                 );
               })}
-            </div>
+            </button>
             {element.initiator === wallet.address && (
               <span key={`initiator-${index}`} className="table-cell">
                 <button onClick={() => handleCancelEscrow(element.id)}>

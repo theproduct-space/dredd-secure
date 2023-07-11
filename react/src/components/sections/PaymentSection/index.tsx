@@ -31,9 +31,9 @@ const PaymentSection = (props: PaymentSectionProps) => {
       <div className="card">
         <div className="card-subtitle">Conditions</div>
 
-        {contract?.conditions?.map((condition) => {
+        {contract?.conditions?.map((condition, index) => {
           return (
-            <div>
+            <div key={`condition-${index}`}>
               <div className="condition-name">{condition.type}</div>
               <div className="condition-value">{contract[condition.prop]}</div>
             </div>
