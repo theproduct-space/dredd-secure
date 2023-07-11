@@ -1,5 +1,7 @@
+// React Imports
 import { Link } from "react-router-dom";
-import DreddLogo from "../../../assets/Dredd-logo.png";
+
+// Custom Imports
 import {
   URL_MEDIUM,
   URL_PRODUCTSHOP,
@@ -7,7 +9,10 @@ import {
   URL_WHITEPAPER,
   URL_WAITLISTFORM,
 } from "~utils/urls";
-import { Typography } from "~baseComponents/Typography";
+import Typography from "~baseComponents/Typography";
+
+// Assets Imports
+import DreddLogo from "~assets/Dredd-logo.png";
 
 const Footer = () => {
   return (
@@ -52,7 +57,7 @@ const Footer = () => {
         </div>
         <div className="flex justify-between items-center pt-3 gap-1">
           <Typography variant="body-small">
-            Made with 🧡 by{" "}
+            Made with 🧡 by{" "}
             <a
               href={URL_PRODUCTSHOP}
               target="_blank"

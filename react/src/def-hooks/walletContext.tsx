@@ -7,8 +7,9 @@ interface Props {
 }
 const initState = {
   wallets:
-    (JSON.parse(window.localStorage.getItem("wallets") ?? "null") as Array<EncodedWallet>) ||
-    ([] as Array<EncodedWallet>),
+    (JSON.parse(
+      window.localStorage.getItem("wallets") ?? "null",
+    ) as Array<EncodedWallet>) || ([] as Array<EncodedWallet>),
   activeWallet: null as Nullable<Wallet>,
   activeClient: null as Nullable<ReturnType<typeof useClient>>,
 };
@@ -23,7 +24,9 @@ export const useDispatchWalletContext = () => useContext(WalletDispatchContext);
 export default function WalletProvider({ children }: Props) {
   const [wallets, setWallets] = useState([] as Array<EncodedWallet>);
   const [activeWallet, setActiveWallet] = useState(null as Nullable<Wallet>);
-  const [activeClient, setActiveClient] = useState(null as Nullable<ReturnType<typeof useClient>>);
+  const [activeClient, setActiveClient] = useState(
+    null as Nullable<ReturnType<typeof useClient>>,
+  );
 
   const connectWithKeplr = async () => {
     const client = useClient();
@@ -49,7 +52,10 @@ export default function WalletProvider({ children }: Props) {
           ...wallets,
           {
             name: activeWallet.name,
-            wallet: CryptoJS.AES.encrypt(JSON.stringify(activeWallet), activeWallet.password).toString(),
+            wallet: CryptoJS.AES.encrypt(
+              JSON.stringify(activeWallet),
+              activeWallet.password,
+            ).toString(),
           },
         ]);
       }
@@ -77,7 +83,9 @@ export default function WalletProvider({ children }: Props) {
   };
   return (
     <WalletContext.Provider value={{ wallets, activeWallet, activeClient }}>
-      <WalletDispatchContext.Provider value={{ connectWithKeplr, signOut }}>{children}</WalletDispatchContext.Provider>
+      <WalletDispatchContext.Provider value={{ connectWithKeplr, signOut }}>
+        {children}
+      </WalletDispatchContext.Provider>
     </WalletContext.Provider>
   );
 }

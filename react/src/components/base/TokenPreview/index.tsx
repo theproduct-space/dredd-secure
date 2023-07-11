@@ -1,19 +1,20 @@
-import { Coin } from 'dredd-secure-client-ts/cosmos.bank.v1beta1/types/cosmos/base/v1beta1/coin'
-import React from 'react'
+// dredd-secure-client-ts Imports
+import { V1Beta1Coin } from "dredd-secure-client-ts/cosmos.bank.v1beta1/rest";
 
 interface TokenPreviewProps {
-    token: Coin;
+  token: V1Beta1Coin | undefined;
 }
 
-function TokenPreview(props: TokenPreviewProps) {
-    const {token} = props;
-    return (
-        <div>
-            <div className="token-img">IMG</div>
-            <div className="token-amount">{token?.amount}</div>
-            <div className="token-denom">{token?.denom}</div>
-        </div>
-    )
-}
+const TokenPreview = (props: TokenPreviewProps) => {
+  const { token } = props;
 
-export default TokenPreview
+  return (
+    <div className="token-preview">
+      <div className="token-img">IMG</div>
+      <div className="token-amount">{token?.amount}</div>
+      <div className="token-denom">{token?.denom}</div>
+    </div>
+  );
+};
+
+export default TokenPreview;

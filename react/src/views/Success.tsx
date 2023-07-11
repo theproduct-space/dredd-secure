@@ -1,10 +1,7 @@
-import React from 'react'
-import SuccessSection, { SuccessSectionProps } from '~sections/Status/Success'
+import SuccessSection, { SuccessSectionProps } from "~sections/SuccessSection";
 
-function Success(props: SuccessSectionProps) {
-    return (
-        <SuccessSection {...props} />
-    )
-}
+const Success = (props: SuccessSectionProps) => {
+  return <SuccessSection {...props} />;
+};
 
-export default Success
+export default Success;

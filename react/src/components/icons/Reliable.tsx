@@ -1,6 +1,13 @@
 export default function Reliable(props: any): JSX.Element {
   return (
-    <svg width="72" height="67" viewBox="0 0 72 67" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+      width="72"
+      height="67"
+      viewBox="0 0 72 67"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
       <g id="a" clipPath="url(#clip0_482_315)">
         <path
           id="Vector"
@@ -74,12 +81,36 @@ export default function Reliable(props: any): JSX.Element {
           strokeLinecap="round"
         />
         <g id="Group">
-          <path id="Vector_10" d="M34.0371 17.4199V20.9999" stroke="#FF8A00" strokeWidth="2" strokeMiterlimit="10" />
-          <path id="Vector_11" d="M37.1768 17.4199V20.9999" stroke="#FF8A00" strokeWidth="2" strokeMiterlimit="10" />
+          <path
+            id="Vector_10"
+            d="M34.0371 17.4199V20.9999"
+            stroke="#FF8A00"
+            strokeWidth="2"
+            strokeMiterlimit="10"
+          />
+          <path
+            id="Vector_11"
+            d="M37.1768 17.4199V20.9999"
+            stroke="#FF8A00"
+            strokeWidth="2"
+            strokeMiterlimit="10"
+          />
         </g>
         <g id="Group_2">
-          <path id="Vector_12" d="M34.0371 41V44.58" stroke="#FF8A00" strokeWidth="2" strokeMiterlimit="10" />
-          <path id="Vector_13" d="M37.1768 41V44.58" stroke="#FF8A00" strokeWidth="2" strokeMiterlimit="10" />
+          <path
+            id="Vector_12"
+            d="M34.0371 41V44.58"
+            stroke="#FF8A00"
+            strokeWidth="2"
+            strokeMiterlimit="10"
+          />
+          <path
+            id="Vector_13"
+            d="M37.1768 41V44.58"
+            stroke="#FF8A00"
+            strokeWidth="2"
+            strokeMiterlimit="10"
+          />
         </g>
       </g>
       <defs>

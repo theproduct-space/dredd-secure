@@ -1,18 +1,38 @@
-import React from 'react'
-import { useLocation } from 'react-router-dom'
-import { IContract } from '~sections/CreateContract/CreateContract';
-import ReviewContractSection from '~sections/ReviewContract';
+// React Imports
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-function ReviewContract() {
-    const contract = useLocation().state as IContract;
+// Redredd-secure-client-tsact Imports
+import { queryClient } from "dredd-secure-client-ts/dreddsecure.escrow";
+import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
 
-    return (
-        <div>
-            <div className="messages">Success message here</div>
-            <div className="title">Review escrow Contract #{contract.id}</div>
-            <ReviewContractSection contract={contract} />
-        </div>
-    )
-}
+// Custom Imports
+import ReviewContractSection from "~sections/ReviewContractSection";
 
-export default ReviewContract
+const ReviewContract = () => {
+  const { id } = useParams<{ id: string }>();
+  const [contract, setContract] = useState<EscrowEscrow>();
+
+  useEffect(() => {
+    const fetchEscrow = async () => {
+      try {
+        const response = await queryClient().queryEscrow(id ?? "");
+        setContract(response.data.Escrow);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchEscrow();
+  });
+
+  return (
+    <div>
+      <div className="messages">Success message here</div>
+      <div className="title">Review escrow Contract #{contract?.id}</div>
+      <ReviewContractSection contract={contract} />
+    </div>
+  );
+};
+
+export default ReviewContract;

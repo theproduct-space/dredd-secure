@@ -1,5 +1,4 @@
-import React from "react";
-import { Typography } from "~baseComponents/Typography";
+import Typography from "~baseComponents/Typography";
 
 interface ButtonProps {
   onClick?: () => void;
@@ -10,14 +9,14 @@ interface ButtonProps {
   icon?: JSX.Element;
 }
 
-const Button: React.FC<ButtonProps> = ({
+const Button = ({
   onClick,
   text,
   disabled,
   icon,
   secondary,
   className,
-}) => {
+}: ButtonProps) => {
   return (
     <button
       className={`${
@@ -31,11 +30,7 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
     >
       {icon}
-      <Typography
-        variant="body-small"
-        as="div"
-        className="text-white-1000 text-p1"
-      >
+      <Typography variant="body-small" as="div">
         {text}
       </Typography>
     </button>

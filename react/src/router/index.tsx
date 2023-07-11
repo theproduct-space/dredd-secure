@@ -1,11 +1,13 @@
+// React Imports
 import { createBrowserRouter, Outlet } from "react-router-dom";
-import Home from "../views/Home";
+
+// Custom Imports
 import Header from "~layouts/Header";
 import CreateContractPage from "~views/CreateContract";
 import Dashboard from "~views/Dashboard";
-import FAQ from "~views/FAQ";
 import Landing from "~views/Home";
 import PaymentView from "~views/Payment";
+import ReviewContract from "~views/ReviewContract";
 import Footer from "~layouts/Footer";
 
 const home = {
@@ -13,13 +15,6 @@ const home = {
   to: "/",
   view: <Landing />,
 };
-const navPages = [
-  {
-    label: "FAQ",
-    to: "/faq",
-    view: <FAQ />,
-  },
-];
 const otherPages = [
   {
     label: "Dashboard",
@@ -36,8 +31,13 @@ const otherPages = [
     to: "/escrow/pay",
     view: <PaymentView />,
   },
+  {
+    label: "ViewEscrow",
+    to: "/escrow/:id",
+    view: <ReviewContract />,
+  },
 ];
-const allPages = otherPages.concat(home).concat(navPages);
+const allPages = otherPages.concat(home);
 
 const Layout = () => {
   return (
@@ -53,18 +53,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    children: [
-      { path: "/", element: <Home /> },
-      // { path: "/app", element: <Dashboard /> },
-    ],
+    children: allPages.map((page) => {
+      return { path: page.to, element: page.view };
+    }),
   },
-  //   {
-  //       path: "/",
-  //       element: <Layout />,
-  //       children: allPages.map((page) => {
-  //           return { path: page.to, element: page.view };
-  //       }),
-  //   },
 ]);
 
 export default router;

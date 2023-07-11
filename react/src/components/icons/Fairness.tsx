@@ -1,6 +1,13 @@
 export default function Fairness(props: any): JSX.Element {
   return (
-    <svg width="76" height="53" viewBox="0 0 76 53" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+      width="76"
+      height="53"
+      viewBox="0 0 76 53"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
       <g id="a" clipPath="url(#clip0_482_290)">
         <g id="Group">
           <path
@@ -81,7 +88,12 @@ export default function Fairness(props: any): JSX.Element {
       </g>
       <defs>
         <clipPath id="clip0_482_290">
-          <rect width="76" height="52" fill="white" transform="translate(0 0.5)" />
+          <rect
+            width="76"
+            height="52"
+            fill="white"
+            transform="translate(0 0.5)"
+          />
         </clipPath>
       </defs>
     </svg>
