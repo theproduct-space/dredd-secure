@@ -29,7 +29,9 @@ export default function AboutDredd() {
             secure, reliable, and scalable blockchain transactions. With
             DreddSecure, we're not just adapting to the digital revolution,
             we're actively shaping it, creating a safer digital transaction
-            landscape.
+            landscape. Thanks to ATOM Accelerator's invaluable support and
+            funding, we're turning our vision for DreddSecure, a secure and
+            scalable escrow app in the Cosmos ecosystem, into reality.
           </Typography>
         </div>
       </div>
