@@ -32,7 +32,7 @@ export default function HeroLanding() {
             </a>
             <a href={URL_MEDIUM} target="_blank" rel="noreferrer">
               <Button
-                text="learn more"
+                text="Join Waitlist"
                 secondary
                 className="font-revalia rounded-full border-solid border"
               />
