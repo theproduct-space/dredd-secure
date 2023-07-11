@@ -3,7 +3,7 @@
 import { Typography } from "~baseComponents/Typography";
 import ContentContainer from "~layouts/ContentContainer";
 
-import CubesImage from "~assets/random-cubes.png";
+import CubesImage from "~assets/random-cubes.webp";
 
 export default function WhyCosmos() {
   return (
