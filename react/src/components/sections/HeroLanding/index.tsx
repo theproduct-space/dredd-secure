@@ -1,11 +1,13 @@
-/* eslint-disable import/no-unresolved */
-import LayersImage from "~assets/layers-and-logo.webp";
+// Custom Imports
 import Button from "~baseComponents/Button";
+import Typography from "~baseComponents/Typography";
 import ContentContainer from "~layouts/ContentContainer";
-import { Typography } from "~baseComponents/Typography";
 import { URL_MEDIUM, URL_WAITLISTFORM } from "~utils/urls";
 
-export default function HeroLanding() {
+// Assets Imports
+import LayersImage from "~assets/layers-and-logo.webp";
+
+const HeroLanding = () => {
   return (
     <ContentContainer>
       <div className="relative min-h-screen w-full flex flex-col overflow-y-clip pt-32 lg:flex-row lg:pb-[8rem] ">
@@ -52,4 +54,6 @@ export default function HeroLanding() {
       </div>
     </ContentContainer>
   );
-}
+};
+
+export default HeroLanding;

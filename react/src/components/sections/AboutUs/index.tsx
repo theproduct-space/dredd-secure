@@ -1,9 +1,8 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable react/no-unescaped-entities */
-import { Typography } from "~baseComponents/Typography";
+// Custom Imports
+import Typography from "~baseComponents/Typography";
 import ContentContainer from "~layouts/ContentContainer";
 
-export default function AboutUs() {
+const AboutUs = () => {
   return (
     <section className="bg-gray">
       <ContentContainer>
@@ -38,4 +37,6 @@ export default function AboutUs() {
       </ContentContainer>
     </section>
   );
-}
+};
+
+export default AboutUs;

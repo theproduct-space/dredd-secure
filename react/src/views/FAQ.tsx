@@ -1,4 +1,4 @@
-import FAQItem from "~baseComponents/FAQItem/FAQItem";
+import FAQItem from "~baseComponents/FAQItem";
 import ContentContainer from "~layouts/ContentContainer";
 
 function FAQ() {

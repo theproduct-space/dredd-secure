@@ -1,7 +1,7 @@
-import { Typography } from "~baseComponents/Typography";
-import ContentContainer from "~layouts/ContentContainer";
-// import BlockPyramidImage from "~assets/block-pyramid.png";
+// Custom Imports
+import Typography from "~baseComponents/Typography";
 import Button from "~baseComponents/Button";
+import ContentContainer from "~layouts/ContentContainer";
 import { URL_WAITLISTFORM } from "~utils/urls";
 
 const CTASection = () => {
@@ -17,7 +17,7 @@ const CTASection = () => {
             for users in various use cases. Get started with DreddSecure today
             and experience the difference.
           </Typography>
-          <a href={URL_WAITLISTFORM} target="_blank">
+          <a href={URL_WAITLISTFORM} target="_blank" rel="noreferrer">
             <Button
               text="Get Started"
               className="font-revalia rounded-full border-solid border"

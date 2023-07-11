@@ -1,14 +1,15 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable react/no-unescaped-entities */
-import { Typography } from "~baseComponents/Typography";
-import ContentContainer from "~layouts/ContentContainer";
+// Icons Imports
 import CosmosSDK from "~icons/CosmosSDK";
 import Integration from "~icons/Integration";
 import Reliable from "~icons/Reliable";
 import Transaction from "~icons/Transaction";
 import Decentralized from "~icons/Decentralized";
 import Security from "~icons/Security";
+
+// Custom  Imports
+import Typography from "~baseComponents/Typography";
 import FeatureCard from "~baseComponents/FeatureCard/Index";
+import ContentContainer from "~layouts/ContentContainer";
 
 interface Feature {
   icon: JSX.Element;
@@ -55,7 +56,7 @@ const featuresData: Feature[] = [
   },
 ];
 
-export default function Features() {
+const Features = () => {
   return (
     <ContentContainer className="md:py-16 xl:pb-28">
       <div className="relative min-h-screen w-full overflow-y-clip flex justify-center items-center">
@@ -75,4 +76,6 @@ export default function Features() {
       </div>
     </ContentContainer>
   );
-}
+};
+
+export default Features;

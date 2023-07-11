@@ -1,6 +1,4 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
+// PSTODO: code cleanup this file
 import useCosmosBaseTendermintV1Beta1 from "~hooks/useCosmosBaseTendermintV1Beta1";
 import { useConnectionStatus } from "~def-hooks/useConnectionStatus";
 import {
@@ -23,7 +21,6 @@ interface AccountDropdownProps {
 
 enum UI_STATE {
   "DEFAULT" = 1,
-
   "SETTINGS" = 2,
 }
 
@@ -34,7 +31,7 @@ interface State {
 const initialState: State = {
   currentUIState: UI_STATE.DEFAULT,
 };
-export default function IgntAccDropdown(props: AccountDropdownProps) {
+const IgntAccDropdown = (props: AccountDropdownProps) => {
   const [state, setState] = useState(initialState);
   const query = useCosmosBaseTendermintV1Beta1();
   const nodeInfo = query.ServiceGetNodeInfo({});
@@ -46,7 +43,10 @@ export default function IgntAccDropdown(props: AccountDropdownProps) {
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
         props.close();
-        setState((oldState) => ({ ...oldState, currentUIState: UI_STATE.DEFAULT }));
+        setState((oldState) => ({
+          ...oldState,
+          currentUIState: UI_STATE.DEFAULT,
+        }));
       }
     };
     document.addEventListener("click", handleClickOutside, true);
@@ -61,7 +61,10 @@ export default function IgntAccDropdown(props: AccountDropdownProps) {
           className="top-20 right-8 shadow-std bg-white-1000 rounded absolute max-w-xs p-7 z-50 w-full box-border acc-dd"
           ref={ref}
         >
-          <span className="text-sm leading-normal text-gray-660 mb-3 block text-[13px]"> Connected wallet</span>
+          <span className="text-sm leading-normal text-gray-660 mb-3 block text-[13px]">
+            {" "}
+            Connected wallet
+          </span>
           <div className="mb-3 flex items-center">
             <IgntProfileIcon address={address} />
             <div className="flex flex-col ml-3">
@@ -86,35 +89,56 @@ export default function IgntAccDropdown(props: AccountDropdownProps) {
           <div
             className="flex justify-between items-center cursor-pointer hover:text-gray-660"
             onClick={() => {
-              setState((oldState) => ({ ...oldState, currentUIState: UI_STATE.SETTINGS }));
+              setState((oldState) => ({
+                ...oldState,
+                currentUIState: UI_STATE.SETTINGS,
+              }));
             }}
           >
             <span> Settings </span>
             <IgntChevronRightIcon className="text-sm" />
           </div>
           <hr className="divide-y my-3 -mx-7" />
-          <a href="#" className="flex justify-between items-center mb-3 cursor-pointer hover:text-gray-660">
+          <a
+            href="#"
+            className="flex justify-between items-center mb-3 cursor-pointer hover:text-gray-660"
+          >
             <span> Support </span>
             <IgntExternalArrowIcon className="text-xs" />
           </a>
-          <a href="#" className="flex justify-between items-center mb-3 cursor-pointer hover:text-gray-660">
+          <a
+            href="#"
+            className="flex justify-between items-center mb-3 cursor-pointer hover:text-gray-660"
+          >
             <span> Twitter </span>
             <IgntExternalArrowIcon className="text-xs" />
           </a>
-          <a href="#" className="flex justify-between items-center mb-3 cursor-pointer hover:text-gray-660">
+          <a
+            href="#"
+            className="flex justify-between items-center mb-3 cursor-pointer hover:text-gray-660"
+          >
             <span> Telegram </span>
             <IgntExternalArrowIcon className="text-xs" />
           </a>
           <div className="text-center mt-4">
-            <a href="#" className="text-sm leading-normal text-gray-660 terms-link mr-2 cursor-pointer">
+            <a
+              href="#"
+              className="text-sm leading-normal text-gray-660 terms-link mr-2 cursor-pointer"
+            >
               Privacy
             </a>
             •
-            <a href="#" className="text-sm leading-normal text-gray-660 terms-link mr-2 ml-1 cursor-pointer">
+            <a
+              href="#"
+              className="text-sm leading-normal text-gray-660 terms-link mr-2 ml-1 cursor-pointer"
+            >
               Terms of use
             </a>
             •
-            <a href="#" className="text-sm leading-normal text-gray-660 terms-link ml-1 cursor-pointer">
+            <a
+              href="#"
+              className="text-sm leading-normal text-gray-660 terms-link ml-1 cursor-pointer"
+            >
               Cookies
             </a>
           </div>
@@ -125,10 +149,19 @@ export default function IgntAccDropdown(props: AccountDropdownProps) {
             <div
               className="cursor-pointer"
               onClick={() => {
-                setState((oldState) => ({ ...oldState, currentUIState: UI_STATE.DEFAULT }));
+                setState((oldState) => ({
+                  ...oldState,
+                  currentUIState: UI_STATE.DEFAULT,
+                }));
               }}
             >
-              <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg
+                width="22"
+                height="20"
+                viewBox="0 0 22 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <path
                   d="M20.5 10L1 10M1 10L9.53125 19M1 10L9.53125 1"
                   stroke="black"
@@ -138,7 +171,9 @@ export default function IgntAccDropdown(props: AccountDropdownProps) {
                 />
               </svg>
             </div>
-            <div className="text-xl font-semibold text-center flex-1">Settings</div>
+            <div className="text-xl font-semibold text-center flex-1">
+              Settings
+            </div>
           </header>
 
           <div className="flex justify-between items-center mb-3">
@@ -167,4 +202,6 @@ export default function IgntAccDropdown(props: AccountDropdownProps) {
       )}{" "}
     </>
   );
-}
+};
+
+export default IgntAccDropdown;

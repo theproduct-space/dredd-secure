@@ -29,6 +29,9 @@ module.exports = {
   },
   rules: {
     "react/react-in-jsx-scope": "off",
+    "import/no-unresolved": "off",
+    "react/no-unescaped-entities": "off",
+    "max-len": ["warning", { code: 80, tabWidth: 2 }],
     // Add your own rules here to override ones from the extended configs.
   },
 };

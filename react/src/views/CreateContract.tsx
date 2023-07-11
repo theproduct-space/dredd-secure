@@ -1,10 +1,7 @@
-import React from 'react'
-import CreateContract from '~sections/CreateContract/CreateContract'
+import CreateContract from "~sections/CreateContract";
 
 function CreateContractPage() {
-    return (
-        <CreateContract />
-    )
+  return <CreateContract />;
 }
 
-export default CreateContractPage
+export default CreateContractPage;

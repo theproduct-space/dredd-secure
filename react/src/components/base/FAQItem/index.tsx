@@ -1,17 +1,19 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useState, useRef, useEffect } from "react";
-import { Typography } from "~baseComponents/Typography";
-import minus from "../../../assets/minusIcon.svg";
-import plus from "../../../assets/plusIcon.svg";
+// React Imports
+import { useState, useRef, useEffect } from "react";
+
+// Custom Imports
+import Typography from "~baseComponents/Typography";
+
+// Icons Imports
+import Minus from "~icons/Minus";
+import Plus from "~icons/Plus";
 
 interface FAQItemProps {
   question: string;
   answer: string | JSX.Element;
 }
 
-const FAQItem: React.FC<FAQItemProps> = ({ question, answer }) => {
+const FAQItem = ({ question, answer }: FAQItemProps) => {
   const [isSelected, setIsSelected] = useState(false);
   const [maxHeight, setMaxHeight] = useState("");
   const heightRef = useRef<HTMLDivElement>(null);
@@ -26,15 +28,15 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer }) => {
 
   return (
     <div className="bg-white-200 rounded-xl p-4">
-      <div
-        className="flex justify-between items-center cursor-pointer"
+      <button
+        className="flex justify-between w-full items-center text-left cursor-pointer"
         onClick={() => {
           setIsSelected((prev) => !prev);
         }}
       >
         <Typography variant="h6">{question}</Typography>
-        <img src={isSelected ? minus : plus} alt="toggle icon" />
-      </div>
+        {isSelected ? <Minus /> : <Plus />}
+      </button>
       <div
         ref={heightRef}
         style={{ maxHeight }}
