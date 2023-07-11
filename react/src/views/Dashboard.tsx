@@ -1,15 +1,28 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { FilterDropDown, FilterDropDownProps } from "../components/base/DropDown/FilterDropDown";
-import TableView, { TableData, TableHeader, TableViewProps } from "../components/base/TableView/TableView";
 import { queryClient } from "dredd-secure-client-ts/dreddsecure.escrow";
 import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import useKeplr from "~def-hooks/useKeplr";
+import Account from "~sections/Account";
+import { FilterDropDown, FilterDropDownProps } from "../components/base/DropDown/FilterDropDown";
+import TableView, { TableData } from "../components/base/TableView/TableView";
 
 function Dashboard() {
     const [selectedStatus, setSelectedStatus] = useState<string>("");
     const [onlyOwnDisplayed, setOnlyOwnDisplayed] = useState(false);
     const [escrows, setEscrows] = useState<EscrowEscrow[]>([]);
-    const [address, setAddress] = useState("c"); // For testing purposes only, // TODO: Get address from keplr or other wallet manager
+    // TODO: Get address from keplr or other wallet manager
+    const chainId = "dreddsecure";
+    const keplr = useKeplr();
+    const [offlineSigner, setOfflineSigner] = useState(keplr.getOfflineSigner(chainId));
+    const [address, setAddress] = useState("");
+
+    keplr.listenToAccChange(async () => {
+        setOfflineSigner(keplr.getOfflineSigner(chainId));
+        const { address } = (await offlineSigner.getAccounts())[0]; 
+        setAddress(address);
+    });
+
     const tableHeaders = [
         {
             label: "contract-id",
@@ -61,10 +74,11 @@ function Dashboard() {
             return ;
 
         return {
-            id: escrow.id ?? "",
+            id: escrow.id ?? -1,
             deadline: escrow.endDate ?? "",
             assetsInvolved: `${creatorCoin} <-> ${fulfillerCoin}`,
-            status: escrow.status ?? ""
+            status: escrow.status ?? "",
+            initiator: escrow.initiator ?? ""
         };
     })).filter(Boolean) as TableData[];
 
@@ -72,7 +86,6 @@ function Dashboard() {
         // Function to fetch and update data array
         const fetchData = async () => {
             let escrows = (await queryClient().queryEscrowAll()).data.Escrow ?? [];
-
             setEscrows(escrows);
 
             // For testing purposes only
@@ -86,6 +99,7 @@ function Dashboard() {
                         status: "open",
                         startDate: "1689006043",
                         endDate: "1789006043",
+                        initiator: "cosmos19r8syyde5naz8ysq0ul87qv3s56zgxw0829hag"
                     },
                     {
                         id: "123456",
@@ -94,6 +108,7 @@ function Dashboard() {
                         status: "open",
                         startDate: "1689001053",
                         endDate: "1779006043",
+                        initiator: "cosmos1rljg6ldskneppq0j39mngv57avsvnjxjlw8z2q"
                     },
                 ]);
             }
@@ -132,8 +147,10 @@ function Dashboard() {
                 <TableView  headers={tableHeaders} 
                             data={formatedData} 
                             filterOptions={[{ prop: "status", value: selectedStatus }]}
+                            wallet={{address: address, offlineSigner: offlineSigner}}
                             />
             </div>
+            <Account />
         </>
     );
 }

@@ -1,7 +1,9 @@
+import { txClient } from 'dredd-secure-client-ts/dreddsecure.escrow';
+import { OfflineAminoSigner } from "dredd-secure-client-ts/node_modules/@cosmjs/amino";
+import { OfflineDirectSigner } from "dredd-secure-client-ts/node_modules/@cosmjs/proto-signing";
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './TableView.css';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { MsgCancelEscrowResponse } from 'dredd-secure-client-ts/dreddsecure.escrow/types/dreddsecure/escrow/tx';
 
 export interface TableHeader {
     label: string;
@@ -9,15 +11,20 @@ export interface TableHeader {
 }
 
 export interface TableData {
-    id: string;
+    id: number;
     deadline: string;
     status: string;
     assetsInvolved: string;
+    initiator: string;
 }
 
 export interface TableViewProps {
     headers: TableHeader[];
     data: TableData[];
+    wallet: {
+        address: string;
+        offlineSigner: OfflineAminoSigner & OfflineDirectSigner | undefined;
+    }
     filterOptions: {
         prop: string;
         value: string | undefined;
@@ -26,10 +33,12 @@ export interface TableViewProps {
 
 export default function TableView(props: TableViewProps) {
     const navigate = useNavigate();
-    const { data, headers, filterOptions } = props;
+    const { data, headers, filterOptions, wallet } = props;
 
     const [sortKey, setSortKey] = useState(headers[0].dataProp);
     const [sortAscending, setSortAscending] = useState(false);
+
+    const messageClient = txClient({ signer: wallet.offlineSigner, prefix: "cosmos", addr: "http://localhost:26657" });
 
     const handleSortingChange = (param: string) => {
         if (sortKey == param) {
@@ -50,7 +59,15 @@ export default function TableView(props: TableViewProps) {
         return 0;
     });
 
-    const handleOnClickRow = (id: string) => {
+    const handleCancelEscrow = (id: number) => {
+        // Creator here is for testing only. 
+        // With a wallet connector, we will put the offline signer into the txClient above.
+        console.log(id);
+        messageClient.sendMsgCancelEscrow({ value: { creator: wallet.address, id: id } })
+        console.log("clicked");
+    }
+
+    const handleOnClickRow = (id: number) => {
         navigate(`/escrow/${id}`);
     }
 
@@ -85,13 +102,21 @@ export default function TableView(props: TableViewProps) {
                         }
 
                         return (
-                            <div key={`data-${index}`} className="table-row" onClick={() => handleOnClickRow(element.id)}>
+                            <React.Fragment key={`data-${index}`}>
+                                <div className="table-row" onClick={() => handleOnClickRow(element.id)} >
+                                    {
+                                        headers.map((header) => {
+                                            return <div key={`data-${index}-${header.dataProp}`} className="table-cell">{element[header.dataProp]}</div>
+                                        })
+                                    }
+                                </div>
                                 {
-                                    headers.map((header) => {
-                                        return <div key={`data-${index}-${header.dataProp}`} className="table-cell">{element[header.dataProp]}</div>
-                                    })
+                                    element.initiator === wallet.address &&
+                                    <span key={`initiator-${index}`} className="table-cell">
+                                        <button onClick={() => handleCancelEscrow(element.id)}>Cancel</button>
+                                    </span>
                                 }
-                            </div>
+                            </React.Fragment>
                         )
                     })}
             </div>

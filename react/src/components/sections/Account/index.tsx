@@ -26,7 +26,7 @@ export interface State {
   keplrParams: { name: string; bech32Address: string };
 }
 
-export default function IgntAcc() {
+export default function Account() {
   const { connectToKeplr, isKeplrAvailable, getKeplrAccParams } = useKeplr();
 
   const client = useClient();

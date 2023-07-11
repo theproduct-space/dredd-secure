@@ -16,7 +16,7 @@ function PaymentSection(props: PaymentSectionProps) {
     const displayTipsSelection = () => {
         return (<TokenSelector selectedToken={selectedTokenTips} onSave={setSelectedTokenTips} />)
     }
-    console.log(contract)
+    
     return (
         <div>
             <div className="Title">Review and Confirm Exchange</div>
