@@ -1,9 +1,10 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
+// PSTODO: code cleanup this file
 import { useEffect, useState } from "react";
 import useKeplr from "../../../def-hooks/useKeplr";
-import { useDispatchWalletContext, useWalletContext } from "../../../def-hooks/walletContext";
+import {
+  useDispatchWalletContext,
+  useWalletContext,
+} from "../../../def-hooks/walletContext";
 import { useClient } from "../../../hooks/useClient";
 
 import useCosmosBaseTendermintV1Beta1 from "../../../hooks/useCosmosBaseTendermintV1Beta1";
@@ -26,7 +27,7 @@ export interface State {
   keplrParams: { name: string; bech32Address: string };
 }
 
-export default function Account() {
+function Account() {
   const { connectToKeplr, isKeplrAvailable, getKeplrAccParams } = useKeplr();
 
   const client = useClient();
@@ -61,7 +62,11 @@ export default function Account() {
     setState((oldState) => ({ ...oldState, modalPage: "connect" }));
 
     const onKeplrConnect = (): void => {
-      setState((oldState) => ({ ...oldState, connectWalletModal: false, modalPage: "connect" }));
+      setState((oldState) => ({
+        ...oldState,
+        connectWalletModal: false,
+        modalPage: "connect",
+      }));
     };
 
     const onKeplrError = (): void => {
@@ -86,20 +91,23 @@ export default function Account() {
   return (
     <div className="sp-acc">
       {wallet ? (
-        <div
+        <button
           className={
             "shadow-std acc-dd-btn flex items-center p-3 rounded-lg mr-3 hover:bg-gray-100 text-sm font-bold " +
             (state.accountDropdown ? "active" : "")
           }
           onClick={() => {
-            setState((oldState) => ({ ...oldState, accountDropdown: !oldState.accountDropdown }));
+            setState((oldState) => ({
+              ...oldState,
+              accountDropdown: !oldState.accountDropdown,
+            }));
           }}
         >
           <div className="flex items-center">
             <IgntProfileIcon address={state.keplrParams?.bech32Address} />
             <span className="mx-2">{getAccName()}</span>
           </div>
-        </div>
+        </button>
       ) : (
         <IgntButton
           aria-label="Connect wallet"
@@ -137,7 +145,11 @@ export default function Account() {
           state.modalPage === "connect" ? (
             <div className="flex items-center flex-col my-3">
               <IgntKeplrIcon className="text-[48px]" />
-              {isKeplrAvailable ? <h3 className="text-2xl font-bold">Connect your wallet</h3> : <h3>Install Keplr</h3>}
+              {isKeplrAvailable ? (
+                <h3 className="text-2xl font-bold">Connect your wallet</h3>
+              ) : (
+                <h3>Install Keplr</h3>
+              )}
             </div>
           ) : state.modalPage === "connecting" ? (
             <div className="flex items-center flex-col my-3">
@@ -158,9 +170,15 @@ export default function Account() {
             {state.modalPage === "connect" ? (
               <div>
                 {isKeplrAvailable ? (
-                  <p>Connect your Keplr wallet via the Keplr browser extension to use this app.</p>
+                  <p>
+                    Connect your Keplr wallet via the Keplr browser extension to
+                    use this app.
+                  </p>
                 ) : (
-                  <p>Install & connect your Keplr wallet via the Keplr browser extension to use this app.</p>
+                  <p>
+                    Install & connect your Keplr wallet via the Keplr browser
+                    extension to use this app.
+                  </p>
                 )}
               </div>
             ) : state.modalPage === "connecting" ? (
@@ -172,7 +190,12 @@ export default function Account() {
                   aria-label="Cancel"
                   type="secondary"
                   className="mt-12"
-                  onClick={() => setState((oldState) => ({ ...oldState, modalPage: "connect" }))}
+                  onClick={() =>
+                    setState((oldState) => ({
+                      ...oldState,
+                      modalPage: "connect",
+                    }))
+                  }
                 >
                   Cancel
                 </IgntButton>
@@ -195,7 +218,11 @@ export default function Account() {
         footer={
           state.modalPage === "connect" ? (
             <div className="my-3">
-              <IgntButton aria-label="Connect Keplr" type="primary" onClick={tryToConnectToKeplr}>
+              <IgntButton
+                aria-label="Connect Keplr"
+                type="primary"
+                onClick={tryToConnectToKeplr}
+              >
                 Connect Keplr
               </IgntButton>
             </div>
@@ -205,14 +232,24 @@ export default function Account() {
                 <IgntButton
                   aria-label="Connect Keplr"
                   type="secondary"
-                  onClick={() => setState((oldState) => ({ ...oldState, connectWalletModal: false }))}
+                  onClick={() =>
+                    setState((oldState) => ({
+                      ...oldState,
+                      connectWalletModal: false,
+                    }))
+                  }
                 >
                   Cancel
                 </IgntButton>
                 <IgntButton
                   aria-label="Connect Keplr"
                   type="primary"
-                  onClick={() => setState((oldState) => ({ ...oldState, modalPage: "connect" }))}
+                  onClick={() =>
+                    setState((oldState) => ({
+                      ...oldState,
+                      modalPage: "connect",
+                    }))
+                  }
                 >
                   Try again
                 </IgntButton>
@@ -224,3 +261,5 @@ export default function Account() {
     </div>
   );
 }
+
+export default Account;

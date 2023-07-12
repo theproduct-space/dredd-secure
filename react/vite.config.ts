@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
-import tsconfigPaths from 'vite-tsconfig-paths'
+import tsconfigPaths from "vite-tsconfig-paths";
 import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/

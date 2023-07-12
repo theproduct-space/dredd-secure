@@ -12,7 +12,8 @@ export const useAddress = () => {
       const [{ address: rawAddress }] = await client.signer.getAccounts();
       return {
         address: rawAddress,
-        shortAddress: rawAddress.substring(0, 10) + "..." + rawAddress.slice(-4),
+        shortAddress:
+          rawAddress.substring(0, 10) + "..." + rawAddress.slice(-4),
       };
     } else {
       return {
@@ -38,7 +39,9 @@ export const useAddress = () => {
     const newAddress = await getAddress();
     if (address.address != newAddress.address) {
       setAddress((oldAddress) => {
-        return oldAddress.address != newAddress.address ? newAddress : oldAddress;
+        return oldAddress.address != newAddress.address
+          ? newAddress
+          : oldAddress;
       });
     }
   })();

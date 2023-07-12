@@ -1,16 +1,18 @@
-/* eslint-disable import/no-unresolved */
-import { Typography } from "~baseComponents/Typography";
+// Custom Imports
+import Typography from "~baseComponents/Typography";
 import ContentContainer from "~layouts/ContentContainer";
+
+// Assets Imports
 import BlockPyramidImage from "~assets/block-pyramid.webp";
 
 const UseCases = () => {
   return (
-    <ContentContainer className="py-20 relative min-h-screen flex items-start md:py-[20rem]">
+    <ContentContainer className="py-20 relative min-h-[750px] h-screen flex items-start md:py-[20rem]">
       <div className="relative w-full flex justify-end items-center">
         <img
           src={BlockPyramidImage}
           alt="Dredd-Secure"
-          className="object-cover absolute left-0 z-0 top-44 scale-125 max-w-[400px] opacity-50 drop-shadow-lightOrange 
+          className="object-cover absolute left-0 z-0 top-44 scale-125 max-w-[400px] opacity-50 drop-shadow-lightOrange
             lg:w-[60%] lg:max-w-[700px] lg:scale-100 lg:-left-20 lg:-top-20 lg:opacity-100
             xl:-top-44 xl:left-0"
           loading="lazy"

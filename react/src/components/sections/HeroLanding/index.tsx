@@ -1,14 +1,16 @@
-/* eslint-disable import/no-unresolved */
-import LayersImage from "~assets/layers-and-logo.webp";
+// Custom Imports
 import Button from "~baseComponents/Button";
+import Typography from "~baseComponents/Typography";
 import ContentContainer from "~layouts/ContentContainer";
-import { Typography } from "~baseComponents/Typography";
 import { URL_MEDIUM, URL_WAITLISTFORM } from "~utils/urls";
 
-export default function HeroLanding() {
+// Assets Imports
+import LayersImage from "~assets/layers-and-logo.webp";
+
+const HeroLanding = () => {
   return (
     <ContentContainer>
-      <div className="relative min-h-screen w-full flex flex-col overflow-y-clip pt-32 lg:flex-row lg:pb-[8rem] ">
+      <div className="relative min-h-[1024px] h-screen w-full flex flex-col overflow-y-clip pt-32 lg:flex-row lg:pb-[8rem] ">
         <div className="flex-1 relative -top-12 left-0 w-full flex flex-col lg:justify-center items-start z-10">
           <div className="max-w-2xl py-6">
             <Typography variant="h1" className="font-revalia pt-6 md:pb-3">
@@ -26,14 +28,14 @@ export default function HeroLanding() {
           <div className="flex gap-3">
             <a href={URL_WAITLISTFORM} target="_blank" rel="noreferrer">
               <Button
-                text="get started"
+                text="Join Waitlist"
+                secondary
                 className="font-revalia rounded-full border-solid border"
               />
             </a>
             <a href={URL_MEDIUM} target="_blank" rel="noreferrer">
               <Button
-                text="learn more"
-                secondary
+                text="Learn More"
                 className="font-revalia rounded-full border-solid border"
               />
             </a>
@@ -52,4 +54,6 @@ export default function HeroLanding() {
       </div>
     </ContentContainer>
   );
-}
+};
+
+export default HeroLanding;
