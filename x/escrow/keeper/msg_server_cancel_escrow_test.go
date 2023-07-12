@@ -30,7 +30,7 @@ func setupMsgServerCancelEscrow(t testing.TB) (types.MsgServer, keeper.Keeper, c
 		Denom: "token",
 		Amount: sdk.NewInt(1000),
 	}})
-	server.CreateEscrow(context, &types.MsgCreateEscrow{
+	_, err := server.CreateEscrow(context, &types.MsgCreateEscrow{
 		Creator: testutil.Alice,
 		InitiatorCoins: []sdk.Coin{{
 			Denom: "token",
@@ -43,6 +43,9 @@ func setupMsgServerCancelEscrow(t testing.TB) (types.MsgServer, keeper.Keeper, c
 		StartDate:      "1588148578",
 		EndDate:        "2788148978",
 	})
+	if err != nil {
+		t.Fatalf("Failed to create escrow: %s", err)
+	}
 	
 	return server, *k, context, ctrl, bankMock
 }
@@ -129,3 +132,4 @@ func TestCancelEscrowModuleCannotPay(t *testing.T) {
 		Id: 0,
 	})
 }
+
