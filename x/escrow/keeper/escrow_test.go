@@ -24,6 +24,7 @@ func TestEscrowGet(t *testing.T) {
 	keeper, ctx := keepertest.EscrowKeeper(t)
 	items := createNEscrow(keeper, ctx, 10)
 	for _, item := range items {
+		item := item // Assign to a new variable within the for loop to fix implicit memory aliasing in for loop.
 		got, found := keeper.GetEscrow(ctx, item.Id)
 		require.True(t, found)
 		require.Equal(t,

@@ -153,4 +153,3 @@ func GetEscrowIDBytes(id uint64) []byte {
 func GetEscrowIDFromBytes(bz []byte) uint64 {
 	return binary.BigEndian.Uint64(bz)
 }
-

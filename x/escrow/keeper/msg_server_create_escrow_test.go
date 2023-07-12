@@ -17,10 +17,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func setupMsgServerCreateEscrow(t testing.TB) (types.MsgServer, keeper.Keeper, context.Context, *gomock.Controller, *testutil.MockBankKeeper) {
-	ctrl := gomock.NewController(t)
+func setupMsgServerCreateEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, context.Context, *gomock.Controller, *testutil.MockBankKeeper) {
+	tb.Helper()
+	ctrl := gomock.NewController(tb)
 	bankMock := testutil.NewMockBankKeeper(ctrl)
-	k, ctx := keepertest.EscrowKeeperWithMocks(t, bankMock)
+	k, ctx := keepertest.EscrowKeeperWithMocks(tb, bankMock)
 	escrow.InitGenesis(ctx, *k, *types.DefaultGenesis())
 	server := keeper.NewMsgServerImpl(*k)
 	context := sdk.WrapSDKContext(ctx)

@@ -17,10 +17,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func setupMsgServerFulfillEscrow(t testing.TB) (types.MsgServer, keeper.Keeper, context.Context, *gomock.Controller, *testutil.MockBankKeeper) {
-	ctrl := gomock.NewController(t)
+func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, context.Context, *gomock.Controller, *testutil.MockBankKeeper) {
+	tb.Helper()
+	ctrl := gomock.NewController(tb)
 	bankMock := testutil.NewMockBankKeeper(ctrl)
-	k, ctx := keepertest.EscrowKeeperWithMocks(t, bankMock)
+	k, ctx := keepertest.EscrowKeeperWithMocks(tb, bankMock)
 	escrow.InitGenesis(ctx, *k, *types.DefaultGenesis())
 	server := keeper.NewMsgServerImpl(*k)
 	context := sdk.WrapSDKContext(ctx)
@@ -30,7 +31,7 @@ func setupMsgServerFulfillEscrow(t testing.TB) (types.MsgServer, keeper.Keeper, 
 		Amount: sdk.NewInt(1000),
 	}})
 	// create an escrow that can be closed when the second party fulfills it.
-	server.CreateEscrow(context, &types.MsgCreateEscrow{
+	_, errFirstCreate := server.CreateEscrow(context, &types.MsgCreateEscrow{
 		Creator: testutil.Alice,
 		InitiatorCoins: []sdk.Coin{{
 			Denom:  "token",
@@ -43,13 +44,14 @@ func setupMsgServerFulfillEscrow(t testing.TB) (types.MsgServer, keeper.Keeper, 
 		StartDate: "1588148578",
 		EndDate:   "2788148978",
 	})
+	require.Nil(tb, errFirstCreate)
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
 		Denom:  "token",
 		Amount: sdk.NewInt(99),
 	}})
 	// create an escrow that can only be closed in the future
-	server.CreateEscrow(context, &types.MsgCreateEscrow{
+	_, errSecondCreate := server.CreateEscrow(context, &types.MsgCreateEscrow{
 		Creator: testutil.Alice,
 		InitiatorCoins: []sdk.Coin{{
 			Denom:  "token",
@@ -62,13 +64,14 @@ func setupMsgServerFulfillEscrow(t testing.TB) (types.MsgServer, keeper.Keeper, 
 		StartDate: "2588148578",
 		EndDate:   "2788148978",
 	})
+	require.Nil(tb, errSecondCreate)
 
-	return server, *k, context, ctrl, bankMock
+	return server, context, ctrl, bankMock
 }
 
 // Testing to fulfill the escrow that can be closed when the second party fulfills it.
 func TestFulfillEscrow(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	msgServer, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	// the bank is expected to "refund" the fulfiller (send escrowed InitiatorCoins to the fulfiller)
@@ -91,7 +94,7 @@ func TestFulfillEscrow(t *testing.T) {
 
 // Testing to fulfill the escrow that can only be closed in the future
 func TestFulfillEscrowFuture(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	msgServer, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
@@ -108,7 +111,7 @@ func TestFulfillEscrowFuture(t *testing.T) {
 }
 
 func TestFulfillEscrowAsInitiator(t *testing.T) {
-	msgServer, _, context, ctrl, _ := setupMsgServerFulfillEscrow(t)
+	msgServer, context, ctrl, _ := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
@@ -121,7 +124,7 @@ func TestFulfillEscrowAsInitiator(t *testing.T) {
 }
 
 func TestFulfillEscrowDoesNotExist(t *testing.T) {
-	msgServer, _, context, ctrl, _ := setupMsgServerFulfillEscrow(t)
+	msgServer, context, ctrl, _ := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
@@ -134,7 +137,7 @@ func TestFulfillEscrowDoesNotExist(t *testing.T) {
 }
 
 func TestFulfillEscrowWrongStatus(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	msgServer, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	// fulfill the escrow once
@@ -163,7 +166,7 @@ func TestFulfillEscrowWrongStatus(t *testing.T) {
 
 // Testing to fulfill the escrow that can be closed when the second party fulfills it, but the module cannot refund
 func TestFulfillEscrowModuleCannotPay(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	msgServer, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	fulfiller, _ := sdk.AccAddressFromBech32(testutil.Bob)
@@ -182,15 +185,18 @@ func TestFulfillEscrowModuleCannotPay(t *testing.T) {
 		require.NotNil(t, r, "The code did not panic")
 		require.Equal(t, "Module cannot release Initiator assets%!(EXTRA string=oops)", r)
 	}()
-	msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
+	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      0,
 	})
+	if err != nil {
+		require.Equal(t, "Module cannot release Initiator assets%!(EXTRA string=oops)", err.Error())
+	}
 }
 
 // Testing to fulfill the escrow that can be closed when the second party fulfills it, but the fulfiller cannot pay the initiator
 func TestFulfillEscrowFulfillerCannotPay(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	msgServer, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	initiator, _ := sdk.AccAddressFromBech32(testutil.Alice)
@@ -215,7 +221,7 @@ func TestFulfillEscrowFulfillerCannotPay(t *testing.T) {
 
 // Testing to fulfill the escrow that can only be closed in the future, but the fulfiller cannot pay the module
 func TestFulfillEscrowFulfillerCannotPayModule(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	msgServer, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	fulfiller, _ := sdk.AccAddressFromBech32(testutil.Bob)

@@ -1,9 +1,12 @@
+//nolint
+// PSTODO: lint this file when simulations are implemented
 package escrow
 
 import (
+	"math/rand"
+
 	"dredd-secure/testutil/sample"
 	"dredd-secure/x/escrow/types"
-	"math/rand"
 
 	escrowsimulation "dredd-secure/x/escrow/simulation"
 

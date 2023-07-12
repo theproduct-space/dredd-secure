@@ -17,10 +17,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func setupMsgServerCancelEscrow(t testing.TB) (types.MsgServer, keeper.Keeper, context.Context, *gomock.Controller, *testutil.MockBankKeeper) {
-	ctrl := gomock.NewController(t)
+func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, context.Context, *gomock.Controller, *testutil.MockBankKeeper) {
+	tb.Helper()
+	ctrl := gomock.NewController(tb)
 	bankMock := testutil.NewMockBankKeeper(ctrl)
-	k, ctx := keepertest.EscrowKeeperWithMocks(t, bankMock)
+	k, ctx := keepertest.EscrowKeeperWithMocks(tb, bankMock)
 	escrow.InitGenesis(ctx, *k, *types.DefaultGenesis())
 	server := keeper.NewMsgServerImpl(*k)
 	context := sdk.WrapSDKContext(ctx)
@@ -43,14 +44,14 @@ func setupMsgServerCancelEscrow(t testing.TB) (types.MsgServer, keeper.Keeper, c
 		EndDate:   "2788148978",
 	})
 	if err != nil {
-		t.Fatalf("Failed to create escrow: %s", err)
+		tb.Fatalf("Failed to create escrow: %s", err)
 	}
 
-	return server, *k, context, ctrl, bankMock
+	return server, context, ctrl, bankMock
 }
 
 func TestCancelEscrow(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerCancelEscrow(t)
+	msgServer, context, ctrl, bankMock := setupMsgServerCancelEscrow(t)
 	defer ctrl.Finish()
 
 	bankMock.ExpectRefund(context, testutil.Alice, []sdk.Coin{{
@@ -66,7 +67,7 @@ func TestCancelEscrow(t *testing.T) {
 }
 
 func TestCancelEscrowNotInitiator(t *testing.T) {
-	msgServer, _, context, ctrl, _ := setupMsgServerCancelEscrow(t)
+	msgServer, context, ctrl, _ := setupMsgServerCancelEscrow(t)
 	defer ctrl.Finish()
 
 	_, err := msgServer.CancelEscrow(context, &types.MsgCancelEscrow{
@@ -79,7 +80,7 @@ func TestCancelEscrowNotInitiator(t *testing.T) {
 }
 
 func TestCancelEscrowDoesNotExist(t *testing.T) {
-	msgServer, _, context, ctrl, _ := setupMsgServerCancelEscrow(t)
+	msgServer, context, ctrl, _ := setupMsgServerCancelEscrow(t)
 	defer ctrl.Finish()
 
 	_, err := msgServer.CancelEscrow(context, &types.MsgCancelEscrow{
@@ -92,7 +93,7 @@ func TestCancelEscrowDoesNotExist(t *testing.T) {
 }
 
 func TestCancelEscrowWrongStatus(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerCancelEscrow(t)
+	msgServer, context, ctrl, bankMock := setupMsgServerCancelEscrow(t)
 	defer ctrl.Finish()
 
 	bankMock.ExpectRefund(context, testutil.Alice, []sdk.Coin{{
@@ -114,7 +115,7 @@ func TestCancelEscrowWrongStatus(t *testing.T) {
 }
 
 func TestCancelEscrowModuleCannotPay(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerCancelEscrow(t)
+	msgServer, context, ctrl, bankMock := setupMsgServerCancelEscrow(t)
 	defer ctrl.Finish()
 
 	initiator, _ := sdk.AccAddressFromBech32(testutil.Alice)
@@ -126,9 +127,11 @@ func TestCancelEscrowModuleCannotPay(t *testing.T) {
 		require.NotNil(t, r, "The code did not panic")
 		require.Equal(t, "Module cannot release Initiator assets%!(EXTRA string=oops)", r)
 	}()
-	msgServer.CancelEscrow(context, &types.MsgCancelEscrow{
+	_, err := msgServer.CancelEscrow(context, &types.MsgCancelEscrow{
 		Creator: testutil.Alice,
 		Id:      0,
 	})
+	if err != nil {
+		require.Equal(t, "Module cannot release Initiator assets%!(EXTRA string=oops)", err.Error())
+	}
 }
-

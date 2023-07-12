@@ -19,7 +19,7 @@ func CmdCancelEscrow() *cobra.Command {
 		Short: "Broadcast message cancel-escrow",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argId, err := cast.ToUint64E(args[0])
+			argID, err := cast.ToUint64E(args[0])
 			if err != nil {
 				return err
 			}
@@ -31,7 +31,7 @@ func CmdCancelEscrow() *cobra.Command {
 
 			msg := types.NewMsgCancelEscrow(
 				clientCtx.GetFromAddress().String(),
-				argId,
+				argID,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

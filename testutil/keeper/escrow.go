@@ -18,11 +18,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func EscrowKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
-	return EscrowKeeperWithMocks(t, nil)
+func EscrowKeeper(tb testing.TB) (*keeper.Keeper, sdk.Context) {
+	tb.Helper()
+	return EscrowKeeperWithMocks(tb, nil)
 }
 
-func EscrowKeeperWithMocks(t testing.TB, bank *testutil.MockBankKeeper) (*keeper.Keeper, sdk.Context) {
+func EscrowKeeperWithMocks(tb testing.TB, bank *testutil.MockBankKeeper) (*keeper.Keeper, sdk.Context) {
+	tb.Helper()
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
 
@@ -30,7 +32,7 @@ func EscrowKeeperWithMocks(t testing.TB, bank *testutil.MockBankKeeper) (*keeper
 	stateStore := store.NewCommitMultiStore(db)
 	stateStore.MountStoreWithDB(storeKey, storetypes.StoreTypeIAVL, db)
 	stateStore.MountStoreWithDB(memStoreKey, storetypes.StoreTypeMemory, nil)
-	require.NoError(t, stateStore.LoadLatestVersion())
+	require.NoError(tb, stateStore.LoadLatestVersion())
 
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)

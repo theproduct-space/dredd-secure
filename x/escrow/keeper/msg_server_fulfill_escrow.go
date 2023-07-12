@@ -21,7 +21,7 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 	}
 
 	if escrow.Initiator == msg.Creator {
-		return nil, errors.Wrap(sdkerrors.ErrUnauthorized, "Initator of the escrow can not fulfill it.")
+		return nil, errors.Wrap(sdkerrors.ErrUnauthorized, "Initator of the escrow can not fulfill it")
 	}
 
 	if escrow.Status != constants.StatusOpen {
@@ -63,4 +63,3 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 	k.SetEscrow(ctx, escrow)
 	return &types.MsgFulfillEscrowResponse{}, nil
 }
-

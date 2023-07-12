@@ -30,9 +30,9 @@ func TestEscrowQueryByAddress(t *testing.T) {
 		items[i].Fulfiller = addresses[r2]
 		items[i].Id = keeper.AppendEscrow(ctx, items[i])
 
-		escrowsResults[r1] += 1
+		escrowsResults[r1]++
 		if r1 != r2 {
-			escrowsResults[r2] += 1
+			escrowsResults[r2]++
 		}
 	}
 
@@ -88,7 +88,7 @@ func TestEscrowQueryByAddressPaginated(t *testing.T) {
 	escrowsResults := [3]int{0, 0, 0}
 
 	items := make([]types.Escrow, 20)
-	var items_test []types.Escrow
+	var itemsTest []types.Escrow
 	for i := range items {
 		r1 := rand.Intn(3)
 		items[i].Initiator = addresses[r1]
@@ -96,13 +96,13 @@ func TestEscrowQueryByAddressPaginated(t *testing.T) {
 		items[i].Fulfiller = addresses[r2]
 		items[i].Id = keeper.AppendEscrow(ctx, items[i])
 
-		escrowsResults[r1] += 1
+		escrowsResults[r1]++
 		if r1 != r2 {
-			escrowsResults[r2] += 1
+			escrowsResults[r2]++
 		}
 
 		if r1 == 0 || r2 == 0 {
-			items_test = append(items_test, items[i])
+			itemsTest = append(itemsTest, items[i])
 		}
 	}
 
@@ -125,7 +125,7 @@ func TestEscrowQueryByAddressPaginated(t *testing.T) {
 			count := len(resp.Escrow)
 			require.LessOrEqual(t, count, step)
 			require.Subset(t,
-				nullify.Fill(items_test),
+				nullify.Fill(itemsTest),
 				nullify.Fill(resp.Escrow),
 			)
 		}
@@ -138,7 +138,7 @@ func TestEscrowQueryByAddressPaginated(t *testing.T) {
 			require.NoError(t, err)
 			require.LessOrEqual(t, len(resp.Escrow), step)
 			require.Subset(t,
-				nullify.Fill(items_test),
+				nullify.Fill(itemsTest),
 				nullify.Fill(resp.Escrow),
 			)
 			next = resp.Pagination.NextKey
@@ -149,7 +149,7 @@ func TestEscrowQueryByAddressPaginated(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, len(items), int(resp.Pagination.Total))
 		require.ElementsMatch(t,
-			nullify.Fill(items_test),
+			nullify.Fill(itemsTest),
 			nullify.Fill(resp.Escrow),
 		)
 	})
