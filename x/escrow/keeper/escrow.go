@@ -96,7 +96,7 @@ func (k Keeper) GetAllEscrow(ctx sdk.Context) (list []types.Escrow) {
 	return
 }
 
-// Validate the escrow conditions
+// ValidateConditions validates the escrow conditions
 func (k Keeper) ValidateConditions(ctx sdk.Context, escrow types.Escrow) bool {
 	// Validate time conditions
 	now := time.Now()
@@ -119,7 +119,7 @@ func (k Keeper) ValidateConditions(ctx sdk.Context, escrow types.Escrow) bool {
 	return true
 }
 
-// Release assets to the respective parties. The Initiator receives the FulfillerCoins, vice-versa
+// ReleaseAssets releases the escrowed assets to the respective parties. The Initiator receives the FulfillerCoins, vice-versa
 func (k Keeper) ReleaseAssets(ctx sdk.Context, escrow types.Escrow) {
 	// Release initiator assets
 	initiator, err := sdk.AccAddressFromBech32(escrow.Initiator)
