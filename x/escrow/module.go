@@ -2,6 +2,9 @@ package escrow
 
 import (
 	"context"
+	"dredd-secure/x/escrow/client/cli"
+	"dredd-secure/x/escrow/keeper"
+	"dredd-secure/x/escrow/types"
 	"encoding/json"
 	"fmt"
 
@@ -11,10 +14,6 @@ import (
 	"github.com/spf13/cobra"
 
 	abci "github.com/cometbft/cometbft/abci/types"
-
-	"dredd-secure/x/escrow/client/cli"
-	"dredd-secure/x/escrow/keeper"
-	"dredd-secure/x/escrow/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"

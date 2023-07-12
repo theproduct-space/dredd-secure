@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"dredd-secure/x/escrow/types"
 	"fmt"
 	"time"
 
@@ -8,12 +9,9 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	// "github.com/cosmos/cosmos-sdk/client/flags"
-	"dredd-secure/x/escrow/types"
 )
 
-var (
-	DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
-)
+var DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
 
 const (
 	flagPacketTimeoutTimestamp = "packet-timeout-timestamp"

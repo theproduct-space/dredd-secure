@@ -2,14 +2,13 @@ package keeper_test
 
 import (
 	"context"
-	"errors"
-	"testing"
-
 	"dredd-secure/x/escrow"
 	"dredd-secure/x/escrow/constants"
 	"dredd-secure/x/escrow/keeper"
 	"dredd-secure/x/escrow/testutil"
 	"dredd-secure/x/escrow/types"
+	"errors"
+	"testing"
 
 	keepertest "dredd-secure/testutil/keeper"
 
@@ -32,43 +31,43 @@ func TestCreateEscrow(t *testing.T) {
 	msgServer, keeper, context, ctrl, bankMock := setupMsgServerCreateEscrow(t)
 	defer ctrl.Finish()
 	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{{
-		Denom: "token",
+		Denom:  "token",
 		Amount: sdk.NewInt(1000),
 	}})
 
 	_, err := msgServer.CreateEscrow(context, &types.MsgCreateEscrow{
 		Creator: testutil.Bob,
 		InitiatorCoins: []sdk.Coin{{
-			Denom: "token",
+			Denom:  "token",
 			Amount: sdk.NewInt(1000),
 		}},
 		FulfillerCoins: []sdk.Coin{{
-			Denom: "stake",
+			Denom:  "stake",
 			Amount: sdk.NewInt(9000),
 		}},
-		StartDate:      "1588148578",
-		EndDate:        "2788148978",
+		StartDate: "1588148578",
+		EndDate:   "2788148978",
 	})
 
 	// After the CreateEscrow method call, we expect to find an escrow with Id=0
 	escrow, found := keeper.GetEscrow(sdk.UnwrapSDKContext(context), 0)
-    require.True(t, found)
-    require.EqualValues(t, types.Escrow{
-		Id: 0,
-		Status: constants.StatusOpen,
+	require.True(t, found)
+	require.EqualValues(t, types.Escrow{
+		Id:        0,
+		Status:    constants.StatusOpen,
 		Initiator: testutil.Bob,
 		Fulfiller: "",
 		InitiatorCoins: []sdk.Coin{{
-			Denom: "token",
+			Denom:  "token",
 			Amount: sdk.NewInt(1000),
 		}},
 		FulfillerCoins: []sdk.Coin{{
-			Denom: "stake",
+			Denom:  "stake",
 			Amount: sdk.NewInt(9000),
 		}},
-		StartDate:      "1588148578",
-		EndDate:        "2788148978",
-    }, escrow)
+		StartDate: "1588148578",
+		EndDate:   "2788148978",
+	}, escrow)
 
 	require.Nil(t, err)
 }
@@ -78,22 +77,22 @@ func TestCreateEscrowInitiatorCannotPay(t *testing.T) {
 	defer ctrl.Finish()
 
 	initiator, _ := sdk.AccAddressFromBech32(testutil.Alice)
-    bankMock.EXPECT().
-        SendCoinsFromAccountToModule(context, initiator, types.ModuleName, gomock.Any()).
-        Return(errors.New("oops"))
+	bankMock.EXPECT().
+		SendCoinsFromAccountToModule(context, initiator, types.ModuleName, gomock.Any()).
+		Return(errors.New("oops"))
 	_, err := msgServer.CreateEscrow(context, &types.MsgCreateEscrow{
 		Creator: testutil.Alice,
 		InitiatorCoins: []sdk.Coin{{
-			Denom: "token",
+			Denom:  "token",
 			Amount: sdk.NewInt(1000),
 		}},
 		FulfillerCoins: []sdk.Coin{{
-			Denom: "stake",
+			Denom:  "stake",
 			Amount: sdk.NewInt(9000),
 		}},
-		StartDate:      "1588148578",
-		EndDate:        "2788148978",
+		StartDate: "1588148578",
+		EndDate:   "2788148978",
 	})
-    require.NotNil(t, err)
-    require.EqualError(t, err, "Initiator cannot pay: oops")
+	require.NotNil(t, err)
+	require.EqualError(t, err, "Initiator cannot pay: oops")
 }

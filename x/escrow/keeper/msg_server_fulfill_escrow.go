@@ -2,10 +2,9 @@ package keeper
 
 import (
 	"context"
-	"fmt"
-
 	"dredd-secure/x/escrow/constants"
 	"dredd-secure/x/escrow/types"
+	"fmt"
 
 	"cosmossdk.io/errors"
 
@@ -34,7 +33,7 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 
 	conditionsValidity := k.ValidateConditions(ctx, escrow)
 
-	if (conditionsValidity) {
+	if conditionsValidity {
 		// If all the conditions are met, send fulfiller coins to initator
 		errSendCoins := k.bank.SendCoins(ctx, fulfiller, initiator, escrow.FulfillerCoins)
 		if errSendCoins != nil {
@@ -48,7 +47,7 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 		}
 
 		// change the escrow status to "closed"
-		escrow.Status = constants.StatusClosed 
+		escrow.Status = constants.StatusClosed
 	} else {
 		// If not all conditions are met, escrow the fulfiller assets
 		errEscrowInitiatorCoins := k.bank.SendCoinsFromAccountToModule(ctx, fulfiller, types.ModuleName, escrow.FulfillerCoins)

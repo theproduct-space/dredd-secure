@@ -1,11 +1,10 @@
 package keeper
 
 import (
-	"testing"
-
 	"dredd-secure/x/escrow/keeper"
 	"dredd-secure/x/escrow/testutil"
 	"dredd-secure/x/escrow/types"
+	"testing"
 
 	tmdb "github.com/cometbft/cometbft-db"
 	"github.com/cometbft/cometbft/libs/log"

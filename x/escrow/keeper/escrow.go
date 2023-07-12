@@ -1,12 +1,11 @@
 package keeper
 
 import (
+	"dredd-secure/x/escrow/types"
 	"encoding/binary"
 	"fmt"
 	"strconv"
 	"time"
-
-	"dredd-secure/x/escrow/types"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -105,15 +104,15 @@ func (k Keeper) ValidateConditions(ctx sdk.Context, escrow types.Escrow) bool {
 
 	endDateInt, errParseIntEndDate := strconv.ParseInt(escrow.EndDate, 10, 64)
 	startDateInt, errParseIntStartDate := strconv.ParseInt(escrow.StartDate, 10, 64)
-	if (errParseIntEndDate != nil) {
+	if errParseIntEndDate != nil {
 		panic(errParseIntEndDate.Error())
 	}
-	if (errParseIntStartDate != nil) {
+	if errParseIntStartDate != nil {
 		panic(errParseIntStartDate.Error())
 	}
-	
+
 	// If the current date is before start date or after end date, time conditions are not met
-	if (unixTimeNow < startDateInt || unixTimeNow > endDateInt) {
+	if unixTimeNow < startDateInt || unixTimeNow > endDateInt {
 		return false
 	}
 
@@ -124,9 +123,9 @@ func (k Keeper) ValidateConditions(ctx sdk.Context, escrow types.Escrow) bool {
 func (k Keeper) ReleaseAssets(ctx sdk.Context, escrow types.Escrow) {
 	// Release initiator assets
 	initiator, err := sdk.AccAddressFromBech32(escrow.Initiator)
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 	errSendCoinsInitiator := k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, initiator, escrow.FulfillerCoins)
 	if errSendCoinsInitiator != nil {
 		panic(fmt.Sprintf(types.ErrCannotReleaseInitiatorAssets.Error(), errSendCoinsInitiator.Error()))
@@ -154,5 +153,4 @@ func GetEscrowIDBytes(id uint64) []byte {
 func GetEscrowIDFromBytes(bz []byte) uint64 {
 	return binary.BigEndian.Uint64(bz)
 }
-
 

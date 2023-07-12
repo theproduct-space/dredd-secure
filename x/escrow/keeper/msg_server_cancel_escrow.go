@@ -2,10 +2,8 @@ package keeper
 
 import (
 	"context"
-
 	"dredd-secure/x/escrow/constants"
 	"dredd-secure/x/escrow/types"
-
 	"fmt"
 
 	"cosmossdk.io/errors"

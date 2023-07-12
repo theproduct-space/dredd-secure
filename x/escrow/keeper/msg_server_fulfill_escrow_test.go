@@ -2,13 +2,12 @@ package keeper_test
 
 import (
 	"context"
-	"errors"
-	"testing"
-
 	"dredd-secure/x/escrow"
 	"dredd-secure/x/escrow/keeper"
 	"dredd-secure/x/escrow/testutil"
 	"dredd-secure/x/escrow/types"
+	"errors"
+	"testing"
 
 	keepertest "dredd-secure/testutil/keeper"
 
@@ -27,43 +26,43 @@ func setupMsgServerFulfillEscrow(t testing.TB) (types.MsgServer, keeper.Keeper, 
 	context := sdk.WrapSDKContext(ctx)
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
-		Denom: "token",
+		Denom:  "token",
 		Amount: sdk.NewInt(1000),
 	}})
 	// create an escrow that can be closed when the second party fulfills it.
 	server.CreateEscrow(context, &types.MsgCreateEscrow{
 		Creator: testutil.Alice,
 		InitiatorCoins: []sdk.Coin{{
-			Denom: "token",
+			Denom:  "token",
 			Amount: sdk.NewInt(1000),
 		}},
 		FulfillerCoins: []sdk.Coin{{
-			Denom: "stake",
+			Denom:  "stake",
 			Amount: sdk.NewInt(9000),
 		}},
-		StartDate:      "1588148578",
-		EndDate:        "2788148978",
+		StartDate: "1588148578",
+		EndDate:   "2788148978",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
-		Denom: "token",
+		Denom:  "token",
 		Amount: sdk.NewInt(99),
 	}})
 	// create an escrow that can only be closed in the future
 	server.CreateEscrow(context, &types.MsgCreateEscrow{
 		Creator: testutil.Alice,
 		InitiatorCoins: []sdk.Coin{{
-			Denom: "token",
+			Denom:  "token",
 			Amount: sdk.NewInt(99),
 		}},
 		FulfillerCoins: []sdk.Coin{{
-			Denom: "stake",
+			Denom:  "stake",
 			Amount: sdk.NewInt(1111),
 		}},
-		StartDate:      "2588148578",
-		EndDate:        "2788148978",
+		StartDate: "2588148578",
+		EndDate:   "2788148978",
 	})
-	
+
 	return server, *k, context, ctrl, bankMock
 }
 
@@ -71,20 +70,20 @@ func setupMsgServerFulfillEscrow(t testing.TB) (types.MsgServer, keeper.Keeper, 
 func TestFulfillEscrow(t *testing.T) {
 	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
-	
+
 	// the bank is expected to "refund" the fulfiller (send escrowed InitiatorCoins to the fulfiller)
 	bankMock.ExpectRefund(context, testutil.Bob, []sdk.Coin{{
-		Denom: "token",
+		Denom:  "token",
 		Amount: sdk.NewInt(1000),
 	}})
 	// the bank is expected to send the FulfillerCoins to the initiator
-	bankMock.ExpectSend(context, testutil.Bob, testutil.Alice ,[]sdk.Coin{{
-		Denom: "stake",
+	bankMock.ExpectSend(context, testutil.Bob, testutil.Alice, []sdk.Coin{{
+		Denom:  "stake",
 		Amount: sdk.NewInt(9000),
 	}})
 	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
-		Id: 0,
+		Id:      0,
 	})
 
 	require.Nil(t, err)
@@ -94,15 +93,15 @@ func TestFulfillEscrow(t *testing.T) {
 func TestFulfillEscrowFuture(t *testing.T) {
 	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
-	
+
 	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
-	bankMock.ExpectPay(context, testutil.Bob ,[]sdk.Coin{{
-		Denom: "stake",
+	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{{
+		Denom:  "stake",
 		Amount: sdk.NewInt(1111),
 	}})
 	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
-		Id: 1,
+		Id:      1,
 	})
 
 	require.Nil(t, err)
@@ -111,10 +110,10 @@ func TestFulfillEscrowFuture(t *testing.T) {
 func TestFulfillEscrowAsInitiator(t *testing.T) {
 	msgServer, _, context, ctrl, _ := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
-	
+
 	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Alice,
-		Id: 0,
+		Id:      0,
 	})
 
 	require.NotNil(t, err)
@@ -124,39 +123,39 @@ func TestFulfillEscrowAsInitiator(t *testing.T) {
 func TestFulfillEscrowDoesNotExist(t *testing.T) {
 	msgServer, _, context, ctrl, _ := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
-	
+
 	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Alice,
-		Id: 55,
+		Id:      55,
 	})
 
 	require.NotNil(t, err)
 	require.ErrorIs(t, err, sdkerrors.ErrKeyNotFound)
 }
 
-func TestFulfillEscrowWrongStatus (t *testing.T) {
+func TestFulfillEscrowWrongStatus(t *testing.T) {
 	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
-	
-	// fullfill the escrow once
+
+	// fulfill the escrow once
 	bankMock.ExpectRefund(context, testutil.Bob, []sdk.Coin{{
-		Denom: "token",
+		Denom:  "token",
 		Amount: sdk.NewInt(1000),
 	}})
-	bankMock.ExpectSend(context, testutil.Bob, testutil.Alice ,[]sdk.Coin{{
-		Denom: "stake",
+	bankMock.ExpectSend(context, testutil.Bob, testutil.Alice, []sdk.Coin{{
+		Denom:  "stake",
 		Amount: sdk.NewInt(9000),
 	}})
 	_, errFirstFulfill := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
-		Id: 0,
+		Id:      0,
 	})
 	require.Nil(t, errFirstFulfill)
 
 	// then try to fulfill it again
 	_, errSecondFulfill := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
-		Id: 0,
+		Id:      0,
 	})
 	require.NotNil(t, errSecondFulfill)
 	require.ErrorIs(t, errSecondFulfill, types.ErrWrongEscrowStatus)
@@ -170,22 +169,22 @@ func TestFulfillEscrowModuleCannotPay(t *testing.T) {
 	fulfiller, _ := sdk.AccAddressFromBech32(testutil.Bob)
 
 	// the bank is expected to send the FulfillerCoins from the fulfiller to the initiator
-	bankMock.ExpectSend(context, testutil.Bob, testutil.Alice ,[]sdk.Coin{{
-		Denom: "stake",
+	bankMock.ExpectSend(context, testutil.Bob, testutil.Alice, []sdk.Coin{{
+		Denom:  "stake",
 		Amount: sdk.NewInt(9000),
 	}})
 	// the bank is expected to fail to unescrow the InitiatorCoins to send them to the fulfiller
-    bankMock.EXPECT().
-		SendCoinsFromModuleToAccount(context,types.ModuleName, fulfiller, gomock.Any()).
+	bankMock.EXPECT().
+		SendCoinsFromModuleToAccount(context, types.ModuleName, fulfiller, gomock.Any()).
 		Return(errors.New("oops"))
 	defer func() {
 		r := recover()
 		require.NotNil(t, r, "The code did not panic")
-		require.Equal(t, "Module cannot release Initiator assets%!(EXTRA string=oops)", r )
+		require.Equal(t, "Module cannot release Initiator assets%!(EXTRA string=oops)", r)
 	}()
 	msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
-		Id: 0,
+		Id:      0,
 	})
 }
 
@@ -199,19 +198,19 @@ func TestFulfillEscrowFulfillerCannotPay(t *testing.T) {
 
 	// the bank is expected to fail to send the FulfillerCoins from the fulfiller to the initiator
 	bankMock.EXPECT().
-		SendCoins(context,fulfiller, initiator, []sdk.Coin{{
-			Denom: "stake",
+		SendCoins(context, fulfiller, initiator, []sdk.Coin{{
+			Denom:  "stake",
 			Amount: sdk.NewInt(9000),
 		}}).
 		Return(errors.New("oops"))
-	
+
 	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
-		Id: 0,
+		Id:      0,
 	})
 
 	require.NotNil(t, err)
-    require.EqualError(t, err, "Fulfiller cannot pay: oops")
+	require.EqualError(t, err, "Fulfiller cannot pay: oops")
 }
 
 // Testing to fulfill the escrow that can only be closed in the future, but the fulfiller cannot pay the module
@@ -224,16 +223,16 @@ func TestFulfillEscrowFulfillerCannotPayModule(t *testing.T) {
 	// the bank is expected to fail to send the FulfillerCoins from the fulfiller to the initiator
 	bankMock.EXPECT().
 		SendCoinsFromAccountToModule(context, fulfiller, types.ModuleName, []sdk.Coin{{
-			Denom: "stake",
+			Denom:  "stake",
 			Amount: sdk.NewInt(1111),
 		}}).
 		Return(errors.New("oops"))
-	
+
 	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
-		Id: 1,
+		Id:      1,
 	})
 
 	require.NotNil(t, err)
-    require.EqualError(t, err, "Fulfiller cannot pay: oops")
+	require.EqualError(t, err, "Fulfiller cannot pay: oops")
 }

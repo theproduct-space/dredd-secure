@@ -1,9 +1,9 @@
 package cli
 
 import (
+	"dredd-secure/x/escrow/types"
 	"strconv"
 
-	"dredd-secure/x/escrow/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"

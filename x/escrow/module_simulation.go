@@ -1,11 +1,12 @@
 package escrow
 
 import (
+	"dredd-secure/testutil/sample"
+	"dredd-secure/x/escrow/types"
 	"math/rand"
 
-	"dredd-secure/testutil/sample"
 	escrowsimulation "dredd-secure/x/escrow/simulation"
-	"dredd-secure/x/escrow/types"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"

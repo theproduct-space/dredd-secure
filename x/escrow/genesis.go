@@ -3,6 +3,7 @@ package escrow
 import (
 	"dredd-secure/x/escrow/keeper"
 	"dredd-secure/x/escrow/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

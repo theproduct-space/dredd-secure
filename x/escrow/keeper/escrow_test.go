@@ -1,12 +1,13 @@
 package keeper_test
 
 import (
-	"testing"
-
-	keepertest "dredd-secure/testutil/keeper"
 	"dredd-secure/testutil/nullify"
 	"dredd-secure/x/escrow/keeper"
 	"dredd-secure/x/escrow/types"
+	"testing"
+
+	keepertest "dredd-secure/testutil/keeper"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )
