@@ -9,11 +9,13 @@ import TokenPreview from "~baseComponents/TokenPreview";
 import TokenSelector, { IToken } from "~baseComponents/TokenSelector";
 import { ICondition, IContract } from "~sections/CreateContract";
 import Tips from "~sections/Tips";
+import { Coin } from "dredd-secure-client-ts/cosmos.bank.v1beta1/types/cosmos/base/v1beta1/coin";
+import { V1Beta1Coin } from "dredd-secure-client-ts/cosmos.bank.v1beta1/rest";
 
 // Hooks Imports
 
 interface ReviewContractSectionProps {
-    contract: IContract | undefined;
+    contract: EscrowEscrow | undefined;
 }
 
 export const ConditionTypes: ICondition[] = [
@@ -34,6 +36,18 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
 
     const [address, setAddress] = useState("c"); // For testing purposes only, // TODO: Get address from keplr or other wallet manager
 
+    const CoinToIToken = (c: V1Beta1Coin | undefined) : IToken | undefined => {
+        if (c) {
+            return {
+                name: c.denom ?? "", // TODO: To change with the name got from a list of tokens
+                denom: c.denom ?? "",
+                amount: Number(c.amount)
+            }
+        }
+
+        return;
+    }
+
     return (
         <div>
             <div className="card">
@@ -42,9 +56,9 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
                 </button>
                 {/* For testing purposes only */}
                 <div className="card-subtitle">What the owner wants</div>
-                <TokenPreview token={contract?.fulfillerCoins} />
+                <TokenPreview token={CoinToIToken(contract?.fulfillerCoins?.[0])} />
                 <div className="card-subtitle">What they are offering</div>
-                <TokenPreview token={contract?.initiatorCoins} />
+                <TokenPreview token={CoinToIToken(contract?.initiatorCoins?.[0])} />
                 <div className="card-subtitle">Conditions</div>
                 <div className="conditions">
                     {ConditionTypes.map((condition, index) => {
@@ -79,7 +93,7 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
                     <div className="bold">Transaction cost</div>
                     <div className="text">FREE</div>
                     <div className="bold">What you're offering</div>
-                    <TokenPreview token={contract?.fulfillerCoins?.[0]} />
+                    <TokenPreview token={CoinToIToken(contract?.fulfillerCoins?.[0])} />
                     <label>
                         <input type="checkbox"></input>
                         by checking this box ......
