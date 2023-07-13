@@ -1,20 +1,27 @@
 import { IToken } from "~baseComponents/TokenSelector";
 
-const TokenItem = (props: IToken) => {
+interface TokenItemProps {
+  token: IToken;
+  onClick: (token: IToken) => void;
+  showAmount?: boolean;
+  selected: boolean;
+}
+
+const TokenItem = (props: TokenItemProps) => {
+  const { token, onClick, showAmount, selected } = props;
+
   return (
-    <div className="single-token">
+    <button className="single-token" onClick={() => onClick(token)}>
       <div className="token-info">
         <div className="token-img">IMG</div>
         <div className="token">
-          <div className="token-name">{props.name}</div>
-          <div className="token-denom">{props.denom}</div>
+          <div className="token-name">{token.name}</div>
+          <div className="token-denom">{token.denom}</div>
         </div>
 
-        {props.amount && props.amount > 0 && (
-          <div className="token-amount">{props.amount}</div>
-        )}
+        {showAmount && <div className="token-amount">{token.amount ?? 0}</div>}
       </div>
-    </div>
+    </button>
   );
 };
 

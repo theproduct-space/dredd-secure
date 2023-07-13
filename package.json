@@ -12,5 +12,8 @@
     "start-fe": "cd react && npm run dev"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@cosmjs/encoding": "^0.31.0"
+  }
 }
