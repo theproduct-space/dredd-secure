@@ -58,10 +58,11 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 
 		// change the escrow status to "pending"
 		escrow.Status = constants.StatusPending
+		// Add the escrow to the list of pending escrows
+		k.AddPendingEscrow(ctx, &escrow)
 	}
 
 	escrow.Fulfiller = msg.Creator
 	k.SetEscrow(ctx, escrow)
 	return &types.MsgFulfillEscrowResponse{}, nil
 }
-

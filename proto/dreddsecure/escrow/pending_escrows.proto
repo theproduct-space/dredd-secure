@@ -1,0 +1,10 @@
+syntax = "proto3";
+package dreddsecure.escrow;
+
+option go_package = "dredd-secure/x/escrow/types";
+import "gogoproto/gogo.proto"; 
+import "cosmos/base/v1beta1/coin.proto"; 
+
+message PendingEscrows {
+  repeated uint64 pendingEscrowIds = 1 [(gogoproto.nullable) = false];
+}

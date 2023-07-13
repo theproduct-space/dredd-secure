@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"strconv"
 	"time"
+	"bytes"
+	"sort"
 
 	"dredd-secure/x/escrow/types"
 
@@ -155,4 +157,97 @@ func GetEscrowIDFromBytes(bz []byte) uint64 {
 	return binary.BigEndian.Uint64(bz)
 }
 
+// GetAllPendingEscrows returns all pending escrows ID
+func (k Keeper) GetAllPendingEscrows(ctx sdk.Context) (list []uint64) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
+	byteKey := types.KeyPrefix(types.PendingEscrowKey)
+	bz := store.Get(byteKey)
 
+	if bz == nil {
+		return
+	}
+
+	for i := 0; i <= len(bz); i += 8 {
+		barr := bz[i:]
+		if (len(barr) >= 8) {
+			var val uint64 = binary.BigEndian.Uint64(barr)
+			list = append(list, val)
+		}
+	}
+
+	return
+}
+
+// Fulfills escrows ordered in start date as ascending, removes fulfilled escrows from the array
+func (k Keeper) FulfillPendingEscrows(ctx sdk.Context) {
+	var pendingEscrows []uint64 = k.GetAllPendingEscrows(ctx)
+	var i int = 0
+	for index, v := range pendingEscrows {
+		escrow, found := k.GetEscrow(ctx, v)
+		if (found && k.ValidateConditions(ctx, escrow)) {
+			k.ReleaseAssets(ctx, escrow)
+			i = index
+		} else if (found && !k.ValidateConditions(ctx, escrow)) {
+			break
+		}
+	}
+
+	if (len(pendingEscrows) > i + 1) {
+		pendingEscrows = pendingEscrows[i + 1:]
+	} else {
+		pendingEscrows = []uint64{}
+	}
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
+	
+	var buf *bytes.Buffer = new(bytes.Buffer)
+	byteKey := types.KeyPrefix(types.PendingEscrowKey)
+	binary.Write(buf, binary.BigEndian, pendingEscrows)
+	if (buf.Bytes() == nil) {
+		store.Set(byteKey, []byte{})
+	} else {
+		store.Set(byteKey, buf.Bytes())
+	}
+}
+
+// Check if id exists in array
+func ExistsInArr (arr []uint64, value uint64) bool {
+	var min int = 0
+	var max int = len(arr)
+
+	if (max == 0) {
+		return false
+	}
+
+	for (min < max) {
+		var mid int = (max + (min - 1)) >> 1
+		if (arr[mid] == value) {
+			return true
+		} 
+
+		if (arr[mid] > value) {
+			max = mid - 1
+		} else {
+			min = mid + 1
+		}
+	}
+
+	return false
+}
+
+// Add escrow id to pending escrows id array in order
+func (k Keeper) AddPendingEscrow(ctx sdk.Context, escrow *types.Escrow) {
+    pendingEscrows := k.GetAllPendingEscrows(ctx)
+	if (!ExistsInArr(pendingEscrows, escrow.GetId())) {
+		i := sort.Search(len(pendingEscrows), func(i int) bool { return pendingEscrows[i] >= escrow.GetId() })
+		pendingEscrows = append(pendingEscrows, escrow.GetId())
+		copy(pendingEscrows[i+1:], pendingEscrows[i:])
+		pendingEscrows[i] = escrow.GetId()
+	}
+
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
+	
+	var buf *bytes.Buffer = new(bytes.Buffer)
+	byteKey := types.KeyPrefix(types.PendingEscrowKey)
+	binary.Write(buf, binary.BigEndian, pendingEscrows)
+	store.Set(byteKey, buf.Bytes())
+}
