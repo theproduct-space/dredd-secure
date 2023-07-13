@@ -212,14 +212,14 @@ func (k Keeper) FulfillPendingEscrows(ctx sdk.Context) {
 // Check if id exists in array
 func ExistsInArr (arr []uint64, value uint64) bool {
 	var min int = 0
-	var max int = len(arr)
+	var max int = len(arr) - 1
 
-	if (max == 0) {
+	if (max < 0) {
 		return false
 	}
 
-	for (min < max) {
-		var mid int = (max + (min - 1)) >> 1
+	for (min <= max) {
+		var mid int = (max + (min - 1)) / 2
 		if (arr[mid] == value) {
 			return true
 		} 
