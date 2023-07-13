@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"dredd-secure/x/escrow/constants"
 	"encoding/binary"
 	"fmt"
 	"strconv"
@@ -181,11 +182,13 @@ func (k Keeper) GetAllPendingEscrows(ctx sdk.Context) (list []uint64) {
 // Fulfills escrows ordered in start date as ascending, removes fulfilled escrows from the array
 func (k Keeper) FulfillPendingEscrows(ctx sdk.Context) {
 	var pendingEscrows []uint64 = k.GetAllPendingEscrows(ctx)
-	var i int = 0
+	var i int = -1
 	for index, v := range pendingEscrows {
 		escrow, found := k.GetEscrow(ctx, v)
 		if (found && k.ValidateConditions(ctx, escrow)) {
 			k.ReleaseAssets(ctx, escrow)
+			escrow.Status = constants.StatusClosed
+			k.SetEscrow(ctx, escrow)
 			i = index
 		} else if (found && !k.ValidateConditions(ctx, escrow)) {
 			break
@@ -235,13 +238,23 @@ func ExistsInArr (arr []uint64, value uint64) bool {
 }
 
 // Add escrow id to pending escrows id array in order
-func (k Keeper) AddPendingEscrow(ctx sdk.Context, escrow *types.Escrow) {
+func (k Keeper) AddPendingEscrow(ctx sdk.Context, escrow types.Escrow) {
     pendingEscrows := k.GetAllPendingEscrows(ctx)
 	if (!ExistsInArr(pendingEscrows, escrow.GetId())) {
-		i := sort.Search(len(pendingEscrows), func(i int) bool { return pendingEscrows[i] >= escrow.GetId() })
-		pendingEscrows = append(pendingEscrows, escrow.GetId())
-		copy(pendingEscrows[i+1:], pendingEscrows[i:])
-		pendingEscrows[i] = escrow.GetId()
+		if (len(pendingEscrows) > 0) {
+			i := sort.Search(len(pendingEscrows) - 1, func(i int) bool { 
+				escr, found := k.GetEscrow(ctx, pendingEscrows[i])
+				if (found) {
+					return escr.GetStartDate() >= escrow.GetStartDate() 
+				}
+				return false
+			})
+			pendingEscrows = append(pendingEscrows, escrow.GetId())
+			copy(pendingEscrows[i+1:], pendingEscrows[i:])
+			pendingEscrows[i] = escrow.GetId()
+		} else {
+			pendingEscrows = append(pendingEscrows, escrow.GetId())
+		}
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})

@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 	"strconv"
+	"fmt"
 
 	"dredd-secure/x/escrow"
 	"dredd-secure/x/escrow/keeper"
@@ -201,6 +202,7 @@ func TestFulfillEscrowsFuture(t *testing.T) {
 func TestFulfillEscrowsNearFuture(t *testing.T) {
 	msgServer, k, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
+	fmt.Println(k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context)))
 	
 	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
 	bankMock.ExpectPay(context, testutil.Bob ,[]sdk.Coin{{
@@ -212,6 +214,7 @@ func TestFulfillEscrowsNearFuture(t *testing.T) {
 		Id: 3,
 	})
 
+	fmt.Println(k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context)))
     time.Sleep(10 * time.Second)
 
 	bankMock.ExpectRefund(context, testutil.Bob, []sdk.Coin{{
@@ -224,6 +227,7 @@ func TestFulfillEscrowsNearFuture(t *testing.T) {
 	}})
 
 	k.FulfillPendingEscrows(sdk.UnwrapSDKContext(context))
+	fmt.Println(k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context)))
 
 	bankMock.ExpectPay(context, testutil.Bob ,[]sdk.Coin{{
 		Denom: "stake",
@@ -233,6 +237,7 @@ func TestFulfillEscrowsNearFuture(t *testing.T) {
 		Creator: testutil.Bob,
 		Id: 4,
 	})
+	fmt.Println(k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context)))
 
 	require.Nil(t, err)
 	require.Nil(t, err2)
