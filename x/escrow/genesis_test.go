@@ -1,12 +1,13 @@
 package escrow_test
 
 import (
-	"testing"
-
-	keepertest "dredd-secure/testutil/keeper"
 	"dredd-secure/testutil/nullify"
 	"dredd-secure/x/escrow"
 	"dredd-secure/x/escrow/types"
+	"testing"
+
+	keepertest "dredd-secure/testutil/keeper"
+
 	"github.com/stretchr/testify/require"
 )
 

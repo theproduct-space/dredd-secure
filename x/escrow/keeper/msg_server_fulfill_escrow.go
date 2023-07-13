@@ -2,10 +2,9 @@ package keeper
 
 import (
 	"context"
-	"fmt"
-
 	"dredd-secure/x/escrow/constants"
 	"dredd-secure/x/escrow/types"
+	"fmt"
 
 	"cosmossdk.io/errors"
 
@@ -13,18 +12,22 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
+// FulfillEscrow fulfills an existing escrow of the given id
 func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEscrow) (*types.MsgFulfillEscrowResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-	escrow, found := k.GetEscrow(ctx, msg.Id)
 
+	// Retrieve the escrow from the keeper
+	escrow, found := k.GetEscrow(ctx, msg.Id)
 	if !found {
 		return nil, errors.Wrapf(sdkerrors.ErrKeyNotFound, "The escrow with key %d doesn't exist", msg.Id)
 	}
 
+	// Make sure the fulfill request is not from the initiator of the escrow contract
 	if escrow.Initiator == msg.Creator {
-		return nil, errors.Wrap(sdkerrors.ErrUnauthorized, "Initator of the escrow can not fulfill it.")
+		return nil, errors.Wrap(sdkerrors.ErrUnauthorized, "Initator of the escrow can not fulfill it")
 	}
 
+	// Make sure the escrow status is "open"
 	if escrow.Status != constants.StatusOpen {
 		return nil, errors.Wrapf(types.ErrWrongEscrowStatus, "%v", escrow.Status)
 	}
@@ -34,7 +37,7 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 
 	conditionsValidity := k.ValidateConditions(ctx, escrow)
 
-	if (conditionsValidity) {
+	if conditionsValidity {
 		// If all the conditions are met, send fulfiller coins to initator
 		errSendCoins := k.bank.SendCoins(ctx, fulfiller, initiator, escrow.FulfillerCoins)
 		if errSendCoins != nil {
@@ -48,7 +51,7 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 		}
 
 		// change the escrow status to "closed"
-		escrow.Status = constants.StatusClosed 
+		escrow.Status = constants.StatusClosed
 	} else {
 		// If not all conditions are met, escrow the fulfiller assets
 		errEscrowInitiatorCoins := k.bank.SendCoinsFromAccountToModule(ctx, fulfiller, types.ModuleName, escrow.FulfillerCoins)
@@ -64,4 +67,3 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 	k.SetEscrow(ctx, escrow)
 	return &types.MsgFulfillEscrowResponse{}, nil
 }
-

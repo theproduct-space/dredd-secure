@@ -1,11 +1,15 @@
+//nolint
+// PSTODO: lint this file when simulations are implemented
 package escrow
 
 import (
 	"math/rand"
 
 	"dredd-secure/testutil/sample"
-	escrowsimulation "dredd-secure/x/escrow/simulation"
 	"dredd-secure/x/escrow/types"
+
+	escrowsimulation "dredd-secure/x/escrow/simulation"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"

@@ -1,6 +1,7 @@
 package main
 
 import (
+	//nolint:typecheck // Ignore lint error for unused os import
 	"os"
 
 	"github.com/cosmos/cosmos-sdk/server"
