@@ -42,6 +42,7 @@ const TokenSelector = (props: TokenSelectorProps) => {
     return tokens.map((token) => {
       return (
         <TokenItem
+          key={`all-token-${token.denom}`}
           token={token}
           onClick={(t) => onSave(t)}
           showAmount={true}

@@ -8,24 +8,29 @@ import { IContract } from "~sections/CreateContract";
 import PaymentSection from "~sections/PaymentSection";
 
 const PaymentView = () => {
-    const contract = useLocation().state as IContract;
-    const keplr = useKeplr();
-    const chainId = "dreddsecure";
-    const [offlineSigner, setOfflineSigner] = useState(
-        keplr.getOfflineSigner(chainId),
-    );
-    const [address, setAddress] = useState("");
+  const contract = useLocation().state as IContract;
+  const keplr = useKeplr();
+  const chainId = "dreddsecure";
+  const [offlineSigner, setOfflineSigner] = useState(
+    keplr.getOfflineSigner(chainId),
+  );
+  const [address, setAddress] = useState("");
 
-    keplr.listenToAccChange(async () => {
-        setOfflineSigner(keplr.getOfflineSigner(chainId));
-        const { address } = (await offlineSigner.getAccounts())[0];
-        setAddress(address);
-    });
+  keplr.listenToAccChange(async () => {
+    setOfflineSigner(keplr.getOfflineSigner(chainId));
+    const { address } = (await offlineSigner.getAccounts())[0];
+    setAddress(address);
+  });
 
-    return <PaymentSection contract={contract} wallet={{
+  return (
+    <PaymentSection
+      contract={contract}
+      wallet={{
         address: address,
-        offlineSigner: offlineSigner
-    }} />;
+        offlineSigner: offlineSigner,
+      }}
+    />
+  );
 };
 
 export default PaymentView;
