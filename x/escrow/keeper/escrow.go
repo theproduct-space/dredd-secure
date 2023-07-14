@@ -107,19 +107,31 @@ func (k Keeper) ValidateConditions(ctx sdk.Context, escrow types.Escrow) bool {
 	unixTimeNow := now.Unix()
 
 	endDateInt, errParseIntEndDate := strconv.ParseInt(escrow.EndDate, 10, 64)
-	startDateInt, errParseIntStartDate := strconv.ParseInt(escrow.StartDate, 10, 64)
 	if (errParseIntEndDate != nil) {
 		panic(errParseIntEndDate.Error())
 	}
-	if (errParseIntStartDate != nil) {
-		panic(errParseIntStartDate.Error())
-	}
 	
 	// If the current date is before start date or after end date, time conditions are not met
-	if (unixTimeNow < startDateInt || unixTimeNow > endDateInt) {
+	if (!k.ValidateStartDate(ctx, escrow) || unixTimeNow > endDateInt) {
 		return false
 	}
 
+	return true
+}
+
+func (k Keeper) ValidateStartDate(ctx sdk.Context, escrow types.Escrow) bool {
+	now := time.Now()
+	unixTimeNow := now.Unix()
+
+	startDateInt, errParseIntStartDate := strconv.ParseInt(escrow.StartDate, 10, 64)
+
+	if (errParseIntStartDate != nil) {
+		panic(errParseIntStartDate.Error())
+	}
+
+	if (unixTimeNow < startDateInt) {
+		return false
+	}
 	return true
 }
 
@@ -190,7 +202,7 @@ func (k Keeper) FulfillPendingEscrows(ctx sdk.Context) {
 			escrow.Status = constants.StatusClosed
 			k.SetEscrow(ctx, escrow)
 			i = index
-		} else if (found && !k.ValidateConditions(ctx, escrow)) {
+		} else if (found && !k.ValidateStartDate(ctx, escrow)) {
 			break
 		}
 	}
