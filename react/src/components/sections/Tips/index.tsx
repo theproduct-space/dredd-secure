@@ -1,11 +1,9 @@
-// dredd-secure-client-ts Imports
-import { Coin } from "dredd-secure-client-ts/cosmos.bank.v1beta1/types/cosmos/base/v1beta1/coin";
-
 // Custom Imports
 import TokenElement from "~baseComponents/TokenElement";
+import { IToken } from "~baseComponents/TokenSelector";
 
 interface TipsProps {
-  selectedToken: Coin | undefined;
+  selectedToken: IToken | undefined;
   onClick: () => void;
 }
 

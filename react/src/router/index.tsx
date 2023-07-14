@@ -15,29 +15,29 @@ const home = {
   to: "/",
   view: <Landing />,
 };
-// const otherPages = [
-//   {
-//     label: "Dashboard",
-//     to: "/dashboard",
-//     view: <Dashboard />,
-//   },
-//   {
-//     label: "CreateContract",
-//     to: "/escrow/create",
-//     view: <CreateContractPage />,
-//   },
-//   {
-//     label: "PayEscrow",
-//     to: "/escrow/pay",
-//     view: <PaymentView />,
-//   },
-//   {
-//     label: "ViewEscrow",
-//     to: "/escrow/:id",
-//     view: <ReviewContract />,
-//   },
-// ];
-// const allPages = otherPages.concat(home);
+const otherPages = [
+  {
+    label: "Dashboard",
+    to: "/dashboard",
+    view: <Dashboard />,
+  },
+  {
+    label: "CreateContract",
+    to: "/escrow/create",
+    view: <CreateContractPage />,
+  },
+  {
+    label: "PayEscrow",
+    to: "/escrow/pay",
+    view: <PaymentView />,
+  },
+  {
+    label: "ViewEscrow",
+    to: "/escrow/:id",
+    view: <ReviewContract />,
+  },
+];
+const allPages = otherPages.concat(home);
 
 const Layout = () => {
   return (
@@ -53,10 +53,9 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    // children: allPages.map((page) => {
-    //   return { path: page.to, element: page.view };
-    // }),
-    children: [{ path: home.to, element: home.view }],
+    children: allPages.map((page) => {
+      return { path: page.to, element: page.view };
+    }),
   },
 ]);
 

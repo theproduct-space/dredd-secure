@@ -1,31 +1,32 @@
-// React Imports
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
-// dredd-secure-client-ts
-import { Coin } from "dredd-secure-client-ts/cosmos.bank.v1beta1/types/cosmos/base/v1beta1/coin";
-
-// Custom Imports
 import TokenElement from "~baseComponents/TokenElement";
-import TokenSelector from "~baseComponents/TokenSelector";
+import TokenSelector, { IToken } from "~baseComponents/TokenSelector";
 import { ConditionTypes } from "~sections/ReviewContractSection";
-import Tips from "~sections/Tips";
+import TipsSection from "~sections/Tips";
 
 export interface ICondition {
   type: string;
   prop: string;
+  input?: string;
 }
 
 export interface IContract {
-  initiatorCoins: Coin;
-  fulfillerCoins: Coin;
-  conditions?: ICondition[];
-  tips?: Coin;
+  initiatorCoins: IToken;
+  fulfillerCoins: IToken;
+  conditions?: { condition: ICondition; value: string }[];
+  tips?: IToken;
   status?: string;
   id?: string;
 }
 
-const CreateContract = () => {
+interface CreateContractProps {
+  contract: IContract | undefined;
+}
+
+const CreateContract = (props: CreateContractProps) => {
+  const { contract } = props;
+
   enum Modals {
     Own,
     Wanted,
@@ -33,15 +34,17 @@ const CreateContract = () => {
   }
 
   const [modalToOpen, setModalToOpen] = useState<Modals | undefined>();
-  const [selectedOwnToken, setSelectedOwnToken] = useState<Coin | undefined>();
+  const [selectedOwnToken, setSelectedOwnToken] = useState<IToken | undefined>(
+    contract?.initiatorCoins,
+  );
   const [selectedWantedToken, setSelectedWantedToken] = useState<
-    Coin | undefined
-  >();
+    IToken | undefined
+  >(contract?.fulfillerCoins);
   const [selectedTokenTips, setSelectedTokenTips] = useState<
-    Coin | undefined
-  >();
+    IToken | undefined
+  >(contract?.tips);
 
-  const handleSaving = (t: Coin | undefined) => {
+  const handleSaving = (t: IToken | undefined) => {
     let func;
     switch (modalToOpen) {
       case Modals.Own:
@@ -76,9 +79,9 @@ const CreateContract = () => {
   };
 
   const displayConditionTypes = () => {
-    return ConditionTypes.map((condition, index) => {
+    return ConditionTypes.map((condition) => {
       return (
-        <option key={`condition-${index}`} value={condition.type}>
+        <option key={condition.type} value={condition.type}>
           {condition.type}
         </option>
       );
@@ -87,7 +90,7 @@ const CreateContract = () => {
   // This is for testing purposes
   const [conditions, setConditions] = useState<
     { condition: ICondition; value: string }[]
-  >([]);
+  >(contract?.conditions ?? []);
 
   const handleAddNewEmptyCondition = () => {
     const array = [...conditions].concat({
@@ -100,6 +103,15 @@ const CreateContract = () => {
 
   const handleRemoveCondition = (id: number) => {
     const array = conditions.slice(0, id).concat(conditions.slice(id + 1));
+    setConditions(array);
+  };
+
+  const handleChangeConditionValue = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    id: number,
+  ) => {
+    const array = [...conditions];
+    array[id].value = e.target.value;
     setConditions(array);
   };
 
@@ -125,8 +137,7 @@ const CreateContract = () => {
             <div className="subtitle">Add Conditions</div>
             {conditions.map((condition, index) => {
               return (
-                <div className="condition" key={`add-condition-${index}`}>
-                  {" "}
+                <div key={`condition-${index}`} className="condition">
                   {/* Might be a component for a condition and maybe a section for condition-list */}
                   <div className="condition-number">Condition #{index + 1}</div>
                   <div className="condition-value">
@@ -136,7 +147,11 @@ const CreateContract = () => {
                     >
                       {displayConditionTypes()}
                     </select>
-                    <input value={condition.value}></input>
+                    <input
+                      value={condition.value}
+                      type={condition.condition.input ?? "datetime-local"}
+                      onChange={(e) => handleChangeConditionValue(e, index)}
+                    ></input>
                     <button onClick={() => handleRemoveCondition(index)}>
                       -
                     </button>
@@ -161,6 +176,7 @@ const CreateContract = () => {
               <div className="assets-selection">
                 <div className="sub-subtitle">Select Your Assets:</div>
                 {/* Will take as a prop another component for the base display. Here, it will be a "Select Token" button */}
+                {}
                 <TokenElement
                   selectedToken={selectedOwnToken}
                   onClick={() => setModalToOpen(Modals.Own)}
@@ -177,7 +193,7 @@ const CreateContract = () => {
               </div>
             </div>
           </div>
-          <Tips
+          <TipsSection
             selectedToken={selectedTokenTips}
             onClick={() => setModalToOpen(Modals.Tips)}
           />
@@ -188,6 +204,7 @@ const CreateContract = () => {
         state={{
           initiatorCoins: selectedOwnToken,
           fulfillerCoins: selectedWantedToken,
+          tips: selectedTokenTips,
           conditions: conditions,
         }}
       >
