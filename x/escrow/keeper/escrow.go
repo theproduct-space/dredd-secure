@@ -212,49 +212,33 @@ func (k Keeper) FulfillPendingEscrows(ctx sdk.Context) {
 	}
 }
 
-// Check if id exists in array
-func ExistsInArr (arr []uint64, value uint64) bool {
-	var min int = 0
-	var max int = len(arr) - 1
-
-	if (max < 0) {
-		return false
-	}
-
-	for (min <= max) {
-		var mid int = (max + (min - 1)) / 2
-		if (arr[mid] == value) {
-			return true
-		} 
-
-		if (arr[mid] > value) {
-			max = mid - 1
-		} else {
-			min = mid + 1
-		}
-	}
-
-	return false
-}
-
 // Add escrow id to pending escrows id array in order
 func (k Keeper) AddPendingEscrow(ctx sdk.Context, escrow types.Escrow) {
     pendingEscrows := k.GetAllPendingEscrows(ctx)
-	if (!ExistsInArr(pendingEscrows, escrow.GetId())) {
-		if (len(pendingEscrows) > 0) {
-			i := sort.Search(len(pendingEscrows) - 1, func(i int) bool { 
-				escr, found := k.GetEscrow(ctx, pendingEscrows[i])
-				if (found) {
-					return escr.GetStartDate() >= escrow.GetStartDate() 
-				}
-				return false
-			})
-			pendingEscrows = append(pendingEscrows, escrow.GetId())
-			copy(pendingEscrows[i+1:], pendingEscrows[i:])
-			pendingEscrows[i] = escrow.GetId()
-		} else {
-			pendingEscrows = append(pendingEscrows, escrow.GetId())
+
+	// Either add in order or add to the list if its the first element
+	if (len(pendingEscrows) > 0) {
+		index := sort.Search(len(pendingEscrows), func(i int) bool {
+			return escrow.GetId() == pendingEscrows[i]
+		})
+	
+		// Escrow already in the list
+		if (index < len(pendingEscrows)) {
+			return
 		}
+
+		i := sort.Search(len(pendingEscrows), func(i int) bool { 
+			escr, found := k.GetEscrow(ctx, pendingEscrows[i])
+			if (found) {
+				return escr.GetStartDate() >= escrow.GetStartDate() 
+			}
+			return false
+		})
+		pendingEscrows = append(pendingEscrows, escrow.GetId())
+		copy(pendingEscrows[i+1:], pendingEscrows[i:])
+		pendingEscrows[i] = escrow.GetId()
+	} else {
+		pendingEscrows = append(pendingEscrows, escrow.GetId())
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
