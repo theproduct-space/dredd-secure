@@ -2,8 +2,8 @@
   "dependencies": {
     "@cosmjs/amino": "^0.31.0",
     "@cosmjs/cli": "^0.31.0",
-    "@cosmjs/encoding": "^0.29.5",
-    "@cosmjs/stargate": "^0.29.5",
+    "@cosmjs/encoding": "^0.31.0",
+    "@cosmjs/stargate": "^0.31.0",
     "@cosmjs/tendermint-rpc": "^0.31.0",
     "@headlessui/react": "^1.7.3",
     "@headlessui/tailwindcss": "^0.1.1",
