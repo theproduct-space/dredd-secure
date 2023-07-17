@@ -34,6 +34,11 @@ service Query {
     option (google.api.http).get = "/dredd-secure/escrow/escrows_by_address/{address}";
   
   }
+
+  rpc PendingEscrows (QueryPendingEscrowsRequest) returns (QueryPendingEscrowsResponse) {
+    option (google.api.http).get = "/dredd-secure/escrow/pending_escrows";
+  
+  }
 }
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
@@ -72,3 +77,8 @@ message QueryEscrowsByAddressResponse {
            cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
+message QueryPendingEscrowsRequest {}
+
+message QueryPendingEscrowsResponse {
+  repeated uint64                                 ids     = 1 [(gogoproto.nullable) = false]; 
+}
