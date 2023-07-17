@@ -2,8 +2,8 @@ package keeper
 
 import (
 	"context"
-
 	"dredd-secure/x/escrow/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -32,7 +32,6 @@ func (k Keeper) EscrowAll(goCtx context.Context, req *types.QueryAllEscrowReques
 		escrows = append(escrows, escrow)
 		return nil
 	})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

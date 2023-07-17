@@ -1,9 +1,9 @@
 package cli
 
 import (
+	"dredd-secure/x/escrow/types"
 	"strconv"
 
-	"dredd-secure/x/escrow/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -19,7 +19,7 @@ func CmdFulfillEscrow() *cobra.Command {
 		Short: "Broadcast message fulfill_escrow",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argId, err := cast.ToUint64E(args[0])
+			argID, err := cast.ToUint64E(args[0])
 			if err != nil {
 				return err
 			}
@@ -31,7 +31,7 @@ func CmdFulfillEscrow() *cobra.Command {
 
 			msg := types.NewMsgFulfillEscrow(
 				clientCtx.GetFromAddress().String(),
-				argId,
+				argID,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

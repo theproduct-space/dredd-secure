@@ -2,14 +2,13 @@ package keeper
 
 import (
 	"dredd-secure/x/escrow/constants"
+	"dredd-secure/x/escrow/types"
 	"encoding/binary"
 	"fmt"
 	"strconv"
 	"time"
 	"bytes"
 	"sort"
-
-	"dredd-secure/x/escrow/types"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -100,25 +99,28 @@ func (k Keeper) GetAllEscrow(ctx sdk.Context) (list []types.Escrow) {
 	return
 }
 
-// Validate the escrow conditions
+// ValidateConditions validates the escrow conditions
 func (k Keeper) ValidateConditions(ctx sdk.Context, escrow types.Escrow) bool {
 	// Validate time conditions
 	now := time.Now()
 	unixTimeNow := now.Unix()
 
 	endDateInt, errParseIntEndDate := strconv.ParseInt(escrow.EndDate, 10, 64)
+
 	if (errParseIntEndDate != nil) {
 		panic(errParseIntEndDate.Error())
 	}
 	
 	// If the current date is before start date or after end date, time conditions are not met
 	if (!k.ValidateStartDate(ctx, escrow) || unixTimeNow > endDateInt) {
+
 		return false
 	}
 
 	return true
 }
 
+// ValidateStartDate validates that the startDate is not in the future
 func (k Keeper) ValidateStartDate(ctx sdk.Context, escrow types.Escrow) bool {
 	now := time.Now()
 	unixTimeNow := now.Unix()
@@ -135,13 +137,14 @@ func (k Keeper) ValidateStartDate(ctx sdk.Context, escrow types.Escrow) bool {
 	return true
 }
 
-// Release assets to the respective parties. The Initiator receives the FulfillerCoins, vice-versa
+
+// ReleaseAssets releases the escrowed assets to the respective parties. The Initiator receives the FulfillerCoins, vice-versa
 func (k Keeper) ReleaseAssets(ctx sdk.Context, escrow types.Escrow) {
 	// Release initiator assets
 	initiator, err := sdk.AccAddressFromBech32(escrow.Initiator)
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 	errSendCoinsInitiator := k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, initiator, escrow.FulfillerCoins)
 	if errSendCoinsInitiator != nil {
 		panic(fmt.Sprintf(types.ErrCannotReleaseInitiatorAssets.Error(), errSendCoinsInitiator.Error()))

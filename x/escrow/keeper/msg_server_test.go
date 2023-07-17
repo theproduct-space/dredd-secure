@@ -2,17 +2,19 @@ package keeper_test
 
 import (
 	"context"
+	"dredd-secure/x/escrow/keeper"
+	"dredd-secure/x/escrow/types"
 	"testing"
 
 	keepertest "dredd-secure/testutil/keeper"
-	"dredd-secure/x/escrow/keeper"
-	"dredd-secure/x/escrow/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )
 
-func setupMsgServer(t testing.TB) (types.MsgServer, context.Context) {
-	k, ctx := keepertest.EscrowKeeper(t)
+func setupMsgServer(tb testing.TB) (types.MsgServer, context.Context) {
+	tb.Helper()
+	k, ctx := keepertest.EscrowKeeper(tb)
 	return keeper.NewMsgServerImpl(*k), sdk.WrapSDKContext(ctx)
 }
 

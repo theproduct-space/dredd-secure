@@ -1,8 +1,8 @@
 // dredd-secure-client-ts Imports
-import { V1Beta1Coin } from "dredd-secure-client-ts/cosmos.bank.v1beta1/rest";
+import { IToken } from "~baseComponents/TokenSelector";
 
 interface TokenPreviewProps {
-  token: V1Beta1Coin | undefined;
+  token: IToken | undefined;
 }
 
 const TokenPreview = (props: TokenPreviewProps) => {
