@@ -268,13 +268,11 @@ const CreateContract = () => {
           </div>
           <div className="flex justify-end py-8">
             <Link
-              to={{
-                pathname: "/escrow/pay",
-                state: {
-                  initiatorCoins: selectedOwnToken,
-                  fulfillerCoins: selectedWantedToken,
-                  conditions: conditions,
-                },
+              to={"/escrow/pay"}
+              state={{
+                initiatorCoins: selectedOwnToken,
+                fulfillerCoins: selectedWantedToken,
+                conditions: conditions,
               }}
             >
               <Button text="Review Contract" className="capitalize" />
