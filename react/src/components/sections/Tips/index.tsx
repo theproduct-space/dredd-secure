@@ -1,5 +1,9 @@
 // Custom Imports
 import TokenElement from "~baseComponents/TokenElement";
+import Typography from "~baseComponents/Typography";
+
+//Images
+import charityImage from "~assets/charity.png";
 import { IToken } from "~baseComponents/TokenSelector";
 
 interface TipsProps {
@@ -11,16 +15,27 @@ function Tips(props: TipsProps) {
   const { selectedToken, onClick } = props;
 
   return (
-    <div className="tips-section">
-      <span>Tips and donations go a long way.</span>
-      <div>
-        <span>We are a free service. Lorem ipsum</span>
-        {/* Will take as a prop another component for the base display. Here, it will be a "Add Tip" link or button */}
-        <TokenElement
-          selectedToken={selectedToken}
-          onClick={onClick}
-          baseButton={<span>Add Tip</span>}
-        />
+    <div className="border-t-[1px] border-white-200">
+      <div className="p-8 flex justify-between items-center">
+        <div>
+          <Typography variant="body-small" className="flex gap-2">
+            <img src={charityImage} alt="charity-heart" className="w-6 h-6" />
+            Tips and donations go a long way.
+          </Typography>
+          <Typography variant="body-small">We are a free service.</Typography>
+        </div>
+        <div>
+          {/* Will take as a prop another component for the base display. Here, it will be a "Add Tip" link or button */}
+          <TokenElement
+            selectedToken={selectedToken}
+            onClick={onClick}
+            baseButton={
+              <Typography variant="body-small" className="text-orange">
+                Add Tip
+              </Typography>
+            }
+          />
+        </div>
       </div>
     </div>
   );
