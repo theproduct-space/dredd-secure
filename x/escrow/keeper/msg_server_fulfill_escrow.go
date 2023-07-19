@@ -59,6 +59,9 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 			return nil, errors.Wrapf(errEscrowInitiatorCoins, types.ErrFulfillerCannotPay.Error())
 		}
 
+		// Add the escrow to the list of pending escrows
+		k.AddPendingEscrow(ctx, escrow)
+
 		// change the escrow status to "pending"
 		escrow.Status = constants.StatusPending
 	}
