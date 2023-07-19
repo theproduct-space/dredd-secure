@@ -12,7 +12,7 @@ func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		EscrowList: []Escrow{},
 		// this line is used by starport scaffolding # genesis/types/default
-		Params: DefaultParams(),
+		Params:         DefaultParams(),
 		PendingEscrows: []uint64{},
 	}
 }

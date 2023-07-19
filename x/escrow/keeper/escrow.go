@@ -1,14 +1,14 @@
 package keeper
 
 import (
+	"bytes"
 	"dredd-secure/x/escrow/constants"
 	"dredd-secure/x/escrow/types"
 	"encoding/binary"
 	"fmt"
+	"sort"
 	"strconv"
 	"time"
-	"bytes"
-	"sort"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -107,13 +107,12 @@ func (k Keeper) ValidateConditions(ctx sdk.Context, escrow types.Escrow) bool {
 
 	endDateInt, errParseIntEndDate := strconv.ParseInt(escrow.EndDate, 10, 64)
 
-	if (errParseIntEndDate != nil) {
+	if errParseIntEndDate != nil {
 		panic(errParseIntEndDate.Error())
 	}
-	
-	// If the current date is before start date or after end date, time conditions are not met
-	if (!k.ValidateStartDate(ctx, escrow) || unixTimeNow > endDateInt) {
 
+	// If the current date is before start date or after end date, time conditions are not met
+	if !k.ValidateStartDate(ctx, escrow) || unixTimeNow > endDateInt {
 		return false
 	}
 
@@ -127,16 +126,15 @@ func (k Keeper) ValidateStartDate(ctx sdk.Context, escrow types.Escrow) bool {
 
 	startDateInt, errParseIntStartDate := strconv.ParseInt(escrow.StartDate, 10, 64)
 
-	if (errParseIntStartDate != nil) {
+	if errParseIntStartDate != nil {
 		panic(errParseIntStartDate.Error())
 	}
 
-	if (unixTimeNow < startDateInt) {
+	if unixTimeNow < startDateInt {
 		return false
 	}
 	return true
 }
-
 
 // ReleaseAssets releases the escrowed assets to the respective parties. The Initiator receives the FulfillerCoins, vice-versa
 func (k Keeper) ReleaseAssets(ctx sdk.Context, escrow types.Escrow) {
@@ -185,8 +183,8 @@ func (k Keeper) GetAllPendingEscrows(ctx sdk.Context) (list []uint64) {
 
 	for i := 0; i <= len(bz); i += 8 {
 		barr := bz[i:]
-		if (len(barr) >= 8) {
-			var val uint64 = binary.BigEndian.Uint64(barr)
+		if len(barr) >= 8 {
+			val := binary.BigEndian.Uint64(barr)
 			list = append(list, val)
 		}
 	}
@@ -196,31 +194,34 @@ func (k Keeper) GetAllPendingEscrows(ctx sdk.Context) (list []uint64) {
 
 // Fulfills escrows ordered in start date as ascending, removes fulfilled escrows from the array
 func (k Keeper) FulfillPendingEscrows(ctx sdk.Context) {
-	var pendingEscrows []uint64 = k.GetAllPendingEscrows(ctx)
-	var i int = -1
+	pendingEscrows := k.GetAllPendingEscrows(ctx)
+	i := -1
 	for index, v := range pendingEscrows {
 		escrow, found := k.GetEscrow(ctx, v)
-		if (found && k.ValidateConditions(ctx, escrow)) {
+		if found && k.ValidateConditions(ctx, escrow) {
 			k.ReleaseAssets(ctx, escrow)
 			escrow.Status = constants.StatusClosed
 			k.SetEscrow(ctx, escrow)
 			i = index
-		} else if (found && !k.ValidateStartDate(ctx, escrow)) {
+		} else if found && !k.ValidateStartDate(ctx, escrow) {
 			break
 		}
 	}
 
-	if (len(pendingEscrows) > i + 1) {
-		pendingEscrows = pendingEscrows[i + 1:]
+	if len(pendingEscrows) > i+1 {
+		pendingEscrows = pendingEscrows[i+1:]
 	} else {
 		pendingEscrows = []uint64{}
 	}
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
-	
-	var buf *bytes.Buffer = new(bytes.Buffer)
+
+	buf := new(bytes.Buffer)
 	byteKey := types.KeyPrefix(types.PendingEscrowKey)
-	binary.Write(buf, binary.BigEndian, pendingEscrows)
-	if (buf.Bytes() == nil) {
+	err := binary.Write(buf, binary.BigEndian, pendingEscrows)
+	if err != nil {
+		panic(err)
+	}
+	if buf.Bytes() == nil {
 		store.Set(byteKey, []byte{})
 	} else {
 		store.Set(byteKey, buf.Bytes())
@@ -229,23 +230,23 @@ func (k Keeper) FulfillPendingEscrows(ctx sdk.Context) {
 
 // Add escrow id to pending escrows id array in order
 func (k Keeper) AddPendingEscrow(ctx sdk.Context, escrow types.Escrow) {
-    pendingEscrows := k.GetAllPendingEscrows(ctx)
+	pendingEscrows := k.GetAllPendingEscrows(ctx)
 
 	// Either add in order or add to the list if its the first element
-	if (len(pendingEscrows) > 0) {
+	if len(pendingEscrows) > 0 {
 		index := sort.Search(len(pendingEscrows), func(i int) bool {
 			return escrow.GetId() == pendingEscrows[i]
 		})
-	
+
 		// Escrow already in the list
-		if (index < len(pendingEscrows)) {
+		if index < len(pendingEscrows) {
 			return
 		}
 
-		i := sort.Search(len(pendingEscrows), func(i int) bool { 
+		i := sort.Search(len(pendingEscrows), func(i int) bool {
 			escr, found := k.GetEscrow(ctx, pendingEscrows[i])
-			if (found) {
-				return escr.GetStartDate() >= escrow.GetStartDate() 
+			if found {
+				return escr.GetStartDate() >= escrow.GetStartDate()
 			}
 			return false
 		})
@@ -257,9 +258,12 @@ func (k Keeper) AddPendingEscrow(ctx sdk.Context, escrow types.Escrow) {
 	}
 
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
-	
-	var buf *bytes.Buffer = new(bytes.Buffer)
+
+	buf := new(bytes.Buffer)
 	byteKey := types.KeyPrefix(types.PendingEscrowKey)
-	binary.Write(buf, binary.BigEndian, pendingEscrows)
+	err := binary.Write(buf, binary.BigEndian, pendingEscrows)
+	if err != nil {
+		panic(err)
+	}
 	store.Set(byteKey, buf.Bytes())
 }

@@ -49,7 +49,6 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, context.Context
 		StartDate: "1588148578",
 		EndDate:   "2788148978",
 	})
-
 	if err != nil {
 		tb.Fatalf("Failed to create escrow: %s", err)
 	}
@@ -57,7 +56,6 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, context.Context
 	// Return the necessary components for testing
 	return server, context, ctrl, bankMock
 }
-
 
 // TestCancelEscrow tests the CancelEscrow message server function
 func TestCancelEscrow(t *testing.T) {
@@ -164,7 +162,6 @@ func TestCancelEscrowModuleCannotPay(t *testing.T) {
 		Creator: testutil.Alice,
 		Id:      0,
 	})
-
 	if err != nil {
 		require.Equal(t, "Module cannot release Initiator assets%!(EXTRA string=oops)", err.Error())
 	}

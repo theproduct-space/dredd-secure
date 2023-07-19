@@ -19,6 +19,7 @@ import (
 
 // setupMsgServerCreateEscrow is a test helper function to setup the necessary dependencies for testing the CreateEscrow message server function
 func setupMsgServerCreateEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, context.Context, *gomock.Controller, *testutil.MockBankKeeper) {
+	tb.Helper()
 
 	// Setup the necessary dependencies
 	ctrl := gomock.NewController(tb)
@@ -43,25 +44,25 @@ func TestCreateEscrow(t *testing.T) {
 	})
 
 	_, err := msgServer.CreateEscrow(context, &types.MsgCreateEscrow{
-		Creator:         testutil.Bob,
-		InitiatorCoins:  []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1000)}},
-		FulfillerCoins:  []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
-		StartDate:       "1588148578",
-		EndDate:         "2788148978",
+		Creator:        testutil.Bob,
+		InitiatorCoins: []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1000)}},
+		FulfillerCoins: []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
+		StartDate:      "1588148578",
+		EndDate:        "2788148978",
 	})
 
 	// Verify that the escrow was created successfully
 	escrow, found := keeper.GetEscrow(sdk.UnwrapSDKContext(context), 0)
 	require.True(t, found)
 	require.EqualValues(t, types.Escrow{
-		Id:              0,
-		Status:          constants.StatusOpen,
-		Initiator:       testutil.Bob,
-		Fulfiller:       "",
-		InitiatorCoins:  []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1000)}},
-		FulfillerCoins:  []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
-		StartDate:       "1588148578",
-		EndDate:         "2788148978",
+		Id:             0,
+		Status:         constants.StatusOpen,
+		Initiator:      testutil.Bob,
+		Fulfiller:      "",
+		InitiatorCoins: []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1000)}},
+		FulfillerCoins: []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
+		StartDate:      "1588148578",
+		EndDate:        "2788148978",
 	}, escrow)
 
 	require.Nil(t, err)
@@ -81,11 +82,11 @@ func TestCreateEscrowInitiatorCannotPay(t *testing.T) {
 		Return(errors.New("oops"))
 
 	_, err := msgServer.CreateEscrow(context, &types.MsgCreateEscrow{
-		Creator:         testutil.Alice,
-		InitiatorCoins:  []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1000)}},
-		FulfillerCoins:  []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
-		StartDate:       "1588148578",
-		EndDate:         "2788148978",
+		Creator:        testutil.Alice,
+		InitiatorCoins: []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1000)}},
+		FulfillerCoins: []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
+		StartDate:      "1588148578",
+		EndDate:        "2788148978",
 	})
 
 	// Verify that the expected error is returned
