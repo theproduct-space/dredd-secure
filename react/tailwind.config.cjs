@@ -37,6 +37,7 @@ module.exports = {
         yellow: "#FFC75A",
         // functional colors
         bg: "#11100B",
+        buttonBg: "#32302B",
         title: "#ffffff",
         text: "#f9f9f9",
         inverse: "#000",

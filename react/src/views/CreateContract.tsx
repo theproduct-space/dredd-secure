@@ -1,7 +1,11 @@
 import CreateContract from "~sections/CreateContract";
 
 const CreateContractPage = () => {
-  return <CreateContract />;
+  return (
+    <div className="bg-black">
+      <CreateContract />
+    </div>
+  );
 };
 
 export default CreateContractPage;
