@@ -1,9 +1,9 @@
 package types_test
 
 import (
+	"dredd-secure/x/escrow/types"
 	"testing"
 
-	"dredd-secure/x/escrow/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -21,7 +21,6 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
-
 				EscrowList: []types.Escrow{
 					{
 						Id: 0,

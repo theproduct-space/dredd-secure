@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"dredd-secure/x/escrow/types"
 	"fmt"
 
 	"github.com/cometbft/cometbft/libs/log"
@@ -8,8 +9,6 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-
-	"dredd-secure/x/escrow/types"
 )
 
 type (

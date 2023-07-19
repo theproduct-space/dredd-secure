@@ -1,13 +1,7 @@
-// React Imports
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
-// dredd-secure-client-ts
-import { Coin } from "dredd-secure-client-ts/cosmos.bank.v1beta1/types/cosmos/base/v1beta1/coin";
-
-// Custom Imports
 import TokenElement from "~baseComponents/TokenElement";
-import TokenSelector from "~baseComponents/TokenSelector";
+import TokenSelector, { IToken } from "~baseComponents/TokenSelector";
 import { ConditionTypes } from "~sections/ReviewContractSection";
 import Tips from "~sections/Tips";
 import Typography from "~baseComponents/Typography";
@@ -25,33 +19,42 @@ import BaseModal from "~baseComponents/BaseModal/Index";
 export interface ICondition {
   type: string;
   prop: string;
+  input?: string;
 }
 
 export interface IContract {
-  initiatorCoins: Coin;
-  fulfillerCoins: Coin;
-  conditions?: ICondition[];
-  tips?: Coin;
+  initiatorCoins: IToken;
+  fulfillerCoins: IToken;
+  conditions?: { condition: ICondition; value: string }[];
+  tips?: IToken;
   status?: string;
   id?: string;
 }
 
-const CreateContract = () => {
+interface CreateContractProps {
+  contract: IContract | undefined;
+}
+
+const CreateContract = (props: CreateContractProps) => {
+  const { contract } = props;
+
   enum Modals {
     Own,
     Wanted,
     Tips,
   }
   const [modalToOpen, setModalToOpen] = useState<Modals | undefined>();
-  const [selectedOwnToken, setSelectedOwnToken] = useState<Coin | undefined>();
+  const [selectedOwnToken, setSelectedOwnToken] = useState<IToken | undefined>(
+    contract?.initiatorCoins,
+  );
   const [selectedWantedToken, setSelectedWantedToken] = useState<
-    Coin | undefined
-  >();
+    IToken | undefined
+  >(contract?.fulfillerCoins);
   const [selectedTokenTips, setSelectedTokenTips] = useState<
-    Coin | undefined
-  >();
+    IToken | undefined
+  >(contract?.tips);
 
-  const handleSaving = (t: Coin | undefined) => {
+  const handleSaving = (t: IToken | undefined) => {
     let func;
     switch (modalToOpen) {
       case Modals.Own:
@@ -96,9 +99,9 @@ const CreateContract = () => {
   };
 
   const displayConditionTypes = () => {
-    return ConditionTypes.map((condition, index) => {
+    return ConditionTypes.map((condition) => {
       return (
-        <option key={`condition-${index}`} value={condition.type}>
+        <option key={condition.type} value={condition.type}>
           {condition.type}
         </option>
       );
@@ -107,7 +110,7 @@ const CreateContract = () => {
 
   const [conditions, setConditions] = useState<
     { condition: ICondition; value: string }[]
-  >([]);
+  >(contract?.conditions ?? []);
 
   const handleAddNewEmptyCondition = () => {
     const array = [...conditions].concat({
@@ -119,6 +122,15 @@ const CreateContract = () => {
 
   const handleRemoveCondition = (id: number) => {
     const array = conditions.slice(0, id).concat(conditions.slice(id + 1));
+    setConditions(array);
+  };
+
+  const handleChangeConditionValue = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    id: number,
+  ) => {
+    const array = [...conditions];
+    array[id].value = e.target.value;
     setConditions(array);
   };
 

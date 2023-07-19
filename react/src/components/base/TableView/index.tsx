@@ -4,11 +4,18 @@ import { useNavigate } from "react-router-dom";
 
 // dredd-secure-client-ts Imports
 import { txClient } from "dredd-secure-client-ts/dreddsecure.escrow";
-import { OfflineAminoSigner } from "dredd-secure-client-ts/node_modules/@cosmjs/amino";
-import { OfflineDirectSigner } from "dredd-secure-client-ts/node_modules/@cosmjs/proto-signing";
+import {
+  OfflineAminoSigner,
+  OfflineDirectSigner,
+} from "dredd-secure-client-ts/node_modules/@keplr-wallet/types";
 
 // Styles Imports
 import "./TableView.css";
+
+export interface IWallet {
+  address: string;
+  offlineSigner: OfflineAminoSigner & OfflineDirectSigner;
+}
 
 export interface TableHeader {
   label: string;
@@ -26,10 +33,7 @@ export interface TableData {
 export interface TableViewProps {
   headers: TableHeader[];
   data: TableData[];
-  wallet: {
-    address: string;
-    offlineSigner: (OfflineAminoSigner & OfflineDirectSigner) | undefined;
-  };
+  wallet: IWallet;
   filterOptions: {
     prop: string;
     value: string | undefined;
@@ -80,7 +84,8 @@ const TableView = (props: TableViewProps) => {
   const handleOnClickRow = (id: number) => {
     navigate(`/escrow/${id}`);
   };
-
+  console.log(sortedData);
+  console.log(wallet);
   return (
     <div className="table">
       <div className="table-row header-row">

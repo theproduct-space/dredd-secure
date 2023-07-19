@@ -1,5 +1,5 @@
 // react Imports
-// import { useState } from "react";
+import { useState } from "react";
 
 // dredd-secure-client-ts Imports
 import { Coin } from "dredd-secure-client-ts/cosmos.bank.v1beta1/types/cosmos/base/v1beta1/coin";
@@ -14,26 +14,42 @@ export interface IToken {
 }
 
 export interface TokenSelectorProps {
-  onSave: (token: Coin | undefined) => void;
+  onSave: (token: IToken | undefined) => void;
   address?: string;
-  selectedToken?: Coin;
+  selectedToken?: IToken;
 }
 
 const TokenSelector = (props: TokenSelectorProps) => {
-  // const [selectedToken, setSelectedToken] = useState(props.selectedToken);
-  // const { onSave, address } = props;
+  const [selectedToken, setSelectedToken] = useState(props.selectedToken);
+  const { onSave, address } = props;
 
-  // const displayOwnedToken = () => {};
+  const displayOwnedToken = () => {
+    // TODO: When the wallet connector will be implemented, get all tokens from wallet logic here.
+  };
 
   const displayAllToken = () => {
     const tokens: IToken[] = [
       {
         name: "token",
-        denom: "tok",
+        denom: "utok",
+      },
+      {
+        name: "ATOM",
+        denom: "uatom",
       },
     ];
 
-    return <TokenItem {...tokens[0]} />;
+    return tokens.map((token) => {
+      return (
+        <TokenItem
+          key={`all-token-${token.denom}`}
+          token={token}
+          onClick={(t) => onSave(t)}
+          showAmount={true}
+          selected={selectedToken?.denom == token.denom}
+        />
+      );
+    });
   };
 
   return (

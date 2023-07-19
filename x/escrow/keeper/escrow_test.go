@@ -1,12 +1,13 @@
 package keeper_test
 
 import (
-	"testing"
-
-	keepertest "dredd-secure/testutil/keeper"
 	"dredd-secure/testutil/nullify"
 	"dredd-secure/x/escrow/keeper"
 	"dredd-secure/x/escrow/types"
+	"testing"
+
+	keepertest "dredd-secure/testutil/keeper"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )
@@ -23,6 +24,7 @@ func TestEscrowGet(t *testing.T) {
 	keeper, ctx := keepertest.EscrowKeeper(t)
 	items := createNEscrow(keeper, ctx, 10)
 	for _, item := range items {
+		item := item // Assign to a new variable within the for loop to fix implicit memory aliasing in for loop.
 		got, found := keeper.GetEscrow(ctx, item.Id)
 		require.True(t, found)
 		require.Equal(t,

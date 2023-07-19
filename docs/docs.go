@@ -2,6 +2,7 @@ package docs
 
 import (
 	"embed"
+	"fmt"
 	httptemplate "html/template"
 	"net/http"
 
@@ -29,12 +30,15 @@ func handler(title string) http.HandlerFunc {
 	t, _ := httptemplate.ParseFS(template, indexFile)
 
 	return func(w http.ResponseWriter, req *http.Request) {
-		t.Execute(w, struct {
+		err := t.Execute(w, struct {
 			Title string
 			URL   string
 		}{
 			title,
 			apiFile,
 		})
+		if err != nil {
+			fmt.Println("Error executing template:", err)
+		}
 	}
 }

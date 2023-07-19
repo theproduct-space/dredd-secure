@@ -1,6 +1,9 @@
 package keeper_test
 
 import (
+	"dredd-secure/testutil/nullify"
+	"dredd-secure/x/escrow/types"
+	"math/rand"
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -10,9 +13,6 @@ import (
 	"google.golang.org/grpc/status"
 
 	keepertest "dredd-secure/testutil/keeper"
-	"dredd-secure/testutil/nullify"
-	"dredd-secure/x/escrow/types"
-	"math/rand"
 )
 
 func TestEscrowQueryByAddress(t *testing.T) {
@@ -23,19 +23,19 @@ func TestEscrowQueryByAddress(t *testing.T) {
 	escrowsResults := [3]int{0, 0, 0}
 
 	items := make([]types.Escrow, 20)
-    for i := range items {
+	for i := range items {
 		r1 := rand.Intn(3)
 		items[i].Initiator = addresses[r1]
 		r2 := rand.Intn(3)
 		items[i].Fulfiller = addresses[r2]
-        items[i].Id = keeper.AppendEscrow(ctx, items[i])
+		items[i].Id = keeper.AppendEscrow(ctx, items[i])
 
-		escrowsResults[r1] += 1
+		escrowsResults[r1]++
 		if r1 != r2 {
-			escrowsResults[r2] += 1
+			escrowsResults[r2]++
 		}
-    }
-	
+	}
+
 	tests := []struct {
 		desc     string
 		request  *types.QueryEscrowsByAddressRequest
@@ -44,17 +44,17 @@ func TestEscrowQueryByAddress(t *testing.T) {
 	}{
 		{
 			desc:     "Alice",
-			request:  &types.QueryEscrowsByAddressRequest{ Address: addresses[0] },
+			request:  &types.QueryEscrowsByAddressRequest{Address: addresses[0]},
 			response: escrowsResults[0],
 		},
 		{
 			desc:     "Bob",
-			request:  &types.QueryEscrowsByAddressRequest{ Address: addresses[1] },
+			request:  &types.QueryEscrowsByAddressRequest{Address: addresses[1]},
 			response: escrowsResults[1],
 		},
 		{
-			desc:    "InvalidAddress",
-			request: &types.QueryEscrowsByAddressRequest{ Address: "invalid" },
+			desc:     "InvalidAddress",
+			request:  &types.QueryEscrowsByAddressRequest{Address: "invalid"},
 			response: 0,
 		},
 		{
@@ -88,23 +88,23 @@ func TestEscrowQueryByAddressPaginated(t *testing.T) {
 	escrowsResults := [3]int{0, 0, 0}
 
 	items := make([]types.Escrow, 20)
-	var items_test []types.Escrow
-    for i := range items {
+	var itemsTest []types.Escrow
+	for i := range items {
 		r1 := rand.Intn(3)
 		items[i].Initiator = addresses[r1]
 		r2 := rand.Intn(3)
 		items[i].Fulfiller = addresses[r2]
-        items[i].Id = keeper.AppendEscrow(ctx, items[i])
+		items[i].Id = keeper.AppendEscrow(ctx, items[i])
 
-		escrowsResults[r1] += 1
+		escrowsResults[r1]++
 		if r1 != r2 {
-			escrowsResults[r2] += 1
+			escrowsResults[r2]++
 		}
 
 		if r1 == 0 || r2 == 0 {
-			items_test = append(items_test, items[i])
+			itemsTest = append(itemsTest, items[i])
 		}
-    }
+	}
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryEscrowsByAddressRequest {
 		return &types.QueryEscrowsByAddressRequest{
@@ -125,7 +125,7 @@ func TestEscrowQueryByAddressPaginated(t *testing.T) {
 			count := len(resp.Escrow)
 			require.LessOrEqual(t, count, step)
 			require.Subset(t,
-				nullify.Fill(items_test),
+				nullify.Fill(itemsTest),
 				nullify.Fill(resp.Escrow),
 			)
 		}
@@ -138,7 +138,7 @@ func TestEscrowQueryByAddressPaginated(t *testing.T) {
 			require.NoError(t, err)
 			require.LessOrEqual(t, len(resp.Escrow), step)
 			require.Subset(t,
-				nullify.Fill(items_test),
+				nullify.Fill(itemsTest),
 				nullify.Fill(resp.Escrow),
 			)
 			next = resp.Pagination.NextKey
@@ -149,7 +149,7 @@ func TestEscrowQueryByAddressPaginated(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, len(items), int(resp.Pagination.Total))
 		require.ElementsMatch(t,
-			nullify.Fill(items_test),
+			nullify.Fill(itemsTest),
 			nullify.Fill(resp.Escrow),
 		)
 	})

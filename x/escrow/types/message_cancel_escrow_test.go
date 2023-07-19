@@ -1,10 +1,9 @@
 package types_test
 
 import (
-	"testing"
-
 	"dredd-secure/testutil/sample"
 	"dredd-secure/x/escrow/types"
+	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
