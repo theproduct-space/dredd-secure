@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useContext } from "react";
+import useWallet from "~src/components/utils/useWallet";
 
 type NormalizedDenom = {
   normalized: string;
@@ -21,6 +22,7 @@ const DenomContext = createContext(context);
 export const useDenomContext = () => useContext(DenomContext);
 
 export default function DenomProvider({ children }: Props) {
+  const { address } = useWallet();
   return (
     <DenomContext.Provider value={context}>{children}</DenomContext.Provider>
   );

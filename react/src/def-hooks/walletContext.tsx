@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { useClient } from "../hooks/useClient";
-import type { Wallet, Nullable, EncodedWallet } from "../utils/interfaces";
+import type { EncodedWallet, Nullable, Wallet } from "../utils/interfaces";
 
 interface Props {
   children?: ReactNode;

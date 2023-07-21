@@ -16,7 +16,7 @@ const TokenItem = (props: TokenItemProps) => {
         <div className="token-img">IMG</div>
         <div className="token">
           <div className="token-name">{token.name}</div>
-          <div className="token-denom">{token.denom}</div>
+          <div className="token-denom">{token.display}</div>
         </div>
 
         {showAmount && <div className="token-amount">{token.amount ?? 0}</div>}

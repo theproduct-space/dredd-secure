@@ -62,6 +62,12 @@ function Account() {
     setState((oldState) => ({ ...oldState, modalPage: "connect" }));
 
     const onKeplrConnect = (): void => {
+      const now = new Date().getTime();
+      const item = {
+        value: true,
+        expiration: now + 3600000 * 24,
+      };
+      sessionStorage.setItem("isConnected", JSON.stringify(item));
       setState((oldState) => ({
         ...oldState,
         connectWalletModal: false,

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import TokenElement from "~baseComponents/TokenElement";
 import TokenSelector, { IToken } from "~baseComponents/TokenSelector";
+import Account from "~sections/Account";
 import { ConditionTypes } from "~sections/ReviewContractSection";
 import Tips from "~sections/Tips";
 import Typography from "~baseComponents/Typography";
@@ -74,9 +75,11 @@ const CreateContract = (props: CreateContractProps) => {
 
   const displayModal = () => {
     let modal;
+    let showOwnedToken = false;
     switch (modalToOpen) {
       case Modals.Own:
         modal = selectedOwnToken;
+        showOwnedToken = true;
         break;
       case Modals.Wanted:
         modal = selectedWantedToken;
@@ -88,14 +91,14 @@ const CreateContract = (props: CreateContractProps) => {
         modal = null;
         break;
     }
-    if (
-      modalToOpen !== undefined &&
-      (modalToOpen === Modals.Own ||
-        modalToOpen === Modals.Wanted ||
-        modalToOpen === Modals.Tips)
-    ) {
-      return <TokenSelector selectedToken={modal} onSave={handleSaving} />;
-    }
+
+    return (
+      <TokenSelector
+        selectedToken={modal}
+        onSave={handleSaving}
+        ownedToken={showOwnedToken}
+      />
+    );
   };
 
   const displayConditionTypes = () => {
@@ -154,7 +157,7 @@ const CreateContract = (props: CreateContractProps) => {
         loading="lazy"
       />
       <div className="relative min-h-screen w-full pt-32">
-        <Link to="/">
+        <Link to="/dashboard">
           <Typography variant="body" className="font-revalia text-orange">
             {"< GO BACK"}
           </Typography>
@@ -168,7 +171,7 @@ const CreateContract = (props: CreateContractProps) => {
             </span>
             <div className="title-2">
               <Typography variant="h5" className="font-revalia pb-4">
-                Create Contract
+                Create Contract <Account />
               </Typography>
             </div>
             <div className="bg-gray rounded-3xl border-[1px] border-white-200">
@@ -233,15 +236,6 @@ const CreateContract = (props: CreateContractProps) => {
                         orangeText
                         onClick={() => setModalToOpen(Modals.Own)}
                       />
-                      {/* <TokenElement
-                        selectedToken={selectedOwnToken}
-                        onClick={() => setModalToOpen(Modals.Own)}
-                        baseButton={
-                          <Typography variant="body-small">
-                            Select Token
-                          </Typography>
-                        }
-                      /> */}
                     </div>
                     <div className="w-6/12 flex flex-col gap-2">
                       <div className="sub-subtitle">
@@ -259,15 +253,6 @@ const CreateContract = (props: CreateContractProps) => {
                         orangeText
                         onClick={() => setModalToOpen(Modals.Wanted)}
                       />
-                      {/* <TokenElement
-                        selectedToken={selectedWantedToken}
-                        onClick={() => setModalToOpen(Modals.Wanted)}
-                        baseButton={
-                          <Typography variant="body-small">
-                            Select Token
-                          </Typography>
-                        }
-                      /> */}
                     </div>
                   </div>
                 </div>

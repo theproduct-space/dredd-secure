@@ -1,21 +1,14 @@
 // React Imports
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // dredd-secure-client-ts Imports
 import { txClient } from "dredd-secure-client-ts/dreddsecure.escrow";
-import {
-  OfflineAminoSigner,
-  OfflineDirectSigner,
-} from "dredd-secure-client-ts/node_modules/@keplr-wallet/types";
 
 // Styles Imports
+import WalletConnector from "../../context/WalletConnector/WalletConnector";
 import "./TableView.css";
-
-export interface IWallet {
-  address: string;
-  offlineSigner: OfflineAminoSigner & OfflineDirectSigner;
-}
+import useWallet from "../../utils/useWallet";
 
 export interface TableHeader {
   label: string;
@@ -33,7 +26,6 @@ export interface TableData {
 export interface TableViewProps {
   headers: TableHeader[];
   data: TableData[];
-  wallet: IWallet;
   filterOptions: {
     prop: string;
     value: string | undefined;
@@ -41,14 +33,16 @@ export interface TableViewProps {
 }
 
 const TableView = (props: TableViewProps) => {
+  const chainId = "dreddsecure";
   const navigate = useNavigate();
-  const { data, headers, filterOptions, wallet } = props;
 
+  const { data, headers, filterOptions } = props;
+  const { address, offlineSigner } = useWallet();
   const [sortKey, setSortKey] = useState(headers[0].dataProp);
   const [sortAscending, setSortAscending] = useState(false);
 
   const messageClient = txClient({
-    signer: wallet.offlineSigner,
+    signer: offlineSigner,
     prefix: "cosmos",
     addr: "http://localhost:26657",
   });
@@ -74,18 +68,16 @@ const TableView = (props: TableViewProps) => {
   const handleCancelEscrow = (id: number) => {
     // Creator here is for testing only.
     // With a wallet connector, we will put the offline signer into the txClient above.
-    console.log(id);
+
     messageClient.sendMsgCancelEscrow({
-      value: { creator: wallet.address, id: id },
+      value: { creator: address, id: id },
     });
-    console.log("clicked");
   };
 
   const handleOnClickRow = (id: number) => {
     navigate(`/escrow/${id}`);
   };
-  console.log(sortedData);
-  console.log(wallet);
+
   return (
     <div className="table">
       <div className="table-row header-row">
@@ -136,7 +128,7 @@ const TableView = (props: TableViewProps) => {
                 );
               })}
             </button>
-            {element.initiator === wallet.address && (
+            {element.initiator === address && (
               <span key={`initiator-${index}`} className="table-cell">
                 <button onClick={() => handleCancelEscrow(element.id)}>
                   Cancel

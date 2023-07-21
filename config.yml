@@ -4,6 +4,9 @@ accounts:
     coins:
       - 20000token
       - 200000000stake
+      - 2000000utok
+      - 2000000uatom
+    mnemonic: march amazing across divorce blood shaft review sketch ripple paddle comic exhibit shock false season treat program shrimp energy exit anger cloud mammal filter
   - name: bob
     coins:
       - 30000token

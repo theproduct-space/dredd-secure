@@ -16,7 +16,7 @@ const SuccessSection = (props: SuccessSectionProps) => {
       <div className="card-title centered">{successTitle}</div>
       <div className="card-body">{successBody}</div>
       <div>
-        <Link to="/app">Return Home</Link>
+        <Link to="/dashboard">Return Home</Link>
         {continueButton}
       </div>
     </div>

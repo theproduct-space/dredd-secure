@@ -15,8 +15,8 @@ import router from "./router";
 import { Analytics } from "@vercel/analytics/react";
 
 // Styles Imports
-import "./index.css";
 import "@ignt/react-library/dist/style.css";
+import "./index.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
