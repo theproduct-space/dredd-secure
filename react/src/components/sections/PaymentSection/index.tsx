@@ -3,25 +3,24 @@ import { Coin } from "dredd-secure-client-ts/cosmos.bank.v1beta1/types/cosmos/ba
 import { txClient } from "dredd-secure-client-ts/dreddsecure.escrow";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { IWallet } from "~baseComponents/TableView";
 
 // Custom Imports
 import TokenPreview from "~baseComponents/TokenPreview";
 import Account from "~sections/Account";
 import { IContract } from "~sections/CreateContract";
-import { Amount } from "~utils/interfaces";
+import useWallet from "../../utils/useWallet";
 
 interface PaymentSectionProps {
   contract: IContract;
-  wallet: IWallet;
 }
 
 const PaymentSection = (props: PaymentSectionProps) => {
-  const { contract, wallet } = props;
+  const { contract } = props;
+  const { address, offlineSigner } = useWallet();
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const navigate = useNavigate();
   const messageClient = txClient({
-    signer: wallet.offlineSigner,
+    signer: offlineSigner,
     prefix: "cosmos",
     addr: "http://localhost:26657",
   });
@@ -54,7 +53,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
 
     const response = await messageClient.sendMsgCreateEscrow({
       value: {
-        creator: wallet.address,
+        creator: address,
         initiatorCoins: initiatorCoins,
         fulfillerCoins: fulfillerCoins,
         startDate: startDate,
@@ -99,30 +98,28 @@ const PaymentSection = (props: PaymentSectionProps) => {
           <div className="exchange-icon"></div>
           <TokenPreview token={contract.fulfillerCoins} />
         </div>
-        {contract?.status != "closed" &&
-          wallet.address &&
-          wallet.address != "" && (
-            <div className="card">
-              <div className="card-title">Confirm</div>
-              <div className="bold">Transaction cost</div>
-              <div className="text">FREE</div>
-              {contract?.tips ? (
-                <>
-                  <div className="donation-review">Donation to dreddsecure</div>
-                  <TokenPreview token={contract.tips} />
-                </>
-              ) : (
-                <>
-                  <div className="donation-review">
-                    Donation to dreddsecure <button>+Add</button>
-                  </div>
-                  <div className="donation-amount">0.00</div>
-                </>
-              )}
+        {contract?.status != "closed" && address != "" && (
+          <div className="card">
+            <div className="card-title">Confirm</div>
+            <div className="bold">Transaction cost</div>
+            <div className="text">FREE</div>
+            {contract?.tips ? (
+              <>
+                <div className="donation-review">Donation to dreddsecure</div>
+                <TokenPreview token={contract.tips} />
+              </>
+            ) : (
+              <>
+                <div className="donation-review">
+                  Donation to dreddsecure <button>+Add</button>
+                </div>
+                <div className="donation-amount">0.00</div>
+              </>
+            )}
 
-              <button onClick={handleConfirmExchange}>Confirm Exchange</button>
-            </div>
-          )}
+            <button onClick={handleConfirmExchange}>Confirm Exchange</button>
+          </div>
+        )}
       </div>
       <Account />
     </div>

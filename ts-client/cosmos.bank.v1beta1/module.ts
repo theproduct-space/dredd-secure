@@ -51,7 +51,7 @@ type Field = {
 	name: string;
 	type: unknown;
 }
-function getStructure(template:any) {
+function getStructure(template) {
 	const structure: {fields: Field[]} = { fields: [] }
 	for (let [key, value] of Object.entries(template)) {
 		let field = { name: key, type: typeof value }

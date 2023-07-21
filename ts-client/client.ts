@@ -42,7 +42,7 @@ export class IgniteClient extends EventEmitter {
   async signAndBroadcast(msgs: EncodeObject[], fee: StdFee, memo: string) {
     if (this.signer) {
       const { address } = (await this.signer.getAccounts())[0];
-      const signingClient = await SigningStargateClient.connectWithSigner(this.env.rpcURL, this.signer, { registry: new Registry(this.registry) });
+      const signingClient = await SigningStargateClient.connectWithSigner(this.env.rpcURL, this.signer, { registry: new Registry(this.registry)});
       return await signingClient.signAndBroadcast(address, msgs, fee ? fee : defaultFee, memo)
     } else {
       throw new Error(" Signer is not present.");
@@ -134,8 +134,6 @@ export class IgniteClient extends EventEmitter {
           return y;
         }) ?? [];
 
-      let coinType = 118;
-
       if (chainId) {
         const suggestOptions: ChainInfo = {
           chainId,
@@ -147,7 +145,6 @@ export class IgniteClient extends EventEmitter {
           bech32Config,
           currencies,
           feeCurrencies,
-          coinType,
           ...keplrChainInfo,
         };
         await window.keplr.experimentalSuggestChain(suggestOptions);

@@ -47,7 +47,20 @@ export interface EscrowQueryAllEscrowResponse {
   pagination?: V1Beta1PageResponse;
 }
 
-export type EscrowQueryEscrowsByAddressResponse = object;
+export interface EscrowQueryEscrowsByAddressResponse {
+  Escrow?: EscrowEscrow[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
 
 export interface EscrowQueryGetEscrowResponse {
   Escrow?: EscrowEscrow;
@@ -329,10 +342,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @summary Queries a list of EscrowsByAddress items.
    * @request GET:/dredd-secure/escrow/escrows_by_address/{address}
    */
-  queryEscrowsByAddress = (address: string, params: RequestParams = {}) =>
+  queryEscrowsByAddress = (
+    address: string,
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
     this.request<EscrowQueryEscrowsByAddressResponse, RpcStatus>({
       path: `/dredd-secure/escrow/escrows_by_address/${address}`,
       method: "GET",
+      query: query,
       format: "json",
       ...params,
     });

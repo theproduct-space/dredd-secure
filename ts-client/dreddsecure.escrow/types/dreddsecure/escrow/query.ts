@@ -36,9 +36,12 @@ export interface QueryAllEscrowResponse {
 
 export interface QueryEscrowsByAddressRequest {
   address: string;
+  pagination: PageRequest | undefined;
 }
 
 export interface QueryEscrowsByAddressResponse {
+  Escrow: Escrow[];
+  pagination: PageResponse | undefined;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -341,13 +344,16 @@ export const QueryAllEscrowResponse = {
 };
 
 function createBaseQueryEscrowsByAddressRequest(): QueryEscrowsByAddressRequest {
-  return { address: "" };
+  return { address: "", pagination: undefined };
 }
 
 export const QueryEscrowsByAddressRequest = {
   encode(message: QueryEscrowsByAddressRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
+    }
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -362,6 +368,9 @@ export const QueryEscrowsByAddressRequest = {
         case 1:
           message.address = reader.string();
           break;
+        case 2:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -371,28 +380,42 @@ export const QueryEscrowsByAddressRequest = {
   },
 
   fromJSON(object: any): QueryEscrowsByAddressRequest {
-    return { address: isSet(object.address) ? String(object.address) : "" };
+    return {
+      address: isSet(object.address) ? String(object.address) : "",
+      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
+    };
   },
 
   toJSON(message: QueryEscrowsByAddressRequest): unknown {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryEscrowsByAddressRequest>, I>>(object: I): QueryEscrowsByAddressRequest {
     const message = createBaseQueryEscrowsByAddressRequest();
     message.address = object.address ?? "";
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageRequest.fromPartial(object.pagination)
+      : undefined;
     return message;
   },
 };
 
 function createBaseQueryEscrowsByAddressResponse(): QueryEscrowsByAddressResponse {
-  return {};
+  return { Escrow: [], pagination: undefined };
 }
 
 export const QueryEscrowsByAddressResponse = {
-  encode(_: QueryEscrowsByAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryEscrowsByAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.Escrow) {
+      Escrow.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -403,6 +426,12 @@ export const QueryEscrowsByAddressResponse = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.Escrow.push(Escrow.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -411,17 +440,33 @@ export const QueryEscrowsByAddressResponse = {
     return message;
   },
 
-  fromJSON(_: any): QueryEscrowsByAddressResponse {
-    return {};
+  fromJSON(object: any): QueryEscrowsByAddressResponse {
+    return {
+      Escrow: Array.isArray(object?.Escrow) ? object.Escrow.map((e: any) => Escrow.fromJSON(e)) : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
+    };
   },
 
-  toJSON(_: QueryEscrowsByAddressResponse): unknown {
+  toJSON(message: QueryEscrowsByAddressResponse): unknown {
     const obj: any = {};
+    if (message.Escrow) {
+      obj.Escrow = message.Escrow.map((e) => e ? Escrow.toJSON(e) : undefined);
+    } else {
+      obj.Escrow = [];
+    }
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryEscrowsByAddressResponse>, I>>(_: I): QueryEscrowsByAddressResponse {
+  fromPartial<I extends Exact<DeepPartial<QueryEscrowsByAddressResponse>, I>>(
+    object: I,
+  ): QueryEscrowsByAddressResponse {
     const message = createBaseQueryEscrowsByAddressResponse();
+    message.Escrow = object.Escrow?.map((e) => Escrow.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageResponse.fromPartial(object.pagination)
+      : undefined;
     return message;
   },
 };

@@ -23,9 +23,10 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 	}
 
 	// Make sure the fulfill request is not from the initiator of the escrow contract
-	if escrow.Initiator == msg.Creator {
-		return nil, errors.Wrap(sdkerrors.ErrUnauthorized, "Initator of the escrow can not fulfill it")
-	}
+	/*
+		if escrow.Initiator == msg.Creator {
+			return nil, errors.Wrap(sdkerrors.ErrUnauthorized, "Initator of the escrow can not fulfill it")
+		}*/
 
 	// Make sure the escrow status is "open"
 	if escrow.Status != constants.StatusOpen {
@@ -58,6 +59,9 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 		if errEscrowInitiatorCoins != nil {
 			return nil, errors.Wrapf(errEscrowInitiatorCoins, types.ErrFulfillerCannotPay.Error())
 		}
+
+		// Add the escrow to the list of pending escrows
+		k.AddPendingEscrow(ctx, escrow)
 
 		// change the escrow status to "pending"
 		escrow.Status = constants.StatusPending
