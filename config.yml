@@ -4,6 +4,8 @@ accounts:
     coins:
       - 20000token
       - 200000000stake
+      - 2000000utok
+      - 2000000uatom
   - name: bob
     coins:
       - 30000token

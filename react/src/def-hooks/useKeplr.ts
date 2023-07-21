@@ -10,6 +10,7 @@ export default function () {
     onErrorCb: () => void,
   ) => {
     try {
+      console.log(walletStore);
       walletStore.connectWithKeplr();
       onSuccessCb();
     } catch (e) {

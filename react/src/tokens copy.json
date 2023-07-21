@@ -1,0 +1,3356 @@
+[
+    {
+        "denom": "uixo",
+        "name": "IXO",
+        "display": "ixo",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/impacthub/images/ixo.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/impacthub/images/ixo.png"
+        }
+    },
+    {
+        "denom": "inj",
+        "name": "Injective",
+        "display": "INJ",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/injective/images/inj.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/injective/images/inj.svg"
+        }
+    },
+    {
+        "denom": "uiov",
+        "name": "Starname",
+        "display": "iov",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/starname/images/iov.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/starname/images/iov.svg"
+        }
+    },
+    {
+        "denom": "uiris",
+        "name": "IRISnet",
+        "display": "iris",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/irisnet/images/iris.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/irisnet/images/iris.svg"
+        }
+    },
+    {
+        "denom": "ujkl",
+        "name": "Jackal",
+        "display": "jkl",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/jackal/images/jkl.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/jackal/images/jkl.svg"
+        }
+    },
+    {
+        "denom": "ujuno",
+        "name": "Juno",
+        "display": "juno",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/juno.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/juno.svg"
+        }
+    },
+    {
+        "denom": "ibc/C4CFF46FD6DE35CA4CF4CE031E643C8FDC9BA4B99AE598E9B0ED98FE3A2319F9",
+        "name": "ATOM on Juno",
+        "display": "atom"
+    },
+    {
+        "denom": "cw20:juno168ctmpyppk90d34p3jjy658zf5a5l3w8wk35wht6ccqj4mr0yv8s4j5awr",
+        "name": "Neta",
+        "display": "neta",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/neta.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/neta.svg"
+        }
+    },
+    {
+        "denom": "cw20:juno1g2g7ucurum66d42g8k5twk34yegdq8c82858gz0tq2fc75zy7khssgnhjl",
+        "name": "Marble",
+        "display": "marble",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/marble.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/marble.svg"
+        }
+    },
+    {
+        "denom": "cw20:juno1re3x67ppxap48ygndmrc7har2cnc7tcxtm9nplcas4v0gc3wnmvs3s807z",
+        "name": "Hope Galaxy",
+        "display": "hope",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/hope.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/hope.svg"
+        }
+    },
+    {
+        "denom": "cw20:juno1r4pzw8f9z0sypct5l9j906d47z998ulwvhvqe5xdwgy8wf84583sxwh0pa",
+        "name": "Racoon",
+        "display": "rac",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/rac.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/rac.svg"
+        }
+    },
+    {
+        "denom": "cw20:juno1y9rf7ql6ffwkv02hsgd4yruz23pn4w97p75e2slsnkm0mnamhzysvqnxaq",
+        "name": "Block",
+        "display": "block",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/block.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/block.svg"
+        }
+    },
+    {
+        "denom": "cw20:juno1tdjwrqmnztn2j3sj2ln9xnyps5hs48q3ddwjrz7jpv6mskappjys5czd49",
+        "name": "DHK",
+        "display": "dhk",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/dhk.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/dhk.svg"
+        }
+    },
+    {
+        "denom": "cw20:juno15u3dt79t6sxxa3x3kpkhzsy56edaa5a66wvt3kxmukqjz2sx0hes5sn38g",
+        "name": "JunoSwap",
+        "display": "raw",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/raw.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/raw.png"
+        }
+    },
+    {
+        "denom": "cw20:juno17wzaxtfdw5em7lc94yed4ylgjme63eh73lm3lutp2rhcxttyvpwsypjm4w",
+        "name": "Another.Software Validator Token",
+        "display": "asvt",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/asvt.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1ur4jx0sxchdevahep7fwq28yk4tqsrhshdtylz46yka3uf6kky5qllqp4k",
+        "name": "IBC HNS (Handshake)",
+        "display": "hns",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/hns.svg"
+        }
+    },
+    {
+        "denom": "cw20:juno1n7n7d5088qlzlj37e9mgmkhx6dfgtvt02hqxq66lcap4dxnzdhwqfmgng3",
+        "name": "JoeDAO",
+        "display": "joe",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/joe.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1sfwye65qxcfsc837gu5qcprcz7w49gkv3wnat04764ld76hy3arqs779tr",
+        "name": "Digital Land Acquisition DAO",
+        "display": "dla",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/dla.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/dla.svg"
+        }
+    },
+    {
+        "denom": "cw20:juno1j0a9ymgngasfn3l5me8qpd53l5zlm9wurfdk7r65s5mg6tkxal3qpgf5se",
+        "name": "Gelotto",
+        "display": "glto",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/glto.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/glto.svg"
+        }
+    },
+    {
+        "denom": "cw20:juno1gz8cf86zr4vw9cjcyyv432vgdaecvr9n254d3uwwkx9rermekddsxzageh",
+        "name": "GKey",
+        "display": "gkey",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/gkey.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/gkey.svg"
+        }
+    },
+    {
+        "denom": "cw20:juno1t46z6hg8vvsena7sue0vg6w85ljar3cundplkre9sz0skeqkap9sxyyy6m",
+        "name": "BlackHole",
+        "display": "hole",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/hole.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/hole.svg"
+        }
+    },
+    {
+        "denom": "cw20:juno1dd0k0um5rqncfueza62w9sentdfh3ec4nw4aq4lk5hkjl63vljqscth9gv",
+        "name": "StakeEasy seJUNO",
+        "display": "sejuno",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/sejuno.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/sejuno.svg"
+        }
+    },
+    {
+        "denom": "cw20:juno1wwnhkagvcd3tjz6f8vsdsw5plqnw8qy2aj3rrhqr2axvktzv9q2qz8jxn3",
+        "name": "StakeEasy bJUNO",
+        "display": "bjuno",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/bjuno.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/bjuno.svg"
+        }
+    },
+    {
+        "denom": "cw20:juno159q8t5g02744lxq8lfmcn6f78qqulq9wn3y9w7lxjgkz4e0a6kvsfvapse",
+        "name": "Solarbank DAO",
+        "display": "solar",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/solar.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/solar.svg"
+        }
+    },
+    {
+        "denom": "cw20:juno19rqljkh95gh40s7qdx40ksx3zq5tm4qsmsrdz9smw668x9zdr3lqtg33mf",
+        "name": "StakeEasy SEASY",
+        "display": "seasy",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/seasy.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/seasy.svg"
+        }
+    },
+    {
+        "denom": "cw20:juno1p8x807f6h222ur0vssqy3qk6mcpa40gw2pchquz5atl935t7kvyq894ne3",
+        "name": "MuseDAO",
+        "display": "muse",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/muse.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1qsrercqegvs4ye0yqg93knv73ye5dc3prqwd6jcdcuj8ggp6w0us66deup",
+        "name": "Loop Finance",
+        "display": "loop",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/loop.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1cltgm8v842gu54srmejewghnd6uqa26lzkpa635wzra9m9xuudkqa2gtcz",
+        "name": "Fanfury",
+        "display": "fury",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/fanfury.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1rws84uz7969aaa7pej303udhlkt3j9ca0l3egpcae98jwak9quzq8szn2l",
+        "name": "POSTHUMAN",
+        "display": "phmn",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/phmn.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/phmn.svg"
+        }
+    },
+    {
+        "denom": "cw20:juno1u45shlp0q4gcckvsj06ss4xuvsu0z24a0d0vr9ce6r24pht4e5xq7q995n",
+        "name": "Hopers",
+        "display": "hopers",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/hopers.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/hopers.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1g647t78y2ulqlm3lss8rs3d0spzd0teuwhdvnqn92tr79yltk9dq2h24za",
+        "name": "Red",
+        "display": "red",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/red.png"
+        }
+    },
+    {
+        "denom": "cw20:juno14q8kk464fafql2fwmlsgvgcdl6h2csqpzv4hr025fmcvgjahpess32k0j7",
+        "name": "Blue",
+        "display": "blue",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/blue.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1mkw83sv6c7sjdvsaplrzc8yaes9l42p4mhy0ssuxjnyzl87c9eps7ce3m9",
+        "name": "Wynd DAO Governance Token",
+        "display": "wynd",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/wynd.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/wynd.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1s2dp05rspeuzzpzyzdchk262szehrtfpz847uvf98cnwh53ulx4qg20qwj",
+        "name": "Banana Token",
+        "display": "banana",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/banana.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1qmlchtmjpvu0cr7u0tad2pq8838h6farrrjzp39eqa9xswg7teussrswlq",
+        "name": "nRide Token",
+        "display": "nride",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/nride.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/nride.png"
+        }
+    },
+    {
+        "denom": "cw20:juno14lycavan8gvpjn97aapzvwmsj8kyrvf644p05r0hu79namyj3ens87650k",
+        "name": "Signal",
+        "display": "sgnl",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/sgnl.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1zkwveux7y6fmsr88atf3cyffx96p0c96qr8tgcsj7vfnhx7sal3s3zu3ps",
+        "name": "Junø Apes",
+        "display": "jape",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/jape.png"
+        }
+    },
+    {
+        "denom": "cw20:juno12wxyvtqe76x2a5jj6ckp2hfq8v32m6rvyyxwwufl2tksqvkt7whqczv6pa",
+        "name": "Catom",
+        "display": "catom",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/catom.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1g0wuyu2f49ncf94r65278puxzclf5arse9f3kvffxyv4se4vgdmsk4dvqz",
+        "name": "Howl",
+        "display": "howl",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/howl.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1u8cr3hcjvfkzxcaacv9q75uw9hwjmn8pucc93pmy6yvkzz79kh3qncca8x",
+        "name": "Juno Fox",
+        "display": "fox",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/fox.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1xekkh27punj0uxruv3gvuydyt856fax0nu750xns99t2qcxp7xmsqwhfma",
+        "name": "Guardian",
+        "display": "grdn",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/guardian.png"
+        }
+    },
+    {
+        "denom": "cw20:juno166heaxlyntd33a5euh4rrz26svhean4klzw594esmd02l4atan6sazy2my",
+        "name": "Mini Punks",
+        "display": "mnpu",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/mnpu.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/mnpu.svg"
+        }
+    },
+    {
+        "denom": "cw20:juno10gthz5ufgrpuk5cscve2f0hjp56wgp90psqxcrqlg4m9mcu9dh8q4864xy",
+        "name": "Kleomedes",
+        "display": "kleo",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/kleomedes.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1qqwf3lkfjhp77yja7gmg3y95pda0e5xctqrdhf3wvwdd79flagvqfgrgxp",
+        "name": "Sikoba Token",
+        "display": "sikoba",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/sikoba.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/sikoba.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1x5qt47rw84c4k6xvvywtrd40p8gxjt8wnmlahlqg07qevah3f8lqwxfs7z",
+        "name": "ShibaCosmos",
+        "display": "shibac",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/shibacosmos.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1ngww7zxak55fql42wmyqrr4rhzpne24hhs4p3w4cwhcdgqgr3hxsmzl9zg",
+        "name": "Celestims",
+        "display": "clst",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/celestims.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1m4h8q4p305wgy7vkux0w6e5ylhqll3s6pmadhxkhqtuwd5wlxhxs8xklsw",
+        "name": "WATR",
+        "display": "watr",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/watr.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1ju8k8sqwsqu5k6umrypmtyqu2wqcpnrkf4w4mntvl0javt4nma7s8lzgss",
+        "name": "Casa",
+        "display": "casa",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/casa.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1j4ux0f6gt7e82z7jdpm25v4g2gts880ap64rdwa49989wzhd0dfqed6vqm",
+        "name": "Summit",
+        "display": "summit",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/summit.png"
+        }
+    },
+    {
+        "denom": "cw20:juno13ca2g36ng6etcfhr9qxx352uw2n5e92np54thfkm3w3nzlhsgvwsjaqlyq",
+        "name": "Manna",
+        "display": "manna",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/manna.png"
+        }
+    },
+    {
+        "denom": "cw20:juno12etxwkxvms0uy9ak8g3pyq6a53myukufdnx82pakzmjmpm77a0ksr9gs5v",
+        "name": "EMPWR",
+        "display": "empwr",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/empwr.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1525fuspletvzykpgr2atxpymu9le4mghd7qq4a4u23uwqzc2f3fq7fmafd",
+        "name": "Middle",
+        "display": "middle",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/middle.png"
+        }
+    },
+    {
+        "denom": "cw20:juno17703kcxtsg37hryxnestejyyycuv5yyvnghp2e7w0kqvafnnyetsgzq62w",
+        "name": "Sunset",
+        "display": "sunset",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/sunset.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1uu3rxu7w7fpfj4sl4xpxppgymk57mzdzn6kg7492jdxh5dwk7d2qq9429e",
+        "name": "Living Tree",
+        "display": "tree",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/livingtree.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1jwdy7v4egw36pd84aeks3ww6n8k7zhsumd4ac8q5lts83ppxueus4626e8",
+        "name": "Invaders",
+        "display": "invdrs",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/invdrs.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1jrr0tuuzxrrwcg6hgeqhw5wqpck2y55734e7zcrp745aardlp0qqg8jz06",
+        "name": "Apemos",
+        "display": "apemos",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/apemos.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1ytymtllllsp3hfmndvcp802p2xmy5s8m59ufel8xv9ahyxyfs4hs4kd4je",
+        "name": "Osmosis Doge",
+        "display": "osdoge",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/osdoge.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1k2ruzzvvwwtwny6gq6kcwyfhkzahaunp685wmz4hafplduekj98q9hgs6d",
+        "name": "Doge Apr",
+        "display": "doga",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/doga.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1zqrj3ta4u7ylv0wqzd8t8q3jrr9rdmn43zuzp9zemeunecnhy8fss778g7",
+        "name": "Osmo Pepe",
+        "display": "pepe",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/pepe.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1f5datjdse3mdgrapwuzs3prl7pvxxht48ns6calnn0t77v2s9l8s0qu488",
+        "name": "Catmos",
+        "display": "catmos",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/catmos.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1dyyf7pxeassxvftf570krv7fdf5r8e4r04mp99h0mllsqzp3rs4q7y8yqg",
+        "name": "Spacer",
+        "display": "spacer",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/spacer.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1dpany8c0lj526lsa02sldv7shzvnw5dt5ues72rk35hd69rrydxqeraz8l",
+        "name": "LIGHT",
+        "display": "light",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/light.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1llg7q2d5dqlrqzh5dxv8c7kzzjszld34s5vktqmlmaaxqjssz43sxyhq0d",
+        "name": "Mille",
+        "display": "mile",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/mille.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1lpvx3mv2a6ddzfjc7zzz2v2cm5gqgqf0hx67hc5p5qwn7hz4cdjsnznhu8",
+        "name": "Void",
+        "display": "void",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/void.png"
+        }
+    },
+    {
+        "denom": "cw20:juno10vgf2u03ufcf25tspgn05l7j3tfg0j63ljgpffy98t697m5r5hmqaw95ux",
+        "name": "Silica",
+        "display": "silica",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/silica.png"
+        }
+    },
+    {
+        "denom": "cw20:juno1epxnvge53c4hkcmqzlxryw5fp7eae2utyk6ehjcfpwajwp48km3sgxsh9k",
+        "name": "Pepec",
+        "display": "pepec",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/pepec.png"
+        }
+    },
+    {
+        "denom": "cw20:juno15au4k2jgwd0jnchy0fkg3lm00fpt7jt0j2duuzradn2q7sega2dszyn5pp",
+        "name": "Palantin",
+        "display": "palantin",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/pltn.png"
+        }
+    },
+    {
+        "denom": "cw20:juno12mcwmd6wqhledkjsurlfqtc8j0pedvxlcxw3gs4kh2qf808ehehsen8nmw",
+        "name": "Y-Foundry DAO",
+        "display": "yfd",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/yfd.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/yfd.svg"
+        }
+    },
+    {
+        "denom": "ibc/297C64CC42B5A8D8F82FE2EBE208A6FE8F94B86037FA28C4529A23701C228F7A",
+        "name": "Neta",
+        "display": "neta",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/osmosis-labs/assetlists/main/images/neta.png"
+        }
+    },
+    {
+        "denom": "ukuji",
+        "name": "Kuji",
+        "display": "kuji",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/kuji.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/kuji.svg"
+        }
+    },
+    {
+        "denom": "factory/kujira1qk00h5atutpsv900x202pxx42npjr9thg58dnqpa72f2p7m2luase444a7/uusk",
+        "name": "USK",
+        "display": "USK",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/usk.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/usk.svg"
+        }
+    },
+    {
+        "denom": "factory/kujira1n3fr5f56r2ce0s37wdvwrk98yhhq3unnxgcqus8nzsfxvllk0yxquurqty/ampKUJI",
+        "name": "ampKUJI",
+        "display": "ampKUJI",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/ampKUJI.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/ampKUJI.png"
+        }
+    },
+    {
+        "denom": "factory/kujira1643jxg8wasy5cfcn7xm8rd742yeazcksqlg4d7/umnta",
+        "name": "MNTA",
+        "display": "MNTA",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/mnta.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/mnta.png"
+        }
+    },
+    {
+        "denom": "factory/kujira12cjjeytrqcj25uv349thltcygnp9k0kukpct0e/uwink",
+        "name": "WINK",
+        "display": "wink",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/wink.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kujira/images/wink.png"
+        }
+    },
+    {
+        "denom": "uxki",
+        "name": "Ki",
+        "display": "xki",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kichain/images/xki.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kichain/images/xki.svg"
+        }
+    },
+    {
+        "denom": "cw20:ki1dt3lk455ed360pna38fkhqn0p8y44qndsr77qu73ghyaz2zv4whq83mwdy",
+        "name": "LVN",
+        "display": "lvn",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kichain/images/lvn.png"
+        }
+    },
+    {
+        "denom": "nanolike",
+        "name": "LikeCoin",
+        "display": "like",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/likecoin/images/like.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/likecoin/images/like.svg"
+        }
+    },
+    {
+        "denom": "umntl",
+        "name": "AssetMantle",
+        "display": "mntl",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/assetmantle/images/mntl.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/assetmantle/images/mntl.svg"
+        }
+    },
+    {
+        "denom": "umars",
+        "name": "Mars",
+        "display": "mars",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/mars/images/mars-token.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/mars/images/mars-token.svg"
+        }
+    },
+    {
+        "denom": "utick",
+        "name": "Microtick",
+        "display": "tick",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/microtick/images/tick.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/microtick/images/tick.svg"
+        }
+    },
+    {
+        "denom": "uosmo",
+        "name": "Osmosis",
+        "display": "osmo",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.svg"
+        }
+    },
+    {
+        "denom": "uion",
+        "name": "Ion",
+        "display": "ion",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/ion.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/ion.svg"
+        }
+    },
+    {
+        "denom": "factory/osmo14klwqgkmackvx2tqa0trtg69dmy0nrg4ntq4gjgw2za4734r5seqjqm4gm/uibcx",
+        "name": "IBCX Core <Product of ION DAO>",
+        "display": "ibcx",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/ibcx.svg"
+        }
+    },
+    {
+        "denom": "factory/osmo1xqw2sl9zk8a6pch0csaw78n4swg5ws8t62wc5qta4gnjxfqg6v2qcs243k/stuibcx",
+        "name": "stIBCX Core <Product of ION DAO>",
+        "display": "stibcx",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/stibcx.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/stibcx.png"
+        }
+    },
+    {
+        "denom": "ibc/D189335C6E4A68B513C10AB227BF1C1D38C746766278BA3EEB4FB14124F1D858",
+        "name": "USD Coin",
+        "display": "usdc"
+    },
+    {
+        "denom": "ibc/D176154B0C63D1F9C6DCFB4F70349EBF2E2B5A87A05902F57A6AE92B863E9AEC",
+        "name": "stOSMO",
+        "display": "stosmo"
+    },
+    {
+        "denom": "ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2",
+        "name": "Cosmos Hub Atom",
+        "display": "atom"
+    },
+    {
+        "denom": "ibc/C140AFD542AE77BD7DCC83F13FDD8C5E5BB8C4929785E6EC2F4C636F98F17901",
+        "name": "stATOM",
+        "display": "statom"
+    },
+    {
+        "denom": "ibc/EA1D43981D5C9A1C4AAEA9C23BB1D4FA126BA9BC7020A25E0AE4AA841EA25DC5",
+        "name": "Wrapped Ether",
+        "display": "weth"
+    },
+    {
+        "denom": "ibc/D1542AA8762DB13087D8364F3EA6509FD6F009A34F00426AF9E4F9FA85CBBF1F",
+        "name": "Wrapped Bitcoin",
+        "display": "wbtc"
+    },
+    {
+        "denom": "factory/osmo1dv8wz09tckslr2wy5z86r46dxvegylhpt97r9yd6qc3kyc6tv42qa89dr9/ampOSMO",
+        "name": "ERIS Amplified OSMO",
+        "display": "ampOSMO",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/amp.osmo.png"
+        }
+    },
+    {
+        "denom": "aplanq",
+        "name": "Planq",
+        "display": "planq",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/planq/images/planq.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/planq/images/planq.png"
+        }
+    },
+    {
+        "denom": "uumee",
+        "name": "Umee",
+        "display": "umee",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/umee/images/umee.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/umee/images/umee.png"
+        }
+    },
+    {
+        "denom": "ubld",
+        "name": "Agoric",
+        "display": "bld",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/agoric/images/bld.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/agoric/images/bld.png"
+        }
+    },
+    {
+        "denom": "uist",
+        "name": "Inter Stable Token",
+        "display": "ist",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/agoric/images/ist.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/agoric/images/ist.png"
+        }
+    },
+    {
+        "denom": "uakt",
+        "name": "Akash Network",
+        "display": "akt",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/akash/images/akt.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/akash/images/akt.svg"
+        }
+    },
+    {
+        "denom": "uaxl",
+        "name": "Axelar",
+        "display": "axl",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/axl.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/axl.svg"
+        }
+    },
+    {
+        "denom": "uusdc",
+        "name": "USD Coin",
+        "display": "usdc",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdc.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdc.png"
+        }
+    },
+    {
+        "denom": "frax-wei",
+        "name": "Frax",
+        "display": "frax",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/frax.svg"
+        }
+    },
+    {
+        "denom": "dai-wei",
+        "name": "Dai Stablecoin",
+        "display": "dai",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/dai.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/dai.png"
+        }
+    },
+    {
+        "denom": "uusdt",
+        "name": "Tether USD",
+        "display": "usdt",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdt.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdt.png"
+        }
+    },
+    {
+        "denom": "weth-wei",
+        "name": "Wrapped Ether",
+        "display": "weth",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/weth.png"
+        }
+    },
+    {
+        "denom": "wbtc-satoshi",
+        "name": "Wrapped Bitcoin",
+        "display": "wbtc",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/wbtc.png"
+        }
+    },
+    {
+        "denom": "aave-wei",
+        "name": "Aave",
+        "display": "aave",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/aave.svg"
+        }
+    },
+    {
+        "denom": "ape-wei",
+        "name": "ApeCoin",
+        "display": "ape",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/ape.svg"
+        }
+    },
+    {
+        "denom": "axs-wei",
+        "name": "Axie Infinity Shard",
+        "display": "axs",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/axs.svg"
+        }
+    },
+    {
+        "denom": "link-wei",
+        "name": "Chainlink",
+        "display": "link",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/link.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/link.svg"
+        }
+    },
+    {
+        "denom": "mkr-wei",
+        "name": "Maker",
+        "display": "mkr",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/mkr.svg"
+        }
+    },
+    {
+        "denom": "rai-wei",
+        "name": "Rai Reflex Index",
+        "display": "rai",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/rai.svg"
+        }
+    },
+    {
+        "denom": "shib-wei",
+        "name": "Shiba Inu",
+        "display": "shib",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/shib.svg"
+        }
+    },
+    {
+        "denom": "steth-wei",
+        "name": "Lido Staked Ether",
+        "display": "steth",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/steth.svg"
+        }
+    },
+    {
+        "denom": "uni-wei",
+        "name": "Uniswap",
+        "display": "uni",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/uni.svg"
+        }
+    },
+    {
+        "denom": "xcn-wei",
+        "name": "Chain",
+        "display": "xcn",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/xcn.svg"
+        }
+    },
+    {
+        "denom": "dot-planck",
+        "name": "Wrapped Polkadot",
+        "display": "dot",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/polkadot/images/dot.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/polkadot/images/dot.png"
+        }
+    },
+    {
+        "denom": "wglmr-wei",
+        "name": "Wrapped Moonbeam",
+        "display": "wglmr",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/moonbeam/images/glmr.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/moonbeam/images/glmr.png"
+        }
+    },
+    {
+        "denom": "wmatic-wei",
+        "name": "Wrapped Matic",
+        "display": "wmatic",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/polygon/images/wmatic.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/polygon/images/wmatic.svg"
+        }
+    },
+    {
+        "denom": "wbnb-wei",
+        "name": "Wrapped BNB",
+        "display": "wbnb",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/binancesmartchain/images/wbnb.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/binancesmartchain/images/wbnb.png"
+        }
+    },
+    {
+        "denom": "busd-wei",
+        "name": "Binance USD",
+        "display": "busd",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/busd.png"
+        }
+    },
+    {
+        "denom": "wavax-wei",
+        "name": "Wrapped AVAX",
+        "display": "avax",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/avalanche/images/wavax.svg"
+        }
+    },
+    {
+        "denom": "wftm-wei",
+        "name": "Wrapped FTM",
+        "display": "ftm",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/fantom/images/ftm.png"
+        }
+    },
+    {
+        "denom": "polygon-uusdc",
+        "name": "USD Coin from Polygon",
+        "display": "polygon-usdc",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdc.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdc.png"
+        }
+    },
+    {
+        "denom": "avalanche-uusdc",
+        "name": "USD Coin from Avalanche",
+        "display": "avalanche-usdc",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdc.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/usdc.png"
+        }
+    },
+    {
+        "denom": "wfil-wei",
+        "name": "Wrapped FIL from Filecoin",
+        "display": "fil",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/filecoin/images/wfil.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/filecoin/images/wfil.png"
+        }
+    },
+    {
+        "denom": "arb-wei",
+        "name": "Arbitrum",
+        "display": "arb",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/arbitrum/images/arb.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/arbitrum/images/arb.svg"
+        }
+    },
+    {
+        "denom": "pepe-wei",
+        "name": "Pepe",
+        "display": "pepe"
+    },
+    {
+        "denom": "cbeth-wei",
+        "name": "Coinbase Wrapped Staked ETH",
+        "display": "cbeth"
+    },
+    {
+        "denom": "reth-wei",
+        "name": "Rocket Pool Ether",
+        "display": "reth"
+    },
+    {
+        "denom": "sfrxeth-wei",
+        "name": "Staked Frax Ether",
+        "display": "sfrxeth"
+    },
+    {
+        "denom": "wsteth-wei",
+        "name": "Wrapped Lido Staked Ether",
+        "display": "wsteth"
+    },
+    {
+        "denom": "ubcna",
+        "name": "BitCanna",
+        "display": "bcna",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitcanna/images/bcna.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitcanna/images/bcna.svg"
+        }
+    },
+    {
+        "denom": "ubtsg",
+        "name": "BitSong",
+        "display": "btsg",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/btsg.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/btsg.svg"
+        }
+    },
+    {
+        "denom": "ft2D8E7041556CE93E1EFD66C07C45D551A6AAAE09",
+        "name": "Adam Clay FanToken",
+        "display": "clay",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/ft2D8E7041556CE93E1EFD66C07C45D551A6AAAE09.png"
+        }
+    },
+    {
+        "denom": "ft25B30C386CDDEBD1413D5AE1180956AE9EB3B9F7",
+        "name": "Nicola Fasano Fantoken",
+        "display": "fasano",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/ft25B30C386CDDEBD1413D5AE1180956AE9EB3B9F7.png"
+        }
+    },
+    {
+        "denom": "ft575B10B0CEE2C164D9ED6A96313496F164A9607C",
+        "name": "Delta 9 Fantoken",
+        "display": "d9x",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/ft575B10B0CEE2C164D9ED6A96313496F164A9607C.png"
+        }
+    },
+    {
+        "denom": "ft56664FC98A2CF5F4FBAC3566D1A11D891AD88305",
+        "name": "FONTI Fantoken",
+        "display": "fonti",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/ft56664FC98A2CF5F4FBAC3566D1A11D891AD88305.png"
+        }
+    },
+    {
+        "denom": "ft52EEB0EE509AC546ED92EAC8591F731F213DDD16",
+        "name": "BlackJack Fantoken",
+        "display": "bjks",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/ft52EEB0EE509AC546ED92EAC8591F731F213DDD16.png"
+        }
+    },
+    {
+        "denom": "ftE4903ECC861CA45F2C2BC7EAB8255D2E6E87A33A",
+        "name": "Rawanne Fantoken",
+        "display": "rwne",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/ftE4903ECC861CA45F2C2BC7EAB8255D2E6E87A33A.png"
+        }
+    },
+    {
+        "denom": "ft85AE1716C5E39EA6D64BBD7898C3899A7B500626",
+        "name": "Enmoda Fantoken",
+        "display": "enmoda",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/ft85AE1716C5E39EA6D64BBD7898C3899A7B500626.png"
+        }
+    },
+    {
+        "denom": "ft99091610CCC66F4277C66D14AF2BC4C5EE52E27A",
+        "name": "404Deep Records Fantoken",
+        "display": "404dr",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/ft99091610CCC66F4277C66D14AF2BC4C5EE52E27A.png"
+        }
+    },
+    {
+        "denom": "ft387C1C279D962ED80C09C1D592A92C4275FD7C5D",
+        "name": "N43 Fantoken",
+        "display": "n43",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/ft387C1C279D962ED80C09C1D592A92C4275FD7C5D.png"
+        }
+    },
+    {
+        "denom": "ft24C9FA4F10B0F235F4A815B15FC774E046A2B2EB",
+        "name": "Puro Lobo Fantoken",
+        "display": "lobo",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/ft24C9FA4F10B0F235F4A815B15FC774E046A2B2EB.png"
+        }
+    },
+    {
+        "denom": "ft7020C2A8E984EEBCBB383E91CD6FBB067BB2272B",
+        "name": "Vibranium Fantoken",
+        "display": "vibra",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/ft7020C2A8E984EEBCBB383E91CD6FBB067BB2272B.png"
+        }
+    },
+    {
+        "denom": "ft2DD67F5D99E9A141142B48474FA7B6B3FF00A3FE",
+        "name": "Karina Fantoken",
+        "display": "karina",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/ft2DD67F5D99E9A141142B48474FA7B6B3FF00A3FE.png"
+        }
+    },
+    {
+        "denom": "ft4B030260D99E3ABE2B604EA2B33BAF3C085CDA12",
+        "name": "Luca Testa Fantoken",
+        "display": "testa",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/ft4B030260D99E3ABE2B604EA2B33BAF3C085CDA12.png"
+        }
+    },
+    {
+        "denom": "ftD4B6290EDEE1EC7B97AB5A1DC6C177EFD08ADCC3",
+        "name": "Carolina Marquez Fantoken",
+        "display": "cmqz",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/ftD4B6290EDEE1EC7B97AB5A1DC6C177EFD08ADCC3.png"
+        }
+    },
+    {
+        "denom": "ft347B1612A2B7659913679CF6CD45B8B130C50A00",
+        "name": "L DON Fantoken",
+        "display": "ldon",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/ft347B1612A2B7659913679CF6CD45B8B130C50A00.png"
+        }
+    },
+    {
+        "denom": "boot",
+        "name": "Bostrom",
+        "display": "boot",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bostrom/images/boot.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bostrom/images/boot.png"
+        }
+    },
+    {
+        "denom": "hydrogen",
+        "name": "Bostrom Hydrogen",
+        "display": "hydrogen",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bostrom/images/hydrogen.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bostrom/images/hydrogen.png"
+        }
+    },
+    {
+        "denom": "acanto",
+        "name": "Canto",
+        "display": "canto",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/canto/images/canto.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/canto/images/canto.png"
+        }
+    },
+    {
+        "denom": "ncheq",
+        "name": "cheqd",
+        "display": "cheq",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/cheqd/images/cheq.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/cheqd/images/cheq.svg"
+        }
+    },
+    {
+        "denom": "uhuahua",
+        "name": "Chihuahua",
+        "display": "huahua",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/chihuahua/images/huahua.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/chihuahua/images/huahua.svg"
+        }
+    },
+    {
+        "denom": "uluna",
+        "name": "Luna Classic",
+        "display": "luna",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/luna.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/luna.png"
+        }
+    },
+    {
+        "denom": "uusd",
+        "name": "TerraClassicUSD",
+        "display": "ust",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/ust.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/ust.png"
+        }
+    },
+    {
+        "denom": "ukrw",
+        "name": "TerraClassicKRW",
+        "display": "krt",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/krt.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/krt.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1php5m8a6qd68z02t3zpw4jv2pj4vgw4wz0t8mz",
+        "name": "Whale Token",
+        "display": "whale",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/whale.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1kc87mu460fwkqte29rquh4hc20m54fxwtsx7gp",
+        "name": "Bonded Luna",
+        "display": "bluna",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/bluna.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1dzhzukyezv0etz22ud940z7adyv7xgcjkahuun",
+        "name": "Bonded ETH",
+        "display": "beth",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/beth.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1hzh9vpxhsk8253se0vv5jj6etdvxu3nv8z07zu",
+        "name": "Anchor Terra USD",
+        "display": "aust",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/aust.png"
+        }
+    },
+    {
+        "denom": "cw20:terra14z56l0fp2lsf86zy3hty2z47ezkhnthtr9yq76",
+        "name": "Anchor Token",
+        "display": "anc",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/anc.png"
+        }
+    },
+    {
+        "denom": "cw20:terra15gwkyepfc6xgca5t5zefzwy42uts8l2m4g40k6",
+        "name": "Mirror",
+        "display": "mir",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mir.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1vxtwu4ehgzz77mnfwrntyrmgl64qjs75mpwqaz",
+        "name": "Apple Inc.",
+        "display": "maapl",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/maapl.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1g4x2pzmkc9z3mseewxf758rllg08z3797xly0n",
+        "name": "Airbnb Inc.",
+        "display": "mabnb",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mabnb.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1qelfthdanju7wavc5tq0k5r0rhsyzyyrsn09qy",
+        "name": "AMC Entertainment Holdings Inc.",
+        "display": "mamc",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mamc.png"
+        }
+    },
+    {
+        "denom": "cw20:terra18ej5nsuu867fkx4tuy2aglpvqjrkcrjjslap3z",
+        "name": "Advanced Micro Devices, Inc.",
+        "display": "mamd",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mamd.png"
+        }
+    },
+    {
+        "denom": "cw20:terra165nd2qmrtszehcfrntlplzern7zl4ahtlhd5t2",
+        "name": "Amazon.com, Inc.",
+        "display": "mamzn",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mamzn.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1qqfx5jph0rsmkur2zgzyqnfucra45rtjae5vh6",
+        "name": "ARK Innovation ETF",
+        "display": "markk",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/markk.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1w7zgkcyt7y4zpct9dw8mw362ywvdlydnum2awa",
+        "name": "Alibaba Group Holding Limited",
+        "display": "mbaba",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mbaba.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1rhhvx8nzfrx5fufkuft06q5marfkucdqwq5sjw",
+        "name": "Bitcoin",
+        "display": "mbtc",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mbtc.png"
+        }
+    },
+    {
+        "denom": "cw20:terra18wayjpyq28gd970qzgjfmsjj7dmgdk039duhph",
+        "name": "Coinbase Global, Inc.",
+        "display": "mcoin",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mcoin.png"
+        }
+    },
+    {
+        "denom": "cw20:terra149755r3y0rve30e209awkhn5cxgkn5c8ju9pm5",
+        "name": "The Walt Disney Company",
+        "display": "mdis",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mdis.png"
+        }
+    },
+    {
+        "denom": "cw20:terra19ya4jpvjvvtggepvmmj6ftmwly3p7way0tt08r",
+        "name": "Polkadot",
+        "display": "mdot",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mdot.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1dk3g53js3034x4v5c3vavhj2738une880yu6kx",
+        "name": "Ether",
+        "display": "meth",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/meth.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1mqsjugsugfprn3cvgxsrr8akkvdxv2pzc74us7",
+        "name": "Facebook Inc.",
+        "display": "mfb",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mfb.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1l5lrxtwd98ylfy09fn866au6dp76gu8ywnudls",
+        "name": "Galaxy Digital Holdings Ltd",
+        "display": "mglxy",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mglxy.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1m6j6j9gw728n82k78s0j9kq8l5p6ne0xcc820p",
+        "name": "GameStop Corp",
+        "display": "mgme",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mgme.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1h8arz2k547uvmpxctuwush3jzc8fun4s96qgwt",
+        "name": "Alphabet Inc.",
+        "display": "mgoogl",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mgoogl.png"
+        }
+    },
+    {
+        "denom": "cw20:terra137drsu8gce5thf6jr5mxlfghw36rpljt3zj73v",
+        "name": "Goldman Sachs Group Inc.",
+        "display": "mgs",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mgs.png"
+        }
+    },
+    {
+        "denom": "cw20:terra18yqdfzfhnguerz9du5mnvxsh5kxlknqhcxzjfr",
+        "name": "Robinhood Markets, Inc.",
+        "display": "mhood",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mhood.png"
+        }
+    },
+    {
+        "denom": "cw20:terra10h7ry7apm55h4ez502dqdv9gr53juu85nkd4aq",
+        "name": "iShares Gold Trust",
+        "display": "miau",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/miau.png"
+        }
+    },
+    {
+        "denom": "cw20:terra15hp9pr8y4qsvqvxf3m4xeptlk7l8h60634gqec",
+        "name": "iShares Gold Trust",
+        "display": "miau",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/miau.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1ptdxmj3xmmljzx02nr4auwfuelmj0cnkh8egs2",
+        "name": "Johnson & Johnson",
+        "display": "mjnj",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mjnj.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1qsnj5gvq8rgs7yws8x5u02gwd5wvtu4tks0hjm",
+        "name": "Coca-Cola",
+        "display": "mko",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mko.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1227ppwxxj3jxz8cfgq00jgnxqcny7ryenvkwj6",
+        "name": "Microsoft Corporation",
+        "display": "mmsft",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mmsft.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1jsxngqasf2zynj5kyh0tgq9mj3zksa5gk35j4k",
+        "name": "Netflix, Inc.",
+        "display": "mnflx",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mnflx.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1dj2cj02zak0nvwy3uj9r9dhhxhdwxnw6psse6p",
+        "name": "NIO Inc.",
+        "display": "mnio",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mnio.png"
+        }
+    },
+    {
+        "denom": "cw20:terra17ana8hvzea0q7w367dm0dw48sxwql39qekpt7g",
+        "name": "NIKE, Inc.",
+        "display": "mnke",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mnke.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1drsjzvzej4h4qlehcfwclxg4w5l3h5tuvd3jd8",
+        "name": "NVIDIA Corporation",
+        "display": "mnvda",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mnvda.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1rh2907984nudl7vh56qjdtvv7947z4dujj92sx",
+        "name": "PayPal Holdings Inc",
+        "display": "mpypl",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mpypl.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1csk6tc7pdmpr782w527hwhez6gfv632tyf72cp",
+        "name": "Invesco QQQ Trust",
+        "display": "mqqq",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mqqq.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1246zy658dfgtausf0c4a6ly8sc2e285q4kxqga",
+        "name": "Starbucks Corporation",
+        "display": "msbux",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/msbux.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1kscs6uhrqwy6rx5kuw5lwpuqvm3t6j2d6uf2lp",
+        "name": "iShares Silver Trust",
+        "display": "mslv",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mslv.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1aa00lpfexyycedfg5k2p60l9djcmw0ue5l8fhc",
+        "name": "SPDR S&P 500",
+        "display": "mspy",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mspy.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1u43zu5amjlsgty5j64445fr9yglhm53m576ugh",
+        "name": "Square, Inc.",
+        "display": "msq",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/msq.png"
+        }
+    },
+    {
+        "denom": "cw20:terra14y5affaarufk3uscy2vr6pe6w6zqf2wpjzn5sh",
+        "name": "Tesla, Inc.",
+        "display": "mtsla",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mtsla.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1cc3enj9qgchlrj34cnzhwuclc4vl2z3jl7tkqg",
+        "name": "Twitter, Inc.",
+        "display": "mtwtr",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mtwtr.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1lvmx8fsagy70tv0fhmfzdw9h6s3sy4prz38ugf",
+        "name": "United States Oil Fund, LP",
+        "display": "muso",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/muso.png"
+        }
+    },
+    {
+        "denom": "cw20:terra19cmt6vzvhnnnfsmccaaxzy2uaj06zjktu6yzjx",
+        "name": "ProShares VIX Short-Term Futures ETF",
+        "display": "mvixy",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mvixy.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1zp3a6q6q4953cz376906g5qfmxnlg77hx3te45",
+        "name": "ProShares VIX Short-Term Futures ETF",
+        "display": "mvixy",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mvixy.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1ez46kxtulsdv07538fh5ra5xj8l68mu8eg24vr",
+        "name": "loterra",
+        "display": "lota",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/lota.png"
+        }
+    },
+    {
+        "denom": "cw20:terra17jnhankdfl8vyzj6vejt7ag8uz0cjc9crkl2h7",
+        "name": "Digipharm",
+        "display": "dph",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/dph.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1kcthelkax4j9x8d3ny6sdag0qmxxynl3qtcrpy",
+        "name": "Pylon MINE Token",
+        "display": "mine",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mine.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1zsaswh926ey8qa5x4vj93kzzlfnef0pstuca0y",
+        "name": "Pylon bDP Token for Gateway Psi 24m Pool",
+        "display": "bpsidp-24m",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/bpsidp-24m.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1s5eczhe0h0jutf46re52x5z4r03c8hupacxmdr",
+        "name": "Spectrum Token",
+        "display": "spec",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/spec.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1nef5jf6c7js9x6gkntlehgywvjlpytm7pcgkn4",
+        "name": "LOOP token",
+        "display": "loop",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/loop.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1jx4lmmke2srcvpjeereetc9hgegp4g5j0p9r2q",
+        "name": "LOOPR token",
+        "display": "loopr",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/loopr.png"
+        }
+    },
+    {
+        "denom": "cw20:terra13xujxcrc9dqft4p9a8ls0w3j0xnzm6y2uvve8n",
+        "name": "StarTerra Token",
+        "display": "stt",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/stt.png"
+        }
+    },
+    {
+        "denom": "cw20:terra19djkaepjjswucys4npd5ltaxgsntl7jf0xz7w6",
+        "name": "TWD Token",
+        "display": "twd",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/twd.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1kvjscdgwuvwc6uzm4rqfjl6nlmuhj28tequlnc",
+        "name": "xterra Token",
+        "display": "xtra",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/xtra.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1vtr50tw0pgqpes34zqu60n554p9x4950wk8f63",
+        "name": "MIAW Token",
+        "display": "miaw",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/miaw.png"
+        }
+    },
+    {
+        "denom": "cw20:terra12897djskt9rge8dtmm86w654g7kzckkd698608",
+        "name": "Nexus Governance Token",
+        "display": "psi",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/psi.png"
+        }
+    },
+    {
+        "denom": "cw20:terra10f2mt82kjnkxqj2gepgwl637u2w4ue2z5nhz5j",
+        "name": "Nexus nLuna Token",
+        "display": "nluna",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/nluna.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra178v546c407pdnx5rer3hu8s2c0fc924k74ymnn",
+        "name": "Nexus nETH Token",
+        "display": "neth",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/neth.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1u553zk43jd4rwzc53qrdrq4jc2p8rextyq09dj",
+        "name": "nLuna autocompounder share representation",
+        "display": "cnluna",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/cnluna.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1nagqpmyw55yjphea4rhntlfv87ugmeaj8ym756",
+        "name": "nETH autocompounder share representation",
+        "display": "cneth",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/cneth.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra13k62n0285wj8ug0ngcgpf7dgnkzqeu279tz636",
+        "name": "Nexus nAVAX Token",
+        "display": "navax",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/navax.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1jtdc6zpf95tvh9peuaxwp3v0yqszcnwl8j5ade",
+        "name": "Nexus nATOM Token",
+        "display": "natom",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/natom.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1dy9kmlm4anr92e42mrkjwzyvfqwz66un00rwr5",
+        "name": "VKR Token",
+        "display": "vkr",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/vkr.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1mddcdx0ujx89f38gu7zspk2r2ffdl5enyz2u03",
+        "name": "Orion Money (Portal)",
+        "display": "orion",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/orion.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1r5506ckw5tfr3z52jwlek8vg9sn3yflrqrzfsc",
+        "name": "TerraLand Token",
+        "display": "tland",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/tland.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1w0p5zre38ecdy3ez8efd5h9fvgum5s206xknrg",
+        "name": "Vault UST",
+        "display": "vust",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/vust.png"
+        }
+    },
+    {
+        "denom": "cw20:terra14tl83xcwqjy0ken9peu4pjjuu755lrry2uy25r",
+        "name": "Ether (Portal)",
+        "display": "eth",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/eth.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1aa7upykmmqqc63l924l5qfap8mrmx5rfdm0v55",
+        "name": "Wrapped BTC (Portal)",
+        "display": "wbtc",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/wbtc.png"
+        }
+    },
+    {
+        "denom": "cw20:terra190tqwgqx7s8qrknz6kckct7v607cu068gfujpk",
+        "name": "SOL (Portal)",
+        "display": "sol",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/sol.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1dfasranqm4uyaz72r960umxy0w8t6zewqlnkuq",
+        "name": "MATIC (Portal from Ethereum)",
+        "display": "maticet",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/maticet.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1cetg5wruw2wsdjp7j46rj44xdel00z006e9yg8",
+        "name": "Binance Coin (Portal)",
+        "display": "bnb",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/bnb.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1xvqlpjl2dxyel9qrp6qvtrg04xe3jh9cyxc6av",
+        "name": "PancakeSwap Token (Portal)",
+        "display": "cake",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/cake.png"
+        }
+    },
+    {
+        "denom": "cw20:terra12dfv3f0e6m22z6cnhfn3nxk2en3z3zeqy6ctym",
+        "name": "Chainlink (Portal)",
+        "display": "link",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/link.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1csvuzlf92nyemu6tv25h0l79etpe8hz3h5vn4a",
+        "name": "SushiToken (Portal)",
+        "display": "sushi",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/sushi.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1wyxkuy5jq545fn7xfn3enpvs5zg9f9dghf6gxf",
+        "name": "Uniswap (Portal)",
+        "display": "uni",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/uni.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1ce06wkrdm4vl6t0hvc0g86rsy27pu8yadg3dva",
+        "name": "Tether USD (Portal from Ethereum)",
+        "display": "usdtet",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/usdtet.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1pepwcav40nvj3kh60qqgrk8k07ydmc00xyat06",
+        "name": "USD Coin (Portal from Ethereum)",
+        "display": "usdcet",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/usdcet.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1xfsdgcemqwxp4hhnyk4rle6wr22sseq7j07dnn",
+        "name": "Kujira Token",
+        "display": "kuji",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/kuji.png"
+        }
+    },
+    {
+        "denom": "cw20:terra188w26t95tf4dz77raftme8p75rggatxjxfeknw",
+        "name": "Staked KUJI",
+        "display": "skuji",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/skuji.png"
+        }
+    },
+    {
+        "denom": "cw20:terra133chr09wu8sakfte5v7vd8qzq9vghtkv4tn0ur",
+        "name": "Lido wstETH (Portal)",
+        "display": "wsteth",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/wsteth.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1t9ul45l7m6jw6sxgvnp8e5hj8xzkjsg82g84ap",
+        "name": "Lido wstSOL (Portal)",
+        "display": "wstsol",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/wstsol.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1c3xd5s2j3ejx2d94tvcjfkrdeu6rmz48ghzznj",
+        "name": "Lido bonded SOL (Portal)",
+        "display": "wsbsol",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/wsbsol.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1jxypgnfa07j6w92wazzyskhreq2ey2a5crgt6z",
+        "name": "Lido DAO (Portal)",
+        "display": "ldo",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/ldo.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1u5szg038ur9kzuular3cae8hq6q5rk5u27tuvz",
+        "name": "Lido Bonded ETH (Wormhole)",
+        "display": "webeth",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/webeth.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1yg3j2s986nyp5z7r2lvt0hx3r0lnd7kwvwwtsc",
+        "name": "Lido staked Luna",
+        "display": "stluna",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/stluna.png"
+        }
+    },
+    {
+        "denom": "cw20:terra169edevav3pdrtjcx35j6pvzuv54aevewar4nlh",
+        "name": "XDEFI (Portal)",
+        "display": "xdefi"
+    },
+    {
+        "denom": "cw20:terra193c42lfwmlkasvcw22l9qqzc5q2dx208tkd7wl",
+        "name": "Bitlocus Token",
+        "display": "btl",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/btl.png"
+        }
+    },
+    {
+        "denom": "cw20:terra17y9qkl8dfkeg4py7n0g5407emqnemc3yqk5rup",
+        "name": "LunaX Token",
+        "display": "lunax",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/lunax.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1m3tdguf59xq3pa2twk5fjte5g6szj5y9x5npy7",
+        "name": "LUNI",
+        "display": "luni",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/luni.png"
+        }
+    },
+    {
+        "denom": "cw20:terra13awdgcx40tz5uygkgm79dytez3x87rpg4uhnvu",
+        "name": "PlayNity Token",
+        "display": "ply",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/ply.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1u2k0nkenw0p25ljsr4ksh7rxm65y466vkdewwj",
+        "name": "TFLOKI",
+        "display": "tfloki",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/tfloki.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1a8k3jyv3wf6k3zngza5h6srrxcckdf7zv90p6u",
+        "name": "TFLOKI Genesis Ticket",
+        "display": "tftic",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/tftic.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1xt9fgu7965kgvunnjts9zkprd8986kcc444q86",
+        "name": "TFLOKI New World Ticket",
+        "display": "tfticii",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/tfticii.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1vte2xv7dr8sfnrnwdf9arcyprqgr0hty5ads28",
+        "name": "TFLOKI Aviator Ticket",
+        "display": "tfticiii",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/tfticiii.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1hmxxq0y8h79f3228vs0czc4uz5jdgjt0appp26",
+        "name": "Moon Token",
+        "display": "moon",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/moon.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1xj49zyqrwpv5k928jwfpfy2ha668nwdgkwlrg3",
+        "name": "Astroport Token",
+        "display": "astro",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/astro.png"
+        }
+    },
+    {
+        "denom": "cw20:terra14lpnyzc9z4g3ugr4lhm8s4nle0tq8vcltkhzh7",
+        "name": "Staked Astroport Token",
+        "display": "xastro",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/xastro.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1w8kvd6cqpsthupsk4l0clwnmek4l3zr7c84kwq",
+        "name": "Angel Protocol Token",
+        "display": "halo",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/halo.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1kdfsdm3c4reun9j3m4mk3nmyw4a4ns7mj24q3j",
+        "name": "AstroPug Token",
+        "display": "pug",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/pug.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1hnezwjqlhzawcrfysczcxs6xqxu2jawn729kkf",
+        "name": "Orne Token",
+        "display": "orne",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/orne.png"
+        }
+    },
+    {
+        "denom": "cw20:terra14vz4v8adanzph278xyeggll4tfww7teh0xtw2y",
+        "name": "Terra Name Service",
+        "display": "tns",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/tns.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1td743l5k5cmfy7tqq202g7vkmdvq35q48u2jfm",
+        "name": "Thorstarter",
+        "display": "xrune",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/xrune.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1366wmr8t8rrkh6mag8fagqxntmf2qe4kyte784",
+        "name": "Alpha Pack Token",
+        "display": "alot",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/alot.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1z09gnzufuflz6ckd9k0u456l9dnpgsynu0yyhe",
+        "name": "CurioSITY play to earn token",
+        "display": "sity",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/sity.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra13zx49nk8wjavedjzu8xkk95r3t0ta43c9ptul7",
+        "name": "Glow Token",
+        "display": "glow",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/glow.png"
+        }
+    },
+    {
+        "denom": "cw20:terra100yeqvww74h4yaejj6h733thgcafdaukjtw397",
+        "name": "Apollo DAO Token",
+        "display": "apollo",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/apollo.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1a7ye2splpfzyenu0yrdu8t83uzgusx2malkc7u",
+        "name": "Allbridge",
+        "display": "abr",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/abr.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1y3d5qexmyac0fg53pfglh2pjk0664ymfvcq9mc",
+        "name": "Global Transaction Payment Solu",
+        "display": "whgtps"
+    },
+    {
+        "denom": "cw20:terra1dh9478k2qvqhqeajhn75a2a7dsnf74y5ukregw",
+        "name": "Prism Protocol Token",
+        "display": "prism",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/prism.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1l0y8yg0s86x299nqw0p6fhh7ngex3r4phtjeuq",
+        "name": "Space Dollar",
+        "display": "sdollar"
+    },
+    {
+        "denom": "cw20:terra1ku5e0dhutxhuxudsmsn5647wwcz6ndr3rsh90k",
+        "name": "SAIL",
+        "display": "whsail",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/whsail.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1rl0cpwgtwl4utnaynugevdje37fnmsea7rv4uu",
+        "name": "SolanaSail Governance Token V2",
+        "display": "whgsail",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/whgsail.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1042wzrwg2uk6jqxjm34ysqquyr9esdgm5qyswz",
+        "name": "Prism Governance Token",
+        "display": "xprism",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/xprism.png"
+        }
+    },
+    {
+        "denom": "cw20:terra13fs83g5atgjwuh7c5ydzh6n7gecel6xyhhy2t5",
+        "name": "CAPITRADE TOKEN",
+        "display": "cde"
+    },
+    {
+        "denom": "cw20:terra1rl20t79ffsrqfa29rke48tj05gj9jxumm92vg8",
+        "name": "C2X Token",
+        "display": "ctx",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/ctx.png"
+        }
+    },
+    {
+        "denom": "cw20:terra13zaagrrrxj47qjwczsczujlvnnntde7fdt0mau",
+        "name": "Prism cLuna Token",
+        "display": "cluna",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/cluna.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1tlgelulz9pdkhls6uglfn5lmxarx7f2gxtdzh2",
+        "name": "Prism pLuna Token",
+        "display": "pluna",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/pluna.png"
+        }
+    },
+    {
+        "denom": "cw20:terra17wkadg0tah554r35x6wvff0y5s7ve8npcjfuhz",
+        "name": "Prism yLuna Token",
+        "display": "yluna",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/yluna.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1cl7whtrqmz5ldr553q69qahck8xvk80fm33qjx",
+        "name": "Atlo Token",
+        "display": "atlo",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/atlo.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1vchw83qt25j89zqwdpmdzj722sqxthnckqzxxp",
+        "name": "LOCAL Token",
+        "display": "local",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/local.png"
+        }
+    },
+    {
+        "denom": "cw20:terra15k5r9r8dl8r7xlr29pry8a9w7sghehcnv5mgp6",
+        "name": "Lunaverse",
+        "display": "luv",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/luv.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1f62tqesptvmhtzr8sudru00gsdtdz24srgm7wp",
+        "name": "RoboHero",
+        "display": "robo",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/robo.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1vwz7t30q76s7xx6qgtxdqnu6vpr3ak3vw62ygk",
+        "name": "Luart Token",
+        "display": "luart",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/luart.png"
+        }
+    },
+    {
+        "denom": "cw20:terra12hgwnpupflfpuual532wgrxu2gjp0tcagzgx4n",
+        "name": "Mars Token",
+        "display": "mars",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mars.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1a04v570f9cxp49mk06vjsm8axsswndpwwt67k4",
+        "name": "xMars Token",
+        "display": "xmars",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/xmars.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1vpws4hmpmpsqwnz3gljn8zj42rv7rkpc5atgt4",
+        "name": "DeFiato",
+        "display": "dfiat"
+    },
+    {
+        "denom": "cw20:terra1hppnw4jppmrzzga4yvd8s87y3dwkhe27xwwl5d",
+        "name": "Ceres Governance Token",
+        "display": "ceres",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/ceres.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1z3e2e4jpk4n0xzzwlkgcfvc95pc5ldq0xcny58",
+        "name": "BENQI Staked AVAX (Portal)",
+        "display": "wasavax",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/wasavax.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1zd6let0zg0xjn2sestagxv4ax24a4ml6j40qdr",
+        "name": "MintDAO",
+        "display": "mint",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mint.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1ustvnmngueq0p4jd7gfnutgvdc6ujpsjhsjd02",
+        "name": "Stader SD (Portal)",
+        "display": "sd",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/sd.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1ln2z938phz0nc2wepxpzfkwp6ezn9yrz9zv9ep",
+        "name": "Stader xSD",
+        "display": "xsd",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/xsd.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1uux6gwd6pzr0gfzrru5kne55cxex9d0700c72r",
+        "name": "Paxos Gold (Portal)",
+        "display": "paxg",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/paxg.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1efjugpjc50d8sha7lr8s48cr7wmsthz94eevcl",
+        "name": "DAO Maker",
+        "display": "whdao",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/whdao.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1su6g4t4vwx7y0uh3ksancyaurj4l6w9pfs40qt",
+        "name": "ChainLink Token",
+        "display": "link",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/link.png"
+        }
+    },
+    {
+        "denom": "cw20:terra14v9wrjs55qsn9lkvylsqela3w2ytwxzkycqzcr",
+        "name": "Sayve Token",
+        "display": "sayve",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/sayve.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1z55rhw0ut70jxdmpvge98mvj0rkwcz74q77z0u",
+        "name": "Guides Token",
+        "display": "guides"
+    },
+    {
+        "denom": "cw20:terra1mt2ytlrxhvd5c4d4fshxxs3zcus3fkdmuv4mk2",
+        "name": "BRO token",
+        "display": "bro",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/bro.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1qryq5wreecx2wd3cdtzz94syr4z0a92l60asds",
+        "name": "bBRO token",
+        "display": "bbro",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/bbro.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra15zvyhmv6gwddht7kt4q6w5nasn4tcpgzcdfmgr",
+        "name": "Global Transaction Payment Solut",
+        "display": "gtps"
+    },
+    {
+        "denom": "cw20:terra15pkdjxv2ewjzn9x665y26pfz2h6ymak4d4e8se",
+        "name": "Gtps.Finance",
+        "display": "gfi"
+    },
+    {
+        "denom": "cw20:terra1fyjsxx73jrufw8ufgtuswa773dvdkny92k70wa",
+        "name": "Ultimatalioniscoin",
+        "display": "ulc"
+    },
+    {
+        "denom": "cw20:terra1689ys6p6gfu0q6xrjqkzfn80sdyhurjqn0jfdl",
+        "name": "Sooah Studio Token",
+        "display": "sst",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/sst.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1rg8f993m9834afwazersesgx7jjxv4p87q9wvc",
+        "name": "Star Atlas (Portal)",
+        "display": "atlas",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/atlas.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1nc6flp57m5hsr6y5y8aexzszy43ksr0drdr8rp",
+        "name": "Audius (Portal)",
+        "display": "audio",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/audio.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1hj8de24c3yqvcsv9r8chr03fzwsak3hgd8gv3m",
+        "name": "AVAX (Portal)",
+        "display": "avax",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/avax.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1apxgj5agkkfdm2tprwvykug0qtahxvfmugnhx2",
+        "name": "Basic Attention Token (Portal)",
+        "display": "bat",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/bat.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1skjr69exm6v8zellgjpaa2emhwutrk5a6dz7dd",
+        "name": "Binance USD (Portal from BSC)",
+        "display": "busdbs",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/busdbs.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1zmclyfepfmqvfqflu8r3lv6f75trmg05z7xq95",
+        "name": "DAI (Portal)",
+        "display": "dai",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/dai.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1dtqlfecglk47yplfrtwjzyagkgcqqngd5lgjp8",
+        "name": "MATIC (Portal from Polygon)",
+        "display": "maticpo",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/maticpo.png"
+        }
+    },
+    {
+        "denom": "cw20:terra15a9dr3a2a2lj5fclrw35xxg9yuxg0d908wpf2y",
+        "name": "Magic Internet Money (Portal from Ethereum)",
+        "display": "mimet",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mimet.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1ht5sepn28z999jx33sdduuxm9acthad507jg9q",
+        "name": "Raydium (Portal)",
+        "display": "ray",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/ray.png"
+        }
+    },
+    {
+        "denom": "cw20:terra17h82zsq6q8x5tsgm5ugcx4gytw3axguvzt4pkc",
+        "name": "Saber (Portal)",
+        "display": "sbr",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/sbr.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1huku2lecfjhq9d00k5a8dh73gw7dwe6vvuf2dd",
+        "name": "Shiba Inu (Portal)",
+        "display": "shib",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/shib.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1dkam9wd5yvaswv4yq3n2aqd4wm5j8n82qc0c7c",
+        "name": "Serum (Portal from Solana)",
+        "display": "srmso",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/srmso.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1pvel56a2hs93yd429pzv9zp5aptcjg5ulhkz7w",
+        "name": "USD Coin (Portal from Avalanche)",
+        "display": "usdcav",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/usdcav.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1yljlrxvkar0c6ujpvf8g57m5rpcwl7r032zyvu",
+        "name": "USD Coin (Portal from BSC)",
+        "display": "usdcbs",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/usdcbs.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1kkyyh7vganlpkj0gkc2rfmhy858ma4rtwywe3x",
+        "name": "USD Coin (Portal from Polygon)",
+        "display": "usdcpo",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/usdcpo.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1e6mq63y64zcxz8xyu5van4tgkhemj3r86yvgu4",
+        "name": "USD Coin (Portal from Solana)",
+        "display": "usdcso",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/usdcso.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1eqvq3thjhye7anv6f6mhxpjhyvww8zjvqcdgjx",
+        "name": "Tether USD (Portal from Avalanche)",
+        "display": "usdtav",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/usdtav.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1vlqeghv5mt5udh96kt5zxlh2wkh8q4kewkr0dd",
+        "name": "Tether USD (Portal from BSC)",
+        "display": "usdtbs",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/usdtbs.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1hd9n65snaluvf7en0p4hqzse9eqecejz2k8rl5",
+        "name": "Tether USD (Portal from Solana)",
+        "display": "usdtso",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/usdtso.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1fpfn2kkr8mv390wx4dtpfk3vkjx9ch3thvykl3",
+        "name": "Governance OHM (Portal)",
+        "display": "gohm",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/gohm.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1qvlpf2v0zmru3gtex40sqq02wxp39x3cjh359y",
+        "name": "Marinade staked SOL (Portal)",
+        "display": "msol",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/msol.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1w7ywr6waxtjuvn5svk5wqydqpjj0q9ps7qct4d",
+        "name": "Lido Staked Ether (Portal)",
+        "display": "steth",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/steth.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1srp2u95kxps35nvan88gn96nfqhukqya2d0ffc",
+        "name": "LCT Token",
+        "display": "lct",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/lct.png"
+        }
+    },
+    {
+        "denom": "cw20:terra18zqcnl83z98tf6lly37gghm7238k7lh79u4z9a",
+        "name": "Bonded ATOM",
+        "display": "batom",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/batom.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra128pe5jpempxu0nws5lw28se9zknhsr78626cpn",
+        "name": "pStake Bonded ATOM (Wormhole)",
+        "display": "webatom",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/webatom.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1laczhlpxlgmrwr9un9ds74qxd2fj4754nf82dn",
+        "name": "Willisch Coin",
+        "display": "wcoin",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/wcoin.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1thhm2u93m2stytzynhsxh5h3jrtg540x4punqy",
+        "name": "LCT Fancard Token",
+        "display": "lctfancard",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/lctfancard.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1yeyr6taynkwdl85ppaggr3zr8txhf66cny2ang",
+        "name": "Kinetic Token",
+        "display": "kntc",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/kntc.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1g53pyke8jtmt4lwvk4yl0xaqc4u0qlsl8dz3ex",
+        "name": "Kinetic kUST Token",
+        "display": "kust",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/kust.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1rl4zyexjphwgx6v3ytyljkkc4mrje2pyznaclv",
+        "name": "Steak Token",
+        "display": "steak",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/steak.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1jkkt5638cd5pur0u5jnr2juw0v6hz5d6z8xu8m",
+        "name": "CST Token",
+        "display": "cst",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/cst.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1kz7qszu7p4dg9lts7m9m7lpuarsnan47jh3fam",
+        "name": "CST Fancard Token",
+        "display": "cstfancard",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/cstfancard.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1amz5c45l34n7w8m5a3z7rd7u0k037x4nnsemwj",
+        "name": "Neworld Labs Develpper Token",
+        "display": "nwld",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/nwld.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1cdc6nlsx0l6jmt3nnx7gxjggf902wge3n2z76k",
+        "name": "FURY",
+        "display": "fury",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/fury.png"
+        }
+    },
+    {
+        "denom": "cw20:terra17n223dxpkypc5c48la7aqjvverczg82ga3cr93",
+        "name": "Reactor Token",
+        "display": "rct",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/rct.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra14vw4sfqwe7jw8ppcc7u44vq7hy9qa2nlstnxmu",
+        "name": "Vitamin Coin",
+        "display": "vitc",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/vitc.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1948uvsah8aw40dhsa9mhl3htq8lraj0smlh77g",
+        "name": "DragonSB",
+        "display": "sb",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/sb.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1rz964297kvt86rteajhtp4hsffhcum0ye8eljh",
+        "name": "RESToad Token",
+        "display": "toad",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/toad.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1yhlhrea3rgyx2xdnsswsfakn28qa8z7yp5gmhd",
+        "name": "Orion Money xASTRO Derivative Token",
+        "display": "orionastro",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/orionastro.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1j4hwavavmtsafa6zr0npalfz3tk9gf3p4787mp",
+        "name": "Retrograde",
+        "display": "retro",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/retro.png"
+        }
+    },
+    {
+        "denom": "cw20:terra16wggm67a34msdxasg2vergm2pt289y7930wv7d",
+        "name": "TerrnadoCash",
+        "display": "tnd",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/tnd.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1n9k2he20h5vpyn4mgv7pg4pzvw2n3wc4a86v3g",
+        "name": "TerrnadoCash",
+        "display": "stnd",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/stnd.svg"
+        }
+    },
+    {
+        "denom": "cw20:terra1ezz5xply2v3xdyv32gy5tcd7zq4k235q4xtzwe",
+        "name": "Neworld Token",
+        "display": "nwt",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/nwt.png"
+        }
+    },
+    {
+        "denom": "uaud",
+        "name": "TerraClassicAUD",
+        "display": "aut",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/aut.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/aut.png"
+        }
+    },
+    {
+        "denom": "ucad",
+        "name": "TerraClassicCAD",
+        "display": "cat",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/cat.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/cat.png"
+        }
+    },
+    {
+        "denom": "uchf",
+        "name": "TerraClassicCHF",
+        "display": "cht",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/cht.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/cht.png"
+        }
+    },
+    {
+        "denom": "ucny",
+        "name": "TerraClassicCNY",
+        "display": "cnt",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/cnt.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/cnt.png"
+        }
+    },
+    {
+        "denom": "udkk",
+        "name": "TerraClassicDKK",
+        "display": "dkt",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/dkt.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/dkt.png"
+        }
+    },
+    {
+        "denom": "ueur",
+        "name": "TerraClassicEUR",
+        "display": "eut",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/eut.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/eut.png"
+        }
+    },
+    {
+        "denom": "ugbp",
+        "name": "TerraClassicGBP",
+        "display": "gbt",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/gbt.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/gbt.png"
+        }
+    },
+    {
+        "denom": "uhkd",
+        "name": "TerraClassicHKD",
+        "display": "hkt",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/hkt.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/hkt.png"
+        }
+    },
+    {
+        "denom": "uidr",
+        "name": "TerraClassicIDR",
+        "display": "idt",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/idt.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/idt.png"
+        }
+    },
+    {
+        "denom": "uinr",
+        "name": "TerraClassicINR",
+        "display": "int",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/int.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/int.png"
+        }
+    },
+    {
+        "denom": "ujpy",
+        "name": "TerraClassicJPY",
+        "display": "jpt",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/jpt.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/jpt.png"
+        }
+    },
+    {
+        "denom": "umnt",
+        "name": "TerraClassicMNT",
+        "display": "mnt",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mnt.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/mnt.png"
+        }
+    },
+    {
+        "denom": "umyr",
+        "name": "TerraClassicMYR",
+        "display": "myt",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/myt.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/myt.png"
+        }
+    },
+    {
+        "denom": "unok",
+        "name": "TerraClassicNOK",
+        "display": "not",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/not.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/not.png"
+        }
+    },
+    {
+        "denom": "uphp",
+        "name": "TerraClassicPHP",
+        "display": "pht",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/pht.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/pht.png"
+        }
+    },
+    {
+        "denom": "usdr",
+        "name": "TerraClassicSDR",
+        "display": "sdt",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/sdt.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/sdt.png"
+        }
+    },
+    {
+        "denom": "usek",
+        "name": "TerraClassicSEK",
+        "display": "set",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/set.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/set.png"
+        }
+    },
+    {
+        "denom": "usgd",
+        "name": "TerraClassicSGD",
+        "display": "sgt",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/sgt.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/sgt.png"
+        }
+    },
+    {
+        "denom": "uthb",
+        "name": "TerraClassicTHB",
+        "display": "tht",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/tht.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/tht.png"
+        }
+    },
+    {
+        "denom": "utwd",
+        "name": "TerraClassicTWD",
+        "display": "twt",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/twt.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/twt.png"
+        }
+    },
+    {
+        "denom": "cw20:terra1mpq5zkkm39nmjrjg9raknpfrfmcfwv0nh0whvn",
+        "name": "Nebula Token",
+        "display": "neb",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra/images/neb.png"
+        }
+    },
+    {
+        "denom": "ucmdx",
+        "name": "Comdex",
+        "display": "cmdx",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/comdex/images/cmdx.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/comdex/images/cmdx.svg"
+        }
+    },
+    {
+        "denom": "uharbor",
+        "name": "Harbor",
+        "display": "harbor",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/comdex/images/harbor.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/comdex/images/harbor.svg"
+        }
+    },
+    {
+        "denom": "ucmst",
+        "name": "CMST",
+        "display": "cmst",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/comdex/images/cmst.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/comdex/images/cmst.svg"
+        }
+    },
+    {
+        "denom": "uxprt",
+        "name": "Persistence",
+        "display": "xprt",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/persistence/images/xprt.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/persistence/images/xprt.svg"
+        }
+    },
+    {
+        "denom": "stk/uatom",
+        "name": "PSTAKE staked ATOM",
+        "display": "stkatom",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/persistence/images/stkatom.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/persistence/images/stkatom.svg"
+        }
+    },
+    {
+        "denom": "ibc/A6E3AF63B3C906416A9AF7A556C59EA4BD50E617EFFE6299B99700CCB780E444",
+        "name": "pSTAKE Finance",
+        "display": "pstake",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/persistence/images/pstake.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/persistence/images/pstake.svg"
+        }
+    },
+    {
+        "denom": "basecro",
+        "name": "Cronos",
+        "display": "cro",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/cronos/images/cro.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/cronos/images/cronos.png"
+        }
+    },
+    {
+        "denom": "udarc",
+        "name": "DARC",
+        "display": "darc",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/konstellation/images/darc.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/konstellation/images/darc.svg"
+        }
+    },
+    {
+        "denom": "udsm",
+        "name": "Desmos",
+        "display": "dsm",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/desmos/images/dsm.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/desmos/images/dsm.svg"
+        }
+    },
+    {
+        "denom": "axpla",
+        "name": "Xpla",
+        "display": "xpla",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/xpla/images/xpla.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/xpla/images/xpla.png"
+        }
+    },
+    {
+        "denom": "ungm",
+        "name": "e-Money",
+        "display": "ngm",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/emoney/images/ngm.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/emoney/images/ngm.png"
+        }
+    },
+    {
+        "denom": "eeur",
+        "name": "e-Money EUR",
+        "display": "eur",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/emoney/images/eeur.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/emoney/images/eeur.png"
+        }
+    },
+    {
+        "denom": "echf",
+        "name": "e-Money CHF",
+        "display": "chf",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/emoney/images/echf.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/emoney/images/echf.png"
+        }
+    },
+    {
+        "denom": "enok",
+        "name": "e-Money NOK",
+        "display": "nok",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/emoney/images/enok.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/emoney/images/enok.png"
+        }
+    },
+    {
+        "denom": "edkk",
+        "name": "e-Money DKK",
+        "display": "dkk",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/emoney/images/edkk.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/emoney/images/edkk.png"
+        }
+    },
+    {
+        "denom": "esek",
+        "name": "e-Money SEK",
+        "display": "sek",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/emoney/images/esek.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/emoney/images/esek.png"
+        }
+    },
+    {
+        "denom": "aevmos",
+        "name": "Evmos",
+        "display": "evmos",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/evmos/images/evmos.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/evmos/images/evmos.png"
+        }
+    },
+    {
+        "denom": "FX",
+        "name": "Function X",
+        "display": "FX",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/fxcore/images/fx.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/fxcore/images/fx.png"
+        }
+    },
+    {
+        "denom": "uband",
+        "name": "Band Protocol",
+        "display": "band",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bandchain/images/band.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bandchain/images/band.svg"
+        }
+    },
+    {
+        "denom": "uqck",
+        "name": "Quicksilver",
+        "display": "qck",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/quicksilver/images/qck.png"
+        }
+    },
+    {
+        "denom": "uqstars",
+        "name": "Quicksilver Liquid Staked STARS",
+        "display": "qstars",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/quicksilver/images/qstars.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/quicksilver/images/qstars.svg"
+        }
+    },
+    {
+        "denom": "uqatom",
+        "name": "Quicksilver Liquid Staked ATOM",
+        "display": "qatom",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/quicksilver/images/qatom.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/quicksilver/images/qatom.svg"
+        }
+    },
+    {
+        "denom": "uqregen",
+        "name": "Quicksilver Liquid Staked Regen",
+        "display": "qregen",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/quicksilver/images/qregen.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/quicksilver/images/qregen.svg"
+        }
+    },
+    {
+        "denom": "uqosmo",
+        "name": "Quicksilver Liquid Staked OSMO",
+        "display": "qosmo",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/quicksilver/images/qosmo.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/quicksilver/images/qosmo.svg"
+        }
+    },
+    {
+        "denom": "uregen",
+        "name": "Regen Network",
+        "display": "regen",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/regen/images/regen.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/regen/images/regen.png"
+        }
+    },
+    {
+        "denom": "eco.uC.NCT",
+        "name": "Nature Carbon Ton",
+        "display": "nct",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/regen/images/nct.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/regen/images/nct.png"
+        }
+    },
+    {
+        "denom": "uscrt",
+        "name": "Secret Network",
+        "display": "scrt",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/scrt.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/scrt.svg"
+        }
+    },
+    {
+        "denom": "cw20:secret1rgm2m5t530tdzyd99775n6vzumxa5luxcllml4",
+        "name": "SIENNA",
+        "display": "sienna",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/sienna.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/sienna.svg"
+        }
+    },
+    {
+        "denom": "cw20:secret1qfql357amn448duf5gvp9gr48sxx9tsnhupu3d",
+        "name": "Shade (old)",
+        "display": "shd",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/shdold.svg"
+        }
+    },
+    {
+        "denom": "cw20:secret153wu605vvp934xhd4k9dtd640zsep5jkesstdm",
+        "name": "Shade",
+        "display": "shd",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/shd.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/shd.svg"
+        }
+    },
+    {
+        "denom": "cw20:secret1fl449muk5yq8dlad7a22nje4p5d2pnsgymhjfd",
+        "name": "Silk",
+        "display": "silk",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/silk.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/silk.svg"
+        }
+    },
+    {
+        "denom": "cw20:secret1k6u0cy4feepm6pehnz804zmwakuwdapm69tuc4",
+        "name": "SCRT Staking Derivatives",
+        "display": "stkd-scrt",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/stkd-scrt.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/stkd-scrt.svg"
+        }
+    },
+    {
+        "denom": "cw20:secret1yxcexylwyxlq58umhgsjgstgcg2a0ytfy4d9lt",
+        "name": "Button",
+        "display": "butt",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/butt.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/butt.svg"
+        }
+    },
+    {
+        "denom": "cw20:secret12rcvz0umvk875kd6a803txhtlu7y0pnd73kcej",
+        "name": "Alter",
+        "display": "alter",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/alter.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/alter.svg"
+        }
+    },
+    {
+        "denom": "cw20:secret1s09x2xvfd2lp2skgzm29w2xtena7s8fq98v852",
+        "name": "Amber",
+        "display": "amber",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/amber.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/secretnetwork/images/amber.svg"
+        }
+    },
+    {
+        "denom": "udvpn",
+        "name": "Sentinel",
+        "display": "dvpn",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/sentinel/images/dvpn.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/sentinel/images/dvpn.png"
+        }
+    },
+    {
+        "denom": "uctk",
+        "name": "Shentu",
+        "display": "ctk",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/shentu/images/ctk.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/shentu/images/ctk.png"
+        }
+    },
+    {
+        "denom": "rowan",
+        "name": "Sifchain Rowan",
+        "display": "ROWAN",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/sifchain/images/rowan.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/sifchain/images/rowan.png"
+        }
+    },
+    {
+        "denom": "ustars",
+        "name": "Stargaze",
+        "display": "stars",
+        "logos": {
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stargaze/images/stars.svg",
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stargaze/images/stars.png"
+        }
+    },
+    {
+        "denom": "ustrd",
+        "name": "Stride",
+        "display": "strd",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/strd.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/strd.svg"
+        }
+    },
+    {
+        "denom": "stuatom",
+        "name": "stATOM",
+        "display": "statom",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/statom.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/statom.svg"
+        }
+    },
+    {
+        "denom": "stustars",
+        "name": "stSTARS",
+        "display": "ststars",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/ststars.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/ststars.svg"
+        }
+    },
+    {
+        "denom": "stuosmo",
+        "name": "stOSMO",
+        "display": "stosmo",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stosmo.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stosmo.svg"
+        }
+    },
+    {
+        "denom": "stujuno",
+        "name": "stJUNO",
+        "display": "stjuno",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stjuno.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stjuno.svg"
+        }
+    },
+    {
+        "denom": "stuluna",
+        "name": "stLUNA",
+        "display": "stluna",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stluna.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stluna.svg"
+        }
+    },
+    {
+        "denom": "stinj",
+        "name": "stINJ",
+        "display": "stINJ",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stinj.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stinj.svg"
+        }
+    },
+    {
+        "denom": "staevmos",
+        "name": "stEVMOS",
+        "display": "stevmos",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stevmos.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stevmos.svg"
+        }
+    },
+    {
+        "denom": "stuumee",
+        "name": "stUMEE",
+        "display": "stumee",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stumee.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stumee.svg"
+        }
+    },
+    {
+        "denom": "stucmdx",
+        "name": "stCMDX",
+        "display": "stcmdx",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stcmdx.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stcmdx.svg"
+        }
+    },
+    {
+        "denom": "uatolo",
+        "name": "Rizon Chain",
+        "display": "atolo",
+        "logos": {
+            "png": "https://raw.githubusercontent.com/cosmos/chain-registry/master/rizon/images/atolo.png",
+            "svg": "https://raw.githubusercontent.com/cosmos/chain-registry/master/rizon/images/atolo.svg"
+        }
+    }
+]

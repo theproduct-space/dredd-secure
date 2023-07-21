@@ -7,6 +7,7 @@ interface ButtonProps {
   disabled?: boolean;
   className?: string;
   icon?: JSX.Element;
+  orangeText?: boolean;
 }
 
 const Button = ({
@@ -15,6 +16,7 @@ const Button = ({
   disabled,
   icon,
   secondary,
+  orangeText,
   className,
 }: ButtonProps) => {
   return (
@@ -30,7 +32,11 @@ const Button = ({
       onClick={onClick}
     >
       {icon}
-      <Typography variant="body-small" as="div">
+      <Typography
+        variant="body-small"
+        as="div"
+        className={`${orangeText && "text-orange"}`}
+      >
         {text}
       </Typography>
     </button>

@@ -11,7 +11,7 @@ const AddressContext = createContext({
 
 export const useAddressContext = () => useContext(AddressContext);
 
-export default function AddressProvider({ children }: Props) {
+export default function WalletConnectorProvider({ children }: Props) {
   const { address, shortAddress } = useAddress();
 
   return (

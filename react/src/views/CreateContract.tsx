@@ -3,7 +3,11 @@ import CreateContract, { IContract } from "~sections/CreateContract";
 
 const CreateContractPage = () => {
   const contract = useLocation().state as IContract | undefined;
-  return <CreateContract contract={contract} />;
+  return (
+    <div className="bg-black">
+      <CreateContract contract={contract} />;
+    </div>
+  );
 };
 
 export default CreateContractPage;

@@ -15,11 +15,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@cosmjs/amino": "^0.31.0",
     "@cosmjs/launchpad": "0.27.0",
     "@cosmjs/proto-signing": "^0.31.0",
     "@cosmjs/stargate": "^0.31.0",
-    "@keplr-wallet/types": "^0.11.64",
+    "@keplr-wallet/types": "^0.12.16",
     "axios": "0.21.4",
     "buffer": "^6.0.3",
     "events": "^3.3.0"

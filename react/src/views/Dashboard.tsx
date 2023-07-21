@@ -6,32 +6,21 @@ import { Link } from "react-router-dom";
 import { queryClient } from "dredd-secure-client-ts/dreddsecure.escrow";
 import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
 // Hooks Imports
-import useKeplr from "~def-hooks/useKeplr";
 
 // Custom Imports
-import Account from "~sections/Account";
 import FilterDropDown, {
   FilterDropDownProps,
 } from "~baseComponents/FilterDropDown";
 import TableView, { TableData } from "~baseComponents/TableView";
+import Account from "~sections/Account";
+import useWallet from "../components/utils/useWallet";
 
 const Dashboard = () => {
   const [selectedStatus, setSelectedStatus] = useState<string>("");
   const [onlyOwnDisplayed, setOnlyOwnDisplayed] = useState(false);
   const [escrows, setEscrows] = useState<EscrowEscrow[]>([]);
   // TODO: Get address from keplr or other wallet manager
-  const chainId = "dreddsecure";
-  const keplr = useKeplr();
-  const [offlineSigner, setOfflineSigner] = useState(
-    keplr.getOfflineSigner(chainId),
-  );
-  const [address, setAddress] = useState("");
-
-  keplr.listenToAccChange(async () => {
-    setOfflineSigner(keplr.getOfflineSigner(chainId));
-    const { address } = (await offlineSigner.getAccounts())[0];
-    setAddress(address);
-  });
+  const { address } = useWallet();
 
   const tableHeaders = [
     {
@@ -149,7 +138,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div>
-        <Link to={"#"}>Create Contract</Link>
+        <Link to={"/escrow/create"}>Create Contract</Link>
       </div>
       <hr></hr>{" "}
       {/* Just to let me see a clear separation between the table and other thing */}
@@ -170,7 +159,6 @@ const Dashboard = () => {
           headers={tableHeaders}
           data={formatedData}
           filterOptions={[{ prop: "status", value: selectedStatus }]}
-          wallet={{ address: address, offlineSigner: offlineSigner }}
         />
       </div>
       <Account />

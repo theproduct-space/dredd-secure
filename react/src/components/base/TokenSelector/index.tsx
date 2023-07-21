@@ -1,48 +1,67 @@
 // react Imports
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // dredd-secure-client-ts Imports
-import { Coin } from "dredd-secure-client-ts/cosmos.bank.v1beta1/types/cosmos/base/v1beta1/coin";
 
 // Custom Imports
 import TokenItem from "~baseComponents/TokenItem";
+import { useClient } from "~hooks/useClient";
+import assets from "~src/tokens.json";
+import useWallet from "../../utils/useWallet";
 
 export interface IToken {
   name: string;
+  display: string;
   amount?: number;
   denom: string;
+  chain_name: string;
+  logos?:
+    | { svg: string; png: string }
+    | { png: string; svg?: undefined }
+    | { svg: string; png?: undefined }
+    | undefined;
 }
 
 export interface TokenSelectorProps {
   onSave: (token: IToken | undefined) => void;
-  address?: string;
   selectedToken?: IToken;
+  ownedToken?: boolean;
 }
 
 const TokenSelector = (props: TokenSelectorProps) => {
   const [selectedToken, setSelectedToken] = useState(props.selectedToken);
-  const { onSave, address } = props;
+  const { onSave, ownedToken } = props;
+  const { address } = useWallet();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [tokens, setTokens] = useState<IToken[]>([]);
 
-  const displayOwnedToken = () => {
-    // TODO: When the wallet connector will be implemented, get all tokens from wallet logic here.
-  };
+  const displayTokens = () => {
+    // TODO: filter tokens by searchQuery
+    let tokenList: IToken[] = tokens;
 
-  const displayAllToken = () => {
-    const tokens: IToken[] = [
-      {
-        name: "token",
-        denom: "utok",
-      },
-      {
-        name: "ATOM",
-        denom: "uatom",
-      },
-    ];
+    if (searchQuery != "") {
+      const properties = ["display", "name", "denom", "chain_name"];
+      const filteredList: IToken[] = [];
 
-    return tokens.map((token) => {
+      tokenList.forEach((token) => {
+        let isValid = false;
+        for (let i = 0; i < properties.length && !isValid; i++) {
+          const value = token[properties[i]].toString();
+          if (value.includes(searchQuery)) {
+            isValid = true;
+          }
+        }
+
+        if (isValid) filteredList.push(token);
+      });
+
+      tokenList = filteredList;
+    }
+
+    return tokenList.map((token, index) => {
       return (
         <TokenItem
-          key={`all-token-${token.denom}`}
+          key={`token-selector-${index}`}
           token={token}
           onClick={(t) => onSave(t)}
           showAmount={true}
@@ -52,14 +71,48 @@ const TokenSelector = (props: TokenSelectorProps) => {
     });
   };
 
+  const fetchOwnedToken = () => {
+    if (address != "") {
+      useClient()
+        .CosmosBankV1Beta1.query.queryAllBalances(address)
+        .then((response) => {
+          const tokens: IToken[] = [];
+          response.data.balances?.forEach((token) => {
+            const t = assets.tokens.find((t) => t.denom === token.denom);
+            if (t) {
+              tokens.push({
+                denom: t.denom,
+                display: t.display,
+                name: t.name,
+                amount: Number(token.amount),
+                chain_name: t.chain_name,
+                logos: t.logos,
+              });
+            }
+          });
+          setTokens(tokens);
+        });
+    }
+  };
+
+  useEffect(() => {
+    if (ownedToken) fetchOwnedToken();
+    else setTokens(assets.tokens);
+  }, []);
+
   return (
     <div className="modal">
       <div className="card">
         <div className="card-headers">
           Select a token
-          <div className="search-bar">Search token</div>
+          <input
+            className="search-bar"
+            type="search"
+            placeholder="Search Tokens"
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
-        <div className="card-body">{displayAllToken()}</div>
+        <div className="card-body">{displayTokens()}</div>
       </div>
     </div>
   );
