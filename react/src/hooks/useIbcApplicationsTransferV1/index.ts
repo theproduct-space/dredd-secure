@@ -1,12 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  useQuery,
-  type UseQueryOptions,
-  useInfiniteQuery,
-  type UseInfiniteQueryOptions,
-} from "@tanstack/react-query";
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { useClient } from "../useClient";
-import type { Ref } from "vue";
 
 export default function useIbcApplicationsTransferV1() {
   const client = useClient();
@@ -40,7 +33,7 @@ export default function useIbcApplicationsTransferV1() {
       },
       {
         ...options,
-        getNextPageParam: (lastPage, allPages) => {
+        getNextPageParam: (lastPage) => {
           if (
             (lastPage.pagination?.total ?? 0) >
             (lastPage.pageParam ?? 0) * perPage
@@ -50,7 +43,7 @@ export default function useIbcApplicationsTransferV1() {
             return undefined;
           }
         },
-        getPreviousPageParam: (firstPage, allPages) => {
+        getPreviousPageParam: (firstPage) => {
           if (firstPage.pageParam == 1) {
             return undefined;
           } else {

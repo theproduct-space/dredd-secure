@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { txClient } from "dredd-secure-client-ts/dreddsecure.escrow";
 
 // Styles Imports
-import WalletConnector from "../../context/WalletConnector/WalletConnector";
 import "./TableView.css";
 import useWallet from "../../utils/useWallet";
 
