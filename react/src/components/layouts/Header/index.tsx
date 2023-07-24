@@ -18,7 +18,11 @@ const Header = () => {
         <Link to="/" className="logo-link">
           <img src={DreddLogo} alt="Dredd Logo" className="w-44" />
         </Link>
-        {location.pathname !== "/app" ? (
+        {location.pathname !== "/" ? (
+          <div>
+            <Account />
+          </div>
+        ) : (
           <div className="flex items-center gap-3">
             <a target="_blank" href={URL_TWITTER} rel="noreferrer">
               <TwitterIcon
@@ -29,16 +33,12 @@ const Header = () => {
             </a>
             {/* <Link to="/app"> */}
             {/* <Button
-              text="Lauch App"
-              icon={<LockIcon />}
-              disabled
-              className="font-revalia rounded-full border-solid border-2"
-            /> */}
+            text="Lauch App"
+            icon={<LockIcon />}
+            disabled
+            className="font-revalia rounded-full border-solid border-2"
+          /> */}
             {/* </Link> */}
-          </div>
-        ) : (
-          <div>
-            <Account />
           </div>
         )}
       </div>

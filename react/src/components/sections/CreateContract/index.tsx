@@ -14,7 +14,6 @@ import Condition from "~sections/Condition";
 import randomCubes from "~assets/random-cubes.webp";
 import Button from "~baseComponents/Button";
 import SecondaryButton from "~baseComponents/SecondaryButton";
-import { Modal } from "@mui/base";
 import BaseModal from "~baseComponents/BaseModal/Index";
 
 export interface ICondition {
@@ -97,6 +96,7 @@ const CreateContract = (props: CreateContractProps) => {
         selectedToken={modal}
         onSave={handleSaving}
         ownedToken={showOwnedToken}
+        handleClose={() => setModalToOpen(undefined)}
       />
     );
   };
@@ -171,14 +171,14 @@ const CreateContract = (props: CreateContractProps) => {
             </span>
             <div className="title-2">
               <Typography variant="h5" className="font-revalia pb-4">
-                Create Contract <Account />
+                Create Contract
               </Typography>
             </div>
             <div className="bg-gray rounded-3xl border-[1px] border-white-200">
               <div className="p-8">
                 <div className="conditions-management">
                   <div className="subtitle">
-                    <Typography variant="body-small" className="font-revalia">
+                    <Typography variant="h6" className="font-revalia">
                       Add Conditions<span className="text-orange">*</span>
                     </Typography>
                   </div>
@@ -210,7 +210,7 @@ const CreateContract = (props: CreateContractProps) => {
                 </div>
                 <div className="assets-management">
                   <div className="py-4">
-                    <Typography variant="body-small" className="font-revalia">
+                    <Typography variant="h6" className="font-revalia">
                       Choose Assets for Exchange
                       <span className="text-orange">*</span>
                     </Typography>
@@ -231,11 +231,6 @@ const CreateContract = (props: CreateContractProps) => {
                         orangeText
                         onClick={() => setModalToOpen(Modals.Own)}
                       />
-                      <SecondaryButton
-                        text="Select NFT"
-                        orangeText
-                        onClick={() => setModalToOpen(Modals.Own)}
-                      />
                     </div>
                     <div className="w-6/12 flex flex-col gap-2">
                       <div className="sub-subtitle">
@@ -245,11 +240,6 @@ const CreateContract = (props: CreateContractProps) => {
                       </div>
                       <SecondaryButton
                         text="Select Token"
-                        orangeText
-                        onClick={() => setModalToOpen(Modals.Wanted)}
-                      />
-                      <SecondaryButton
-                        text="Select NFT"
                         orangeText
                         onClick={() => setModalToOpen(Modals.Wanted)}
                       />
@@ -280,7 +270,6 @@ const CreateContract = (props: CreateContractProps) => {
       <BaseModal
         open={modalToOpen !== undefined}
         handleClose={() => setModalToOpen(undefined)}
-        title="Select Token"
       >
         {displayModal()}
       </BaseModal>
