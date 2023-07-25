@@ -8,6 +8,7 @@ import { txClient } from "dredd-secure-client-ts/dreddsecure.escrow";
 // Styles Imports
 import "./TableView.css";
 import useWallet from "../../utils/useWallet";
+import { env } from "~src/env";
 
 export interface TableHeader {
   label: string;
@@ -43,7 +44,7 @@ const TableView = (props: TableViewProps) => {
   const messageClient = txClient({
     signer: offlineSigner,
     prefix: "cosmos",
-    addr: "http://localhost:26657",
+    addr: env.rpcURL,
   });
 
   const handleSortingChange = (param: string) => {

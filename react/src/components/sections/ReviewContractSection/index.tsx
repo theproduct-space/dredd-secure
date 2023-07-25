@@ -15,6 +15,7 @@ import { txClient } from "dredd-secure-client-ts/dreddsecure.escrow";
 import { useNavigate } from "react-router-dom";
 import useWallet from "../../utils/useWallet";
 import assets from "~src/tokens.json";
+import { env } from "~src/env";
 
 // Hooks Imports
 
@@ -42,7 +43,7 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
   const messageClient = txClient({
     signer: offlineSigner,
     prefix: "cosmos",
-    addr: "http://localhost:26657",
+    addr: env.rpcURL,
   });
 
   const CoinToIToken = (c: V1Beta1Coin | undefined): IToken | undefined => {
@@ -113,9 +114,8 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
           <TokenSelector
             selectedToken={selectedTips}
             onSave={setSelectedTips}
-            handleClose={() => {
-              setModalOpened(false);
-            }}
+            ownedToken={true}
+            handleClose={() => setModalOpened(false)}
           />
         )}
       </div>
