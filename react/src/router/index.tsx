@@ -4,11 +4,12 @@ import { createBrowserRouter, Outlet } from "react-router-dom";
 // Custom Imports
 import Header from "~layouts/Header";
 import CreateContractPage from "~views/CreateContract";
-import Dashboard from "~views/Dashboard";
+import Dashboard from "~sections/Dashboard/Dashboard";
 import Landing from "~views/Home";
 import PaymentView from "~views/Payment";
 import ReviewContract from "~views/ReviewContract";
 import Footer from "~layouts/Footer";
+import DashBoardPage from "~views/Dashboard";
 
 const home = {
   label: "Landing",
@@ -19,7 +20,7 @@ const otherPages = [
   {
     label: "Dashboard",
     to: "/dashboard",
-    view: <Dashboard />,
+    view: <DashBoardPage />,
   },
   {
     label: "CreateContract",
