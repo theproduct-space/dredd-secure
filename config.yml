@@ -10,6 +10,9 @@ accounts:
     coins:
       - 30000token
       - 300000000stake
+  - name: dev
+    coins: [100000token, 200000utok, 300000uatom, 400000stake]
+    mnemonic: disease someone stand surface income long video stock script ripple strike bean
 faucet:
   name: bob
   coins:
