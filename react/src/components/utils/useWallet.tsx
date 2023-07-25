@@ -32,10 +32,11 @@ export default function () {
       }
     }
   }, []);
-  
+
   return {
-    
-    offlineSigner: keplr.isKeplrAvailable ? keplr.getOfflineSigner(chainId) : undefined,
+    offlineSigner: keplr.isKeplrAvailable
+      ? keplr.getOfflineSigner(chainId)
+      : undefined,
     address,
   };
 }
