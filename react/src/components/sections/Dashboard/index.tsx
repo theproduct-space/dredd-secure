@@ -16,11 +16,12 @@ import Account from "~sections/Account";
 import useWallet from "../../utils/useWallet";
 import ContentContainer from "~layouts/ContentContainer";
 import ModalContainer from "~layouts/ModalContainer";
+import Card from "~baseComponents/Card";
 
 // Assets Imports
-import bgImage from "~assets/random-cubes.webp";
 import Typography from "~baseComponents/Typography";
 import Button from "~baseComponents/Button";
+import bgImage from "~assets/3d-logoNoBg.webp";
 
 const Dashboard = () => {
   const [selectedStatus, setSelectedStatus] = useState<string>("");
@@ -141,7 +142,6 @@ const Dashboard = () => {
         src={bgImage}
         alt="Dredd-Secure"
         className="object-cover absolute z-0 top-32 drop-shadow-lightOrange opacity-80"
-        loading="lazy"
       /> */}
       <div className="relative min-h-screen w-full pt-32">
         <div>
@@ -156,8 +156,8 @@ const Dashboard = () => {
             <Button text="Create Contract" className="capitalize" />
           </Link>
         </div>
-        <ModalContainer className="pt-32">
-          <div>
+        <Card progress={"90"}>
+          <div className="p-4 md:p-10">
             <div>
               <div className="font-bold">Filter by status</div>
               <FilterDropDown {...statusFilterDropDownProps} />
@@ -176,7 +176,7 @@ const Dashboard = () => {
               filterOptions={[{ prop: "status", value: selectedStatus }]}
             />
           </div>
-        </ModalContainer>
+        </Card>
       </div>
     </ContentContainer>
   );
