@@ -1,4 +1,5 @@
 import { IToken } from "~baseComponents/TokenSelector";
+import Typography from "~baseComponents/Typography";
 
 interface TokenItemProps {
   token: IToken;
@@ -9,17 +10,33 @@ interface TokenItemProps {
 
 const TokenItem = (props: TokenItemProps) => {
   const { token, onClick, showAmount, selected } = props;
+  const logoUrl = token.logos ? token.logos.svg ?? token.logos.png : undefined;
 
   return (
-    <button className="single-token" onClick={() => onClick(token)}>
-      <div className="token-info">
-        <div className="token-img">IMG</div>
-        <div className="token">
-          <div className="token-name">{token.name}</div>
-          <div className="token-denom">{token.display}</div>
+    <button
+      className="w-full p-2 rounded hover:bg-white-200"
+      onClick={() => onClick(token)}
+    >
+      <div className="flex justify-between items-center">
+        <div className="flex gap-2 items-center">
+          <div className="w-6">
+            {logoUrl && <img src={logoUrl} alt="token" />}
+          </div>
+          <div className="flex flex-col align-start">
+            <Typography variant="body" className="uppercase text-left">
+              {token.display}
+            </Typography>
+            <Typography
+              variant="body-small"
+              className="text-white-500 capitalize text-left"
+            >
+              {token.name}
+            </Typography>
+          </div>
         </div>
-
-        {showAmount && <div className="token-amount">{token.amount ?? 0}</div>}
+        {showAmount && (
+          <div className="text-white-1000">{token.amount ?? 0}</div>
+        )}
       </div>
     </button>
   );

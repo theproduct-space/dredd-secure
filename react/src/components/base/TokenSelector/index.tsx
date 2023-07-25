@@ -8,6 +8,9 @@ import TokenItem from "~baseComponents/TokenItem";
 import { useClient } from "~hooks/useClient";
 import assets from "~src/tokens.json";
 import useWallet from "../../utils/useWallet";
+import Typography from "~baseComponents/Typography";
+import Close from "~icons/Close";
+import SearchBar from "~baseComponents/SearchBar";
 
 export interface IToken {
   name: string;
@@ -26,11 +29,12 @@ export interface TokenSelectorProps {
   onSave: (token: IToken | undefined) => void;
   selectedToken?: IToken;
   ownedToken?: boolean;
+  handleClose: () => void;
 }
 
 const TokenSelector = (props: TokenSelectorProps) => {
   const [selectedToken, setSelectedToken] = useState(props.selectedToken);
-  const { onSave, ownedToken } = props;
+  const { onSave, ownedToken, handleClose } = props;
   const { address } = useWallet();
   const [searchQuery, setSearchQuery] = useState("");
   const [tokens, setTokens] = useState<IToken[]>([]);
@@ -102,17 +106,23 @@ const TokenSelector = (props: TokenSelectorProps) => {
 
   return (
     <div className="modal">
-      <div className="card">
-        <div className="card-headers">
-          Select a token
-          <input
-            className="search-bar"
-            type="search"
+      <div className="relative">
+        <div className="sticky top-0 w-full border-b-[1px] border-white-200 p-4 bg-gray">
+          <div className="flex justify-between items-center pb-4">
+            <Typography variant="body">Select a token</Typography>
+            <Close
+              onClick={handleClose}
+              className="hover: cursor-pointer w-6 h-6"
+            />
+          </div>
+          <SearchBar
             placeholder="Search Tokens"
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(query) => setSearchQuery(query)}
           />
         </div>
-        <div className="card-body">{displayTokens()}</div>
+        <div className="flex flex-col gap-3 p-4 max-w-full">
+          {displayTokens()}
+        </div>
       </div>
     </div>
   );

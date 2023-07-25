@@ -4,7 +4,7 @@ import { createBrowserRouter, Outlet } from "react-router-dom";
 // Custom Imports
 import Header from "~layouts/Header";
 import CreateContractPage from "~views/CreateContract";
-import Dashboard from "~views/Dashboard";
+import Dashboard from "~sections/Dashboard/Dashboard";
 import Landing from "~views/Home";
 import PaymentView from "~views/Payment";
 import ReviewContract from "~views/ReviewContract";
