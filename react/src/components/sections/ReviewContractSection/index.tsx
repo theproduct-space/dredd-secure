@@ -113,6 +113,9 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
           <TokenSelector
             selectedToken={selectedTips}
             onSave={setSelectedTips}
+            handleClose={() => {
+              setModalOpened(false);
+            }}
           />
         )}
       </div>
