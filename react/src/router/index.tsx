@@ -9,7 +9,6 @@ import Landing from "~views/Home";
 import PaymentView from "~views/Payment";
 import ReviewContract from "~views/ReviewContract";
 import Footer from "~layouts/Footer";
-import DashBoardPage from "~views/Dashboard";
 
 const home = {
   label: "Landing",
@@ -20,7 +19,7 @@ const otherPages = [
   {
     label: "Dashboard",
     to: "/dashboard",
-    view: <DashBoardPage />,
+    view: <Dashboard />,
   },
   {
     label: "CreateContract",
