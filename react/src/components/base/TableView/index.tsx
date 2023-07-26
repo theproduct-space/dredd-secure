@@ -1,19 +1,20 @@
 // React Imports
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 // dredd-secure-client-ts Imports
 import { txClient } from "dredd-secure-client-ts/dreddsecure.escrow";
 
 // Hooks Imports
 import useWallet from "../../utils/useWallet";
-import { env } from "~src/env";
 
 // Custom Components Imports
 import ChevronDownIcon from "~icons/ChevronDownIcon";
 import Typography from "~baseComponents/Typography";
 import StatusPill from "~baseComponents/StatusPill";
 import Garbage from "~icons/Garbage";
+import { env } from "~src/env";
 
 export interface TableHeader {
   label: string;
@@ -75,8 +76,13 @@ const TableView = (props: TableViewProps) => {
     // Creator here is for testing only.
     // With a wallet connector, we will put the offline signer into the txClient above.
 
-    messageClient.sendMsgCancelEscrow({
+    const request = messageClient.sendMsgCancelEscrow({
       value: { creator: address, id: id },
+    });
+    toast.promise(request, {
+      pending: `Cancelling Escrow #${id} in-progress`,
+      success: `Successfully cancelled Escrow #${id}!`,
+      error: `An error happened while cancelling Escrow #${id}!`,
     });
   };
 
@@ -138,21 +144,20 @@ const TableView = (props: TableViewProps) => {
                     )}
                   </td>
                 ))}
-                {/* // TODO TEST THIS*/}
-                {element.initiator ===
-                  "cosmos1peqnw9w3tsana5ycwcgp88mvnfqyl0e3clpym4" && (
-                  <td key={`initiator-${index}`}>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleCancelEscrow(element.id);
-                      }}
-                      className={"flex"}
-                    >
-                      <Garbage height={20} width={20} />
-                    </button>
-                  </td>
-                )}
+                {element.initiator === address &&
+                  !["closed", "cancelled"].includes(element.status) && (
+                    <td key={`initiator-${index}`}>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleCancelEscrow(element.id);
+                        }}
+                        className={"flex"}
+                      >
+                        <Garbage height={20} width={20} />
+                      </button>
+                    </td>
+                  )}
               </tr>
             );
           })}

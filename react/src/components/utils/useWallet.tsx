@@ -11,7 +11,6 @@ export default function () {
 
   useEffect(() => {
     const isConnected = sessionStorage.getItem("isConnected");
-
     if (isConnected && keplr.isKeplrAvailable) {
       const obj = JSON.parse(isConnected);
 

@@ -19,6 +19,10 @@ const statusStyles = {
     fill: "#FFF5E7",
     border: "#D0C9BF",
   },
+  cancelled: {
+    fill: "#FFF5E7",
+    border: "#D0C9BF",
+  },
 };
 
 const StatusPill = ({ status, className }: ButtonProps) => {

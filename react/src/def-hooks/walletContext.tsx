@@ -43,10 +43,13 @@ export default function WalletProvider({ children }: Props) {
       };
       await client.useKeplr();
       const [account] = await (client?.signer?.getAccounts() ?? []);
-      wallet.accounts.push({ address: account.address, pathIncrement: null });
 
-      setActiveWallet(wallet);
-      window.localStorage.setItem("lastWallet", wallet.name);
+      if (account) {
+        wallet.accounts.push({ address: account.address, pathIncrement: null });
+
+        setActiveWallet(wallet);
+        window.localStorage.setItem("lastWallet", wallet.name);
+      }
       if (activeWallet && activeWallet.name && activeWallet.password) {
         setWallets([
           ...wallets,
