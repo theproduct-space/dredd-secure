@@ -10,6 +10,7 @@ type Variant =
   | "body"
   | "body-med"
   | "body-small"
+  | "x-small"
   | "small";
 
 interface Props {
@@ -30,6 +31,7 @@ const tags: Record<Variant, ElementType> = {
   "body-med": "p",
   "body-small": "p",
   small: "span",
+  "x-small": "span",
 };
 
 const sizes: Record<Variant, string> = {
@@ -43,6 +45,7 @@ const sizes: Record<Variant, string> = {
   "body-med": "text-base sm:text-lg",
   "body-small": "text-sm sm:text-base",
   small: "text-xxs sm:text-xs",
+  "x-small": "text-xxs",
 };
 
 const Typography = ({ variant, children, className, as }: Props) => {

@@ -5,14 +5,20 @@ import { useNavigate } from "react-router-dom";
 // dredd-secure-client-ts Imports
 import { txClient } from "dredd-secure-client-ts/dreddsecure.escrow";
 
-// Styles Imports
-import "./TableView.css";
+// Hooks Imports
 import useWallet from "../../utils/useWallet";
 import { env } from "~src/env";
+
+// Custom Components Imports
+import ChevronDownIcon from "~icons/ChevronDownIcon";
+import Typography from "~baseComponents/Typography";
+import StatusPill from "~baseComponents/StatusPill";
+import Garbage from "~icons/Garbage";
 
 export interface TableHeader {
   label: string;
   dataProp: string;
+  minWidth: string;
 }
 
 export interface TableData {
@@ -79,65 +85,79 @@ const TableView = (props: TableViewProps) => {
   };
 
   return (
-    <div className="table">
-      <div className="table-row header-row">
-        {headers.map((header) => {
-          return (
-            <button
-              key={"header-" + header.label}
-              className="table-cell header-cell"
-              onClick={() => handleSortingChange(header.dataProp)}
-            >
-              {header.label}
-              {
-                /* TODO (Design): Replace A & D by an actual icon */
-                sortKey === header.dataProp && sortAscending ? (
-                  <span className="icon-ascending">
-                    <b>A</b>
-                  </span>
-                ) : sortKey === header.dataProp && !sortAscending ? (
-                  <span className="icon-descending">
-                    <b>D</b>
-                  </span>
-                ) : null
-              }
-            </button>
-          );
-        })}
-      </div>
-      {sortedData.map((element, index) => {
-        for (const filter of filterOptions) {
-          if (filter.value != "" && element[filter.prop] != filter.value)
-            return;
-        }
-
-        return (
-          <React.Fragment key={`data-${index}`}>
-            <button
-              className="table-row"
-              onClick={() => handleOnClickRow(element.id)}
-            >
-              {headers.map((header) => {
-                return (
-                  <div
-                    key={`data-${index}-${header.dataProp}`}
-                    className="table-cell"
+    <div className="overflow-x-auto pb-4">
+      <table className="table-auto w-full text-white-1000 border-separate border-spacing-y-2">
+        <thead className="text-left">
+          <tr>
+            {headers.map((header) => (
+              <th key={"header-" + header.label}>
+                <button
+                  className="flex items-center gap-1 mb-4"
+                  onClick={() => handleSortingChange(header.dataProp)}
+                >
+                  <Typography
+                    variant={"small"}
+                    className="text-white-700 font-light"
                   >
-                    {element[header.dataProp]}
-                  </div>
-                );
-              })}
-            </button>
-            {element.initiator === address && (
-              <span key={`initiator-${index}`} className="table-cell">
-                <button onClick={() => handleCancelEscrow(element.id)}>
-                  Cancel
+                    {header.label.toUpperCase()}
+                  </Typography>
+                  {
+                    /* TODO (Design): Replace A & D by an actual icon */
+                    sortKey === header.dataProp && sortAscending ? (
+                      <ChevronDownIcon className="rotate-180" />
+                    ) : sortKey === header.dataProp && !sortAscending ? (
+                      <ChevronDownIcon />
+                    ) : null
+                  }
                 </button>
-              </span>
-            )}
-          </React.Fragment>
-        );
-      })}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {sortedData.map((element, index) => {
+            for (const filter of filterOptions) {
+              if (filter.value != "" && element[filter.prop] != filter.value)
+                return;
+            }
+
+            return (
+              <tr
+                key={`data-${index}`}
+                onClick={() => handleOnClickRow(element.id)}
+              >
+                {headers.map((header) => (
+                  <td
+                    key={`data-${index}-${header.dataProp}`}
+                    style={{ minWidth: header.minWidth }}
+                  >
+                    {header.dataProp === "status" ? (
+                      <StatusPill status={element[header.dataProp]} />
+                    ) : (
+                      element[header.dataProp]
+                    )}
+                  </td>
+                ))}
+                {/* // TODO TEST THIS*/}
+                {element.initiator ===
+                  "cosmos1peqnw9w3tsana5ycwcgp88mvnfqyl0e3clpym4" && (
+                  <td key={`initiator-${index}`}>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCancelEscrow(element.id);
+                      }}
+                      className={"flex"}
+                    >
+                      <Garbage height={20} width={20} />
+                    </button>
+                  </td>
+                )}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { createBrowserRouter, Outlet } from "react-router-dom";
 // Custom Imports
 import Header from "~layouts/Header";
 import CreateContractPage from "~views/CreateContract";
-import Dashboard from "~sections/Dashboard/Dashboard";
+import Dashboard from "~sections/Dashboard";
 import Landing from "~views/Home";
 import PaymentView from "~views/Payment";
 import ReviewContract from "~views/ReviewContract";
@@ -41,7 +41,7 @@ const allPages = otherPages.concat(home);
 
 const Layout = () => {
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden bg-black">
       <Header />
       <Outlet />
       <Footer />

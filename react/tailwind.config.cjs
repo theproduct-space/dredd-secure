@@ -22,16 +22,19 @@ module.exports = {
     },
     extend: {
       colors: {
+        red: "red", // for tests, TODO remove
         transparent: "transparent",
         current: "currentColor",
         white: {
           200: "rgba(255,255,255,0.2)",
           500: "rgba(255,255,255,0.5)",
-          800: "rgba(255,255,255,0.82)",
+          700: "rgba(255,255,255,0.7)",
+          800: "rgba(255,255,255,0.8)",
           1000: "#f9f9f9",
         },
         black: "#11100B",
         gray: "#241F16",
+        grayText: "#464646",
         coolSilver: "#F0FBFF",
         orange: "#FF8A00",
         yellow: "#FFC75A",
@@ -81,6 +84,10 @@ module.exports = {
         lightOrange: [
           "-35px 35px 35px rgba(255, 199, 90, 0.15)",
           "35px 35px 15px rgba(255, 138, 0, 0.05)",
+        ],
+        lightOrangeWide: [
+          "-35px 35px 85px rgba(255, 199, 90, 0.25)",
+          "35px 35px 65px rgba(255, 138, 0, 0.15)",
         ],
       },
       fontSize: {
