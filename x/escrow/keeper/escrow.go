@@ -56,6 +56,8 @@ func (k Keeper) AppendEscrow(
 	// Update escrow count
 	k.SetEscrowCount(ctx, count+1)
 
+	k.AddExpiringEscrow(ctx, escrow)
+
 	return count
 }
 
@@ -101,19 +103,8 @@ func (k Keeper) GetAllEscrow(ctx sdk.Context) (list []types.Escrow) {
 
 // ValidateConditions validates the escrow conditions
 func (k Keeper) ValidateConditions(ctx sdk.Context, escrow types.Escrow) bool {
-	// Validate time conditions
-	now := time.Now()
-	unixTimeNow := now.Unix()
-
-	endDateInt, errParseIntEndDate := strconv.ParseInt(escrow.EndDate, 10, 64)
-
-	if (errParseIntEndDate != nil) {
-		panic(errParseIntEndDate.Error())
-	}
-	
 	// If the current date is before start date or after end date, time conditions are not met
-	if (!k.ValidateStartDate(ctx, escrow) || unixTimeNow > endDateInt) {
-
+	if !k.ValidateStartDate(ctx, escrow) || !k.ValidateEndDate(ctx, escrow) {
 		return false
 	}
 
@@ -137,6 +128,22 @@ func (k Keeper) ValidateStartDate(ctx sdk.Context, escrow types.Escrow) bool {
 	return true
 }
 
+// ValidateEndDate validates that the endDate is not in the past
+func (k Keeper) ValidateEndDate(ctx sdk.Context, escrow types.Escrow) bool {
+	now := time.Now()
+	unixTimeNow := now.Unix()
+
+	endDateInt, errParseIntEndDate := strconv.ParseInt(escrow.EndDate, 10, 64)
+
+	if errParseIntEndDate != nil {
+		panic(errParseIntEndDate.Error())
+	}
+
+	if unixTimeNow > endDateInt {
+		return false
+	}
+	return true
+}
 
 // ReleaseAssets releases the escrowed assets to the respective parties. The Initiator receives the FulfillerCoins, vice-versa
 func (k Keeper) ReleaseAssets(ctx sdk.Context, escrow types.Escrow) {
@@ -158,6 +165,33 @@ func (k Keeper) ReleaseAssets(ctx sdk.Context, escrow types.Escrow) {
 	errSendCoinsFulfiller := k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, fulfiller, escrow.InitiatorCoins)
 	if errSendCoinsFulfiller != nil {
 		panic(fmt.Sprintf(types.ErrCannotReleaseFulfillerAssets.Error(), errSendCoinsFulfiller.Error()))
+	}
+}
+
+// RefundAssets releases the escrowed assets to the original parties. The Initiator receives the InitiatorCoins and fulfiller the FulfillerCoins
+func (k Keeper) RefundAssets(ctx sdk.Context, escrow types.Escrow) {
+	if escrow.Initiator != "" {
+		// Release initiator assets
+		initiator, err := sdk.AccAddressFromBech32(escrow.Initiator)
+		if err != nil {
+			panic(err)
+		}
+		errSendCoinsInitiator := k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, initiator, escrow.InitiatorCoins)
+		if errSendCoinsInitiator != nil {
+			panic(fmt.Sprintf(types.ErrCannotReleaseInitiatorAssets.Error(), errSendCoinsInitiator.Error()))
+		}
+	}
+
+	if escrow.Fulfiller != "" {
+		// Release fulfiller assets
+		fulfiller, err := sdk.AccAddressFromBech32(escrow.Fulfiller)
+		if err != nil {
+			panic(err)
+		}
+		errSendCoinsFulfiller := k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, fulfiller, escrow.FulfillerCoins)
+		if errSendCoinsFulfiller != nil {
+			panic(fmt.Sprintf(types.ErrCannotReleaseFulfillerAssets.Error(), errSendCoinsFulfiller.Error()))
+		}
 	}
 }
 
@@ -194,6 +228,27 @@ func (k Keeper) GetAllPendingEscrows(ctx sdk.Context) (list []uint64) {
 	return
 }
 
+// GetAllExpiringEscrows returns all expiring escrows ID
+func (k Keeper) GetAllExpiringEscrows(ctx sdk.Context) (list []uint64) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
+	byteKey := types.KeyPrefix(types.ExpiringEscrowKey)
+	bz := store.Get(byteKey)
+
+	if bz == nil {
+		return
+	}
+
+	for i := 0; i <= len(bz); i += 8 {
+		barr := bz[i:]
+		if len(barr) >= 8 {
+			val := binary.BigEndian.Uint64(barr)
+			list = append(list, val)
+		}
+	}
+
+	return
+}
+
 // Fulfills escrows ordered in start date as ascending, removes fulfilled escrows from the array
 func (k Keeper) FulfillPendingEscrows(ctx sdk.Context) {
 	var pendingEscrows []uint64 = k.GetAllPendingEscrows(ctx)
@@ -203,6 +258,7 @@ func (k Keeper) FulfillPendingEscrows(ctx sdk.Context) {
 		if (found && k.ValidateConditions(ctx, escrow)) {
 			k.ReleaseAssets(ctx, escrow)
 			escrow.Status = constants.StatusClosed
+			k.RemoveFromExpiringList(ctx, escrow)
 			k.SetEscrow(ctx, escrow)
 			i = index
 		} else if (found && !k.ValidateStartDate(ctx, escrow)) {
@@ -215,6 +271,63 @@ func (k Keeper) FulfillPendingEscrows(ctx sdk.Context) {
 	} else {
 		pendingEscrows = []uint64{}
 	}
+	
+	k.SetPendingEscrows(ctx, pendingEscrows)
+}
+
+func (k Keeper) RemoveFromPendingList(ctx sdk.Context, escrow types.Escrow) {
+	pendingEscrows := k.GetAllPendingEscrows(ctx) 
+	index := sort.Search(len(pendingEscrows), func(i int) bool {
+		return escrow.GetId() == pendingEscrows[i]
+	})
+
+	// Escrow found in the list
+	if index < len(pendingEscrows) {
+		if len(pendingEscrows) == 1 {
+			pendingEscrows = []uint64{}
+		} else {
+			pendingEscrows = append(pendingEscrows[:index], pendingEscrows[index+1:]...)
+		}
+	}
+
+	k.SetPendingEscrows(ctx, pendingEscrows)
+}
+
+func (k Keeper) RemoveFromExpiringList(ctx sdk.Context, escrow types.Escrow) {
+	expiringEscrows := k.GetAllExpiringEscrows(ctx) 
+	index := sort.Search(len(expiringEscrows), func(i int) bool {
+		return escrow.GetId() == expiringEscrows[i]
+	})
+
+	// Escrow found in the list
+	if index < len(expiringEscrows) {
+		if len(expiringEscrows) == 1 {
+			expiringEscrows = []uint64{}
+		} else {
+			expiringEscrows = append(expiringEscrows[:index], expiringEscrows[index+1:]...)
+		}
+	}
+
+	k.SetExpiringEscrows(ctx, expiringEscrows)
+}
+
+func (k Keeper) SetExpiringEscrows(ctx sdk.Context, expiringEscrows []uint64) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
+
+	buf := new(bytes.Buffer)
+	byteKey := types.KeyPrefix(types.ExpiringEscrowKey)
+	err := binary.Write(buf, binary.BigEndian, expiringEscrows)
+	if err != nil {
+		panic(err)
+	}
+	if buf.Bytes() == nil {
+		store.Set(byteKey, []byte{})
+	} else {
+		store.Set(byteKey, buf.Bytes())
+	}
+}
+
+func (k Keeper) SetPendingEscrows(ctx sdk.Context, pendingEscrows []uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
 	
 	var buf *bytes.Buffer = new(bytes.Buffer)
@@ -227,18 +340,49 @@ func (k Keeper) FulfillPendingEscrows(ctx sdk.Context) {
 	}
 }
 
+// Cancels escrows ordered in end date as ascending, removes cancelled escrows from the array
+func (k Keeper) CancelExpiredEscrows(ctx sdk.Context) {
+	expiringEscrows := k.GetAllExpiringEscrows(ctx)
+	i := -1
+	for index, v := range expiringEscrows {
+		escrow, found := k.GetEscrow(ctx, v)
+		if found && !k.ValidateEndDate(ctx, escrow) {
+			k.RefundAssets(ctx, escrow)
+			escrow.Status = constants.StatusCancelled
+			k.RemoveFromPendingList(ctx, escrow)
+			k.SetEscrow(ctx, escrow)
+			i = index
+		} else if found && k.ValidateEndDate(ctx, escrow) {
+			break
+		}
+	}
+
+	if len(expiringEscrows) > i+1 {
+		expiringEscrows = expiringEscrows[i+1:]
+	} else {
+		expiringEscrows = []uint64{}
+	}
+	
+	k.SetExpiringEscrows(ctx, expiringEscrows)
+}
+
 // Add escrow id to pending escrows id array in order
 func (k Keeper) AddPendingEscrow(ctx sdk.Context, escrow types.Escrow) {
     pendingEscrows := k.GetAllPendingEscrows(ctx)
 
 	// Either add in order or add to the list if its the first element
-	if (len(pendingEscrows) > 0) {
-		index := sort.Search(len(pendingEscrows), func(i int) bool {
-			return escrow.GetId() == pendingEscrows[i]
+	if len(pendingEscrows) > 0 {
+		_, f := sort.Find(len(pendingEscrows), func(i int) int {
+			if escrow.GetId() == pendingEscrows[i] {
+				return 0
+			} else if (escrow.GetId() > pendingEscrows[i]) {
+				return 1
+			} 
+			return -1
 		})
 	
 		// Escrow already in the list
-		if (index < len(pendingEscrows)) {
+		if f {
 			return
 		}
 
@@ -256,10 +400,65 @@ func (k Keeper) AddPendingEscrow(ctx sdk.Context, escrow types.Escrow) {
 		pendingEscrows = append(pendingEscrows, escrow.GetId())
 	}
 
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
-	
-	var buf *bytes.Buffer = new(bytes.Buffer)
-	byteKey := types.KeyPrefix(types.PendingEscrowKey)
-	binary.Write(buf, binary.BigEndian, pendingEscrows)
-	store.Set(byteKey, buf.Bytes())
+	k.SetPendingEscrows(ctx, pendingEscrows)
+}
+
+// Add escrow id to expiring escrows id array in order
+func (k Keeper) AddExpiringEscrow(ctx sdk.Context, escrow types.Escrow) {
+	expiringEscrows := k.GetAllExpiringEscrows(ctx)
+
+	// Either add in order or add to the list if its the first element
+	if len(expiringEscrows) > 0 {
+		_, f := sort.Find(len(expiringEscrows), func(i int) int {
+			if escrow.GetId() == expiringEscrows[i] {
+				return 0
+			} else if (escrow.GetId() > expiringEscrows[i]) {
+				return 1
+			} 
+			return -1
+		})
+
+		// Escrow already in the list
+		if f {
+			return
+		}
+
+		i := sort.Search(len(expiringEscrows), func(i int) bool {
+			escr, found := k.GetEscrow(ctx, expiringEscrows[i])
+			if found {
+				return escr.GetEndDate() >= escrow.GetEndDate()
+			}
+			return false
+		})
+		expiringEscrows = append(expiringEscrows, escrow.GetId())
+		copy(expiringEscrows[i+1:], expiringEscrows[i:])
+		expiringEscrows[i] = escrow.GetId()
+	} else {
+		expiringEscrows = append(expiringEscrows, escrow.GetId())
+	}
+
+	k.SetExpiringEscrows(ctx, expiringEscrows)
+}
+
+// Setter for the status
+func (k Keeper) SetStatus(ctx sdk.Context, escrow *types.Escrow, newStatus string) {
+	oldStatus := escrow.Status
+
+	if (newStatus == constants.StatusOpen) {
+		k.AddExpiringEscrow(ctx, *escrow)
+	}
+
+	if (newStatus == constants.StatusClosed || newStatus == constants.StatusCancelled) {
+		k.RemoveFromExpiringList(ctx, *escrow)
+	}
+
+	if (oldStatus == constants.StatusPending && newStatus != constants.StatusPending) {
+		k.RemoveFromPendingList(ctx, *escrow)
+	}
+
+	if (newStatus == constants.StatusPending) {
+		k.AddPendingEscrow(ctx, *escrow)
+	}
+
+	escrow.Status = newStatus
 }

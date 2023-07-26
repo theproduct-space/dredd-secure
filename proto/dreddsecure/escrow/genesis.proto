@@ -14,5 +14,6 @@ message GenesisState {
   repeated Escrow escrowList  = 2 [(gogoproto.nullable) = false];
            uint64 escrowCount = 3;
   repeated uint64 pendingEscrows = 4 [(gogoproto.nullable) = false];
+  repeated uint64 expiringEscrows = 5 [(gogoproto.nullable) = false];
 }
 

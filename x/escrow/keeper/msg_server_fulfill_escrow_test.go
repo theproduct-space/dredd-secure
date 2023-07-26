@@ -20,7 +20,7 @@ import (
 )
 
 // setupMsgServerFulfillEscrow is a test helper function to setup the necessary dependencies for testing the FullfillEscrow message server function
-func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, context.Context, *gomock.Controller, *testutil.MockBankKeeper) {
+func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, context.Context, *gomock.Controller, *testutil.MockBankKeeper) {
 	tb.Helper()
 
 	// Setup the necessary dependencies
@@ -411,6 +411,7 @@ func TestFulfillEscrowsNearFuture(t *testing.T) {
 	}})
 
 	// Fulfill pending escrows 3, 4 and 5
+	k.CancelExpiredEscrows(sdk.UnwrapSDKContext(context))
 	k.FulfillPendingEscrows(sdk.UnwrapSDKContext(context))
 
 	// Confirm they have been removed from the pending list

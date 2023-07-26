@@ -23,10 +23,10 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 	}
 
 	// Make sure the fulfill request is not from the initiator of the escrow contract
-	/*
-		if escrow.Initiator == msg.Creator {
-			return nil, errors.Wrap(sdkerrors.ErrUnauthorized, "Initator of the escrow can not fulfill it")
-		}*/
+	
+	if escrow.Initiator == msg.Creator {
+		return nil, errors.Wrap(sdkerrors.ErrUnauthorized, "Initator of the escrow can not fulfill it")
+	}
 
 	// Make sure the escrow status is "open"
 	if escrow.Status != constants.StatusOpen {
@@ -52,7 +52,8 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 		}
 
 		// change the escrow status to "closed"
-		escrow.Status = constants.StatusClosed
+		k.SetStatus(ctx, &escrow, constants.StatusClosed)
+		// escrow.Status = constants.StatusClosed
 	} else {
 		// If not all conditions are met, escrow the fulfiller assets
 		errEscrowInitiatorCoins := k.bank.SendCoinsFromAccountToModule(ctx, fulfiller, types.ModuleName, escrow.FulfillerCoins)
@@ -64,7 +65,8 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 		k.AddPendingEscrow(ctx, escrow)
 
 		// change the escrow status to "pending"
-		escrow.Status = constants.StatusPending
+		k.SetStatus(ctx, &escrow, constants.StatusPending)
+		// escrow.Status = constants.StatusPending
 	}
 
 	escrow.Fulfiller = msg.Creator

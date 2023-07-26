@@ -8,6 +8,7 @@ import { txClient } from "dredd-secure-client-ts/dreddsecure.escrow";
 
 // Hooks Imports
 import useWallet from "../../utils/useWallet";
+import { env } from "~src/env";
 
 // Custom Components Imports
 import ChevronDownIcon from "~icons/ChevronDownIcon";
@@ -53,7 +54,7 @@ const TableView = (props: TableViewProps) => {
         signer: offlineSigner,
         prefix: "cosmos",
         addr: env.rpcURL,
-    });
+       });
 
     const handleSortingChange = (param: string) => {
         if (sortKey == param) {
