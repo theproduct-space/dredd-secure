@@ -15,6 +15,7 @@ import randomCubes from "~assets/random-cubes.webp";
 import Button from "~baseComponents/Button";
 import SecondaryButton from "~baseComponents/SecondaryButton";
 import BaseModal from "~baseComponents/BaseModal/Index";
+import TokenItem from "~baseComponents/TokenItem";
 
 export interface ICondition {
   type: string;
@@ -55,20 +56,19 @@ const CreateContract = (props: CreateContractProps) => {
   >(contract?.tips);
 
   const handleSaving = (t: IToken | undefined) => {
-    let func;
     switch (modalToOpen) {
       case Modals.Own:
-        func = setSelectedOwnToken;
+        setSelectedOwnToken(t);
         break;
       case Modals.Wanted:
-        func = setSelectedWantedToken;
+        setSelectedWantedToken(t);
+        break;
+      case Modals.Tips:
+        setSelectedTokenTips(t);
         break;
       default:
-        func = setSelectedTokenTips;
         break;
     }
-
-    func(t);
     setModalToOpen(undefined);
   };
 
@@ -90,7 +90,6 @@ const CreateContract = (props: CreateContractProps) => {
         modal = null;
         break;
     }
-
     return (
       <TokenSelector
         selectedToken={modal}
@@ -226,11 +225,20 @@ const CreateContract = (props: CreateContractProps) => {
                           Select Your Assets:
                         </Typography>
                       </div>
-                      <SecondaryButton
-                        text="Select Token"
-                        orangeText
-                        onClick={() => setModalToOpen(Modals.Own)}
-                      />
+                      {selectedWantedToken ? (
+                        <TokenItem
+                          token={selectedWantedToken}
+                          showAmount={false}
+                          selected={true}
+                          className=""
+                        />
+                      ) : (
+                        <SecondaryButton
+                          text="Select Token"
+                          orangeText
+                          onClick={() => setModalToOpen(Modals.Own)}
+                        />
+                      )}
                     </div>
                     <div className="w-6/12 flex flex-col gap-2">
                       <div className="sub-subtitle">
@@ -238,11 +246,20 @@ const CreateContract = (props: CreateContractProps) => {
                           Asset you want to receive:
                         </Typography>
                       </div>
-                      <SecondaryButton
-                        text="Select Token"
-                        orangeText
-                        onClick={() => setModalToOpen(Modals.Wanted)}
-                      />
+                      {selectedWantedToken ? (
+                        <TokenItem
+                          token={selectedWantedToken}
+                          showAmount={false}
+                          selected={true}
+                          className=""
+                        />
+                      ) : (
+                        <SecondaryButton
+                          text="Select Token"
+                          orangeText
+                          onClick={() => setModalToOpen(Modals.Wanted)}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>

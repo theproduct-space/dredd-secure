@@ -67,7 +67,7 @@ const TokenSelector = (props: TokenSelectorProps) => {
         <TokenItem
           key={`token-selector-${index}`}
           token={token}
-          onClick={(t) => onSave(t)}
+          onClick={onSave}
           showAmount={true}
           selected={selectedToken?.denom == token.denom}
         />

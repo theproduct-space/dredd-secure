@@ -105,8 +105,6 @@ const ReviewContract = () => {
           successBody={"Thank you for interacting with our contract."}
         />
       ) : null}
-
-      <Account />
     </>
   );
 };
