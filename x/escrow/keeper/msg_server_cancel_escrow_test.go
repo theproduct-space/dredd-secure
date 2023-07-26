@@ -8,6 +8,7 @@ import (
 	"dredd-secure/x/escrow/types"
 	"errors"
 	"testing"
+	"time"
 
 	keepertest "dredd-secure/testutil/keeper"
 
@@ -15,10 +16,11 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+	"strconv"
 )
 
 // setupMsgServerCancelEscrow is a test helper function to setup the necessary dependencies for testing the CancelEscrow message server function
-func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, context.Context, *gomock.Controller, *testutil.MockBankKeeper) {
+func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, context.Context, *gomock.Controller, *testutil.MockBankKeeper) {
 	tb.Helper()
 
 	// Setup the necessary dependencies
@@ -28,6 +30,7 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, context.Context
 	escrow.InitGenesis(ctx, *k, *types.DefaultGenesis())
 	server := keeper.NewMsgServerImpl(*k)
 	context := sdk.WrapSDKContext(ctx)
+	now := time.Now()
 
 	// Expect the bank to receive payment from the creator
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -54,14 +57,108 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, context.Context
 		tb.Fatalf("Failed to create escrow: %s", err)
 	}
 
+	// Expect the bank to receive payment from the creator
+	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
+		Denom:  "token",
+		Amount: sdk.NewInt(100),
+	}})
+	// Create an escrow using the message server and a valid MsgCreateEscrow
+	_, err2 := server.CreateEscrow(context, &types.MsgCreateEscrow{
+		Creator: testutil.Alice,
+		InitiatorCoins: []sdk.Coin{{
+			Denom:  "token",
+			Amount: sdk.NewInt(100),
+		}},
+		FulfillerCoins: []sdk.Coin{{
+			Denom:  "stake",
+			Amount: sdk.NewInt(900),
+		}},
+		StartDate: "1288148578",
+		EndDate:    strconv.FormatInt(now.Unix()-2, 10),
+	})
+	if err2 != nil {
+		tb.Fatalf("Failed to create escrow: %s", err2)
+	}
+
+	// Expect the bank to receive payment from the creator
+	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
+		Denom:  "token",
+		Amount: sdk.NewInt(100),
+	}})
+	// Create an escrow using the message server and a valid MsgCreateEscrow
+	_, err3 := server.CreateEscrow(context, &types.MsgCreateEscrow{
+		Creator: testutil.Alice,
+		InitiatorCoins: []sdk.Coin{{
+			Denom:  "token",
+			Amount: sdk.NewInt(100),
+		}},
+		FulfillerCoins: []sdk.Coin{{
+			Denom:  "stake",
+			Amount: sdk.NewInt(900),
+		}},
+		StartDate: "1288148578",
+		EndDate:    strconv.FormatInt(now.Unix()-3, 10),
+	})
+	if err3 != nil {
+		tb.Fatalf("Failed to create escrow: %s", err3)
+	}
+
+	// Expect the bank to receive payment from the creator
+	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
+		Denom:  "token",
+		Amount: sdk.NewInt(100),
+	}})
+	
+	// Create an escrow using the message server and a valid MsgCreateEscrow
+	_, err4 := server.CreateEscrow(context, &types.MsgCreateEscrow{
+		Creator: testutil.Alice,
+		InitiatorCoins: []sdk.Coin{{
+			Denom:  "token",
+			Amount: sdk.NewInt(100),
+		}},
+		FulfillerCoins: []sdk.Coin{{
+			Denom:  "stake",
+			Amount: sdk.NewInt(900),
+		}},
+		StartDate: "1288148578",
+		EndDate:    strconv.FormatInt(now.Unix()-1, 10),
+	})
+	if err4 != nil {
+		tb.Fatalf("Failed to create escrow: %s", err4)
+	}
+
 	// Return the necessary components for testing
-	return server, context, ctrl, bankMock
+	return server, *k, context, ctrl, bankMock
+}
+
+// TestCancelExpiredEscrows tests the CancelExpiredEscrows function used in the EndBlock
+func TestCancelExpiredEscrows(t *testing.T) {
+	_, k, context, ctrl, bankMock := setupMsgServerCancelEscrow(t)
+	defer ctrl.Finish()
+
+	// Expect the bank to refund the initiator's coins
+	bankMock.ExpectRefund(context, testutil.Alice, []sdk.Coin{{
+		Denom:  "token",
+		Amount: sdk.NewInt(100),
+	}})
+	// Expect the bank to refund the initiator's coins
+	bankMock.ExpectRefund(context, testutil.Alice, []sdk.Coin{{
+		Denom:  "token",
+		Amount: sdk.NewInt(100),
+	}})
+	// Expect the bank to refund the initiator's coins
+	bankMock.ExpectRefund(context, testutil.Alice, []sdk.Coin{{
+		Denom:  "token",
+		Amount: sdk.NewInt(100),
+	}})
+
+	k.CancelExpiredEscrows(sdk.UnwrapSDKContext(context))
 }
 
 
 // TestCancelEscrow tests the CancelEscrow message server function
 func TestCancelEscrow(t *testing.T) {
-	msgServer, context, ctrl, bankMock := setupMsgServerCancelEscrow(t)
+	msgServer, _, context, ctrl, bankMock := setupMsgServerCancelEscrow(t)
 	defer ctrl.Finish()
 
 	// Expect the bank to refund the initiator's coins
@@ -80,7 +177,7 @@ func TestCancelEscrow(t *testing.T) {
 
 // TestCancelEscrowNotInitiator tests the scenario where a non-initiator tries to cancel an escrow
 func TestCancelEscrowNotInitiator(t *testing.T) {
-	msgServer, context, ctrl, _ := setupMsgServerCancelEscrow(t)
+	msgServer, _, context, ctrl, _ := setupMsgServerCancelEscrow(t)
 	defer ctrl.Finish()
 
 	// Attempt to cancel the escrow as a non-initiator
@@ -96,13 +193,13 @@ func TestCancelEscrowNotInitiator(t *testing.T) {
 
 // TestCancelEscrowDoesNotExist tests the scenario where the escrow to be canceled does not exist
 func TestCancelEscrowDoesNotExist(t *testing.T) {
-	msgServer, context, ctrl, _ := setupMsgServerCancelEscrow(t)
+	msgServer, _, context, ctrl, _ := setupMsgServerCancelEscrow(t)
 	defer ctrl.Finish()
 
 	// Attempt to cancel a non-existent escrow
 	_, err := msgServer.CancelEscrow(context, &types.MsgCancelEscrow{
 		Creator: testutil.Alice,
-		Id:      1,
+		Id:      4,
 	})
 
 	// Ensure an error is returned and it matches the expected ErrKeyNotFound error.
@@ -113,7 +210,7 @@ func TestCancelEscrowDoesNotExist(t *testing.T) {
 // TestCancelEscrowWrongStatus tests the scenario where an escrow with an innapropriate status is canceled
 // to accomplish this, we try cancelling the escrow two times.
 func TestCancelEscrowWrongStatus(t *testing.T) {
-	msgServer, context, ctrl, bankMock := setupMsgServerCancelEscrow(t)
+	msgServer, _, context, ctrl, bankMock := setupMsgServerCancelEscrow(t)
 	defer ctrl.Finish()
 
 	// Expect the bank to refund the initiator's coins
@@ -142,7 +239,7 @@ func TestCancelEscrowWrongStatus(t *testing.T) {
 
 // TestCancelEscrowModuleCannotPay tests the scenario where the module cannot release the initiator's assets during the cancellation of an escrow.
 func TestCancelEscrowModuleCannotPay(t *testing.T) {
-	msgServer, context, ctrl, bankMock := setupMsgServerCancelEscrow(t)
+	msgServer, _, context, ctrl, bankMock := setupMsgServerCancelEscrow(t)
 	defer ctrl.Finish()
 
 	initiator, _ := sdk.AccAddressFromBech32(testutil.Alice)
