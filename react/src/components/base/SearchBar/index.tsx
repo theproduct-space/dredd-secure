@@ -14,9 +14,14 @@ const darkTheme = createTheme({
 interface SearchBarProps {
   placeholder: string;
   onChange: (query: string) => void;
+  children?: React.ReactNode;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onChange }) => {
+const SearchBar: React.FC<SearchBarProps> = ({
+  placeholder,
+  onChange,
+  children,
+}) => {
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="relative">
@@ -29,6 +34,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder, onChange }) => {
           fullWidth
           className="border-white-200"
         />
+        {children}
       </div>
     </ThemeProvider>
   );

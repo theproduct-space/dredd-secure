@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import TokenElement from "~baseComponents/TokenElement";
 import TokenSelector, { IToken } from "~baseComponents/TokenSelector";
-import Account from "~sections/Account";
 import { ConditionTypes } from "~sections/ReviewContractSection";
 import Tips from "~sections/Tips";
 import Typography from "~baseComponents/Typography";
@@ -44,6 +42,7 @@ const CreateContract = (props: CreateContractProps) => {
     Wanted,
     Tips,
   }
+  const [selectedAmount, setSelectedAmount] = useState<number>(0);
   const [modalToOpen, setModalToOpen] = useState<Modals | undefined>();
   const [selectedOwnToken, setSelectedOwnToken] = useState<IToken | undefined>(
     contract?.initiatorCoins,
@@ -70,6 +69,9 @@ const CreateContract = (props: CreateContractProps) => {
         break;
     }
     setModalToOpen(undefined);
+  };
+  const handleSelectedAmountChange = (amount: number) => {
+    setSelectedAmount(amount);
   };
 
   const displayModal = () => {
@@ -222,15 +224,19 @@ const CreateContract = (props: CreateContractProps) => {
                     <div className="w-6/12 flex flex-col gap-2">
                       <div className="sub-subtitle">
                         <Typography variant="body-small">
-                          Select Your Assets:
+                          Select Your Assets
                         </Typography>
                       </div>
-                      {selectedWantedToken ? (
+                      {selectedOwnToken ? (
                         <TokenItem
-                          token={selectedWantedToken}
+                          token={selectedOwnToken}
                           showAmount={false}
                           selected={true}
+                          input={true}
+                          selectedAmount={selectedAmount}
+                          setSelectedAmount={handleSelectedAmountChange}
                           className=""
+                          onClick={() => setModalToOpen(Modals.Own)}
                         />
                       ) : (
                         <SecondaryButton
@@ -243,7 +249,7 @@ const CreateContract = (props: CreateContractProps) => {
                     <div className="w-6/12 flex flex-col gap-2">
                       <div className="sub-subtitle">
                         <Typography variant="body-small">
-                          Asset you want to receive:
+                          Asset you want to receive
                         </Typography>
                       </div>
                       {selectedWantedToken ? (
@@ -252,6 +258,7 @@ const CreateContract = (props: CreateContractProps) => {
                           showAmount={false}
                           selected={true}
                           className=""
+                          onClick={() => setModalToOpen(Modals.Wanted)}
                         />
                       ) : (
                         <SecondaryButton
