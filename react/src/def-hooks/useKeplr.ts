@@ -24,13 +24,12 @@ export default function () {
     window.keplr.getOfflineSigner(chainId);
 
   const getKeplrAccParams = async (chainId: string) => {
-    if (isKeplrAvailable)
-        return window.keplr.getKey(chainId);
+    if (isKeplrAvailable) return window.keplr.getKey(chainId);
     else
-        return new Promise<{ name: string, bech32Address: string }>((resolve) => {
-            resolve({ name: "", bech32Address: "" })
-        });
-  }
+      return new Promise<{ name: string; bech32Address: string }>((resolve) => {
+        resolve({ name: "", bech32Address: "" });
+      });
+  };
 
   const listenToAccChange = (cb: EventListener) => {
     client.on("signer-changed", cb);

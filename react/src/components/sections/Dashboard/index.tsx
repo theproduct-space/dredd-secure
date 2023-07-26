@@ -125,9 +125,7 @@ const Dashboard = () => {
             initiator: "cosmos1rljg6ldskneppq0j39mngv57avsvnjxjlw8z2q",
           },
         ]);
-      }
-      else
-        setEscrows(escrows);
+      } else setEscrows(escrows);
     };
     // Fetch data initially
     fetchData();

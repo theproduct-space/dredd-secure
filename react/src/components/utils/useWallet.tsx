@@ -8,7 +8,7 @@ export default function () {
   const chainId = env.chainId;
 
   const { address } = useAddressContext();
-  
+
   useEffect(() => {
     const isConnected = sessionStorage.getItem("isConnected");
     if (isConnected && keplr.isKeplrAvailable) {
