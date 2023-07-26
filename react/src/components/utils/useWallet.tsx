@@ -18,10 +18,9 @@ export default function () {
   }, [address]);
 
   useEffect(() => {
-    console.log("::::");
     const isConnected = sessionStorage.getItem("isConnected");
-
-    if (isConnected) {
+    
+    if (isConnected && keplr.isKeplrAvailable) {
       const obj = JSON.parse(isConnected);
 
       if (obj["expiration"] >= Date.now()) {

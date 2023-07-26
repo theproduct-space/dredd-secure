@@ -10,7 +10,6 @@ export default function () {
     onErrorCb: () => void,
   ) => {
     try {
-      console.log(walletStore);
       walletStore.connectWithKeplr();
       onSuccessCb();
     } catch (e) {
@@ -24,8 +23,14 @@ export default function () {
   const getOfflineSigner = (chainId: string) =>
     window.keplr.getOfflineSigner(chainId);
 
-  const getKeplrAccParams = async (chainId: string) =>
-    await window.keplr.getKey(chainId);
+  const getKeplrAccParams = async (chainId: string) => {
+    if (isKeplrAvailable)
+        return window.keplr.getKey(chainId);
+    else
+        return new Promise<{ name: string, bech32Address: string }>((resolve) => {
+            resolve({ name: "", bech32Address: "" })
+        });
+  }
 
   const listenToAccChange = (cb: EventListener) => {
     client.on("signer-changed", cb);

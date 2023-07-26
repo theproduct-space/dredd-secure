@@ -72,6 +72,8 @@ export class IgniteClient extends EventEmitter {
       this.emit("signer-changed", this.signer);
   }
   async useKeplr(keplrChainInfo: Partial<ChainInfo> = {}) {
+    if (!window.keplr) return;
+
     // Using queryClients directly because BaseClient has no knowledge of the modules at this stage
     try {
       const queryClient = (
@@ -147,8 +149,10 @@ export class IgniteClient extends EventEmitter {
           feeCurrencies,
           ...keplrChainInfo,
         };
-        await window.keplr.experimentalSuggestChain(suggestOptions);
 
+
+        await window.keplr.experimentalSuggestChain(suggestOptions);
+        
         window.keplr.defaultOptions = {
           sign: {
             preferNoSetFee: true,
@@ -156,6 +160,7 @@ export class IgniteClient extends EventEmitter {
           },
         };
       }
+
       await window.keplr.enable(chainId);
       this.signer = window.keplr.getOfflineSigner(chainId);
       this.emit("signer-changed", this.signer);

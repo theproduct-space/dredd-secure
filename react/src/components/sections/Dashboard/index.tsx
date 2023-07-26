@@ -8,18 +8,16 @@ import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
 // Hooks Imports
 
 // Custom Imports
+import Card from "~baseComponents/Card";
 import Dropdown, { DropdownProps } from "~baseComponents/Dropdown";
 import TableView, { TableData } from "~baseComponents/TableView";
-import Account from "~sections/Account";
-import useWallet from "../../utils/useWallet";
-import ContentContainer from "~layouts/ContentContainer";
-import ModalContainer from "~layouts/ModalContainer";
-import Card from "~baseComponents/Card";
 import Typography from "~baseComponents/Typography";
+import ContentContainer from "~layouts/ContentContainer";
+import useWallet from "../../utils/useWallet";
 
 // Assets Imports
-import Button from "~baseComponents/Button";
 import bgImage from "~assets/3d-logoNoBg.webp";
+import Button from "~baseComponents/Button";
 
 const Dashboard = () => {
   const [selectedFilter, setSelectedFilter] = useState({
@@ -103,8 +101,6 @@ const Dashboard = () => {
     // Function to fetch and update data array
     const fetchData = async () => {
       const escrows = (await queryClient().queryEscrowAll()).data.Escrow ?? [];
-      console.log("escrows", escrows);
-      setEscrows(escrows);
 
       // For testing purposes only
       // TODO: Remove this when Xzan has finished with the design
@@ -130,6 +126,8 @@ const Dashboard = () => {
           },
         ]);
       }
+      else
+        setEscrows(escrows);
     };
     // Fetch data initially
     fetchData();
