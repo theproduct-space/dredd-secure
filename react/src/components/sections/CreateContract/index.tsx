@@ -257,6 +257,10 @@ const CreateContract = (props: CreateContractProps) => {
                           token={selectedWantedToken}
                           showAmount={false}
                           selected={true}
+                          //uncomment to test input
+                          // input={true}
+                          // selectedAmount={selectedAmount}
+                          // setSelectedAmount={handleSelectedAmountChange}
                           className=""
                           onClick={() => setModalToOpen(Modals.Wanted)}
                         />
