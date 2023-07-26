@@ -1,6 +1,6 @@
 import React from "react";
 import CustomDatePicker from "~baseComponents/DatePicker";
-import FilterDropDown from "~baseComponents/FilterDropDown";
+import Dropdown from "~baseComponents/Dropdown";
 import Typography from "~baseComponents/Typography";
 
 interface ICondition {

@@ -8,23 +8,24 @@ import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
 // Hooks Imports
 
 // Custom Imports
-import FilterDropDown, {
-  FilterDropDownProps,
-} from "~baseComponents/FilterDropDown";
+import Dropdown, { DropdownProps } from "~baseComponents/Dropdown";
 import TableView, { TableData } from "~baseComponents/TableView";
 import Account from "~sections/Account";
 import useWallet from "../../utils/useWallet";
 import ContentContainer from "~layouts/ContentContainer";
 import ModalContainer from "~layouts/ModalContainer";
 import Card from "~baseComponents/Card";
+import Typography from "~baseComponents/Typography";
 
 // Assets Imports
-import Typography from "~baseComponents/Typography";
 import Button from "~baseComponents/Button";
 import bgImage from "~assets/3d-logoNoBg.webp";
 
 const Dashboard = () => {
-  const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [selectedFilter, setSelectedFilter] = useState({
+    label: "All",
+    value: "",
+  });
   const [onlyOwnDisplayed, setOnlyOwnDisplayed] = useState(false);
   const [escrows, setEscrows] = useState<EscrowEscrow[]>([]);
   // TODO: Get address from keplr or other wallet manager
@@ -32,47 +33,50 @@ const Dashboard = () => {
 
   const tableHeaders = [
     {
-      label: "contract-id",
+      label: "contract id#",
       dataProp: "id",
+      minWidth: "150px",
     },
     {
       label: "assets involved",
       dataProp: "assetsInvolved",
+      minWidth: "180px",
     },
     {
       label: "status",
       dataProp: "status",
+      minWidth: "100px",
     },
     {
       label: "deadline",
       dataProp: "deadline",
+      minWidth: "100px",
     },
   ];
 
-  const statusFilterFunction = (status: string) => {
-    setSelectedStatus(status);
-  };
-  const statusFilterDropDownProps: FilterDropDownProps = {
+  const filterDropdownProps: DropdownProps = {
     choices: [
       {
         label: "All",
-        filterValue: "",
+        value: "",
       },
       {
         label: "Open",
-        filterValue: "open",
+        value: "open",
       },
       {
         label: "Pending",
-        filterValue: "pending",
+        value: "pending",
       },
       {
         label: "Closed",
-        filterValue: "closed",
+        value: "closed",
       },
     ],
-    filterFunction: statusFilterFunction,
+    selectedOption: selectedFilter,
+    setSelectedOption: setSelectedFilter,
   };
+
   const formatedData: TableData[] = [...escrows]
     .map((escrow) => {
       const creatorCoin = escrow?.initiatorCoins?.[0]?.denom ?? "";
@@ -99,6 +103,7 @@ const Dashboard = () => {
     // Function to fetch and update data array
     const fetchData = async () => {
       const escrows = (await queryClient().queryEscrowAll()).data.Escrow ?? [];
+      console.log("escrows", escrows);
       setEscrows(escrows);
 
       // For testing purposes only
@@ -138,43 +143,64 @@ const Dashboard = () => {
 
   return (
     <ContentContainer>
-      {/* <img
-        src={bgImage}
-        alt="Dredd-Secure"
-        className="object-cover absolute z-0 top-32 drop-shadow-lightOrange opacity-80"
-      /> */}
-      <div className="relative min-h-screen w-full pt-32">
-        <div>
-          <div className="title text-3xl">All contracts</div>
-          <div className="subtitle">
-            You can view the status of all contracts that you have sent and/or
-            received from here
+      <div className="relative min-h-screen w-full pt-32 max-w-4xl mx-auto">
+        <img
+          src={bgImage}
+          alt="Dredd-Secure"
+          className="object-cover absolute -right-20 bottom-0 z-0 drop-shadow-lightOrangeWide opacity-80 max-w-[500px]"
+        />
+        <div className="flex justify-between items-center gap-3 mb-3">
+          <div>
+            <Typography variant="h5">All Contracts</Typography>
+            <Typography variant="small">
+              You can view the status of all contracts that you have sent and/or
+              received from here
+            </Typography>
+          </div>
+          <div>
+            <Link to={"/escrow/create"}>
+              <Button text="Create Contract" className="capitalize" />
+            </Link>
           </div>
         </div>
-        <div>
-          <Link to={"/escrow/create"}>
-            <Button text="Create Contract" className="capitalize" />
-          </Link>
-        </div>
+
         <Card progress={"90"}>
-          <div className="p-4 md:p-10">
-            <div>
-              <div className="font-bold">Filter by status</div>
-              <FilterDropDown {...statusFilterDropDownProps} />
+          {/* // TODO REMOVE MIN-H */}
+          <div className="p-4 md:p-10 min-h-[500px] ">
+            <div className="flex justify-between mb-5">
+              <div className="flex flex-col gap-2 max-w-[100px]">
+                <Typography variant="small" className="font-revalia">
+                  Filter
+                </Typography>
+                <Dropdown {...filterDropdownProps} />
+              </div>
+
+              <div className="flex items-center gap-2">
+                <input
+                  id="involved-escrow"
+                  checked={onlyOwnDisplayed ?? undefined}
+                  type="checkbox"
+                  onChange={(e) => setOnlyOwnDisplayed(e.target.checked)}
+                  className="mt-[3px]"
+                />
+                <label htmlFor="involved-escrow">
+                  <Typography variant="small" className="font-revalia">
+                    My escrows
+                  </Typography>
+                </label>
+              </div>
             </div>
-            <div>
-              <div className="font-bold">Show my relevant contracts only</div>
-              <input
-                checked={onlyOwnDisplayed ?? undefined}
-                type="checkbox"
-                onChange={(e) => setOnlyOwnDisplayed(e.target.checked)}
-              ></input>
+
+            <div className="relative">
+              <div className="absolute left-0 top-10 w-full border-b border-orange scale-150" />
+              <TableView
+                headers={tableHeaders}
+                data={formatedData}
+                filterOptions={[
+                  { prop: "status", value: selectedFilter.value },
+                ]}
+              />
             </div>
-            <TableView
-              headers={tableHeaders}
-              data={formatedData}
-              filterOptions={[{ prop: "status", value: selectedStatus }]}
-            />
           </div>
         </Card>
       </div>
