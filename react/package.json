@@ -8,7 +8,7 @@
     "@cosmjs/tendermint-rpc": "^0.31.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@headlessui/react": "^1.7.3",
+    "@headlessui/react": "^1.7.15",
     "@headlessui/tailwindcss": "^0.1.1",
     "@ignt/react-library": "^0.4.3",
     "@mui/material": "^5.14.1",
@@ -62,14 +62,14 @@
     "vite": "^3.2.1"
   },
   "engines": {
-    "node": "\u003e=16.0.0",
-    "npm": "\u003e=8.0.0"
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
   },
   "name": "@ignt/react-template",
   "private": true,
   "scripts": {
-    "build": "cd ../ts-client \u0026\u0026 npm install \u0026\u0026 cd ../react \u0026\u0026 tsc \u0026\u0026 vite build",
-    "dev": "npm i \u0026\u0026 vite",
+    "build": "cd ../ts-client && npm install && cd ../react && tsc && vite build",
+    "dev": "npm i && vite",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "postinstall": "node postinstall.cjs",
     "prepare": "node prepare.cjs",

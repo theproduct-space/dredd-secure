@@ -9,7 +9,7 @@ interface ButtonProps {
 const Card = ({ children, progress, className }: ButtonProps) => {
   return (
     <div
-      className={`relative bg-gray max-w-4xl mx-auto rounded-3xl border border-white-200 overflow-hidden ${className}`}
+      className={`relative bg-gray mx-auto rounded-3xl border border-white-200 overflow-hidden ${className}`}
     >
       {progress && (
         <div className={`bg-white-500 w-full h-[24px]`}>
