@@ -43,7 +43,7 @@ const TokenSelector = (props: TokenSelectorProps) => {
     // TODO: filter tokens by searchQuery
     let tokenList: IToken[] = tokens;
 
-    if (searchQuery != "") {
+    if (searchQuery !== "") {
       const properties = ["display", "name", "denom", "chain_name"];
       const filteredList: IToken[] = [];
 
@@ -62,14 +62,22 @@ const TokenSelector = (props: TokenSelectorProps) => {
       tokenList = filteredList;
     }
 
+    if (tokenList.length === 0) {
+      return (
+        <Typography variant="body-small" className="text-white-500">
+          No Tokens Found
+        </Typography>
+      );
+    }
+
     return tokenList.map((token, index) => {
       return (
         <TokenItem
           key={`token-selector-${index}`}
           token={token}
-          onClick={(t) => onSave(t)}
+          onClick={onSave}
           showAmount={true}
-          selected={selectedToken?.denom == token.denom}
+          selected={selectedToken?.denom === token.denom}
         />
       );
     });

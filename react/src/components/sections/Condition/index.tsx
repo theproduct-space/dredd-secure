@@ -1,6 +1,5 @@
 import React from "react";
 import CustomDatePicker from "~baseComponents/DatePicker";
-import Dropdown from "~baseComponents/Dropdown";
 import Typography from "~baseComponents/Typography";
 
 interface ICondition {
@@ -40,7 +39,7 @@ const Condition = ({
         <select
           value={condition.condition.type}
           onChange={(e) => handleChangeCondition(e, index)}
-          className="bg-buttonBg text-white-1000 p-4 border-[1px] border-white-200 rounded focus:outline-none focus:border-orange"
+          className="w-60 bg-buttonBg text-white-1000 p-4 border-[1px] border-white-200 rounded focus:outline-none focus:border-orange"
         >
           {displayConditionTypes().map((option, optionIndex) => (
             <option
@@ -52,10 +51,6 @@ const Condition = ({
             </option>
           ))}
         </select>
-        {/* <input
-          value={condition.value}
-          className="bg-buttonBg text-white-1000 p-4 border-[1px] border-white-200 rounded-lg focus:outline-none focus:border-orange"
-        ></input> */}
         <CustomDatePicker value={selectedDate} onChange={setSelectedDate} />
         <button
           onClick={() => handleRemoveCondition(index)}
