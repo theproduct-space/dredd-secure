@@ -3,10 +3,6 @@
     {
       "src": "/api/(.*)",
       "dest": "api/proxy.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
     }
   ],
   "rewrites": [
