@@ -5,8 +5,8 @@
       "dest": "api/proxy.js"
     },
     {
-      "source": "/(.*)",
-      "destination": "/"
+      "src": "/(.*)",
+      "dest": "/"
     }
   ]
 }
