@@ -3,9 +3,7 @@
     {
       "src": "/api/(.*)",
       "dest": "api/proxy.js"
-    }
-  ],
-  "rewrites": [
+    },
     {
       "source": "/(.*)",
       "destination": "/"
