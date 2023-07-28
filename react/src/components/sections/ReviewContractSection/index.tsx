@@ -7,15 +7,13 @@ import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
 // Custom Imports
 import TokenPreview from "~baseComponents/TokenPreview";
 import TokenSelector, { IToken } from "~baseComponents/TokenSelector";
-import { ICondition, IContract } from "~sections/CreateContract";
 import Tips from "~sections/Tips";
-import { Coin } from "dredd-secure-client-ts/cosmos.bank.v1beta1/types/cosmos/base/v1beta1/coin";
 import { V1Beta1Coin } from "dredd-secure-client-ts/cosmos.bank.v1beta1/rest";
 import { txClient } from "dredd-secure-client-ts/dreddsecure.escrow";
-import { useNavigate } from "react-router-dom";
 import useWallet from "../../utils/useWallet";
 import assets from "~src/tokens.json";
 import { env } from "~src/env";
+import { ConditionTypes } from "~sections/CreateContract/AddConditions";
 
 // Hooks Imports
 
@@ -23,17 +21,6 @@ interface ReviewContractSectionProps {
   contract: EscrowEscrow | undefined;
   onSuccess: () => void;
 }
-
-export const ConditionTypes: ICondition[] = [
-  {
-    type: "Starting Date",
-    prop: "startDate",
-  },
-  {
-    type: "Deadline",
-    prop: "endDate",
-  },
-];
 
 function ReviewContractSection(props: ReviewContractSectionProps) {
   const { contract, onSuccess } = props;

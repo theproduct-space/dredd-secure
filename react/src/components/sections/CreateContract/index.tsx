@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import TokenSelector, { IToken } from "~baseComponents/TokenSelector";
-import { ConditionTypes } from "~sections/ReviewContractSection";
 import Tips from "~sections/Tips";
 import Typography from "~baseComponents/Typography";
 import ContentContainer from "~layouts/ContentContainer";
 import ModalContainer from "~layouts/ModalContainer";
-import Condition from "~sections/Condition";
+import AddConditions, { ICondition } from "./AddConditions";
 
 // Assets
 import randomCubes from "~assets/random-cubes.webp";
@@ -14,12 +13,6 @@ import Button from "~baseComponents/Button";
 import SecondaryButton from "~baseComponents/SecondaryButton";
 import BaseModal from "~baseComponents/BaseModal/Index";
 import TokenItem from "~baseComponents/TokenItem";
-
-export interface ICondition {
-  type: string;
-  prop: string;
-  input?: string;
-}
 
 export interface IContract {
   initiatorCoins: IToken;
@@ -47,6 +40,9 @@ const CreateContract = (props: CreateContractProps) => {
   const [selectedOwnToken, setSelectedOwnToken] = useState<IToken | undefined>(
     contract?.initiatorCoins,
   );
+  const [conditions, setConditions] = useState<
+    { condition: ICondition; value: string }[]
+  >(contract?.conditions ?? []);
   const [selectedWantedToken, setSelectedWantedToken] = useState<
     IToken | undefined
   >(contract?.fulfillerCoins);
@@ -70,6 +66,7 @@ const CreateContract = (props: CreateContractProps) => {
     }
     setModalToOpen(undefined);
   };
+
   const handleSelectedAmountChange = (amount: number) => {
     setSelectedAmount(amount);
   };
@@ -102,53 +99,6 @@ const CreateContract = (props: CreateContractProps) => {
     );
   };
 
-  const displayConditionTypes = () => {
-    return ConditionTypes.map((condition) => {
-      return (
-        <option key={condition.type} value={condition.type}>
-          {condition.type}
-        </option>
-      );
-    });
-  };
-
-  const [conditions, setConditions] = useState<
-    { condition: ICondition; value: string }[]
-  >(contract?.conditions ?? []);
-
-  const handleAddNewEmptyCondition = () => {
-    const array = [...conditions].concat({
-      condition: ConditionTypes[0],
-      value: "",
-    });
-    setConditions(array);
-  };
-
-  const handleRemoveCondition = (id: number) => {
-    const array = conditions.slice(0, id).concat(conditions.slice(id + 1));
-    setConditions(array);
-  };
-
-  const handleChangeConditionValue = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: number,
-  ) => {
-    const array = [...conditions];
-    array[id].value = e.target.value;
-    setConditions(array);
-  };
-
-  const handleChangeCondition = (
-    e: React.ChangeEvent<HTMLSelectElement>,
-    id: number,
-  ) => {
-    const array = [...conditions];
-    array[id].condition =
-      ConditionTypes.find((element) => element.type === e.target.value) ??
-      ConditionTypes[0];
-    setConditions(array);
-  };
-
   return (
     <ContentContainer>
       <img
@@ -177,38 +127,10 @@ const CreateContract = (props: CreateContractProps) => {
             </div>
             <div className="bg-gray rounded-3xl border-[1px] border-white-200">
               <div className="p-8">
-                <div className="conditions-management">
-                  <div className="subtitle">
-                    <Typography variant="h6" className="font-revalia">
-                      Add Conditions<span className="text-orange">*</span>
-                    </Typography>
-                  </div>
-                  {conditions.map((condition, index) => (
-                    <div className="condition" key={`add-condition-${index}`}>
-                      <Condition
-                        condition={condition}
-                        index={index}
-                        handleChangeCondition={handleChangeCondition}
-                        handleRemoveCondition={handleRemoveCondition}
-                        displayConditionTypes={displayConditionTypes}
-                        className="pb-2"
-                      >
-                        Condition #{index + 1}
-                      </Condition>
-                    </div>
-                  ))}
-                  <button
-                    className="add-condition"
-                    onClick={handleAddNewEmptyCondition}
-                  >
-                    <Typography
-                      variant="body-small"
-                      className="font-revalia text-orange py-4"
-                    >
-                      + Add Condition
-                    </Typography>
-                  </button>
-                </div>
+                <AddConditions
+                  conditions={conditions}
+                  setConditions={setConditions}
+                />
                 <div className="assets-management">
                   <div className="py-4">
                     <Typography variant="h6" className="font-revalia">
