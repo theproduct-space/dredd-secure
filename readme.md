@@ -1,6 +1,6 @@
 # dreddsecure
 
-**dreddsecure**: Secure Escrow Services for the Cosmos Ecosystem
+**dreddsecure**: Secure Escrow Services for the Cosmos Ecosystem.
 
 ## Get started
 
