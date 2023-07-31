@@ -13,7 +13,7 @@ const Header = () => {
   const location = useLocation();
 
   return (
-    <header className="w-full bg-black z-50 fixed left-0 right-0">
+    <header className="w-full bg-gray z-50 fixed left-0 right-0">
       <div className="h-20 flex justify-between gap-3 items-center max-w-app-max px-3 lg:px-6 mx-auto">
         <Link to="/" className="logo-link">
           <img src={DreddLogo} alt="Dredd Logo" className="w-44" />
