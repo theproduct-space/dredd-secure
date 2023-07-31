@@ -16,7 +16,7 @@ import DreddLogo from "~assets/Dredd-logo.png";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-black z-50 relative pb-3">
+    <footer className="w-full bg-gray z-50 relative pb-3">
       <div className="max-w-app-max mx-auto px-3 lg:px-6">
         <div className="flex justify-between flex-col items-start border-b border-white-200 pb-3 sm:py-8 sm:flex-row sm:items-center">
           <Link

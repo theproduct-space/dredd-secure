@@ -5,13 +5,13 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Custom Imports
+import Footer from "~layouts/Footer";
 import Header from "~layouts/Header";
-import CreateContractPage from "~views/CreateContract";
 import Dashboard from "~sections/Dashboard";
+import CreateContractPage from "~views/CreateContract";
 import Landing from "~views/Home";
 import PaymentView from "~views/Payment";
 import ReviewContract from "~views/ReviewContract";
-import Footer from "~layouts/Footer";
 
 const home = {
   label: "Landing",

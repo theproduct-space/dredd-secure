@@ -35,7 +35,7 @@ const SuccessSection = (props: SuccessSectionProps) => {
             {successBody}
           </Typography>
           <div className="flex justify-center gap-10 pt-4">
-            <Link to="/dashboard" className="w-50">
+            <Link to="/dashboard">
               <button
                 className={
                   "transition hover:-translate-y-0.5 active:-translate-y-0.5 \
