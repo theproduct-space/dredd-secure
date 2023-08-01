@@ -13,6 +13,7 @@ import Button from "~baseComponents/Button";
 import SecondaryButton from "~baseComponents/SecondaryButton";
 import BaseModal from "~baseComponents/BaseModal/Index";
 import TokenItem from "~baseComponents/TokenItem";
+import Card from "~baseComponents/Card";
 
 export interface IContract {
   initiatorCoins: IToken;
@@ -100,7 +101,7 @@ const CreateContract = (props: CreateContractProps) => {
   };
 
   return (
-    <ContentContainer>
+    <>
       <img
         src={randomCubes}
         alt="Dredd-Secure"
@@ -125,8 +126,9 @@ const CreateContract = (props: CreateContractProps) => {
                 Create Contract
               </Typography>
             </div>
-            <div className="bg-gray rounded-3xl border-[1px] border-white-200">
-              <div className="p-8">
+            {/* <div className="bg-gray rounded-3xl border-[1px] border-white-200"> */}
+            <Card progress="25">
+              <div className="p-4 md:p-8">
                 <AddConditions
                   conditions={conditions}
                   setConditions={setConditions}
@@ -201,7 +203,7 @@ const CreateContract = (props: CreateContractProps) => {
                 selectedToken={selectedTokenTips}
                 onClick={() => setModalToOpen(Modals.Tips)}
               />
-            </div>
+            </Card>
           </div>
           <div className="flex justify-end py-8">
             <Link
@@ -223,7 +225,7 @@ const CreateContract = (props: CreateContractProps) => {
       >
         {displayModal()}
       </BaseModal>
-    </ContentContainer>
+    </>
   );
 };
 

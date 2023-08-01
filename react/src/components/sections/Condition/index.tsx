@@ -4,7 +4,7 @@ import Typography from "~baseComponents/Typography";
 import { TextField } from "@mui/material";
 import Button from "~baseComponents/Button";
 import { ICondition } from "~sections/CreateContract/AddConditions";
-import ApiCondition from "./ApiCondition";
+import CoinGeckoTokenInfo from "./CoinGeckoTokenInfo";
 
 interface ConditionProps {
   children?: React.ReactNode;
@@ -29,27 +29,23 @@ const Condition = ({
   displayConditionTypes,
 }: ConditionProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [apiUrl, setApiUrl] = useState<string | null>(null);
 
-  const renderCondition = () => {
+  const renderConditionSelector = () => {
     switch (true) {
       // Dates
       case condition.condition.prop === "startDate" ||
         condition.condition.prop === "endDate":
         return (
           <>
+            <Typography variant="body-small" className="text-white-500 p-1">
+              {condition.condition.type}
+            </Typography>
             <CustomDatePicker value={selectedDate} onChange={setSelectedDate} />
-            <button
-              onClick={() => handleRemoveCondition(index)}
-              className="text-orange text-4xl"
-            >
-              -
-            </button>
           </>
         );
       // API
-      case condition.condition.prop === "api":
-        return <ApiCondition />;
+      case condition.condition.prop === "coingecko-token-info":
+        return <CoinGeckoTokenInfo />;
     }
   };
 
@@ -58,24 +54,35 @@ const Condition = ({
       <Typography variant="body-small" className="text-white-500 p-1">
         {children}
       </Typography>
-      <div className="flex flex-col gap-2 md:flex-row">
-        <select
-          value={condition.condition.type}
-          onChange={(e) => handleChangeCondition(e, index)}
-          className="w-60 bg-buttonBg text-white-1000 p-4 border border-white-200 rounded focus:outline-none focus:border-orange"
-        >
-          {displayConditionTypes().map((option, optionIndex) => (
-            <option
-              key={optionIndex}
-              value={option.props.value}
-              className="bg-buttonBg text-white-1000 p-4 border border-white-500"
-            >
-              {option.props.children}
+      <div className="flex flex-col gap-2 w-full md:flex-row ">
+        <div className="flex gap-5 w-full md:gap-10">
+          <select
+            value={condition.condition.type}
+            onChange={(e) => handleChangeCondition(e, index)}
+            className="w-full bg-buttonBg text-white-1000 p-4 border border-white-200 rounded focus:outline-none focus:border-orange"
+          >
+            <option value="Select Condition Type" disabled selected>
+              Select Condition Type
             </option>
-          ))}
-        </select>
-        {renderCondition()}
+            {displayConditionTypes().map((option, optionIndex) => (
+              <option
+                key={optionIndex}
+                value={option.props.value}
+                className="bg-buttonBg text-white-1000 p-4 border border-white-500"
+              >
+                {option.props.children}
+              </option>
+            ))}
+          </select>
+          <button
+            onClick={() => handleRemoveCondition(index)}
+            className="text-orange text-6xl"
+          >
+            -
+          </button>
+        </div>
       </div>
+      <div className="pl-10 py-6">{renderConditionSelector()}</div>
     </div>
   );
 };

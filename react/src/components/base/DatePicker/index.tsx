@@ -24,7 +24,7 @@ export default function CustomDatePicker({ value, onChange }: DatePickerProps) {
         <DatePicker
           value={value}
           onChange={onChange}
-          sx={{ borderRadius: "8px" }}
+          sx={{ borderRadius: "8px", width: "100%" }}
         />
       </LocalizationProvider>
     </ThemeProvider>

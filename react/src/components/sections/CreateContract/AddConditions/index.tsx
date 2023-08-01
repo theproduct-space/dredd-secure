@@ -3,11 +3,22 @@ import Typography from "~baseComponents/Typography";
 import ContentContainer from "~layouts/ContentContainer";
 import Condition from "~sections/Condition";
 // import ICondition from "../../CreateContract";
+import configuredAPIEndpoints from "~utils/configuredApiEndpoints.json";
+
+console.log("configuredAPIEndpoints", configuredAPIEndpoints);
+
+export interface ISubConditions {
+  conditionType: string;
+  dataType: string;
+  name: string;
+  value: string | number;
+}
 
 export interface ICondition {
   type: string;
   prop: string;
-  input?: string;
+  input?: any;
+  subconditions?: Array<ISubConditions>;
 }
 
 export const ConditionTypes: ICondition[] = [
@@ -19,10 +30,10 @@ export const ConditionTypes: ICondition[] = [
     type: "Deadline",
     prop: "endDate",
   },
-  {
-    type: "API request",
-    prop: "api",
-  },
+  ...configuredAPIEndpoints.list.map((endpoint) => ({
+    type: configuredAPIEndpoints.data[endpoint].label,
+    prop: endpoint,
+  })),
 ];
 
 interface AddConditionsProps {
@@ -45,9 +56,14 @@ const AddConditions = ({ conditions, setConditions }: AddConditionsProps) => {
 
   const handleAddNewEmptyCondition = () => {
     const array = [...conditions].concat({
-      condition: ConditionTypes[0],
+      // condition: ConditionTypes[0],
+      condition: {
+        type: "Select Condition Type",
+        prop: "select",
+      },
       value: "",
     });
+    console.log("array", array);
     setConditions(array);
   };
 
