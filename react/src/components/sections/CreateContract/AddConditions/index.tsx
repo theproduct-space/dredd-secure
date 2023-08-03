@@ -5,20 +5,19 @@ import Condition from "~sections/Condition";
 // import ICondition from "../../CreateContract";
 import configuredAPIEndpoints from "~utils/configuredApiEndpoints.json";
 
-console.log("configuredAPIEndpoints", configuredAPIEndpoints);
-
 export interface ISubConditions {
-  conditionType: string;
-  dataType: string;
-  name: string;
-  value: string | number;
+  conditionType: string; // gt, lt, equal
+  dataType: string; // number, string
+  name: string; // relevant_fields.name
+  label: string; // relevant_fields.label
+  value: string | number | undefined; // input from user
 }
 
 export interface ICondition {
   type: string;
   prop: string;
-  input?: any;
-  subconditions?: Array<ISubConditions>;
+  value?: string | number;
+  subConditions?: Array<ISubConditions>;
 }
 
 export const ConditionTypes: ICondition[] = [
@@ -33,14 +32,24 @@ export const ConditionTypes: ICondition[] = [
   ...configuredAPIEndpoints.list.map((endpoint) => ({
     type: configuredAPIEndpoints.data[endpoint].label,
     prop: endpoint,
+    subConditions: [
+      {
+        conditionType: "eq",
+        dataType: configuredAPIEndpoints.data[endpoint].relevant_fields[0].type,
+        name: configuredAPIEndpoints.data[endpoint].relevant_fields[0].name,
+        label: configuredAPIEndpoints.data[endpoint].relevant_fields[0].label,
+        value: undefined,
+      },
+    ],
   })),
 ];
 
+console.log("ConditionTypes", ConditionTypes);
+
 interface AddConditionsProps {
-  conditions: { condition: ICondition; value: string }[];
-  setConditions: (
-    newConditions: { condition: ICondition; value: string }[],
-  ) => void;
+  conditions: ICondition[];
+  // setConditions: (newConditions: ICondition[]) => void;
+  setConditions: React.Dispatch<React.SetStateAction<ICondition[]>>;
 }
 
 const AddConditions = ({ conditions, setConditions }: AddConditionsProps) => {
@@ -54,21 +63,21 @@ const AddConditions = ({ conditions, setConditions }: AddConditionsProps) => {
     });
   };
 
+  console.log({ conditions });
+
   const handleAddNewEmptyCondition = () => {
     const array = [...conditions].concat({
-      // condition: ConditionTypes[0],
-      condition: {
-        type: "Select Condition Type",
-        prop: "select",
-      },
+      type: "Select Condition Type",
+      prop: "select",
       value: "",
     });
-    console.log("array", array);
     setConditions(array);
   };
 
-  const handleRemoveCondition = (id: number) => {
-    const array = conditions.slice(0, id).concat(conditions.slice(id + 1));
+  const handleRemoveCondition = (index: number) => {
+    const array = conditions
+      .slice(0, index)
+      .concat(conditions.slice(index + 1));
     setConditions(array);
   };
 
@@ -83,12 +92,13 @@ const AddConditions = ({ conditions, setConditions }: AddConditionsProps) => {
 
   const handleChangeCondition = (
     e: React.ChangeEvent<HTMLSelectElement>,
-    id: number,
+    index: number,
   ) => {
     const array = [...conditions];
-    array[id].condition =
+    array[index] =
       ConditionTypes.find((element) => element.type === e.target.value) ??
       ConditionTypes[0];
+
     setConditions(array);
   };
 
@@ -103,6 +113,7 @@ const AddConditions = ({ conditions, setConditions }: AddConditionsProps) => {
         <div className="condition" key={`add-condition-${index}`}>
           <Condition
             condition={condition}
+            setConditions={setConditions}
             index={index}
             handleChangeCondition={handleChangeCondition}
             handleRemoveCondition={handleRemoveCondition}

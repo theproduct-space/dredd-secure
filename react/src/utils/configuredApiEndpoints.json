@@ -7,22 +7,22 @@
       "relevant_fields": [
         {
           "label": "USD Price",
-          "key": "usd",
+          "name": "usd",
           "type": "number"
         },
         {
           "label": "USD Market Cap",
-          "key": "usd_market_cap",
+          "name": "usd_market_cap",
           "type": "number"
         },
         {
           "label": "USD 24h Volume",
-          "key": "usd_24h_vol",
+          "name": "usd_24h_vol",
           "type": "number"
         },
         {
           "label": "USD 24h Price Change",
-          "key": "usd_24h_change",
+          "name": "usd_24h_change",
           "type": "number"
         }
       ]

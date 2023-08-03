@@ -18,7 +18,7 @@ import Card from "~baseComponents/Card";
 export interface IContract {
   initiatorCoins: IToken;
   fulfillerCoins: IToken;
-  conditions?: { condition: ICondition; value: string }[];
+  conditions?: ICondition[];
   tips?: IToken;
   status?: string;
   id?: string;
@@ -41,9 +41,9 @@ const CreateContract = (props: CreateContractProps) => {
   const [selectedOwnToken, setSelectedOwnToken] = useState<IToken | undefined>(
     contract?.initiatorCoins,
   );
-  const [conditions, setConditions] = useState<
-    { condition: ICondition; value: string }[]
-  >(contract?.conditions ?? []);
+  const [conditions, setConditions] = useState<ICondition[]>(
+    contract?.conditions ?? [],
+  );
   const [selectedWantedToken, setSelectedWantedToken] = useState<
     IToken | undefined
   >(contract?.fulfillerCoins);

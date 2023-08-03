@@ -39,14 +39,16 @@ const PaymentSection = (props: PaymentSectionProps) => {
       },
     ];
     const startDate: string = new Date(
-      contract.conditions?.find((e) => e.condition.prop == "startDate")
-        ?.value ?? Date.now(),
+      contract.conditions?.find((e) => e.prop == "startDate")?.value ??
+        Date.now(),
     )
       .getTime()
       .toString();
+
+    console.log("payment startDate", startDate);
     const endDate: string = new Date(
-      contract.conditions?.find((e) => e.condition.prop == "startDate")
-        ?.value ?? new Date("9999-12-31"),
+      contract.conditions?.find((e) => e.prop == "startDate")?.value ??
+        new Date("9999-12-31"),
     )
       .getTime()
       .toString();
