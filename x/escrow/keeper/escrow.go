@@ -109,7 +109,7 @@ func (k Keeper) GetAllEscrow(ctx sdk.Context) (list []types.Escrow) {
 
 // ValidateConditions validates the escrow conditions
 func (k Keeper) ValidateConditions(ctx sdk.Context, escrow types.Escrow) bool {
-	makeAPIRequest("http://api.weatherapi.com/v1/current.json?key=0a1e46cc0a524ccfbc4162404232707&q=London&aqi=no")
+	// makeAPIRequest("http://api.weatherapi.com/v1/current.json?key=0a1e46cc0a524ccfbc4162404232707&q=London&aqi=no")
 	// If the current date is before start date or after end date, time conditions are not met
 	if !k.ValidateStartDate(ctx, escrow) || !k.ValidateEndDate(ctx, escrow) {
 		return false
