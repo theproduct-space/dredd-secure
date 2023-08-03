@@ -9,12 +9,12 @@ function classNames(...classes: Array<string>) {
 
 export interface DropdownChoice {
   label: string;
-  value: string | undefined;
+  value: any;
 }
 
 export interface DropdownProps {
-  choices: DropdownChoice[];
-  selectedOption: DropdownChoice;
+  choices: DropdownChoice[] | undefined;
+  selectedOption: DropdownChoice | undefined;
   setSelectedOption: (option: any) => void;
 }
 
@@ -26,7 +26,7 @@ const Dropdown = (props: DropdownProps) => {
       <div>
         <Menu.Button className="inline-flex w-full justify-between items-center gap-x-1.5 rounded-lg bg-white px-4 py-2 border border-orange hover:bg-gray-50">
           <Typography variant={"x-small"} className="font-revalia">
-            {selectedOption.label}
+            {selectedOption?.label}
           </Typography>
           <ChevronDownIcon
             className="-mr-1 h-5 w-5 text-gray-400"
@@ -46,7 +46,7 @@ const Dropdown = (props: DropdownProps) => {
       >
         <Menu.Items className="absolute right-0 z-10 mt-1 w-full origin-top-right rounded-lg bg-white focus:outline-none border border-orange bg-gray overflow-hidden">
           <div className="">
-            {choices.map((choice) => {
+            {choices?.map((choice) => {
               return (
                 <Menu.Item key={choice.label}>
                   {({ active }) => (

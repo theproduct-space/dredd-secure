@@ -1,0 +1,31 @@
+{
+  "list": ["coingecko-token-info"],
+  "data": {
+    "coingecko-token-info": {
+      "label": "CoinGecko Token Info",
+      "base_url": "https://api.coingecko.com/api/v3/simple/price?ids=harrypotterobamasonic10inu&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true",
+      "relevant_fields": [
+        {
+          "label": "USD Price",
+          "name": "usd",
+          "type": "number"
+        },
+        {
+          "label": "USD Market Cap",
+          "name": "usd_market_cap",
+          "type": "number"
+        },
+        {
+          "label": "USD 24h Volume",
+          "name": "usd_24h_vol",
+          "type": "number"
+        },
+        {
+          "label": "USD 24h Price Change",
+          "name": "usd_24h_change",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}

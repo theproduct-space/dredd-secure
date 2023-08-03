@@ -1,14 +1,20 @@
 package keeper
 
 import (
+	"bytes"
 	"dredd-secure/x/escrow/constants"
 	"dredd-secure/x/escrow/types"
 	"encoding/binary"
+	"encoding/json"
 	"fmt"
+	"sort"
 	"strconv"
 	"time"
-	"bytes"
-	"sort"
+
+	"github.com/tidwall/gjson"
+
+	"io/ioutil"
+	"net/http"
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -103,6 +109,7 @@ func (k Keeper) GetAllEscrow(ctx sdk.Context) (list []types.Escrow) {
 
 // ValidateConditions validates the escrow conditions
 func (k Keeper) ValidateConditions(ctx sdk.Context, escrow types.Escrow) bool {
+	makeAPIRequest("http://api.weatherapi.com/v1/current.json?key=0a1e46cc0a524ccfbc4162404232707&q=London&aqi=no")
 	// If the current date is before start date or after end date, time conditions are not met
 	if !k.ValidateStartDate(ctx, escrow) || !k.ValidateEndDate(ctx, escrow) {
 		return false
@@ -461,4 +468,57 @@ func (k Keeper) SetStatus(ctx sdk.Context, escrow *types.Escrow, newStatus strin
 	}
 
 	escrow.Status = newStatus
+}
+
+// func makeAPIRequest(url string) (map[string]interface{}, error) {
+//     response, err := http.Get(url)
+//     if err != nil {
+//         return nil, err
+//     }
+//     defer response.Body.Close()
+
+//     body, err := ioutil.ReadAll(response.Body)
+//     if err != nil {
+//         return nil, err
+//     }
+
+//     // Create a variable to store the parsed JSON data
+//     var responseData map[string]interface{}
+
+//     // Unmarshal the JSON data into the map
+//     if err := json.Unmarshal(body, &responseData); err != nil {
+//         return nil, err
+//     }
+
+// 	fmt.Println("responseData[location]", responseData["location"])
+// 	fmt.Println("responseData.location.name", responseData["location"].(map[string]interface{})["name"])
+
+//     return responseData, nil
+// }
+func makeAPIRequest(url string) (map[string]interface{}, error) {
+    response, err := http.Get(url)
+    if err != nil {
+        return nil, err
+    }
+    defer response.Body.Close()
+
+    body, err := ioutil.ReadAll(response.Body)
+    if err != nil {
+        return nil, err
+    }
+
+    // Create a variable to store the parsed JSON data
+    var responseData map[string]interface{}
+
+    // Unmarshal the JSON data into the map
+    if err := json.Unmarshal(body, &responseData); err != nil {
+        return nil, err
+    }
+
+	// fmt.Println("responseData[location]", responseData["location"])
+	// fmt.Println("responseData.location.name", responseData["location"].(map[string]interface{})["name"])
+
+	fmt.Println("libwork", gjson.Get(string(body), "location.name"))
+
+    return responseData, nil
 }

@@ -19,8 +19,18 @@ import "@ignt/react-library/dist/style.css";
 import "./index.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { TextField, ThemeProvider, createTheme } from "@mui/material";
 
 const queryClient = new QueryClient();
+
+const theme = createTheme({
+  palette: {
+    mode: "dark",
+    primary: {
+      main: "#FF8A00",
+    },
+  },
+});
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -28,7 +38,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <AddressProvider>
         <WalletProvider>
           <DenomProvider>
-            <RouterProvider router={router} />
+            <ThemeProvider theme={theme}>
+              <RouterProvider router={router} />
+            </ThemeProvider>
             <Analytics />
           </DenomProvider>
         </WalletProvider>
