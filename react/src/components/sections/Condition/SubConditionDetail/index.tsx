@@ -89,7 +89,6 @@ SubConditionDetailProps) => {
             setSelectedOption={setSelectedOption}
           />
           <TextField
-            fullWidth
             type={subConditionType}
             variant="outlined"
             placeholder="Value"

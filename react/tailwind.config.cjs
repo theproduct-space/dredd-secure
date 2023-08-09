@@ -34,6 +34,7 @@ module.exports = {
         },
         black: "#11100B",
         gray: "#241F16",
+        paleGray: "rgba(204, 204, 204, 0.3)",
         grayText: "#464646",
         coolSilver: "#F0FBFF",
         orange: "#FF8A00",

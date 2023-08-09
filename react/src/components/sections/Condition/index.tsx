@@ -143,7 +143,6 @@ const Condition = ({
         {renderConditionSelector()}
         {condition.subConditions && (
           <button
-            className="add-condition"
             onClick={() =>
               handleAddNewEmptySubCondition(condition, condition.prop)
             }
