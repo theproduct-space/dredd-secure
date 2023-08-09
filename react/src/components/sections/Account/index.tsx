@@ -63,6 +63,7 @@ function Account() {
 
     const onKeplrConnect = (): void => {
       const now = new Date().getTime();
+      console.log(now + 3600000 * 24);
       const item = {
         value: true,
         expiration: now + 3600000 * 24,

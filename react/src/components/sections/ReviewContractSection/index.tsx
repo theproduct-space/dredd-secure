@@ -14,6 +14,7 @@ import useWallet from "../../utils/useWallet";
 import assets from "~src/tokens.json";
 import { env } from "~src/env";
 import { ConditionTypes } from "~sections/CreateContract/AddConditions";
+import { toast } from "react-toastify";
 
 // Hooks Imports
 
@@ -52,18 +53,25 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
   };
 
   const handleConfirmation = async () => {
-    messageClient
-      .sendMsgFulfillEscrow({
-        value: {
-          creator: address,
-          id: Number(contract?.id),
-        },
-      })
-      .then((response) => {
-        if (response.code == 0) {
-          onSuccess();
-        }
-      });
+    if (!contract) return;
+
+    const id = contract.id;
+    const request = messageClient.sendMsgFulfillEscrow({
+      value: {
+        creator: address,
+        id: Number(id),
+      },
+    });
+
+    const response = await toast.promise(request, {
+      pending: `Fulfilling Escrow #${id} in-progress`,
+      success: `Successfully fulfilled Escrow #${id}!`,
+      error: `An error happened while fulfilling Escrow #${id}!`,
+    });
+
+    if (response.code == 0) {
+      onSuccess();
+    }
   };
 
   return (

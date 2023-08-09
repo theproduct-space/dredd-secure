@@ -40,7 +40,6 @@ export interface TableViewProps {
 }
 
 const TableView = (props: TableViewProps) => {
-  const chainId = "dreddsecure";
   const navigate = useNavigate();
 
   const { data, headers, filterOptions } = props;

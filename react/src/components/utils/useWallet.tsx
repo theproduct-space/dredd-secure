@@ -19,7 +19,10 @@ export default function () {
           () => {
             sessionStorage.setItem(
               "isConnected",
-              JSON.stringify({ value: true, expiration: new Date().getTime() }),
+              JSON.stringify({
+                value: true,
+                expiration: new Date().getTime() + 3600000 * 24,
+              }),
             );
           },
           () => {
