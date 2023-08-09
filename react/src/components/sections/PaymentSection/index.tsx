@@ -2,13 +2,22 @@
 import { Coin } from "dredd-secure-client-ts/cosmos.bank.v1beta1/types/cosmos/base/v1beta1/coin";
 import { txClient } from "dredd-secure-client-ts/dreddsecure.escrow";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // Custom Imports
 import TokenPreview from "~baseComponents/TokenPreview";
 import Account from "~sections/Account";
 import { IContract } from "~sections/CreateContract";
 import useWallet from "../../utils/useWallet";
+
+// Assets
+import randomCubes from "~assets/random-cubes.webp";
+import Typography from "~baseComponents/Typography";
+import ModalContainer from "~layouts/ModalContainer";
+import Card from "~baseComponents/Card";
+import Transaction from "~icons/Transaction";
+import Tips from "~sections/Tips";
+import Button from "~baseComponents/Button";
 
 interface PaymentSectionProps {
   contract: IContract;
@@ -25,6 +34,24 @@ const PaymentSection = (props: PaymentSectionProps) => {
     addr: "http://localhost:26657",
   });
 
+  const getDefaultEndDate = (startDate: string) => {
+    const start = new Date(Number(startDate));
+    start.setDate(start.getDate() + 30); // Adding 30 days
+    return start.getTime().toString();
+  };
+  const startDateCondition = contract.conditions?.find(
+    (e) => e.prop == "startDate",
+  );
+  const endDateCondition = contract.conditions?.find(
+    (e) => e.prop == "endDate",
+  );
+  const startDate: string = startDateCondition
+    ? new Date(Number(startDateCondition.value)).getTime().toString()
+    : Date.now().toString();
+  const endDate: string = endDateCondition
+    ? new Date(Number(endDateCondition.value)).getTime().toString()
+    : getDefaultEndDate(startDate);
+
   const handleConfirmExchange = async () => {
     const initiatorCoins: Coin[] = [
       {
@@ -38,21 +65,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
         amount: contract.fulfillerCoins.amount?.toString() ?? "0",
       },
     ];
-    const startDate: string = new Date(
-      contract.conditions?.find((e) => e.prop == "startDate")?.value ??
-        Date.now(),
-    )
-      .getTime()
-      .toString();
-
     console.log("payment startDate", startDate);
-    const endDate: string = new Date(
-      contract.conditions?.find((e) => e.prop == "startDate")?.value ??
-        new Date("9999-12-31"),
-    )
-      .getTime()
-      .toString();
-
     const response = await messageClient.sendMsgCreateEscrow({
       value: {
         creator: address,
@@ -74,56 +87,152 @@ const PaymentSection = (props: PaymentSectionProps) => {
       state: contract,
     });
   };
-
+  const formatDate = (timestamp: string): string => {
+    const date = new Date(Number(timestamp));
+    return `${String(date.getMonth() + 1).padStart(2, "0")}/${String(
+      date.getDate(),
+    ).padStart(2, "0")}/${date.getFullYear()}`;
+  };
+  console.log(
+    "START",
+    contract.conditions?.find((e) => e.prop == "startDate")?.value,
+  );
+  console.log(
+    "END",
+    contract.conditions?.find((e) => e.prop == "endDate")?.value,
+  );
   return (
     <div>
+      <img
+        src={randomCubes}
+        alt="Dredd-Secure"
+        className="object-cover absolute z-0 top-32 right-32 drop-shadow-lightOrange opacity-80 "
+        loading="lazy"
+      />
       {errorMessage && <div className="error-message">{errorMessage}</div>}
-      <div className="Title">Review and Confirm Exchange</div>
-      <button className="back-button" onClick={handleGoBack}>
-        Go Back
-      </button>
-      <div className="card">
-        <div className="card-subtitle">Conditions</div>
-
-        {contract?.conditions?.map((condition, index) => {
-          return (
-            <div key={`condition-${index}`}>
-              <div className="condition-name">{condition.type}</div>
-              <div className="condition-value">{condition.value}</div>
-            </div>
-          );
-        })}
-
-        <div className="card-subtitle">You are exchanging</div>
-        <div>
-          <TokenPreview token={contract.initiatorCoins} />
-          <div className="exchange-icon"></div>
-          <TokenPreview token={contract.fulfillerCoins} />
-        </div>
-        {contract?.status != "closed" && address != "" && (
-          <div className="card">
-            <div className="card-title">Confirm</div>
-            <div className="bold">Transaction cost</div>
-            <div className="text">FREE</div>
-            {contract?.tips ? (
-              <>
-                <div className="donation-review">Donation to dreddsecure</div>
-                <TokenPreview token={contract.tips} />
-              </>
-            ) : (
-              <>
-                <div className="donation-review">
-                  Donation to dreddsecure <button>+Add</button>
-                </div>
-                <div className="donation-amount">0.00</div>
-              </>
-            )}
-
-            <button onClick={handleConfirmExchange}>Confirm Exchange</button>
+      <div className="relative min-h-screen w-full pt-32">
+        <Link to="/escrow/create">
+          <Typography
+            variant="body"
+            className="font-revalia text-orange px-4 md:px-8 xl:px-16"
+          >
+            {"< GO BACK"}
+          </Typography>
+        </Link>
+        <div className="relative mx-auto pt-32 max-w-6xl px-4 md:px-8 xl:px-16">
+          <Typography variant="small" className="text-white-500">
+            STEP 2
+          </Typography>
+          <div className="title-2">
+            <Typography variant="h5" className="font-revalia pb-4">
+              Review and Confirm Exchange
+            </Typography>
           </div>
-        )}
+        </div>
+        <ModalContainer className="max-w-6xl flex gap-4">
+          <div className="w-7/12">
+            <Card progress="75">
+              <div className="p-4 md:p-8">
+                <Typography variant="h6" className="font-revalia">
+                  Conditions
+                </Typography>
+                <div className="py-4 md:py-8">
+                  {contract?.conditions?.map((condition, index) => {
+                    return (
+                      <div key={`condition-${index}`}>
+                        <Typography
+                          variant="body-small"
+                          className="text-white-500"
+                        >
+                          {condition.type}
+                        </Typography>
+                        <Typography variant="h6" className="condition-value">
+                          {condition.prop === "startDate" ||
+                          condition.prop === "endDate"
+                            ? formatDate(condition.value as string)
+                            : condition.value}
+                        </Typography>
+                      </div>
+                    );
+                  })}{" "}
+                </div>
+                <Typography variant="h6" className="font-revalia pb-8">
+                  You are exchanging
+                </Typography>
+                <div className="flex justify-between items-center gap-4">
+                  <TokenPreview
+                    token={contract.initiatorCoins}
+                    tokenType="initiator"
+                  />
+                  <Transaction className="w-12" />
+                  <TokenPreview
+                    token={contract.fulfillerCoins}
+                    tokenType="fulfiller"
+                  />
+                </div>
+              </div>
+            </Card>
+          </div>
+          {/* {contract?.status != "closed" && address != "" && ( */}
+          <Card className="w-4/12">
+            <div className="p-4 md:p-8 flex flex-col justify-between ">
+              <div className="flex flex-col gap-4 pb-8">
+                <Typography variant="h6" className="font-revalia pb-4">
+                  Confirm
+                </Typography>
+                <div>
+                  <Typography
+                    variant="body-small"
+                    className="text-white-500 uppercase"
+                  >
+                    Transaction cost
+                  </Typography>
+                  <Typography variant="h6">FREE</Typography>
+                </div>
+                <div>
+                  {contract?.tips ? (
+                    <>
+                      <Typography
+                        variant="body-small"
+                        className="text-white-500 uppercase py-4"
+                      >
+                        Donation to dreddsecure
+                      </Typography>
+                      <TokenPreview token={contract.tips} />
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex justify-between">
+                        <Typography
+                          variant="body-small"
+                          className="text-white-500 uppercase"
+                        >
+                          Donation to dreddsecure
+                        </Typography>
+                        <button>
+                          <Typography
+                            variant="body-small"
+                            className="text-orange uppercase"
+                          >
+                            +Add
+                          </Typography>
+                        </button>
+                      </div>
+                      <Typography variant="h6">0.00</Typography>
+                    </>
+                  )}
+                </div>
+              </div>
+              <Button
+                text="Deploy Contract"
+                className="w-full"
+                onClick={handleConfirmExchange}
+              />
+            </div>
+          </Card>
+          {/* )} */}
+        </ModalContainer>
       </div>
-      <Account />
     </div>
   );
 };

@@ -37,6 +37,7 @@ const CreateContract = (props: CreateContractProps) => {
     Tips,
   }
   const [selectedAmount, setSelectedAmount] = useState<number>(0);
+  const [selectedTipAmount, setSelectedTipAmount] = useState<number>(0);
   const [modalToOpen, setModalToOpen] = useState<Modals | undefined>();
   const [selectedOwnToken, setSelectedOwnToken] = useState<IToken | undefined>(
     contract?.initiatorCoins,
@@ -101,16 +102,19 @@ const CreateContract = (props: CreateContractProps) => {
   };
 
   return (
-    <>
+    <div>
       <img
         src={randomCubes}
         alt="Dredd-Secure"
-        className="object-cover absolute z-0 top-32 drop-shadow-lightOrange opacity-80"
+        className="object-cover absolute z-0 top-32 right-32 drop-shadow-lightOrange opacity-80"
         loading="lazy"
       />
       <div className="relative min-h-screen w-full pt-32">
         <Link to="/dashboard">
-          <Typography variant="body" className="font-revalia text-orange">
+          <Typography
+            variant="body"
+            className="font-revalia text-orange pl-4 xl:pl-16"
+          >
             {"< GO BACK"}
           </Typography>
         </Link>
@@ -200,8 +204,10 @@ const CreateContract = (props: CreateContractProps) => {
                 </div>
               </div>
               <Tips
-                selectedToken={selectedTokenTips}
+                token={selectedTokenTips}
                 onClick={() => setModalToOpen(Modals.Tips)}
+                selectedAmount={selectedTipAmount}
+                setSelectedAmount={setSelectedTipAmount}
               />
             </Card>
           </div>
@@ -225,7 +231,7 @@ const CreateContract = (props: CreateContractProps) => {
       >
         {displayModal()}
       </BaseModal>
-    </>
+    </div>
   );
 };
 

@@ -7,12 +7,19 @@ import charityImage from "~assets/charity.png";
 import { IToken } from "~baseComponents/TokenSelector";
 
 interface TipsProps {
-  selectedToken: IToken | undefined;
+  token: IToken | undefined;
   onClick: () => void;
+  selectedAmount: number;
+  setSelectedAmount: (amount: number) => void;
 }
 
 function Tips(props: TipsProps) {
-  const { selectedToken, onClick } = props;
+  const { token, onClick, selectedAmount, setSelectedAmount } = props;
+
+  const handleTokenClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    onClick();
+  };
 
   return (
     <div className="border-t-[1px] border-white-200">
@@ -26,15 +33,20 @@ function Tips(props: TipsProps) {
         </div>
         <div>
           {/* Will take as a prop another component for the base display. Here, it will be a "Add Tip" link or button */}
-          <TokenElement
-            selectedToken={selectedToken}
-            onClick={onClick}
-            baseButton={
+          {token ? (
+            <TokenElement
+              token={token}
+              onClick={onClick}
+              selectedAmount={selectedAmount}
+              setSelectedAmount={setSelectedAmount}
+            />
+          ) : (
+            <button onClick={handleTokenClick}>
               <Typography variant="body-small" className="text-orange">
                 Add Tip
               </Typography>
-            }
-          />
+            </button>
+          )}
         </div>
       </div>
     </div>
