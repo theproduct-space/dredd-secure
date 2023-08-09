@@ -9,6 +9,7 @@ import TokenPreview from "~baseComponents/TokenPreview";
 import Account from "~sections/Account";
 import { IContract } from "~sections/CreateContract";
 import useWallet from "../../utils/useWallet";
+import { toast } from "react-toastify";
 
 interface PaymentSectionProps {
   contract: IContract;
@@ -45,7 +46,6 @@ const PaymentSection = (props: PaymentSectionProps) => {
       .getTime()
       .toString();
 
-    console.log("payment startDate", startDate);
     const endDate: string = new Date(
       contract.conditions?.find((e) => e.prop == "startDate")?.value ??
         new Date("9999-12-31"),
@@ -53,7 +53,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
       .getTime()
       .toString();
 
-    const response = await messageClient.sendMsgCreateEscrow({
+    const request = messageClient.sendMsgCreateEscrow({
       value: {
         creator: address,
         initiatorCoins: initiatorCoins,
@@ -63,10 +63,14 @@ const PaymentSection = (props: PaymentSectionProps) => {
       },
     });
 
+    const response = await toast.promise(request, {
+      pending: `Creating the Escrow in-progress`,
+      success: `Successfully created Escrow!`,
+      error: `An error happened while creating the Escrow.`,
+    });
+
     if (response.code == 0) navigate("/dashboard");
-    else {
-      setErrorMessage(response.rawLog);
-    }
+    else setErrorMessage(response.rawLog);
   };
 
   const handleGoBack = () => {
