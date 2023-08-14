@@ -9,7 +9,6 @@ import {
 } from "~sections/CreateContract/AddConditions";
 import CoinGeckoTokenInfo from "./CoinGeckoTokenInfo";
 import configuredAPIEndpoints from "~utils/configuredApiEndpoints.json";
-import { dateToEpochSeconds, epochSecondsToDate } from "~utils/date";
 
 interface ConditionProps {
   children?: React.ReactNode;
@@ -36,10 +35,7 @@ const Condition = ({
   displayConditionTypes,
   setConditions,
 }: ConditionProps) => {
-  const initialDate = condition.value
-    ? epochSecondsToDate(Number(condition.value))
-    : null;
-  const [selectedDate, setSelectedDate] = useState<Date | null>(initialDate);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const handleSetSubConditions = (subConditions: Array<ISubConditions>) => {
     setConditions((prev: ICondition[]) => {
@@ -89,10 +85,10 @@ const Condition = ({
     });
   };
 
-  const handleSetValue = (value: string | number | null) => {
+  const handleSetValue = (value: string | number) => {
     setConditions((prev: ICondition[]) => {
       const temp = [...prev];
-      temp[index].value = value === null ? undefined : value;
+      temp[index].value = value;
       return temp;
     });
   };
@@ -108,8 +104,8 @@ const Condition = ({
             </Typography>
             <CustomDatePicker
               value={selectedDate}
-              onChange={(date: Date | null) => {
-                const epochDate = date ? dateToEpochSeconds(date) : null;
+              onChange={(date: any) => {
+                const epochDate = String(new Date(date.$d).getTime() / 1000);
                 handleSetValue(epochDate);
                 setSelectedDate(date);
               }}

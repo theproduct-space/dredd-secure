@@ -35,24 +35,6 @@ const PaymentSection = (props: PaymentSectionProps) => {
     addr: "http://localhost:26657",
   });
 
-  const getDefaultEndDate = (startDate: string) => {
-    const start = new Date(Number(startDate));
-    start.setDate(start.getDate() + 30); // Adding 30 days
-    return start.getTime().toString();
-  };
-  const startDateCondition = contract.conditions?.find(
-    (e) => e.prop == "startDate",
-  );
-  const endDateCondition = contract.conditions?.find(
-    (e) => e.prop == "endDate",
-  );
-  const startDate: string = startDateCondition
-    ? new Date(Number(startDateCondition.value)).getTime().toString()
-    : Date.now().toString();
-  const endDate: string = endDateCondition
-    ? new Date(Number(endDateCondition.value)).getTime().toString()
-    : getDefaultEndDate(startDate);
-
   const handleConfirmExchange = async () => {
     const initiatorCoins: Coin[] = [
       {
@@ -66,19 +48,19 @@ const PaymentSection = (props: PaymentSectionProps) => {
         amount: contract.fulfillerCoins.amount?.toString() ?? "0",
       },
     ];
-    const startDate: string = new Date(
-      contract.conditions?.find((e) => e.prop == "startDate")?.value ??
-        Date.now(),
-    )
-      .getTime()
-      .toString();
 
-    const endDate: string = new Date(
+    const startDate = String(
       contract.conditions?.find((e) => e.prop == "startDate")?.value ??
-        new Date("9999-12-31"),
-    )
-      .getTime()
-      .toString();
+        (Date.now() / 1000).toFixed(),
+    );
+
+    const endDate = String(
+      contract.conditions?.find((e) => e.prop == "endDate")?.value ??
+        (new Date("9999-12-31").getTime() / 1000).toFixed(),
+    );
+
+    console.log({ startDate });
+    console.log({ endDate });
 
     const request = messageClient.sendMsgCreateEscrow({
       value: {
@@ -105,6 +87,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
       state: contract,
     });
   };
+
   const formatDate = (timestamp: string): string => {
     const date = new Date(Number(timestamp));
     return `${String(date.getMonth() + 1).padStart(2, "0")}/${String(

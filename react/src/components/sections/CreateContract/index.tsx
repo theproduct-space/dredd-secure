@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import TokenSelector, { IToken } from "~baseComponents/TokenSelector";
 import Tips from "~sections/Tips";
 import Typography from "~baseComponents/Typography";
-import ContentContainer from "~layouts/ContentContainer";
 import ModalContainer from "~layouts/ModalContainer";
 import AddConditions, { ICondition } from "./AddConditions";
 
