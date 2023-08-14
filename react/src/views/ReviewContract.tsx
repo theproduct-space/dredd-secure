@@ -7,8 +7,8 @@ import { queryClient } from "dredd-secure-client-ts/dreddsecure.escrow";
 import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
 
 // Custom Imports
+import { toast } from "react-toastify";
 import { useClient } from "~hooks/useClient";
-import Account from "~sections/Account";
 import Loading from "~sections/Loading";
 import ReviewContractSection from "~sections/ReviewContractSection";
 import useWallet from "../components/utils/useWallet";
@@ -36,17 +36,24 @@ const ReviewContract = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchEscrow = async () => {
-      try {
-        const response = await queryClient().queryEscrow(id ?? "");
-        setContract(response.data.Escrow);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  const fetchEscrow = async () => {
+    try {
+      const request = queryClient().queryEscrow(id ?? "");
 
-    fetchEscrow().then(checkIfConnected);
+      const response = await toast.promise(request, {
+        pending: `Fetching Escrow #${id} in-progress`,
+        success: `Successfully fetched Escrow #${id}!`,
+        error: `An error happened while fetching Escrow #${id}!`,
+      });
+
+      setContract(response.data.Escrow);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEscrow();
   }, []);
 
   useEffect(() => {

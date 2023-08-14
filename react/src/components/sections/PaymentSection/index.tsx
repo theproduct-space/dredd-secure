@@ -9,6 +9,7 @@ import TokenPreview from "~baseComponents/TokenPreview";
 import Account from "~sections/Account";
 import { IContract } from "~sections/CreateContract";
 import useWallet from "../../utils/useWallet";
+import { toast } from "react-toastify";
 
 // Assets
 import randomCubes from "~assets/random-cubes.webp";
@@ -65,8 +66,21 @@ const PaymentSection = (props: PaymentSectionProps) => {
         amount: contract.fulfillerCoins.amount?.toString() ?? "0",
       },
     ];
-    console.log("payment startDate", startDate);
-    const response = await messageClient.sendMsgCreateEscrow({
+    const startDate: string = new Date(
+      contract.conditions?.find((e) => e.prop == "startDate")?.value ??
+        Date.now(),
+    )
+      .getTime()
+      .toString();
+
+    const endDate: string = new Date(
+      contract.conditions?.find((e) => e.prop == "startDate")?.value ??
+        new Date("9999-12-31"),
+    )
+      .getTime()
+      .toString();
+
+    const request = messageClient.sendMsgCreateEscrow({
       value: {
         creator: address,
         initiatorCoins: initiatorCoins,
@@ -76,10 +90,14 @@ const PaymentSection = (props: PaymentSectionProps) => {
       },
     });
 
+    const response = await toast.promise(request, {
+      pending: `Creating the Escrow in-progress`,
+      success: `Successfully created Escrow!`,
+      error: `An error happened while creating the Escrow.`,
+    });
+
     if (response.code == 0) navigate("/dashboard");
-    else {
-      setErrorMessage(response.rawLog);
-    }
+    else setErrorMessage(response.rawLog);
   };
 
   const handleGoBack = () => {

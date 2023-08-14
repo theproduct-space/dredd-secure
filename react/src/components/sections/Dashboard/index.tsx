@@ -171,20 +171,22 @@ const Dashboard = () => {
                 <Dropdown {...filterDropdownProps} />
               </div>
 
-              <div className="flex items-center gap-2">
-                <input
-                  id="involved-escrow"
-                  checked={onlyOwnDisplayed ?? undefined}
-                  type="checkbox"
-                  onChange={(e) => setOnlyOwnDisplayed(e.target.checked)}
-                  className="mt-[3px]"
-                />
-                <label htmlFor="involved-escrow">
-                  <Typography variant="small" className="font-revalia">
-                    My escrows
-                  </Typography>
-                </label>
-              </div>
+              {address != "" && (
+                <div className="flex items-center gap-2">
+                  <input
+                    id="involved-escrow"
+                    checked={onlyOwnDisplayed ?? undefined}
+                    type="checkbox"
+                    onChange={(e) => setOnlyOwnDisplayed(e.target.checked)}
+                    className="mt-[3px]"
+                  />
+                  <label htmlFor="involved-escrow">
+                    <Typography variant="small" className="font-revalia">
+                      My escrows
+                    </Typography>
+                  </label>
+                </div>
+              )}
             </div>
 
             <div className="relative">

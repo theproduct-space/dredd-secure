@@ -1,5 +1,4 @@
 // React Imports
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 
@@ -18,8 +17,8 @@ import { Analytics } from "@vercel/analytics/react";
 import "@ignt/react-library/dist/style.css";
 import "./index.css";
 
+import { ThemeProvider, createTheme } from "@mui/material";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { TextField, ThemeProvider, createTheme } from "@mui/material";
 
 const queryClient = new QueryClient();
 
@@ -33,18 +32,16 @@ const theme = createTheme({
 });
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <AddressProvider>
-        <WalletProvider>
-          <DenomProvider>
-            <ThemeProvider theme={theme}>
-              <RouterProvider router={router} />
-            </ThemeProvider>
-            <Analytics />
-          </DenomProvider>
-        </WalletProvider>
-      </AddressProvider>
-    </QueryClientProvider>
-  </React.StrictMode>,
+  <QueryClientProvider client={queryClient}>
+    <AddressProvider>
+      <WalletProvider>
+        <DenomProvider>
+          <ThemeProvider theme={theme}>
+            <RouterProvider router={router} />
+          </ThemeProvider>
+          <Analytics />
+        </DenomProvider>
+      </WalletProvider>
+    </AddressProvider>
+  </QueryClientProvider>,
 );

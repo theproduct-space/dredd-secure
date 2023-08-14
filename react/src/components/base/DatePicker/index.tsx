@@ -23,7 +23,10 @@ export default function CustomDatePicker({ value, onChange }: DatePickerProps) {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           value={value}
-          onChange={onChange}
+          onChange={(newValue: Date | null) => {
+            console.log("Selected Date:", newValue);
+            onChange(newValue);
+          }}
           sx={{ borderRadius: "8px", width: "100%" }}
         />
       </LocalizationProvider>

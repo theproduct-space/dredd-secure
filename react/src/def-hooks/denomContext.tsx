@@ -22,7 +22,7 @@ const DenomContext = createContext(context);
 export const useDenomContext = () => useContext(DenomContext);
 
 export default function DenomProvider({ children }: Props) {
-  const { address } = useWallet();
+  //const { address } = useWallet();
   return (
     <DenomContext.Provider value={context}>{children}</DenomContext.Provider>
   );
