@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomDatePicker from "~baseComponents/DatePicker";
 import Typography from "~baseComponents/Typography";
 import { TextField } from "@mui/material";
@@ -12,19 +12,8 @@ import {
   ISubConditions,
 } from "~sections/CreateContract/AddConditions";
 
-interface SubConditionDetailProps {
-  className?: string;
-  subConditionType: string;
-  // handleSetSubConditions: (subConditions: Array<ISubConditions>) => void;
-}
-
-// const relevantFields =
-//   configuredAPIEndpoints.data["coingecko-token-info"]["relevant_fields"];
-// console.log({ configuredAPIEndpoints });
-// console.log("relevantFields", relevantFields);
-
-const getDropdownChoices = (subConditionType: string) => {
-  switch (subConditionType) {
+const getDropdownChoices = (dataType: string) => {
+  switch (dataType) {
     case "text":
       return [
         {
@@ -56,25 +45,45 @@ const getDropdownChoices = (subConditionType: string) => {
       ];
   }
 };
+const getSelectedChoice = (conditionType: string) => {
+  switch (conditionType) {
+    case "eq":
+      return {
+        label: "Equal",
+        value: "eq",
+      };
+    case "gt":
+      return {
+        label: "Greater Than",
+        value: "gt",
+      };
+    case "lt":
+      return {
+        label: "Less Than",
+        value: "lt",
+      };
+  }
+};
+
+interface SubConditionDetailProps {
+  className?: string;
+  dataType: string;
+  conditionType: string;
+  value: string | number | undefined;
+  handleSetValue: (value: any) => void;
+  handleSetConditionType: (conditionType: string) => void;
+}
 
 const SubConditionDetail = ({
   className,
-  subConditionType,
-}: // handleSetSubConditions,
-SubConditionDetailProps) => {
-  console.log("condition", subConditionType);
-
-  const [value, setValue] = useState("");
-  const dropdownChoices = getDropdownChoices(subConditionType);
-  const [selectedOption, setSelectedOption] = useState(
-    dropdownChoices && dropdownChoices[0],
-  );
-
-  // const handleSetSelectedOption = (option) => {
-  //   console.log("option", option);
-
-  //   // handleSetSubConditions(subConditions: Array<ISubConditions>)
-  // };
+  dataType,
+  conditionType,
+  value,
+  handleSetValue,
+  handleSetConditionType,
+}: SubConditionDetailProps) => {
+  const dropdownChoices = getDropdownChoices(dataType);
+  const selectedChoice = getSelectedChoice(conditionType);
 
   return (
     <div className={className}>
@@ -85,15 +94,23 @@ SubConditionDetailProps) => {
         <div className="flex gap-3 items-center">
           <Dropdown
             choices={dropdownChoices}
-            selectedOption={selectedOption}
-            setSelectedOption={setSelectedOption}
+            selectedOption={selectedChoice}
+            setSelectedOption={(option) => {
+              handleSetConditionType(option.value);
+            }}
           />
           <TextField
-            type={subConditionType}
+            type={dataType}
             variant="outlined"
             placeholder="Value"
             value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => {
+              if (dataType === "number") {
+                handleSetValue(Number(e.target.value));
+              } else {
+                handleSetValue(String(e.target.value));
+              }
+            }}
           />
         </div>
       </div>

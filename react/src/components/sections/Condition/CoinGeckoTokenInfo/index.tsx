@@ -1,10 +1,4 @@
-import React, { useState } from "react";
-import CustomDatePicker from "~baseComponents/DatePicker";
 import Typography from "~baseComponents/Typography";
-import { TextField } from "@mui/material";
-import Button from "~baseComponents/Button";
-import { toast } from "react-toastify";
-import axios from "axios";
 import configuredAPIEndpoints from "~utils/configuredApiEndpoints.json";
 import Dropdown from "~baseComponents/Dropdown";
 import {
@@ -13,86 +7,114 @@ import {
 } from "~sections/CreateContract/AddConditions";
 import SubConditionDetail from "../SubConditionDetail";
 import { DropdownChoice } from "~baseComponents/Dropdown";
+import axios from "axios";
+import { useState } from "react";
+import CoinGeckoTokenSelector from "../CoinGeckoTokenSelector";
 
 interface CoinGeckoTokenInfoProps {
   className?: string;
   condition: ICondition;
   handleSetSubConditions: (subConditions: Array<ISubConditions>) => void;
+  handleRemoveSubConditions: (subConditionIndex: number) => void;
 }
 
 const relevantFields =
   configuredAPIEndpoints.data["coingecko-token-info"]["relevant_fields"];
-console.log({ configuredAPIEndpoints });
-console.log("relevantFields", relevantFields);
 
 const CoinGeckoTokenInfo = ({
-  className,
+  className = "",
   condition,
   handleSetSubConditions,
+  handleRemoveSubConditions,
 }: CoinGeckoTokenInfoProps) => {
-  console.log("condition", condition);
+  const [selectedToken, setSelectedToken] = useState(null); // TODO add this data into the "condition" state
 
-  const handleSetSelectedOption = (
-    option: DropdownChoice,
-    index: number,
-    type: string,
-  ) => {
-    console.log("optionnnnnn", option);
-    console.log("index", index);
-
+  const handleSetSelectedOption = (option: DropdownChoice, index: number) => {
     const pastSubConditions = condition?.subConditions?.slice() || [];
 
     if (pastSubConditions && pastSubConditions[index]) {
       pastSubConditions[index].label = option.label;
       pastSubConditions[index].name = option.value;
+      pastSubConditions[index].dataType = option.type || "";
+    }
+
+    handleSetSubConditions(pastSubConditions);
+  };
+
+  const handleSetSubConditionValue = (value: any, index: number) => {
+    console.log("value", value);
+    console.log("typeof value", typeof value);
+    const pastSubConditions = condition?.subConditions?.slice() || [];
+
+    if (pastSubConditions && pastSubConditions[index]) {
+      pastSubConditions[index].value = value;
+    }
+
+    handleSetSubConditions(pastSubConditions);
+  };
+
+  const handleSetSubConditionType = (conditionType: string, index: number) => {
+    const pastSubConditions = condition?.subConditions?.slice() || [];
+
+    if (pastSubConditions && pastSubConditions[index]) {
+      pastSubConditions[index].conditionType = conditionType;
     }
 
     handleSetSubConditions(pastSubConditions);
   };
 
   return (
-    <div className={`w-full ${className}`}>
+    <div className={`w-full flex flex-col gap-5 ${className}`}>
+      <div>
+        <CoinGeckoTokenSelector
+          selectedToken={selectedToken}
+          setSelectedToken={setSelectedToken}
+        />
+      </div>
       {condition?.subConditions?.map((subCondition, index) => (
         <div key={`${condition.type}-subcondition-${index}`}>
           <Typography variant="body-small" className="text-white-500 p-1">
-            Subcondition #{index}
+            Subcondition #{index + 1}
           </Typography>
-          <div className="flex items-start w-full justify-between gap-5 md:gap-10">
+          <div className="flex items-start w-full justify-between gap-5 md:gap-10 mb-1">
             <Dropdown
               choices={relevantFields.map((relevantField) => ({
                 label: relevantField.label,
                 value: relevantField.name,
+                type: relevantField.type,
               }))}
               selectedOption={{
                 label: subCondition.label,
                 value: subCondition.value,
+                type: subCondition.dataType,
               }}
               setSelectedOption={(choice) =>
-                handleSetSelectedOption(choice, index, subCondition.dataType)
+                handleSetSelectedOption(choice, index)
               }
               className="w-full"
             />
             <button
-              onClick={() => console.log("hey")}
+              onClick={() => handleRemoveSubConditions(index)}
               className="relative text-orange text-5xl"
             >
               -
             </button>
           </div>
-          <div className="pl-6">
-            <SubConditionDetail subConditionType={subCondition.dataType} />
+          <div className="pl-3">
+            <SubConditionDetail
+              dataType={subCondition.dataType}
+              conditionType={subCondition.conditionType}
+              value={subCondition.value}
+              handleSetValue={(value) =>
+                handleSetSubConditionValue(value, index)
+              }
+              handleSetConditionType={(conditionType) =>
+                handleSetSubConditionType(conditionType, index)
+              }
+            />
           </div>
         </div>
       ))}
-
-      {/* <TextField
-        fullWidth
-        variant="outlined"
-        placeholder="Value"
-        type="text"
-        // value={apiUrl}
-        // onChange={(e) => setApiUrl(e.target.value)}
-      /> */}
     </div>
   );
 };

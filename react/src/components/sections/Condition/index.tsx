@@ -37,12 +37,28 @@ const Condition = ({
 }: ConditionProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  console.log("condition condition", condition);
-
   const handleSetSubConditions = (subConditions: Array<ISubConditions>) => {
     setConditions((prev: ICondition[]) => {
       const temp = [...prev];
       temp[index].subConditions = subConditions;
+      return temp;
+    });
+  };
+
+  const handleRemoveSubConditions = (subConditionIndex: number) => {
+    setConditions((prev: ICondition[]) => {
+      const temp = [...prev];
+      const subConditionsArray = temp[index]?.subConditions;
+
+      if (subConditionsArray) {
+        const newSubConditions = [
+          ...subConditionsArray.slice(0, subConditionIndex),
+          ...subConditionsArray.slice(subConditionIndex + 1),
+        ];
+
+        temp[index].subConditions = newSubConditions;
+      }
+
       return temp;
     });
   };
@@ -57,6 +73,7 @@ const Condition = ({
       conditionType: "eq",
       dataType: configuredAPIEndpoints.data[endpoint].relevant_fields[0].type,
       name: configuredAPIEndpoints.data[endpoint].relevant_fields[0].name,
+      path: "",
       label: configuredAPIEndpoints.data[endpoint].relevant_fields[0].label,
       value: undefined,
     });
@@ -101,6 +118,7 @@ const Condition = ({
           <CoinGeckoTokenInfo
             condition={condition}
             handleSetSubConditions={handleSetSubConditions}
+            handleRemoveSubConditions={handleRemoveSubConditions}
           />
         );
     }
@@ -139,7 +157,7 @@ const Condition = ({
           </button>
         </div>
       </div>
-      <div className="pl-10 py-6">
+      <div className="pl-6 py-6">
         {renderConditionSelector()}
         {condition.subConditions && (
           <button

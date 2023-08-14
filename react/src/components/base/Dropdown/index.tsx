@@ -10,6 +10,7 @@ function classNames(...classes: Array<string>) {
 export interface DropdownChoice {
   label: string;
   value: any;
+  type?: string;
 }
 
 export interface DropdownProps {
