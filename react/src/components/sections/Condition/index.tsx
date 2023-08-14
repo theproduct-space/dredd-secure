@@ -15,7 +15,7 @@ interface ConditionProps {
   className?: string;
   condition: ICondition;
   index: number;
-  handleChangeCondition: (
+  handleSelectCondition: (
     e: React.ChangeEvent<HTMLSelectElement>,
     index: number,
   ) => void;
@@ -30,7 +30,7 @@ const Condition = ({
   className,
   condition,
   index,
-  handleChangeCondition,
+  handleSelectCondition,
   handleRemoveCondition,
   displayConditionTypes,
   setConditions,
@@ -116,7 +116,9 @@ const Condition = ({
       case condition.prop === "coingecko-token-info":
         return (
           <CoinGeckoTokenInfo
+            index={index}
             condition={condition}
+            setConditions={setConditions}
             handleSetSubConditions={handleSetSubConditions}
             handleRemoveSubConditions={handleRemoveSubConditions}
           />
@@ -133,7 +135,7 @@ const Condition = ({
         <div className="flex gap-5 w-full md:gap-10">
           <select
             value={condition.type}
-            onChange={(e) => handleChangeCondition(e, index)}
+            onChange={(e) => handleSelectCondition(e, index)}
             className="w-full bg-buttonBg text-white-1000 p-4 border border-white-200 rounded focus:outline-none focus:border-orange"
           >
             <option value="Select Condition Type" disabled selected>

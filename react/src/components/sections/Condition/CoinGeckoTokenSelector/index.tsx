@@ -8,11 +8,11 @@ import Close from "~icons/Close";
 
 interface CoinGeckoTokenInfoProps {
   className?: string;
-  selectedToken?: CoinGeckoToken;
-  setSelectedToken: (token: CoinGeckoToken) => void;
+  selectedToken?: CoinGeckoTokenI;
+  setSelectedToken: (token: CoinGeckoTokenI) => void;
 }
 
-interface CoinGeckoToken {
+export interface CoinGeckoTokenI {
   id: string;
   symbol: string;
   name: string;
@@ -26,7 +26,7 @@ const CoinGeckoTokenSelector = ({
   // const [searchValue, setSearchValue] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const [tokenList, setTokenList] = useState<CoinGeckoToken[]>([
+  const [tokenList, setTokenList] = useState<CoinGeckoTokenI[]>([
     {
       id: "01coin",
       symbol: "zoc",
@@ -624,10 +624,12 @@ const CoinGeckoTokenSelector = ({
     },
   ]); // TODO: initilise to empty array and make the api call in useEffect
   const [filteredTokenList, setFilteredTokenList] =
-    useState<CoinGeckoToken[]>(tokenList);
+    useState<CoinGeckoTokenI[]>(tokenList);
   useEffect(() => {
     // fetchTokenList(); // TODO reactivate the api call -- might need a proxy server
   }, []);
+
+  console.log("selectedToken", selectedToken);
 
   const fetchTokenList = async () => {
     try {
@@ -681,7 +683,10 @@ const CoinGeckoTokenSelector = ({
         Token of Interest
       </Typography>
       {selectedToken ? (
-        <button className="flex gap-5 justify-between border border-white-200 p-4 bg-buttonBg rounded-lg">
+        <button
+          className="flex gap-5 justify-between border border-white-200 p-4 bg-buttonBg rounded-lg"
+          onClick={() => setIsModalOpen(true)}
+        >
           <Typography variant="body-small">{selectedToken?.name}</Typography>
           <Typography variant="body-small">
             {selectedToken?.symbol?.toUpperCase()}

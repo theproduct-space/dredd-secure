@@ -1,19 +1,21 @@
 import Typography from "~baseComponents/Typography";
 import configuredAPIEndpoints from "~utils/configuredApiEndpoints.json";
-import Dropdown from "~baseComponents/Dropdown";
+import Dropdown, { DropdownChoice } from "~baseComponents/Dropdown";
 import {
   ICondition,
   ISubConditions,
 } from "~sections/CreateContract/AddConditions";
 import SubConditionDetail from "../SubConditionDetail";
-import { DropdownChoice } from "~baseComponents/Dropdown";
 import axios from "axios";
-import { useState } from "react";
-import CoinGeckoTokenSelector from "../CoinGeckoTokenSelector";
+import CoinGeckoTokenSelector, {
+  CoinGeckoTokenI,
+} from "../CoinGeckoTokenSelector";
 
 interface CoinGeckoTokenInfoProps {
+  index: number;
   className?: string;
   condition: ICondition;
+  setConditions: React.Dispatch<React.SetStateAction<ICondition[]>>;
   handleSetSubConditions: (subConditions: Array<ISubConditions>) => void;
   handleRemoveSubConditions: (subConditionIndex: number) => void;
 }
@@ -22,13 +24,13 @@ const relevantFields =
   configuredAPIEndpoints.data["coingecko-token-info"]["relevant_fields"];
 
 const CoinGeckoTokenInfo = ({
+  index,
   className = "",
   condition,
+  setConditions,
   handleSetSubConditions,
   handleRemoveSubConditions,
 }: CoinGeckoTokenInfoProps) => {
-  const [selectedToken, setSelectedToken] = useState(null); // TODO add this data into the "condition" state
-
   const handleSetSelectedOption = (option: DropdownChoice, index: number) => {
     const pastSubConditions = condition?.subConditions?.slice() || [];
 
@@ -63,12 +65,20 @@ const CoinGeckoTokenInfo = ({
     handleSetSubConditions(pastSubConditions);
   };
 
+  const handleSetTokenOfInterest = (tokenOfInterest: CoinGeckoTokenI) => {
+    setConditions((prev: ICondition[]) => {
+      const temp = [...prev];
+      temp[index].tokenOfInterest = tokenOfInterest;
+      return temp;
+    });
+  };
+
   return (
     <div className={`w-full flex flex-col gap-5 ${className}`}>
       <div>
         <CoinGeckoTokenSelector
-          selectedToken={selectedToken}
-          setSelectedToken={setSelectedToken}
+          selectedToken={condition.tokenOfInterest}
+          setSelectedToken={handleSetTokenOfInterest}
         />
       </div>
       {condition?.subConditions?.map((subCondition, index) => (

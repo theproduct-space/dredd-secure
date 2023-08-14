@@ -3,6 +3,7 @@ import Typography from "~baseComponents/Typography";
 import Condition from "~sections/Condition";
 // import ICondition from "../../CreateContract";
 import configuredAPIEndpoints from "~utils/configuredApiEndpoints.json";
+import { CoinGeckoTokenI } from "~sections/Condition/CoinGeckoTokenSelector";
 
 export interface ISubConditions {
   conditionType: string; // gt, lt, equal
@@ -17,6 +18,7 @@ export interface ICondition {
   type: string;
   prop: string;
   value?: string | number;
+  tokenOfInterest?: CoinGeckoTokenI;
   subConditions?: Array<ISubConditions>;
 }
 
@@ -87,7 +89,7 @@ const AddConditions = ({ conditions, setConditions }: AddConditionsProps) => {
   //   setConditions(array);
   // };
 
-  const handleChangeCondition = (
+  const handleSelectCondition = (
     e: React.ChangeEvent<HTMLSelectElement>,
     index: number,
   ) => {
@@ -112,7 +114,7 @@ const AddConditions = ({ conditions, setConditions }: AddConditionsProps) => {
             condition={condition}
             setConditions={setConditions}
             index={index}
-            handleChangeCondition={handleChangeCondition}
+            handleSelectCondition={handleSelectCondition}
             handleRemoveCondition={handleRemoveCondition}
             displayConditionTypes={displayConditionTypes}
             className="pb-2"
