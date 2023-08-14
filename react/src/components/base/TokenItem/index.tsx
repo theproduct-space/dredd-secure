@@ -32,6 +32,26 @@ const TokenItem = (props: TokenItemProps) => {
   const logoUrl = token.logos ? token.logos.svg ?? token.logos.png : undefined;
   const [inputValue, setInputValue] = useState<string>("");
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    const isValidInput = /^\d+(\.\d{0,4})?$/.test(newValue);
+    if (isValidInput) {
+      const enteredAmount = parseFloat(newValue);
+      const maxAmount =
+        token.amount !== undefined ? token.amount.toString() : "0";
+      if (enteredAmount <= parseFloat(maxAmount)) {
+        setInputValue(newValue);
+        setSelectedAmount && setSelectedAmount(enteredAmount);
+      } else {
+        setInputValue(maxAmount);
+        setSelectedAmount && setSelectedAmount(parseFloat(maxAmount));
+      }
+    } else if (newValue === "") {
+      setInputValue("");
+      setSelectedAmount && setSelectedAmount(0);
+    }
+  };
+
   useEffect(() => {
     setInputValue(selectedAmount?.toString() ?? "");
   }, [selectedAmount]);
@@ -103,25 +123,7 @@ const TokenItem = (props: TokenItemProps) => {
             variant="outlined"
             type="number"
             value={inputValue}
-            onChange={(e) => {
-              const newValue = e.target.value;
-              const isValidInput = /^\d+(\.\d{0,4})?$/.test(newValue);
-              if (isValidInput) {
-                const enteredAmount = parseFloat(newValue);
-                const maxAmount =
-                  token.amount !== undefined ? token.amount.toString() : "0";
-                if (enteredAmount <= parseFloat(maxAmount)) {
-                  setInputValue(newValue);
-                  setSelectedAmount && setSelectedAmount(enteredAmount);
-                } else {
-                  setInputValue(maxAmount);
-                  setSelectedAmount && setSelectedAmount(parseFloat(maxAmount));
-                }
-              } else if (newValue === "") {
-                setInputValue("");
-                setSelectedAmount && setSelectedAmount(0);
-              }
-            }}
+            onChange={handleInputChange}
             inputProps={{
               min: 0,
               max: token.amount ? token.amount.toString() : "",
