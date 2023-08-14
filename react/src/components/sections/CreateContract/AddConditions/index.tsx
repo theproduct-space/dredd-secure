@@ -9,6 +9,7 @@ export interface ISubConditions {
   conditionType: string; // gt, lt, equal
   dataType: string; // number, string
   name: string; // relevant_fields.name
+  path: string | undefined; // path to data, from API call
   label: string; // relevant_fields.label
   value: string | number | undefined; // input from user
 }
@@ -37,14 +38,13 @@ export const ConditionTypes: ICondition[] = [
         conditionType: "eq",
         dataType: configuredAPIEndpoints.data[endpoint].relevant_fields[0].type,
         name: configuredAPIEndpoints.data[endpoint].relevant_fields[0].name,
+        path: "",
         label: configuredAPIEndpoints.data[endpoint].relevant_fields[0].label,
         value: undefined,
       },
     ],
   })),
 ];
-
-console.log("ConditionTypes", ConditionTypes);
 
 interface AddConditionsProps {
   conditions: ICondition[];
@@ -62,8 +62,6 @@ const AddConditions = ({ conditions, setConditions }: AddConditionsProps) => {
       );
     });
   };
-
-  console.log({ conditions });
 
   const handleAddNewEmptyCondition = () => {
     const array = [...conditions].concat({

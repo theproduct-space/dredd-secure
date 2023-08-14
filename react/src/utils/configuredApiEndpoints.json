@@ -6,9 +6,9 @@
       "base_url": "https://api.coingecko.com/api/v3/simple/price?ids=harrypotterobamasonic10inu&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true",
       "relevant_fields": [
         {
-          "label": "USD Price",
+          "label": "USD Price STRING",
           "name": "usd",
-          "type": "number"
+          "type": "text"
         },
         {
           "label": "USD Market Cap",

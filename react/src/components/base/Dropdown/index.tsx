@@ -10,22 +10,43 @@ function classNames(...classes: Array<string>) {
 export interface DropdownChoice {
   label: string;
   value: any;
+  type?: string;
 }
 
 export interface DropdownProps {
   choices: DropdownChoice[] | undefined;
   selectedOption: DropdownChoice | undefined;
+  secondary?: boolean;
+  className?: string;
   setSelectedOption: (option: any) => void;
 }
 
 const Dropdown = (props: DropdownProps) => {
-  const { choices, selectedOption, setSelectedOption } = props;
+  const {
+    choices,
+    selectedOption,
+    secondary = false,
+    className,
+    setSelectedOption,
+  } = props;
 
   return (
-    <Menu as="div" className="relative inline-block text-left w-[120px]">
+    <Menu
+      as="div"
+      className={`relative inline-block text-left min-w-[120px] ${className}`}
+    >
       <div>
-        <Menu.Button className="inline-flex w-full justify-between items-center gap-x-1.5 rounded-lg bg-white px-4 py-2 border border-orange hover:bg-gray-50">
-          <Typography variant={"x-small"} className="font-revalia">
+        <Menu.Button
+          className={`inline-flex w-full justify-between items-center gap-x-1.5 rounded-lg bg-buttonBg px-4 border 
+            ${secondary ? "border-orange" : "border-paleGray"}
+            ${secondary ? "py-2" : "py-[15px]"}
+            hover:bg-gray-50
+          `}
+        >
+          <Typography
+            variant={secondary ? "x-small" : "body-small"}
+            className={secondary ? "font-revalia" : ""}
+          >
             {selectedOption?.label}
           </Typography>
           <ChevronDownIcon
@@ -44,7 +65,7 @@ const Dropdown = (props: DropdownProps) => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 z-10 mt-1 w-full origin-top-right rounded-lg bg-white focus:outline-none border border-orange bg-gray overflow-hidden">
+        <Menu.Items className="absolute right-0 z-10 mt-1 w-full origin-top-right rounded-lg bg-white focus:outline-none border border-orange bg-buttonBg overflow-hidden">
           <div className="">
             {choices?.map((choice) => {
               return (
@@ -61,7 +82,10 @@ const Dropdown = (props: DropdownProps) => {
                         setSelectedOption(choice);
                       }}
                     >
-                      <Typography variant={"x-small"} className="font-revalia">
+                      <Typography
+                        variant={secondary ? "x-small" : "body-small"}
+                        className={secondary ? "font-revalia" : ""}
+                      >
                         {choice.label}
                       </Typography>
                     </button>

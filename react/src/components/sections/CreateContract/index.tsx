@@ -51,6 +51,8 @@ const CreateContract = (props: CreateContractProps) => {
     IToken | undefined
   >(contract?.tips);
 
+  console.log("conditions", conditions);
+
   const handleSaving = (t: IToken | undefined) => {
     switch (modalToOpen) {
       case Modals.Own:
