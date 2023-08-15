@@ -76,19 +76,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
     const apiConditions: string = JSON.stringify(apiConditionsArray);
 
     console.log("apiConditions STRINGIFIED", apiConditions);
-
-    // const startDate = String(
-    //   contract.conditions?.find((e) => e.name == "startDate")?.value ??
-    //     (Date.now() / 1000).toFixed(),
-    // );
-
-    // const endDate = String(
-    //   contract.conditions?.find((e) => e.name == "endDate")?.value ??
-    //     (new Date("9999-12-31").getTime() / 1000).toFixed(),
-    // );
-
     console.log({ contract });
-    // TODO instead of contract.dontiions.find, lets do a big contract.conditions.forEach((condition) => {switch(condition.name)})
     // the sendMsgCreateEscrow will accept a apiConditions array stringified
     const request = messageClient.sendMsgCreateEscrow({
       value: {
@@ -97,6 +85,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
         fulfillerCoins: fulfillerCoins,
         startDate: startDate,
         endDate: endDate,
+        apiConditions: apiConditions,
       },
     });
 
