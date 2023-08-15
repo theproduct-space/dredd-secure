@@ -44,6 +44,13 @@ export interface QueryEscrowsByAddressResponse {
   pagination: PageResponse | undefined;
 }
 
+export interface QueryPendingEscrowsRequest {
+}
+
+export interface QueryPendingEscrowsResponse {
+  ids: number[];
+}
+
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
@@ -471,6 +478,105 @@ export const QueryEscrowsByAddressResponse = {
   },
 };
 
+function createBaseQueryPendingEscrowsRequest(): QueryPendingEscrowsRequest {
+  return {};
+}
+
+export const QueryPendingEscrowsRequest = {
+  encode(_: QueryPendingEscrowsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPendingEscrowsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryPendingEscrowsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryPendingEscrowsRequest {
+    return {};
+  },
+
+  toJSON(_: QueryPendingEscrowsRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryPendingEscrowsRequest>, I>>(_: I): QueryPendingEscrowsRequest {
+    const message = createBaseQueryPendingEscrowsRequest();
+    return message;
+  },
+};
+
+function createBaseQueryPendingEscrowsResponse(): QueryPendingEscrowsResponse {
+  return { ids: [] };
+}
+
+export const QueryPendingEscrowsResponse = {
+  encode(message: QueryPendingEscrowsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    writer.uint32(10).fork();
+    for (const v of message.ids) {
+      writer.uint64(v);
+    }
+    writer.ldelim();
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPendingEscrowsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryPendingEscrowsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.ids.push(longToNumber(reader.uint64() as Long));
+            }
+          } else {
+            message.ids.push(longToNumber(reader.uint64() as Long));
+          }
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryPendingEscrowsResponse {
+    return { ids: Array.isArray(object?.ids) ? object.ids.map((e: any) => Number(e)) : [] };
+  },
+
+  toJSON(message: QueryPendingEscrowsResponse): unknown {
+    const obj: any = {};
+    if (message.ids) {
+      obj.ids = message.ids.map((e) => Math.round(e));
+    } else {
+      obj.ids = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryPendingEscrowsResponse>, I>>(object: I): QueryPendingEscrowsResponse {
+    const message = createBaseQueryPendingEscrowsResponse();
+    message.ids = object.ids?.map((e) => e) || [];
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -480,6 +586,7 @@ export interface Query {
   EscrowAll(request: QueryAllEscrowRequest): Promise<QueryAllEscrowResponse>;
   /** Queries a list of EscrowsByAddress items. */
   EscrowsByAddress(request: QueryEscrowsByAddressRequest): Promise<QueryEscrowsByAddressResponse>;
+  PendingEscrows(request: QueryPendingEscrowsRequest): Promise<QueryPendingEscrowsResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -490,6 +597,7 @@ export class QueryClientImpl implements Query {
     this.Escrow = this.Escrow.bind(this);
     this.EscrowAll = this.EscrowAll.bind(this);
     this.EscrowsByAddress = this.EscrowsByAddress.bind(this);
+    this.PendingEscrows = this.PendingEscrows.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -513,6 +621,12 @@ export class QueryClientImpl implements Query {
     const data = QueryEscrowsByAddressRequest.encode(request).finish();
     const promise = this.rpc.request("dreddsecure.escrow.Query", "EscrowsByAddress", data);
     return promise.then((data) => QueryEscrowsByAddressResponse.decode(new _m0.Reader(data)));
+  }
+
+  PendingEscrows(request: QueryPendingEscrowsRequest): Promise<QueryPendingEscrowsResponse> {
+    const data = QueryPendingEscrowsRequest.encode(request).finish();
+    const promise = this.rpc.request("dreddsecure.escrow.Query", "PendingEscrows", data);
+    return promise.then((data) => QueryPendingEscrowsResponse.decode(new _m0.Reader(data)));
   }
 }
 
