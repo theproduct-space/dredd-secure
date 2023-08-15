@@ -9,7 +9,7 @@ import configuredAPIEndpoints from "~utils/configuredApiEndpoints.json";
 import Dropdown from "~baseComponents/Dropdown";
 import {
   ICondition,
-  ISubConditions,
+  ISubCondition,
 } from "~sections/CreateContract/AddConditions";
 
 const getDropdownChoices = (dataType: string) => {

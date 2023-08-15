@@ -19,6 +19,7 @@ import Card from "~baseComponents/Card";
 import Transaction from "~icons/Transaction";
 import Tips from "~sections/Tips";
 import Button from "~baseComponents/Button";
+import { ICondition } from "~sections/CreateContract/AddConditions";
 
 interface PaymentSectionProps {
   contract: IContract;
@@ -50,30 +51,41 @@ const PaymentSection = (props: PaymentSectionProps) => {
     ];
 
     // Conditions message preparation
+    let endDate = "";
+    let startDate = "";
+    const apiConditionsArray: ICondition[] = [];
+    contract.conditions?.map((condition) => {
+      switch (condition.type) {
+        case "startDate":
+          startDate = String(condition.value ?? (Date.now() / 1000).toFixed());
+          return;
+        case "endDate":
+          endDate = String(
+            condition.value ??
+              (new Date("9999-12-31").getTime() / 1000).toFixed(),
+          );
+          return;
+        case "apiCondition":
+          apiConditionsArray.push(condition);
+          return;
+      }
+    });
 
-    // let endDate: string;
-    // let startDate: string;
-    // let apiConditions: any;
-    // contract.conditions?.map((condition, index) => {
-    //   switch(condition.name) {
-    //     case "startDate":
-    //       return;
-    //     case "endDate":
-    //       return;
-    //     case "coinmarketcap-token-info":
-    //       return;
-    //   }
-    // });
+    console.log("apiConditionsArray", apiConditionsArray);
 
-    const startDate = String(
-      contract.conditions?.find((e) => e.name == "startDate")?.value ??
-        (Date.now() / 1000).toFixed(),
-    );
+    const apiConditions: string = JSON.stringify(apiConditionsArray);
 
-    const endDate = String(
-      contract.conditions?.find((e) => e.name == "endDate")?.value ??
-        (new Date("9999-12-31").getTime() / 1000).toFixed(),
-    );
+    console.log("apiConditions STRINGIFIED", apiConditions);
+
+    // const startDate = String(
+    //   contract.conditions?.find((e) => e.name == "startDate")?.value ??
+    //     (Date.now() / 1000).toFixed(),
+    // );
+
+    // const endDate = String(
+    //   contract.conditions?.find((e) => e.name == "endDate")?.value ??
+    //     (new Date("9999-12-31").getTime() / 1000).toFixed(),
+    // );
 
     console.log({ contract });
     // TODO instead of contract.dontiions.find, lets do a big contract.conditions.forEach((condition) => {switch(condition.name)})
@@ -98,12 +110,6 @@ const PaymentSection = (props: PaymentSectionProps) => {
     else setErrorMessage(response.rawLog);
   };
 
-  const handleGoBack = () => {
-    navigate("/escrow/create", {
-      state: contract,
-    });
-  };
-
   const formatDate = (timestamp: string): string => {
     const date = new Date(Number(timestamp));
     return `${String(date.getMonth() + 1).padStart(2, "0")}/${String(
@@ -121,7 +127,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
       />
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <div className="relative min-h-screen w-full pt-32">
-        <Link to="/escrow/create">
+        <Link to="/escrow/create" state={contract}>
           <Typography
             variant="body"
             className="font-revalia text-orange px-4 md:px-8 xl:px-16"
@@ -164,7 +170,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
                         </Typography>
                       </div>
                     );
-                  })}{" "}
+                  })}
                 </div>
                 <Typography variant="h6" className="font-revalia pb-8">
                   You are exchanging

@@ -3,21 +3,19 @@ import configuredAPIEndpoints from "~utils/configuredApiEndpoints.json";
 import Dropdown, { DropdownChoice } from "~baseComponents/Dropdown";
 import {
   ICondition,
-  ISubConditions,
+  ISubCondition,
 } from "~sections/CreateContract/AddConditions";
 import SubConditionDetail from "../SubConditionDetail";
-import axios from "axios";
 import CoinMarketCapTokenSelector, {
   CoinMarketCapTokenI,
 } from "../CoinMarketCapTokenSelector";
-import { useEffect } from "react";
 
 interface CoinMarketCapTokenInfoProps {
   index: number;
   className?: string;
   condition: ICondition;
   setConditions: React.Dispatch<React.SetStateAction<ICondition[]>>;
-  handleSetSubConditions: (subConditions: Array<ISubConditions>) => void;
+  handleSetSubConditions: (subConditions: Array<ISubCondition>) => void;
   handleRemoveSubConditions: (subConditionIndex: number) => void;
 }
 
@@ -32,46 +30,34 @@ const CoinMarketCapTokenInfo = ({
   handleSetSubConditions,
   handleRemoveSubConditions,
 }: CoinMarketCapTokenInfoProps) => {
-  useEffect(() => {
-    if (
-      condition?.subConditions?.[index]?.name &&
-      condition?.tokenOfInterest?.id
-    ) {
-      console.log("hey");
-      handleSetSubConditionPath();
-    }
-  }, [condition?.subConditions?.[index]?.name, condition?.tokenOfInterest?.id]);
-
-  const handleSetSelectedOption = (option: DropdownChoice, index: number) => {
+  const handleSetSelectedOption = (
+    option: DropdownChoice,
+    subConditionIndex: number,
+  ) => {
     const pastSubConditions = condition?.subConditions?.slice() || [];
 
-    if (pastSubConditions && pastSubConditions[index]) {
-      pastSubConditions[index].label = option.label;
-      pastSubConditions[index].name = option.value;
-      pastSubConditions[index].dataType = option.type || "";
-    }
+    if (pastSubConditions && pastSubConditions[subConditionIndex]) {
+      pastSubConditions[subConditionIndex].label = option.label;
+      pastSubConditions[subConditionIndex].name = option.value;
+      pastSubConditions[subConditionIndex].dataType = option.type || "";
 
-    handleSetSubConditions(pastSubConditions);
-  };
-
-  const handleSetSubConditionPath = () => {
-    const pastSubConditions = condition?.subConditions?.slice() || [];
-
-    if (pastSubConditions && pastSubConditions[index]) {
-      // path to access the relevant field in the CoinMarketCap API response
-      pastSubConditions[index].path = [
+      // update the path to access the relevant field in the CoinMarketCap API response
+      pastSubConditions[subConditionIndex].path = [
         "data",
         String(condition?.tokenOfInterest?.id),
         "quote",
         "USD",
-        pastSubConditions[index].name,
+        pastSubConditions[subConditionIndex].name,
       ];
     }
 
     handleSetSubConditions(pastSubConditions);
   };
 
-  const handleSetSubConditionValue = (value: any, index: number) => {
+  const handleSetSubConditionValue = (
+    value: ISubCondition["value"],
+    index: number,
+  ) => {
     const pastSubConditions = condition?.subConditions?.slice() || [];
 
     if (pastSubConditions && pastSubConditions[index]) {
@@ -94,7 +80,17 @@ const CoinMarketCapTokenInfo = ({
   const handleSetTokenOfInterest = (tokenOfInterest: CoinMarketCapTokenI) => {
     setConditions((prev: ICondition[]) => {
       const temp = [...prev];
-      temp[index].tokenOfInterest = tokenOfInterest;
+      temp[index].tokenOfInterest = { ...tokenOfInterest };
+
+      // update every subCondition path field
+      temp[index].subConditions = temp[index].subConditions?.map(
+        (subCondition: ISubCondition) => {
+          const newSubCondition = { ...subCondition };
+          newSubCondition.path[1] = String(tokenOfInterest?.id);
+
+          return newSubCondition;
+        },
+      );
       return temp;
     });
   };
