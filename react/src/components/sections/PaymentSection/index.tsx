@@ -71,13 +71,9 @@ const PaymentSection = (props: PaymentSectionProps) => {
       }
     });
 
-    console.log("apiConditionsArray", apiConditionsArray);
-
+    // the sendMsgCreateEscrow will accept a apiConditions array stringified
     const apiConditions: string = JSON.stringify(apiConditionsArray);
 
-    console.log("apiConditions STRINGIFIED", apiConditions);
-    console.log({ contract });
-    // the sendMsgCreateEscrow will accept a apiConditions array stringified
     const request = messageClient.sendMsgCreateEscrow({
       value: {
         creator: address,

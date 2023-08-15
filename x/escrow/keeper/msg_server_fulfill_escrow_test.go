@@ -60,6 +60,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		},
 		StartDate: "1588148578",
 		EndDate:   "2788148978",
+		ApiConditions:   "",
 	})
 	require.Nil(tb, errFirstCreate)
 
@@ -88,6 +89,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		},
 		StartDate: "4588148578",
 		EndDate:   "4788148978",
+		ApiConditions:   "",
 	})
 	require.Nil(tb, errSecondCreate)
 
@@ -109,6 +111,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		}},
 		StartDate: "2588148578",
 		EndDate:   "2788148978",
+		ApiConditions:   "",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -129,6 +132,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		}},
 		StartDate: strconv.FormatInt(now.Unix()+5, 10),
 		EndDate:   "2788148978",
+		ApiConditions:   "",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -149,6 +153,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		}},
 		StartDate: strconv.FormatInt(now.Unix()+6, 10),
 		EndDate:   "2788148978",
+		ApiConditions:   "",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -169,6 +174,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		}},
 		StartDate: strconv.FormatInt(now.Unix()+7, 10),
 		EndDate:   "2788148978",
+		ApiConditions:   "",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -189,6 +195,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		}},
 		StartDate: strconv.FormatInt(now.Unix()+160, 10),
 		EndDate:   "2788148978",
+		ApiConditions:   "",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -209,6 +216,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		}},
 		StartDate: strconv.FormatInt(now.Unix()+180, 10),
 		EndDate:   "2788148978",
+		ApiConditions:   "",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -229,6 +237,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		}},
 		StartDate: strconv.FormatInt(now.Unix()+200, 10),
 		EndDate:   "2788148978",
+		ApiConditions:   "",
 	})
 
 	// Return the necessary components for testing

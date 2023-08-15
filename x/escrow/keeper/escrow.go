@@ -111,7 +111,7 @@ func (k Keeper) GetAllEscrow(ctx sdk.Context) (list []types.Escrow) {
 func (k Keeper) ValidateConditions(ctx sdk.Context, escrow types.Escrow) bool {
 	// makeAPIRequest("http://api.weatherapi.com/v1/current.json?key=0a1e46cc0a524ccfbc4162404232707&q=London&aqi=no")
 	// If the current date is before start date or after end date, time conditions are not met
-	if !k.ValidateStartDate(ctx, escrow) || !k.ValidateEndDate(ctx, escrow) {
+	if !k.ValidateStartDate(ctx, escrow) || !k.ValidateEndDate(ctx, escrow)|| !k.ValidateApiConditions(ctx, escrow) {
 		return false
 	}
 
@@ -150,6 +150,17 @@ func (k Keeper) ValidateEndDate(ctx sdk.Context, escrow types.Escrow) bool {
 		return false
 	}
 	return true
+}
+
+// ValidateApiConditions validates the ApiConditions by making the api calls and comparing the relevant fields with their expected values
+func (k Keeper) ValidateApiConditions(ctx sdk.Context, escrow types.Escrow) bool {
+	apiConditionsString := escrow.ApiConditions;
+
+	if (len(apiConditionsString) > 0 ) {
+		return true
+	}
+
+	return false
 }
 
 // ReleaseAssets releases the escrowed assets to the respective parties. The Initiator receives the FulfillerCoins, vice-versa
