@@ -14,6 +14,7 @@ interface TokenItemProps {
   className?: string;
   selectedAmount?: number;
   setSelectedAmount?: (amount: number) => void;
+  noMax?: boolean;
 }
 
 type PropsWithSelectedAmount = Required<TokenItemProps>;
@@ -27,19 +28,21 @@ const TokenItem = (props: TokenItemProps) => {
     input,
     selectedAmount,
     setSelectedAmount,
+    noMax,
     className,
   } = props as PropsWithSelectedAmount;
   const logoUrl = token.logos ? token.logos.svg ?? token.logos.png : undefined;
-  const [inputValue, setInputValue] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>(
+    selectedAmount?.toString() ?? "",
+  );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     const isValidInput = /^\d+(\.\d{0,4})?$/.test(newValue);
     if (isValidInput) {
       const enteredAmount = parseFloat(newValue);
-      const maxAmount =
-        token.amount !== undefined ? token.amount.toString() : "0";
-      if (enteredAmount <= parseFloat(maxAmount)) {
+      const maxAmount = handleMaxAmount();
+      if (props.noMax || enteredAmount <= parseFloat(maxAmount)) {
         setInputValue(newValue);
         setSelectedAmount && setSelectedAmount(enteredAmount);
       } else {
@@ -51,10 +54,14 @@ const TokenItem = (props: TokenItemProps) => {
       setSelectedAmount && setSelectedAmount(0);
     }
   };
-
-  useEffect(() => {
-    setInputValue(selectedAmount?.toString() ?? "");
-  }, [selectedAmount]);
+  const handleMaxAmount = () => {
+    // no max amount if nomax is true
+    if (props.noMax) {
+      return "";
+    } else {
+      return token.amount ? token.amount.toString() : "0";
+    }
+  };
 
   return (
     <>
@@ -126,7 +133,7 @@ const TokenItem = (props: TokenItemProps) => {
             onChange={handleInputChange}
             inputProps={{
               min: 0,
-              max: token.amount ? token.amount.toString() : "",
+              max: handleMaxAmount,
             }}
             sx={{
               "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":

@@ -8,3 +8,14 @@ ts-client/node_modules
 prod-sim/
 build/
 .vercel
+package.json
+go.mod
+package.json
+docs/static/openapi.yml
+x/escrow/types/escrow.pb.go
+x/escrow/types/genesis.pb.go
+x/escrow/types/params.pb.go
+x/escrow/types/query.pb.go
+x/escrow/types/query.pb.gw.go
+x/escrow/types/tx.pb.go
+config.yml

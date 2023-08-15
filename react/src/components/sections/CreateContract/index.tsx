@@ -35,6 +35,7 @@ const CreateContract = (props: CreateContractProps) => {
     Wanted,
     Tips,
   }
+  const [selectedWantedAmount, setSelectedWantedAmount] = useState<number>(0);
   const [selectedTipAmount, setSelectedTipAmount] = useState<number>(0);
   const [modalToOpen, setModalToOpen] = useState<Modals | undefined>();
   const [selectedOwnToken, setSelectedOwnToken] = useState<IToken | undefined>(
@@ -100,6 +101,7 @@ const CreateContract = (props: CreateContractProps) => {
         break;
       case Modals.Tips:
         modal = selectedTokenTips;
+        showOwnedToken = true;
         break;
       default:
         modal = null;
@@ -162,7 +164,7 @@ const CreateContract = (props: CreateContractProps) => {
                       to give and an asset to receive
                     </Typography>
                   </div>
-                  <div className="flex w-full">
+                  <div className="flex w-full gap-4">
                     <div className="w-6/12 flex flex-col gap-2">
                       <div className="sub-subtitle">
                         <Typography variant="body-small">
@@ -199,10 +201,10 @@ const CreateContract = (props: CreateContractProps) => {
                           token={selectedWantedToken}
                           showAmount={false}
                           selected={true}
-                          //uncomment to test input
-                          // input={true}
-                          // selectedAmount={selectedAmount}
-                          // setSelectedAmount={handleSelectedAmountChange}
+                          input={true}
+                          selectedAmount={selectedWantedAmount}
+                          setSelectedAmount={setSelectedWantedAmount}
+                          noMax
                           className=""
                           onClick={() => setModalToOpen(Modals.Wanted)}
                         />
