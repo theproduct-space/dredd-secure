@@ -49,19 +49,35 @@ const PaymentSection = (props: PaymentSectionProps) => {
       },
     ];
 
+    // Conditions message preparation
+
+    // let endDate: string;
+    // let startDate: string;
+    // let apiConditions: any;
+    // contract.conditions?.map((condition, index) => {
+    //   switch(condition.name) {
+    //     case "startDate":
+    //       return;
+    //     case "endDate":
+    //       return;
+    //     case "coinmarketcap-token-info":
+    //       return;
+    //   }
+    // });
+
     const startDate = String(
-      contract.conditions?.find((e) => e.prop == "startDate")?.value ??
+      contract.conditions?.find((e) => e.name == "startDate")?.value ??
         (Date.now() / 1000).toFixed(),
     );
 
     const endDate = String(
-      contract.conditions?.find((e) => e.prop == "endDate")?.value ??
+      contract.conditions?.find((e) => e.name == "endDate")?.value ??
         (new Date("9999-12-31").getTime() / 1000).toFixed(),
     );
 
-    console.log({ startDate });
-    console.log({ endDate });
-
+    console.log({ contract });
+    // TODO instead of contract.dontiions.find, lets do a big contract.conditions.forEach((condition) => {switch(condition.name)})
+    // the sendMsgCreateEscrow will accept a apiConditions array stringified
     const request = messageClient.sendMsgCreateEscrow({
       value: {
         creator: address,
@@ -94,14 +110,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
       date.getDate(),
     ).padStart(2, "0")}/${date.getFullYear()}`;
   };
-  console.log(
-    "START",
-    contract.conditions?.find((e) => e.prop == "startDate")?.value,
-  );
-  console.log(
-    "END",
-    contract.conditions?.find((e) => e.prop == "endDate")?.value,
-  );
+
   return (
     <div>
       <img
@@ -145,11 +154,11 @@ const PaymentSection = (props: PaymentSectionProps) => {
                           variant="body-small"
                           className="text-white-500"
                         >
-                          {condition.type}
+                          {condition.label}
                         </Typography>
                         <Typography variant="h6" className="condition-value">
-                          {condition.prop === "startDate" ||
-                          condition.prop === "endDate"
+                          {condition.name === "startDate" ||
+                          condition.name === "endDate"
                             ? formatDate(condition.value as string)
                             : condition.value}
                         </Typography>

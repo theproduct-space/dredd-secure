@@ -87,13 +87,13 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
         <div className="card-subtitle">Conditions</div>
         <div className="conditions">
           {ConditionTypes.map((condition, index) => {
-            if (!contract?.[condition.prop]) return;
+            if (!contract?.[condition.name]) return;
 
             return (
               <div className="condition" key={`condition-${index}`}>
-                <div className="condition-type bold">{condition.type}</div>
+                <div className="condition-type bold">{condition.label}</div>
                 <div className="condition-value">
-                  {contract[condition.prop]}
+                  {contract[condition.name]}
                 </div>
               </div>
             );
