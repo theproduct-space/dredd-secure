@@ -5,7 +5,7 @@ import { TextField } from "@mui/material";
 import Button from "~baseComponents/Button";
 import {
   ICondition,
-  ISubConditions,
+  ISubCondition,
 } from "~sections/CreateContract/AddConditions";
 import CoinMarketCapTokenInfo from "./CoinMarketCapTokenInfo";
 import configuredAPIEndpoints from "~utils/configuredApiEndpoints.json";
@@ -37,7 +37,7 @@ const Condition = ({
 }: ConditionProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  const handleSetSubConditions = (subConditions: Array<ISubConditions>) => {
+  const handleSetSubConditions = (subConditions: Array<ISubCondition>) => {
     setConditions((prev: ICondition[]) => {
       const temp = [...prev];
       temp[index].subConditions = subConditions;
@@ -73,7 +73,14 @@ const Condition = ({
       conditionType: "eq",
       dataType: configuredAPIEndpoints.data[endpoint].relevant_fields[0].type,
       name: configuredAPIEndpoints.data[endpoint].relevant_fields[0].name,
-      path: "",
+      path: [
+        // TODO this should depend on the condition.name (this case is for coinmarketcap-token-info)
+        "data",
+        String(condition.tokenOfInterest?.id ?? "1"),
+        "quote",
+        "USD",
+        configuredAPIEndpoints.data[endpoint].relevant_fields[0].name,
+      ],
       label: configuredAPIEndpoints.data[endpoint].relevant_fields[0].label,
       value: undefined,
     });

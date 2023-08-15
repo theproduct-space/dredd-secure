@@ -35,12 +35,12 @@ const CreateContract = (props: CreateContractProps) => {
     Wanted,
     Tips,
   }
-  const [selectedAmount, setSelectedAmount] = useState<number>(0);
   const [selectedTipAmount, setSelectedTipAmount] = useState<number>(0);
   const [modalToOpen, setModalToOpen] = useState<Modals | undefined>();
   const [selectedOwnToken, setSelectedOwnToken] = useState<IToken | undefined>(
     contract?.initiatorCoins,
   );
+  console.log("selectedOwnToken", selectedOwnToken);
   const [conditions, setConditions] = useState<ICondition[]>(
     contract?.conditions ?? [],
   );
@@ -71,7 +71,20 @@ const CreateContract = (props: CreateContractProps) => {
   };
 
   const handleSelectedAmountChange = (amount: number) => {
-    setSelectedAmount(amount);
+    const newSelectedOwnToken: IToken = {
+      name: selectedOwnToken?.name || "",
+      display: selectedOwnToken?.display || "",
+      amount: selectedOwnToken?.amount || 0,
+      selectedAmount: amount,
+      denom: selectedOwnToken?.denom || "",
+      chain_name: selectedOwnToken?.chain_name || "",
+      logos: selectedOwnToken?.logos || {
+        svg: "",
+        png: "",
+      },
+    };
+
+    setSelectedOwnToken(newSelectedOwnToken);
   };
 
   const displayModal = () => {
@@ -162,7 +175,7 @@ const CreateContract = (props: CreateContractProps) => {
                           showAmount={false}
                           selected={true}
                           input={true}
-                          selectedAmount={selectedAmount}
+                          selectedAmount={selectedOwnToken.selectedAmount}
                           setSelectedAmount={handleSelectedAmountChange}
                           className=""
                           onClick={() => setModalToOpen(Modals.Own)}

@@ -1,11 +1,10 @@
 // Custom Imports
 import Typography from "~baseComponents/Typography";
 import Condition from "~sections/Condition";
-// import ICondition from "../../CreateContract";
 import configuredAPIEndpoints from "~utils/configuredApiEndpoints.json";
 import { CoinMarketCapTokenI } from "~sections/Condition/CoinMarketCapTokenSelector";
 
-export interface ISubConditions {
+export interface ISubCondition {
   conditionType: string; // gt, lt, equal
   dataType: string; // number, string
   name: string; // relevant_fields.name
@@ -17,29 +16,39 @@ export interface ISubConditions {
 export interface ICondition {
   label: string;
   name: string;
+  type: string;
   value?: string | number;
   tokenOfInterest?: CoinMarketCapTokenI;
-  subConditions?: Array<ISubConditions>;
+  subConditions?: Array<ISubCondition>;
 }
 
 export const ConditionTypes: ICondition[] = [
   {
     label: "Starting Date",
     name: "startDate",
+    type: "startDate",
   },
   {
     label: "Deadline",
     name: "endDate",
+    type: "endDate",
   },
   ...configuredAPIEndpoints.list.map((endpoint) => ({
     label: configuredAPIEndpoints.data[endpoint].label,
     name: endpoint,
+    type: "apiCondition",
     subConditions: [
       {
         conditionType: "eq",
         dataType: configuredAPIEndpoints.data[endpoint].relevant_fields[0].type,
         name: configuredAPIEndpoints.data[endpoint].relevant_fields[0].name,
-        path: [""],
+        path: [
+          "data",
+          "1",
+          "quote",
+          "USD",
+          configuredAPIEndpoints.data[endpoint].relevant_fields[0].name,
+        ],
         label: configuredAPIEndpoints.data[endpoint].relevant_fields[0].label,
         value: undefined,
       },
@@ -49,7 +58,6 @@ export const ConditionTypes: ICondition[] = [
 
 interface AddConditionsProps {
   conditions: ICondition[];
-  // setConditions: (newConditions: ICondition[]) => void;
   setConditions: React.Dispatch<React.SetStateAction<ICondition[]>>;
 }
 
@@ -68,6 +76,7 @@ const AddConditions = ({ conditions, setConditions }: AddConditionsProps) => {
     const array = [...conditions].concat({
       label: "Select Condition Type",
       name: "select",
+      type: "select",
       value: "",
     });
     setConditions(array);
@@ -80,23 +89,23 @@ const AddConditions = ({ conditions, setConditions }: AddConditionsProps) => {
     setConditions(array);
   };
 
-  // const handleChangeConditionValue = (
-  //   e: React.ChangeEvent<HTMLInputElement>,
-  //   id: number,
-  // ) => {
-  //   const array = [...conditions];
-  //   array[id].value = e.target.value;
-  //   setConditions(array);
-  // };
-
   const handleSelectCondition = (
     e: React.ChangeEvent<HTMLSelectElement>,
     index: number,
   ) => {
     const array = [...conditions];
-    array[index] =
-      ConditionTypes.find((element) => element.label === e.target.value) ??
-      ConditionTypes[0];
+
+    console.log("ConditionTypes", ConditionTypes);
+
+    // Deep copy using spread operator for objects and arrays
+    const selectedCondition = JSON.parse(
+      JSON.stringify(
+        ConditionTypes.find((element) => element.label === e.target.value) ??
+          ConditionTypes[0],
+      ),
+    );
+
+    array[index] = selectedCondition;
 
     setConditions(array);
   };

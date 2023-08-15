@@ -16,6 +16,7 @@ export interface IToken {
   name: string;
   display: string;
   amount?: number;
+  selectedAmount?: number;
   denom: string;
   chain_name: string;
   logos?:
