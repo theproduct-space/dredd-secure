@@ -13,6 +13,9 @@ accounts:
   - name: dev
     coins: [999token, 9999utok, 59999uatom, 999999stake]
     mnemonic: disease someone stand surface income long video stock script ripple strike bean
+  - name: xzan
+    coins: [999token, 9999utok, 99999uatom, 999999stake]
+    mnemonic: crane neck erase bottom digital echo truth friend sound inmate biology mind
 faucet:
   name: bob
   coins:
