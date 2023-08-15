@@ -7,11 +7,12 @@ import {
 } from "~sections/CreateContract/AddConditions";
 import SubConditionDetail from "../SubConditionDetail";
 import axios from "axios";
-import CoinGeckoTokenSelector, {
-  CoinGeckoTokenI,
-} from "../CoinGeckoTokenSelector";
+import CoinMarketCapTokenSelector, {
+  CoinMarketCapTokenI,
+} from "../CoinMarketCapTokenSelector";
+import { useEffect } from "react";
 
-interface CoinGeckoTokenInfoProps {
+interface CoinMarketCapTokenInfoProps {
   index: number;
   className?: string;
   condition: ICondition;
@@ -21,16 +22,26 @@ interface CoinGeckoTokenInfoProps {
 }
 
 const relevantFields =
-  configuredAPIEndpoints.data["coingecko-token-info"]["relevant_fields"];
+  configuredAPIEndpoints.data["coinmarketcap-token-info"]["relevant_fields"];
 
-const CoinGeckoTokenInfo = ({
+const CoinMarketCapTokenInfo = ({
   index,
   className = "",
   condition,
   setConditions,
   handleSetSubConditions,
   handleRemoveSubConditions,
-}: CoinGeckoTokenInfoProps) => {
+}: CoinMarketCapTokenInfoProps) => {
+  useEffect(() => {
+    if (
+      condition?.subConditions?.[index]?.name &&
+      condition?.tokenOfInterest?.id
+    ) {
+      console.log("hey");
+      handleSetSubConditionPath();
+    }
+  }, [condition?.subConditions?.[index]?.name, condition?.tokenOfInterest?.id]);
+
   const handleSetSelectedOption = (option: DropdownChoice, index: number) => {
     const pastSubConditions = condition?.subConditions?.slice() || [];
 
@@ -43,9 +54,24 @@ const CoinGeckoTokenInfo = ({
     handleSetSubConditions(pastSubConditions);
   };
 
+  const handleSetSubConditionPath = () => {
+    const pastSubConditions = condition?.subConditions?.slice() || [];
+
+    if (pastSubConditions && pastSubConditions[index]) {
+      // path to access the relevant field in the CoinMarketCap API response
+      pastSubConditions[index].path = [
+        "data",
+        String(condition?.tokenOfInterest?.id),
+        "quote",
+        "USD",
+        pastSubConditions[index].name,
+      ];
+    }
+
+    handleSetSubConditions(pastSubConditions);
+  };
+
   const handleSetSubConditionValue = (value: any, index: number) => {
-    console.log("value", value);
-    console.log("typeof value", typeof value);
     const pastSubConditions = condition?.subConditions?.slice() || [];
 
     if (pastSubConditions && pastSubConditions[index]) {
@@ -65,7 +91,7 @@ const CoinGeckoTokenInfo = ({
     handleSetSubConditions(pastSubConditions);
   };
 
-  const handleSetTokenOfInterest = (tokenOfInterest: CoinGeckoTokenI) => {
+  const handleSetTokenOfInterest = (tokenOfInterest: CoinMarketCapTokenI) => {
     setConditions((prev: ICondition[]) => {
       const temp = [...prev];
       temp[index].tokenOfInterest = tokenOfInterest;
@@ -76,7 +102,7 @@ const CoinGeckoTokenInfo = ({
   return (
     <div className={`w-full flex flex-col gap-5 ${className}`}>
       <div>
-        <CoinGeckoTokenSelector
+        <CoinMarketCapTokenSelector
           selectedToken={condition.tokenOfInterest}
           setSelectedToken={handleSetTokenOfInterest}
         />
@@ -129,4 +155,4 @@ const CoinGeckoTokenInfo = ({
   );
 };
 
-export default CoinGeckoTokenInfo;
+export default CoinMarketCapTokenInfo;

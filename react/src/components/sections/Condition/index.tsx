@@ -7,7 +7,7 @@ import {
   ICondition,
   ISubConditions,
 } from "~sections/CreateContract/AddConditions";
-import CoinGeckoTokenInfo from "./CoinGeckoTokenInfo";
+import CoinMarketCapTokenInfo from "./CoinMarketCapTokenInfo";
 import configuredAPIEndpoints from "~utils/configuredApiEndpoints.json";
 
 interface ConditionProps {
@@ -96,11 +96,11 @@ const Condition = ({
   const renderConditionSelector = () => {
     switch (true) {
       // Dates
-      case condition.prop === "startDate" || condition.prop === "endDate":
+      case condition.name === "startDate" || condition.name === "endDate":
         return (
           <>
             <Typography variant="body-small" className="text-white-500 p-1">
-              {condition.type}
+              {condition.label}
             </Typography>
             <CustomDatePicker
               value={selectedDate}
@@ -113,9 +113,9 @@ const Condition = ({
           </>
         );
       // API
-      case condition.prop === "coingecko-token-info":
+      case condition.name === "coinmarketcap-token-info":
         return (
-          <CoinGeckoTokenInfo
+          <CoinMarketCapTokenInfo
             index={index}
             condition={condition}
             setConditions={setConditions}
@@ -134,7 +134,7 @@ const Condition = ({
       <div className="flex flex-col gap-2 w-full md:flex-row ">
         <div className="flex gap-5 w-full md:gap-10">
           <select
-            value={condition.type}
+            value={condition.label}
             onChange={(e) => handleSelectCondition(e, index)}
             className="w-full bg-buttonBg text-white-1000 p-4 border border-white-200 rounded focus:outline-none focus:border-orange"
           >
@@ -164,7 +164,7 @@ const Condition = ({
         {condition.subConditions && (
           <button
             onClick={() =>
-              handleAddNewEmptySubCondition(condition, condition.prop)
+              handleAddNewEmptySubCondition(condition, condition.name)
             }
           >
             <Typography

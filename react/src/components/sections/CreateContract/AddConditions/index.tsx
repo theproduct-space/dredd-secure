@@ -3,43 +3,43 @@ import Typography from "~baseComponents/Typography";
 import Condition from "~sections/Condition";
 // import ICondition from "../../CreateContract";
 import configuredAPIEndpoints from "~utils/configuredApiEndpoints.json";
-import { CoinGeckoTokenI } from "~sections/Condition/CoinGeckoTokenSelector";
+import { CoinMarketCapTokenI } from "~sections/Condition/CoinMarketCapTokenSelector";
 
 export interface ISubConditions {
   conditionType: string; // gt, lt, equal
   dataType: string; // number, string
   name: string; // relevant_fields.name
-  path: string | undefined; // path to data, from API call
+  path: Array<string>; // path to data, from API call
   label: string; // relevant_fields.label
   value: string | number | undefined; // input from user
 }
 
 export interface ICondition {
-  type: string;
-  prop: string;
+  label: string;
+  name: string;
   value?: string | number;
-  tokenOfInterest?: CoinGeckoTokenI;
+  tokenOfInterest?: CoinMarketCapTokenI;
   subConditions?: Array<ISubConditions>;
 }
 
 export const ConditionTypes: ICondition[] = [
   {
-    type: "Starting Date",
-    prop: "startDate",
+    label: "Starting Date",
+    name: "startDate",
   },
   {
-    type: "Deadline",
-    prop: "endDate",
+    label: "Deadline",
+    name: "endDate",
   },
   ...configuredAPIEndpoints.list.map((endpoint) => ({
-    type: configuredAPIEndpoints.data[endpoint].label,
-    prop: endpoint,
+    label: configuredAPIEndpoints.data[endpoint].label,
+    name: endpoint,
     subConditions: [
       {
         conditionType: "eq",
         dataType: configuredAPIEndpoints.data[endpoint].relevant_fields[0].type,
         name: configuredAPIEndpoints.data[endpoint].relevant_fields[0].name,
-        path: "",
+        path: [""],
         label: configuredAPIEndpoints.data[endpoint].relevant_fields[0].label,
         value: undefined,
       },
@@ -57,8 +57,8 @@ const AddConditions = ({ conditions, setConditions }: AddConditionsProps) => {
   const displayConditionTypes = () => {
     return ConditionTypes.map((condition) => {
       return (
-        <option key={condition.type} value={condition.type}>
-          {condition.type}
+        <option key={condition.label} value={condition.label}>
+          {condition.label}
         </option>
       );
     });
@@ -66,8 +66,8 @@ const AddConditions = ({ conditions, setConditions }: AddConditionsProps) => {
 
   const handleAddNewEmptyCondition = () => {
     const array = [...conditions].concat({
-      type: "Select Condition Type",
-      prop: "select",
+      label: "Select Condition Type",
+      name: "select",
       value: "",
     });
     setConditions(array);
@@ -95,7 +95,7 @@ const AddConditions = ({ conditions, setConditions }: AddConditionsProps) => {
   ) => {
     const array = [...conditions];
     array[index] =
-      ConditionTypes.find((element) => element.type === e.target.value) ??
+      ConditionTypes.find((element) => element.label === e.target.value) ??
       ConditionTypes[0];
 
     setConditions(array);

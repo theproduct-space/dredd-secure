@@ -41,7 +41,7 @@ const Condition = ({
         return (
           <div className="flex gap-2">
             <select
-              value={condition.condition.type}
+              value={condition.condition.label}
               onChange={(e) => handleChangeCondition(e, index)}
               className="w-60 bg-buttonBg text-white-1000 p-4 border border-white-200 rounded focus:outline-none focus:border-orange"
             >

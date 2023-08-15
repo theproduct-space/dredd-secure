@@ -106,14 +106,11 @@ const TableView = (props: TableViewProps) => {
                   >
                     {header.label.toUpperCase()}
                   </Typography>
-                  {
-                    /* TODO (Design): Replace A & D by an actual icon */
-                    sortKey === header.dataProp && sortAscending ? (
-                      <ChevronDownIcon className="rotate-180" />
-                    ) : sortKey === header.dataProp && !sortAscending ? (
-                      <ChevronDownIcon />
-                    ) : null
-                  }
+                  {sortKey === header.dataProp && sortAscending ? (
+                    <ChevronDownIcon className="rotate-180" />
+                  ) : sortKey === header.dataProp && !sortAscending ? (
+                    <ChevronDownIcon />
+                  ) : null}
                 </button>
               </th>
             ))}

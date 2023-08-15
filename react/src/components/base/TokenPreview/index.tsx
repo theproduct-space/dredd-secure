@@ -12,7 +12,6 @@ const TokenPreview = (props: TokenPreviewProps) => {
   const { token, className, tokenType } = props;
   const logoUrl = token?.logos ? token.logos.svg ?? token.logos.png : undefined;
 
-  console.log("token", token);
   return (
     <>
       {tokenType === "initiator" && (
