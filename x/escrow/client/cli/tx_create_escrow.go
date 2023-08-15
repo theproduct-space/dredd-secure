@@ -29,6 +29,7 @@ func CmdCreateEscrow() *cobra.Command {
 			}
 			argStartDate := args[2]
 			argEndDate := args[3]
+			argApiConditions := args[4]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -41,6 +42,7 @@ func CmdCreateEscrow() *cobra.Command {
 				argFulfillerCoins,
 				argStartDate,
 				argEndDate,
+				argApiConditions,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
