@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAddressContext } from "~def-hooks/addressContext";
 import useKeplr from "~def-hooks/useKeplr";
 import { env } from "../../env";
@@ -36,6 +36,7 @@ export default function () {
   }, []);
 
   return {
+    isKeplrAvailable: keplr.isKeplrAvailable,
     offlineSigner: keplr.isKeplrAvailable
       ? keplr.getOfflineSigner(chainId)
       : undefined,
