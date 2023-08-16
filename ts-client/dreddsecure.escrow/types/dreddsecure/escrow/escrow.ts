@@ -14,6 +14,7 @@ export interface Escrow {
   fulfillerCoins: Coin[];
   startDate: string;
   endDate: string;
+  ApiConditions: string;
 }
 
 function createBaseEscrow(): Escrow {
@@ -26,6 +27,7 @@ function createBaseEscrow(): Escrow {
     fulfillerCoins: [],
     startDate: "",
     endDate: "",
+    ApiConditions: "",
   };
 }
 
@@ -54,6 +56,9 @@ export const Escrow = {
     }
     if (message.endDate !== "") {
       writer.uint32(66).string(message.endDate);
+    }
+    if (message.ApiConditions !== "") {
+      writer.uint32(74).string(message.ApiConditions);
     }
     return writer;
   },
@@ -89,6 +94,9 @@ export const Escrow = {
         case 8:
           message.endDate = reader.string();
           break;
+        case 9:
+          message.ApiConditions = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -111,6 +119,7 @@ export const Escrow = {
         : [],
       startDate: isSet(object.startDate) ? String(object.startDate) : "",
       endDate: isSet(object.endDate) ? String(object.endDate) : "",
+      ApiConditions: isSet(object.ApiConditions) ? String(object.ApiConditions) : "",
     };
   },
 
@@ -132,6 +141,7 @@ export const Escrow = {
     }
     message.startDate !== undefined && (obj.startDate = message.startDate);
     message.endDate !== undefined && (obj.endDate = message.endDate);
+    message.ApiConditions !== undefined && (obj.ApiConditions = message.ApiConditions);
     return obj;
   },
 
@@ -145,6 +155,7 @@ export const Escrow = {
     message.fulfillerCoins = object.fulfillerCoins?.map((e) => Coin.fromPartial(e)) || [];
     message.startDate = object.startDate ?? "";
     message.endDate = object.endDate ?? "";
+    message.ApiConditions = object.ApiConditions ?? "";
     return message;
   },
 };

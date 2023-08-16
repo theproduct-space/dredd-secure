@@ -40,30 +40,27 @@ const PaymentSection = (props: PaymentSectionProps) => {
     const initiatorCoins: Coin[] = [
       {
         denom: contract.initiatorCoins.denom,
-        amount: contract.initiatorCoins.amount?.toString() ?? "0",
+        amount: contract.initiatorCoins.selectedAmount?.toString() ?? "0",
       },
     ];
     const fulfillerCoins: Coin[] = [
       {
         denom: contract.fulfillerCoins.denom,
-        amount: contract.fulfillerCoins.amount?.toString() ?? "0",
+        amount: contract.fulfillerCoins.selectedAmount?.toString() ?? "0",
       },
     ];
 
     // Conditions message preparation
-    let endDate = "";
-    let startDate = "";
+    let endDate = String((new Date("9999-12-31").getTime() / 1000).toFixed());
+    let startDate = String((Date.now() / 1000).toFixed());
     const apiConditionsArray: ICondition[] = [];
     contract.conditions?.map((condition) => {
       switch (condition.type) {
         case "startDate":
-          startDate = String(condition.value ?? (Date.now() / 1000).toFixed());
+          startDate = String(condition.value);
           return;
         case "endDate":
-          endDate = String(
-            condition.value ??
-              (new Date("9999-12-31").getTime() / 1000).toFixed(),
-          );
+          endDate = String(condition.value);
           return;
         case "apiCondition":
           apiConditionsArray.push(condition);
@@ -71,25 +68,16 @@ const PaymentSection = (props: PaymentSectionProps) => {
       }
     });
 
-    console.log("apiConditionsArray", apiConditionsArray);
-
+    // the sendMsgCreateEscrow will accept a apiConditions array stringified
     const apiConditions: string = JSON.stringify(apiConditionsArray);
 
-    console.log("apiConditions STRINGIFIED", apiConditions);
+    console.log({ address });
+    console.log({ initiatorCoins });
+    console.log({ fulfillerCoins });
+    console.log({ startDate });
+    console.log({ endDate });
+    console.log({ apiConditions });
 
-    // const startDate = String(
-    //   contract.conditions?.find((e) => e.name == "startDate")?.value ??
-    //     (Date.now() / 1000).toFixed(),
-    // );
-
-    // const endDate = String(
-    //   contract.conditions?.find((e) => e.name == "endDate")?.value ??
-    //     (new Date("9999-12-31").getTime() / 1000).toFixed(),
-    // );
-
-    console.log({ contract });
-    // TODO instead of contract.dontiions.find, lets do a big contract.conditions.forEach((condition) => {switch(condition.name)})
-    // the sendMsgCreateEscrow will accept a apiConditions array stringified
     const request = messageClient.sendMsgCreateEscrow({
       value: {
         creator: address,
@@ -97,6 +85,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
         fulfillerCoins: fulfillerCoins,
         startDate: startDate,
         endDate: endDate,
+        apiConditions: apiConditions,
       },
     });
 

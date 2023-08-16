@@ -19,6 +19,7 @@ export interface EscrowEscrow {
   fulfillerCoins?: V1Beta1Coin[];
   startDate?: string;
   endDate?: string;
+  ApiConditions?: string;
 }
 
 export type EscrowMsgCancelEscrowResponse = object;
@@ -72,6 +73,10 @@ export interface EscrowQueryGetEscrowResponse {
 export interface EscrowQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: EscrowParams;
+}
+
+export interface EscrowQueryPendingEscrowsResponse {
+  ids?: string[];
 }
 
 export interface ProtobufAny {
@@ -372,6 +377,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<EscrowQueryParamsResponse, RpcStatus>({
       path: `/dredd-secure/escrow/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryPendingEscrows
+   * @request GET:/dredd-secure/escrow/pending_escrows
+   */
+  queryPendingEscrows = (params: RequestParams = {}) =>
+    this.request<EscrowQueryPendingEscrowsResponse, RpcStatus>({
+      path: `/dredd-secure/escrow/pending_escrows`,
       method: "GET",
       format: "json",
       ...params,

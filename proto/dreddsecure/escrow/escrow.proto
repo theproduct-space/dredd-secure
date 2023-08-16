@@ -14,4 +14,5 @@ message Escrow {
   repeated cosmos.base.v1beta1.Coin fulfillerCoins = 6 [(gogoproto.nullable) = false]; 
   string startDate = 7; 
   string endDate = 8; 
+  string ApiConditions = 9; 
 }

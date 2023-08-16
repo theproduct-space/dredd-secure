@@ -11,6 +11,7 @@ export interface MsgCreateEscrow {
   fulfillerCoins: Coin[];
   startDate: string;
   endDate: string;
+  apiConditions: string;
 }
 
 export interface MsgCreateEscrowResponse {
@@ -33,7 +34,7 @@ export interface MsgFulfillEscrowResponse {
 }
 
 function createBaseMsgCreateEscrow(): MsgCreateEscrow {
-  return { creator: "", initiatorCoins: [], fulfillerCoins: [], startDate: "", endDate: "" };
+  return { creator: "", initiatorCoins: [], fulfillerCoins: [], startDate: "", endDate: "", apiConditions: "" };
 }
 
 export const MsgCreateEscrow = {
@@ -52,6 +53,9 @@ export const MsgCreateEscrow = {
     }
     if (message.endDate !== "") {
       writer.uint32(42).string(message.endDate);
+    }
+    if (message.apiConditions !== "") {
+      writer.uint32(50).string(message.apiConditions);
     }
     return writer;
   },
@@ -78,6 +82,9 @@ export const MsgCreateEscrow = {
         case 5:
           message.endDate = reader.string();
           break;
+        case 6:
+          message.apiConditions = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -97,6 +104,7 @@ export const MsgCreateEscrow = {
         : [],
       startDate: isSet(object.startDate) ? String(object.startDate) : "",
       endDate: isSet(object.endDate) ? String(object.endDate) : "",
+      apiConditions: isSet(object.apiConditions) ? String(object.apiConditions) : "",
     };
   },
 
@@ -115,6 +123,7 @@ export const MsgCreateEscrow = {
     }
     message.startDate !== undefined && (obj.startDate = message.startDate);
     message.endDate !== undefined && (obj.endDate = message.endDate);
+    message.apiConditions !== undefined && (obj.apiConditions = message.apiConditions);
     return obj;
   },
 
@@ -125,6 +134,7 @@ export const MsgCreateEscrow = {
     message.fulfillerCoins = object.fulfillerCoins?.map((e) => Coin.fromPartial(e)) || [];
     message.startDate = object.startDate ?? "";
     message.endDate = object.endDate ?? "";
+    message.apiConditions = object.apiConditions ?? "";
     return message;
   },
 };

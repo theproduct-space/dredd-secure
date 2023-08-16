@@ -6,9 +6,9 @@
       "base_url": "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?id=3794",
       "relevant_fields": [
         {
-          "label": "USD Price STRING",
+          "label": "USD Price",
           "name": "price",
-          "type": "text"
+          "type": "number"
         },
         {
           "label": "USD Market Cap",
