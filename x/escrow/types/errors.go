@@ -14,4 +14,5 @@ var (
 	ErrFulfillerCannotPay           = errors.Register(ModuleName, 1113, "Fulfiller cannot pay")
 	ErrCannotReleaseInitiatorAssets = errors.Register(ModuleName, 1114, "Module cannot release Initiator assets")
 	ErrCannotReleaseFulfillerAssets = errors.Register(ModuleName, 1115, "Module cannot release Fulfiller assets")
+	ErrInvalidApiConditionName = errors.Register(ModuleName, 1116, "This Api Condition name is invalid")
 )

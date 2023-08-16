@@ -32,17 +32,13 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 	context := sdk.WrapSDKContext(ctx)
 	now := time.Now()
 
-	// 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
-	// 		Denom: "token",
-	// 		Amount: sdk.NewInt(99),
-	// 	}})
-
 	// Expect the bank to receive payment from the creator
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
 		Denom:  "token",
 		Amount: sdk.NewInt(1000),
 	}})
 	// create an escrow that can be closed when the second party fulfills it.
+	// with an array of two apiConditions to validate, that will always be valid
 	// ID : 0
 	_, errFirstCreate := server.CreateEscrow(context, &types.MsgCreateEscrow{
 		Creator: testutil.Alice,
@@ -59,8 +55,8 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 			},
 		},
 		StartDate: "1588148578",
-		EndDate:   "2788148978",
-		ApiConditions:   "",
+		EndDate: "2788148978",
+		ApiConditions:  `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","1","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":100},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
 	})
 	require.Nil(tb, errFirstCreate)
 
@@ -239,6 +235,60 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		EndDate:   "2788148978",
 		ApiConditions:   "",
 	})
+
+	// The bank is expected to receive the CreatorCoins from the creator (to be escrowed)
+	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
+		Denom:  "token",
+		Amount: sdk.NewInt(1000),
+	}})
+	// create another escrow that can never be fulfill because of invalid ApiConditions
+	// ID : 9
+	_, errNinthCreate := server.CreateEscrow(context, &types.MsgCreateEscrow{
+		Creator: testutil.Alice,
+		InitiatorCoins: []sdk.Coin{
+			{
+				Denom:  "token",
+				Amount: sdk.NewInt(1000),
+			},
+		},
+		FulfillerCoins: []sdk.Coin{
+			{
+				Denom:  "stake",
+				Amount: sdk.NewInt(9000),
+			},
+		},
+		StartDate: "1588148578",
+		EndDate: "2788148978",
+		ApiConditions:  `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","1","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
+	})
+	require.Nil(tb, errNinthCreate)
+
+	// The bank is expected to receive the CreatorCoins from the creator (to be escrowed)
+	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
+		Denom:  "token",
+		Amount: sdk.NewInt(1000),
+	}})
+	// create another escrow that can never be fulfill because of invalid ApiConditions
+	// ID : 10
+	_, errTenthCreate := server.CreateEscrow(context, &types.MsgCreateEscrow{
+		Creator: testutil.Alice,
+		InitiatorCoins: []sdk.Coin{
+			{
+				Denom:  "token",
+				Amount: sdk.NewInt(1000),
+			},
+		},
+		FulfillerCoins: []sdk.Coin{
+			{
+				Denom:  "stake",
+				Amount: sdk.NewInt(9000),
+			},
+		},
+		StartDate: "1588148578",
+		EndDate: "2788148978",
+		ApiConditions:  `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"eq","dataType":"text","name":"slug","path":["data","1","slug"],"label":"Token Name","value":"bitcoin"},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":10},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
+	})
+	require.Nil(tb, errTenthCreate)
 
 	// Return the necessary components for testing
 	return server, *k, context, ctrl, bankMock
@@ -592,4 +642,54 @@ func TestFulfillEscrowFulfillerCannotPayModule(t *testing.T) {
 	// Ensure an error is returned and it matches the expected error.
 	require.NotNil(t, err)
 	require.EqualError(t, err, "Fulfiller cannot pay: oops")
+}
+
+// TestFulfillEscrow tests the fulfillment of an escrow that can never be closed due to invalid ApiConditions
+func TestFulfillEscrowInvalidApiConditions(t *testing.T) {
+	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	defer ctrl.Finish()
+
+	// The bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
+	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{
+		{
+			Denom:  "stake",
+			Amount: sdk.NewInt(9000),
+		},
+	})
+
+	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
+		Creator: testutil.Bob,
+		Id:      9,
+	})
+
+	require.Nil(t, err)
+}
+
+// TestFulfillEscrow tests the fulfillment of an escrow WITH TEXT-TYPE APICONDITIONS that can be closed when the second party fulfills it.
+func TestFulfillEscrowTextApiConditions(t *testing.T) {
+	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	defer ctrl.Finish()
+
+	// The bank is expected to "refund" the fulfiller (send escrowed InitiatorCoins to the fulfiller)
+	bankMock.ExpectRefund(context, testutil.Bob, []sdk.Coin{
+		{
+			Denom:  "token",
+			Amount: sdk.NewInt(1000),
+		},
+	})
+
+	// The bank is expected to send the FulfillerCoins to the initiator
+	bankMock.ExpectSend(context, testutil.Bob, testutil.Alice, []sdk.Coin{
+		{
+			Denom:  "stake",
+			Amount: sdk.NewInt(9000),
+		},
+	})
+
+	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
+		Creator: testutil.Bob,
+		Id:      10,
+	})
+
+	require.Nil(t, err)
 }
