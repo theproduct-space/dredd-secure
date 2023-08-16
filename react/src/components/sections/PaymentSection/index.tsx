@@ -46,7 +46,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
     const fulfillerCoins: Coin[] = [
       {
         denom: contract.fulfillerCoins.denom,
-        amount: contract.fulfillerCoins.selectedAmount?.toString() ?? "0",
+        amount: contract.fulfillerCoins.selectedAmount?.toString() ?? "1", // TODO set back to 0
       },
     ];
 
