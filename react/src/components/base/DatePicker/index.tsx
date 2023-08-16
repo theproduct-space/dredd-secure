@@ -27,7 +27,7 @@ export default function CustomDatePicker({ value, onChange }: DatePickerProps) {
             console.log("Selected Date:", newValue);
             onChange(newValue);
           }}
-          sx={{ borderRadius: "8px", width: "100%" }}
+          sx={{ borderRadius: "8px" }}
         />
       </LocalizationProvider>
     </ThemeProvider>
