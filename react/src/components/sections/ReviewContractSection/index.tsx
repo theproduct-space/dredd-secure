@@ -15,6 +15,15 @@ import assets from "~src/tokens.json";
 import { env } from "~src/env";
 import { ConditionTypes } from "~sections/CreateContract/AddConditions";
 import { toast } from "react-toastify";
+import ModalContainer from "~layouts/ModalContainer";
+import Typography from "~baseComponents/Typography";
+import { Link } from "react-router-dom";
+
+//Assets Imports
+import randomCubes from "~assets/random-cubes.webp";
+import Card from "~baseComponents/Card";
+import Transaction from "~icons/Transaction";
+import SideCard from "~baseComponents/SideCard";
 
 // Hooks Imports
 
@@ -28,6 +37,7 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
   const { address, offlineSigner } = useWallet();
   const [modalOpened, setModalOpened] = useState<boolean>(false);
   const [selectedTips, setSelectedTips] = useState<IToken | undefined>();
+  const [selectedTipAmount, setSelectedTipAmount] = useState<number>(0);
   const messageClient = txClient({
     signer: offlineSigner,
     prefix: "cosmos",
@@ -38,8 +48,9 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
     if (c) {
       const token = assets.tokens.find((t) => t.denom === c.denom);
       if (token) {
+        console.log("token", token);
         return {
-          name: token.denom, // TODO: To change with the name got from a list of tokens
+          name: token.name,
           denom: token.denom,
           amount: Number(c.amount),
           logos: token.logos,
@@ -73,57 +84,120 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
       onSuccess();
     }
   };
+  const formatDate = (timestamp: string): string => {
+    console.log("timestamp", timestamp);
+    const date = new Date(Number(timestamp) * 1000);
+    console.log("date", date);
+    return `${String(date.getMonth() + 1).padStart(2, "0")}/${String(
+      date.getDate(),
+    ).padStart(2, "0")}/${date.getFullYear()}`;
+  };
+  console.log("ConditionTypes", ConditionTypes);
+  console.log("contract", contract);
 
   return (
     <div>
-      <div className="messages">messages here</div>
-      <div className="title">Review escrow Contract #{contract?.id}</div>
-      <div className="card">
-        {/* For testing purposes only */}
-        <div className="card-subtitle">What the owner wants</div>
-        <TokenPreview token={CoinToIToken(contract?.fulfillerCoins?.[0])} />
-        <div className="card-subtitle">What they are offering</div>
-        <TokenPreview token={CoinToIToken(contract?.initiatorCoins?.[0])} />
-        <div className="card-subtitle">Conditions</div>
-        <div className="conditions">
-          {ConditionTypes.map((condition, index) => {
-            if (!contract?.[condition.name]) return;
-
-            return (
-              <div className="condition" key={`condition-${index}`}>
-                <div className="condition-type bold">{condition.label}</div>
-                <div className="condition-value">
-                  {contract[condition.name]}
+      <img
+        src={randomCubes}
+        alt="Dredd-Secure"
+        className="object-cover absolute z-0 top-32 right-32 drop-shadow-lightOrange opacity-80 "
+        loading="lazy"
+      />
+      <div className="relative min-h-screen w-full pt-32">
+        <Link to="/dashboard">
+          <Typography
+            variant="body"
+            className="font-revalia text-orange px-4 md:px-8 xl:px-16"
+          >
+            {"< GO BACK"}
+          </Typography>
+        </Link>
+        <div className="relative mx-auto pt-32 max-w-6xl px-4 md:px-8 xl:px-16">
+          <div className="title-2">
+            {/* <div className="messages">messages here</div> */}
+            <Typography variant="h5" className="font-revalia pb-4">
+              Escrow Contract #{contract?.id}
+            </Typography>
+          </div>
+        </div>
+        <ModalContainer className="max-w-6xl flex gap-4">
+          <div className="w-7/12">
+            <Card>
+              <div className="p-4 md:p-8">
+                <div className="flex flex-col gap-6">
+                  <div>
+                    <Typography variant="h6" className="pb-4">
+                      Asset Offered
+                    </Typography>
+                    <TokenPreview
+                      token={CoinToIToken(contract?.initiatorCoins?.[0])}
+                      tokenType="initiator"
+                      text="Offering"
+                    />
+                  </div>
+                  <div>
+                    <Typography variant="h6" className="pb-4">
+                      Asset Wanted
+                    </Typography>
+                    <TokenPreview
+                      token={CoinToIToken(contract?.fulfillerCoins?.[0])}
+                      tokenType="fulfiller"
+                      text="Wanted"
+                    />
+                  </div>
+                </div>
+                <Typography variant="h6" className="pt-8">
+                  Conditions
+                </Typography>
+                <div className="py-4 md:py-8">
+                  {ConditionTypes.map((condition, index) => {
+                    if (!contract?.[condition.name]) return;
+                    return (
+                      <div className="condition" key={`condition-${index}`}>
+                        <Typography
+                          variant="body-small"
+                          className="text-white-500"
+                        >
+                          {condition.label}
+                        </Typography>
+                        <Typography variant="h6" className="condition-value">
+                          {condition.name === "startDate" ||
+                          condition.name === "endDate"
+                            ? formatDate(contract[condition.name] as string)
+                            : contract[condition.name]}
+                        </Typography>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
-            );
-          })}
-        </div>
-        {contract?.status != "closed" && !modalOpened && (
-          <Tips
-            selectedToken={selectedTips}
-            onClick={() => setModalOpened(true)}
-          />
-        )}
-        {contract?.status != "closed" && modalOpened && (
-          <TokenSelector
-            selectedToken={selectedTips}
-            onSave={setSelectedTips}
-            ownedToken={true}
-            handleClose={() => setModalOpened(false)}
-          />
-        )}
+              {contract?.status != "closed" && !modalOpened && (
+                <Tips
+                  token={selectedTips}
+                  onClick={() => setModalOpened(true)}
+                  selectedAmount={selectedTipAmount}
+                  setSelectedAmount={setSelectedTipAmount}
+                />
+              )}
+              {contract?.status != "closed" && modalOpened && (
+                <TokenSelector
+                  selectedToken={selectedTips}
+                  onSave={setSelectedTips}
+                  ownedToken={true}
+                  handleClose={() => setModalOpened(false)}
+                />
+              )}
+            </Card>
+          </div>
+          {contract && contract?.status != "closed" && address != "" && (
+            <SideCard
+              handleConfirmExchange={handleConfirmation}
+              contract={contract}
+              token={CoinToIToken(contract?.fulfillerCoins?.[0])}
+            />
+          )}
+        </ModalContainer>
       </div>
-      {contract?.status != "closed" && address != "" && (
-        <div className="card">
-          <div className="card-title">Confirm</div>
-          <div className="bold">Transaction cost</div>
-          <div className="text">FREE</div>
-          <div className="bold">What you're offering</div>
-          <TokenPreview token={CoinToIToken(contract?.fulfillerCoins?.[0])} />
-          <button onClick={handleConfirmation}>Confirm Exchange</button>
-        </div>
-      )}
     </div>
   );
 }
