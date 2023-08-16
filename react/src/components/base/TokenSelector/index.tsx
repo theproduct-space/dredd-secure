@@ -108,9 +108,13 @@ const TokenSelector = (props: TokenSelectorProps) => {
   };
 
   useEffect(() => {
-    if (ownedToken) fetchOwnedToken();
+    if (ownedToken) {
+        fetchOwnedToken();
+        const interval = setInterval(fetchOwnedToken, 2000);
+        return () => clearInterval(interval);
+    }
     else setTokens(assets.tokens);
-  }, []);
+  }, [address]);
 
   return (
     <div className="modal">
