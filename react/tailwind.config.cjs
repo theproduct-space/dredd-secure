@@ -23,7 +23,7 @@ module.exports = {
     extend: {
       colors: {
         red: {
-            1000: "rgba(255,0,0,1)"
+          1000: "rgba(255,0,0,1)",
         }, // for tests, TODO remove
         transparent: "transparent",
         current: "currentColor",

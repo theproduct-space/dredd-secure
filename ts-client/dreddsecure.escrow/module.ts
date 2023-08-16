@@ -98,7 +98,7 @@ export const txClient = (
         const signingClient = await SigningStargateClient.connectWithSigner(
           addr,
           signer,
-          { registry, prefix }
+          { registry }
         );
         let msg = this.msgFulfillEscrow({
           value: MsgFulfillEscrow.fromPartial(value),
@@ -131,7 +131,7 @@ export const txClient = (
         const signingClient = await SigningStargateClient.connectWithSigner(
           addr,
           signer,
-          { registry, prefix }
+          { registry }
         );
         let msg = this.msgCancelEscrow({
           value: MsgCancelEscrow.fromPartial(value),
@@ -164,7 +164,7 @@ export const txClient = (
         const signingClient = await SigningStargateClient.connectWithSigner(
           addr,
           signer,
-          { registry, prefix }
+          { registry }
         );
         let msg = this.msgCreateEscrow({
           value: MsgCreateEscrow.fromPartial(value),
