@@ -6,6 +6,7 @@ interface TokenPreviewProps {
   token: IToken | undefined;
   className?: string;
   tokenType?: "initiator" | "fulfiller";
+  text: string;
 }
 
 const TokenPreview = (props: TokenPreviewProps) => {
@@ -22,11 +23,11 @@ const TokenPreview = (props: TokenPreviewProps) => {
             variant="body-small"
             className="uppercase text-left text-white-500"
           >
-            Your Asset
+            {props.text}
           </Typography>
           <div className="flex justify-between items-center">
             <div className="flex gap-2 items-center">
-              <div className="w-6">
+              <div className="w-8">
                 {logoUrl && <img src={logoUrl} alt="token" />}
               </div>
               <div className="flex flex-col align-start">
@@ -49,11 +50,11 @@ const TokenPreview = (props: TokenPreviewProps) => {
             variant="body-small"
             className="uppercase text-left text-white-500"
           >
-            Asset You Want
+            {props.text}
           </Typography>
           <div className="flex justify-between items-center">
             <div className="flex gap-2 items-center">
-              <div className="w-6">
+              <div className="w-8">
                 {logoUrl && <img src={logoUrl} alt="token" />}
               </div>
               <div className="flex flex-col align-start">

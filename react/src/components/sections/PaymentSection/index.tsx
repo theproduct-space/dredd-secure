@@ -6,7 +6,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 // Custom Imports
 import TokenPreview from "~baseComponents/TokenPreview";
-import Account from "~sections/Account";
 import { IContract } from "~sections/CreateContract";
 import useWallet from "../../utils/useWallet";
 import { toast } from "react-toastify";
@@ -17,9 +16,8 @@ import Typography from "~baseComponents/Typography";
 import ModalContainer from "~layouts/ModalContainer";
 import Card from "~baseComponents/Card";
 import Transaction from "~icons/Transaction";
-import Tips from "~sections/Tips";
-import Button from "~baseComponents/Button";
 import { ICondition } from "~sections/CreateContract/AddConditions";
+import SideCard from "~baseComponents/SideCard";
 
 interface PaymentSectionProps {
   contract: IContract;
@@ -100,7 +98,9 @@ const PaymentSection = (props: PaymentSectionProps) => {
   };
 
   const formatDate = (timestamp: string): string => {
-    const date = new Date(Number(timestamp));
+    console.log("timestamp", timestamp);
+    const date = new Date(Number(timestamp) * 1000);
+    console.log("date", date);
     return `${String(date.getMonth() + 1).padStart(2, "0")}/${String(
       date.getDate(),
     ).padStart(2, "0")}/${date.getFullYear()}`;
@@ -168,74 +168,23 @@ const PaymentSection = (props: PaymentSectionProps) => {
                   <TokenPreview
                     token={contract.initiatorCoins}
                     tokenType="initiator"
+                    text="Your Asset"
                   />
                   <Transaction className="w-12" />
                   <TokenPreview
                     token={contract.fulfillerCoins}
                     tokenType="fulfiller"
+                    text="Asset You Want"
                   />
                 </div>
               </div>
             </Card>
           </div>
-          {/* {contract?.status != "closed" && address != "" && ( */}
-          <Card className="w-4/12">
-            <div className="p-4 md:p-8 flex flex-col justify-between ">
-              <div className="flex flex-col gap-4 pb-8">
-                <Typography variant="h6" className="font-revalia pb-4">
-                  Confirm
-                </Typography>
-                <div>
-                  <Typography
-                    variant="body-small"
-                    className="text-white-500 uppercase"
-                  >
-                    Transaction cost
-                  </Typography>
-                  <Typography variant="h6">FREE</Typography>
-                </div>
-                <div>
-                  {contract?.tips ? (
-                    <>
-                      <Typography
-                        variant="body-small"
-                        className="text-white-500 uppercase py-4"
-                      >
-                        Donation to dreddsecure
-                      </Typography>
-                      <TokenPreview token={contract.tips} />
-                    </>
-                  ) : (
-                    <>
-                      <div className="flex justify-between">
-                        <Typography
-                          variant="body-small"
-                          className="text-white-500 uppercase"
-                        >
-                          Donation to dreddsecure
-                        </Typography>
-                        <button>
-                          <Typography
-                            variant="body-small"
-                            className="text-orange uppercase"
-                          >
-                            +Add
-                          </Typography>
-                        </button>
-                      </div>
-                      <Typography variant="h6">0.00</Typography>
-                    </>
-                  )}
-                </div>
-              </div>
-              <Button
-                text="Deploy Contract"
-                className="w-full"
-                onClick={handleConfirmExchange}
-              />
-            </div>
-          </Card>
-          {/* )} */}
+          <SideCard
+            handleConfirmExchange={handleConfirmExchange}
+            contract={contract}
+            paymentInterface
+          />
         </ModalContainer>
       </div>
     </div>

@@ -70,7 +70,7 @@ const TokenElement = (props: TokenElementProps) => {
           endAdornment: (
             <button onClick={() => onClick && onClick(token)}>
               <div className="flex gap-2 items-center">
-                <div className="w-6">
+                <div className="w-8">
                   {logoUrl && <img src={logoUrl} alt="token" />}
                 </div>
                 <div className="flex flex-col align-start">
