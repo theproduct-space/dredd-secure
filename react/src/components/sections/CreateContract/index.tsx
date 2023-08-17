@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import TokenSelector, { IToken } from "~baseComponents/TokenSelector";
 import Tips from "~sections/Tips";
 import Typography from "~baseComponents/Typography";
-import ModalContainer from "~layouts/ModalContainer";
 import AddConditions, { ICondition } from "./AddConditions";
 
 // Assets
@@ -13,6 +12,7 @@ import SecondaryButton from "~baseComponents/SecondaryButton";
 import BaseModal from "~baseComponents/BaseModal/Index";
 import TokenItem from "~baseComponents/TokenItem";
 import Card from "~baseComponents/Card";
+import ContentContainer from "~layouts/ContentContainer";
 
 export interface IContract {
   initiatorCoins: IToken;
@@ -134,7 +134,7 @@ const CreateContract = (props: CreateContractProps) => {
             {"< GO BACK"}
           </Typography>
         </Link>
-        <ModalContainer className="pt-32">
+        <ContentContainer className="pt-32 max-w-6xl">
           <div>
             <span className="overheader">
               <Typography variant="small" className="text-white-500">
@@ -239,7 +239,7 @@ const CreateContract = (props: CreateContractProps) => {
               <Button text="Review Contract" className="capitalize" />
             </Link>
           </div>
-        </ModalContainer>
+        </ContentContainer>
       </div>
       <BaseModal
         open={modalToOpen !== undefined}

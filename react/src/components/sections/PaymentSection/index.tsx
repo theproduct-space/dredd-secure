@@ -13,11 +13,11 @@ import { toast } from "react-toastify";
 // Assets
 import randomCubes from "~assets/random-cubes.webp";
 import Typography from "~baseComponents/Typography";
-import ModalContainer from "~layouts/ModalContainer";
 import Card from "~baseComponents/Card";
 import Transaction from "~icons/Transaction";
 import { ICondition } from "~sections/CreateContract/AddConditions";
 import SideCard from "~baseComponents/SideCard";
+import ContentContainer from "~layouts/ContentContainer";
 
 interface PaymentSectionProps {
   contract: IContract;
@@ -134,7 +134,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
             </Typography>
           </div>
         </div>
-        <ModalContainer className="max-w-6xl flex gap-4">
+        <ContentContainer className="max-w-6xl flex gap-4">
           <div className="w-7/12">
             <Card progress="75">
               <div className="p-4 md:p-8">
@@ -145,18 +145,73 @@ const PaymentSection = (props: PaymentSectionProps) => {
                   {contract?.conditions?.map((condition, index) => {
                     return (
                       <div key={`condition-${index}`}>
-                        <Typography
-                          variant="body-small"
-                          className="text-white-500"
-                        >
-                          {condition.label}
-                        </Typography>
-                        <Typography variant="h6" className="condition-value">
-                          {condition.name === "startDate" ||
-                          condition.name === "endDate"
-                            ? formatDate(condition.value as string)
-                            : condition.value}
-                        </Typography>
+                        <div className="pb-4">
+                          <Typography
+                            variant="body-small"
+                            className="text-white-500"
+                          >
+                            {condition.label}
+                          </Typography>
+                          <Typography variant="h6" className="condition-value">
+                            {condition.name === "startDate" ||
+                            condition.name === "endDate"
+                              ? formatDate(condition.value as string)
+                              : condition.value}
+                          </Typography>
+                        </div>
+                        {condition.type === "apiCondition" && (
+                          <div className="pb-8">
+                            <Typography
+                              variant="body-small"
+                              className="text-white-500"
+                            >
+                              Token of Interest
+                            </Typography>
+                            <Typography
+                              variant="h6"
+                              className="condition-value"
+                            >
+                              {condition.tokenOfInterest?.name} (
+                              {condition.tokenOfInterest?.symbol})
+                            </Typography>
+                            {condition.subConditions &&
+                              condition.subConditions.length > 0 && (
+                                <div>
+                                  {condition.subConditions.map(
+                                    (subCondition, subIndex) => {
+                                      let conditionSymbol;
+                                      switch (subCondition.conditionType) {
+                                        case "eq":
+                                          conditionSymbol = "=";
+                                          break;
+                                        case "gt":
+                                          conditionSymbol = ">";
+                                          break;
+                                        case "lt":
+                                          conditionSymbol = "<";
+                                          break;
+                                        default:
+                                          conditionSymbol = "";
+                                          break;
+                                      }
+                                      return (
+                                        <div key={`sub-condition-${subIndex}`}>
+                                          <Typography
+                                            variant="body-small"
+                                            className="text-white-500"
+                                          >
+                                            {subCondition.label}{" "}
+                                            {conditionSymbol}{" "}
+                                            {subCondition.value}
+                                          </Typography>
+                                        </div>
+                                      );
+                                    },
+                                  )}
+                                </div>
+                              )}
+                          </div>
+                        )}
                       </div>
                     );
                   })}
@@ -185,7 +240,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
             contract={contract}
             paymentInterface
           />
-        </ModalContainer>
+        </ContentContainer>
       </div>
     </div>
   );

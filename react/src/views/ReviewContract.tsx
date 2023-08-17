@@ -35,7 +35,7 @@ const ReviewContract = () => {
       setSection(SectionState.LOADING);
     }
   };
-
+  //TODO use contract instead of EscrowEscrow or make sure Escrow has all the contract info
   const fetchEscrow = async () => {
     try {
       const request = queryClient().queryEscrow(id ?? "");
