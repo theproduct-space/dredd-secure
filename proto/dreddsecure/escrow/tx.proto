@@ -12,6 +12,7 @@ service Msg {
   rpc CreateEscrow  (MsgCreateEscrow ) returns (MsgCreateEscrowResponse );
   rpc CancelEscrow  (MsgCancelEscrow ) returns (MsgCancelEscrowResponse );
   rpc FulfillEscrow (MsgFulfillEscrow) returns (MsgFulfillEscrowResponse);
+  rpc OptOutEscrow  (MsgOptOutEscrow ) returns (MsgOptOutEscrowResponse);
 }
 message MsgCreateEscrow {
            string                   creator        = 1;
@@ -38,3 +39,9 @@ message MsgFulfillEscrow {
 
 message MsgFulfillEscrowResponse {}
 
+message MsgOptOutEscrow {
+  string creator = 1;
+  uint64 id      = 2;
+}
+
+message MsgOptOutEscrowResponse {}
