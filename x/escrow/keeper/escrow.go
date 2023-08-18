@@ -582,3 +582,55 @@ func (k Keeper) SetStatus(ctx sdk.Context, escrow *types.Escrow, newStatus strin
 
 	escrow.Status = newStatus
 }
+
+// Utility function used for executing functions after a certain amount of time
+func (k Keeper) ExecuteAfterNSeconds(
+	ctx sdk.Context, 
+	execs []Exec) []interface{} {
+	results := make([]interface{}, 0)
+	var lastExecs map[string] string
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.LastExecsKey))
+	byteKey := types.KeyPrefix(types.LastExecsKey)
+	bz := store.Get(byteKey)
+	if (len(bz) == 0) {
+		lastExecs = make(map[string]string)
+	} else {
+		err := json.Unmarshal(bz, &lastExecs)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return results
+		}
+	}
+
+	currentTime := time.Now()
+	epoch := currentTime.Unix()
+	
+	for _, exec := range execs {
+		epochString, found := lastExecs[exec.ID]
+		if !found {
+			epochString = "0"
+			lastExecs[exec.ID] = epochString
+		}
+
+		epochInt, err := strconv.ParseInt(epochString, 10, 64)
+		if err != nil {
+			fmt.Println("Error converting epoch string to int:", err)
+		} else {
+			if (epochInt + exec.DelayS < epoch) {
+				result := exec.Function(exec.Args...)
+				results = append(results, result)
+				lastExecs[exec.ID] = strconv.FormatInt(epoch, 10)
+			}
+		}
+	}
+
+	jsonData, err2 := json.Marshal(lastExecs)
+	if err2 != nil {
+		fmt.Println("Error:", err2)
+		return results
+	}
+
+	store.Set(byteKey, jsonData)
+
+	return results
+}

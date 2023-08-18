@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"testing"
 	"time"
+	"fmt"
 
 	keepertest "dredd-secure/testutil/keeper"
 
@@ -480,6 +481,60 @@ func TestFulfillEscrowsNearFuture(t *testing.T) {
 	require.EqualValues(t, pendingEscrowsIdListAfter, controlPendingEscrowsIdListAfter)
 
 	require.Nil(t, err)
+}
+
+func test1Function(args ...interface{}) interface{} {
+    return "Test1"
+}
+
+func test2Function(args ...interface{}) interface{} {
+    if len(args) > 0 {
+        return args[0]
+    }
+    return nil
+}
+
+// Tests if the function used to execute a function every X seconds works correctly
+func TestExecTimerUtilFunc(t *testing.T) {
+	_, k, context, _, _ := setupMsgServerFulfillEscrow(t)
+
+	execs := []keeper.Exec{
+		{
+			ID: "test1", 
+			Function: test1Function,
+			Args: nil,
+			DelayS: -1,
+		},
+		{
+			ID: "test2", 
+			Function: test2Function,
+			Args: []interface{}{"Test2"},
+			DelayS: 1,
+		},
+	}
+
+	exec1 := []string{"Test1", "Test2"}
+	exec2 := []string{"Test1"}
+	exec3 := []string{"Test1", "Test2"}
+	results := k.ExecuteAfterNSeconds(sdk.UnwrapSDKContext(context), execs)
+	castResults := make([]string, 0)
+	for _, result := range results {
+		castResults = append(castResults, fmt.Sprintf("%v", result))
+	}
+	require.EqualValues(t, exec1, castResults)
+	results = k.ExecuteAfterNSeconds(sdk.UnwrapSDKContext(context), execs)
+	castResults = make([]string, 0)
+	for _, result := range results {
+		castResults = append(castResults, fmt.Sprintf("%v", result))
+	}
+	require.EqualValues(t, exec2, castResults)
+	time.Sleep(2 * time.Second)
+	results = k.ExecuteAfterNSeconds(sdk.UnwrapSDKContext(context), execs)
+	castResults = make([]string, 0)
+	for _, result := range results {
+		castResults = append(castResults, fmt.Sprintf("%v", result))
+	}
+	require.EqualValues(t, exec3, castResults)
 }
 
 // TestFulfillEscrowAsInitiator tests the case where the initiator tries to fulfill the escrow.

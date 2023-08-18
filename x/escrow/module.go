@@ -151,5 +151,17 @@ func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {}
 func (am AppModule) EndBlock(ctx sdk.Context, a abci.RequestEndBlock) []abci.ValidatorUpdate {
 	am.keeper.CancelExpiredEscrows(ctx)
 	am.keeper.FulfillPendingEscrows(ctx)
+	execs := []keeper.Exec {
+		{
+			ID: "fetchAPI15mins",
+			Function: func (...interface{}) interface{} {
+				fmt.Println("Test call every 15 min")
+				return nil
+			}, 
+			Args: nil,
+			DelayS: 15 * 60,
+		},
+	}
+	am.keeper.ExecuteAfterNSeconds(ctx, execs)
 	return []abci.ValidatorUpdate{}
 }
