@@ -232,7 +232,7 @@ func makeAPIRequest(name string, tokenId string) (string, error) {
 	switch name {
 		case "coinmarketcap-token-info": 
 			url = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?id=" + tokenId; // TODO have a more flexible "additionalParams" instead of tokenId which is only for token api calls
-			headers = append(headers, types.Header{Key: "X-CMC_PRO_API_KEY", Value: "8857ddb8-2b98-4334-8278-eadc75e5dda3"}) // TODO do not hardcode the API KEY...
+			headers = append(headers, types.Header{Key: "X-CMC_PRO_API_KEY", Value: "0c27f13f-c6fe-45f8-8829-2d82404d7ef9"}) // TODO do not hardcode the API KEY...
 		default:
 			return "", errors.Wrapf(types.ErrInvalidApiConditionName, "%v", name)
 	}
