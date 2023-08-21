@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"bytes"
 	"dredd-secure/x/escrow/constants"
 	"dredd-secure/x/escrow/types"
 	"encoding/binary"
@@ -112,7 +111,7 @@ func (k Keeper) GetAllEscrow(ctx sdk.Context) (list []types.Escrow) {
 // ValidateConditions validates the escrow conditions
 func (k Keeper) ValidateConditions(ctx sdk.Context, escrow types.Escrow) bool {
 	// Validate the StartDate, EndDate and ApiConditions
-	if !k.ValidateStartDate(ctx, escrow) || !k.ValidateEndDate(ctx, escrow)|| !k.ValidateApiConditions(ctx, escrow) {
+	if !k.ValidateStartDate(ctx, escrow) || !k.ValidateEndDate(ctx, escrow) || !k.ValidateApiConditions(ctx, escrow) {
 		return false
 	}
 
@@ -332,20 +331,14 @@ func (k Keeper) GetAllPendingEscrows(ctx sdk.Context) (list []uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
 	byteKey := types.KeyPrefix(types.PendingEscrowKey)
 	bz := store.Get(byteKey)
-
-	if bz == nil {
+	if (len(bz) == 0) {
 		return
+	} 
+	err := json.Unmarshal(bz, &list)
+	if err != nil {
+		fmt.Println("Error:", err)
 	}
-
-	for i := 0; i <= len(bz); i += 8 {
-		barr := bz[i:]
-		if (len(barr) >= 8) {
-			var val uint64 = binary.BigEndian.Uint64(barr)
-			list = append(list, val)
-		}
-	}
-
-	return
+	return 
 }
 
 // GetAllExpiringEscrows returns all expiring escrows ID
@@ -353,20 +346,14 @@ func (k Keeper) GetAllExpiringEscrows(ctx sdk.Context) (list []uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
 	byteKey := types.KeyPrefix(types.ExpiringEscrowKey)
 	bz := store.Get(byteKey)
-
-	if bz == nil {
+	if (len(bz) == 0) {
 		return
+	} 
+	err := json.Unmarshal(bz, &list)
+	if err != nil {
+		fmt.Println("Error:", err)
 	}
-
-	for i := 0; i <= len(bz); i += 8 {
-		barr := bz[i:]
-		if len(barr) >= 8 {
-			val := binary.BigEndian.Uint64(barr)
-			list = append(list, val)
-		}
-	}
-
-	return
+	return 
 }
 
 // Fulfills escrows ordered in start date as ascending, removes fulfilled escrows from the array
@@ -433,31 +420,26 @@ func (k Keeper) RemoveFromExpiringList(ctx sdk.Context, escrow types.Escrow) {
 
 func (k Keeper) SetExpiringEscrows(ctx sdk.Context, expiringEscrows []uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
-
-	buf := new(bytes.Buffer)
 	byteKey := types.KeyPrefix(types.ExpiringEscrowKey)
-	err := binary.Write(buf, binary.BigEndian, expiringEscrows)
+	
+	jsonData, err := json.Marshal(expiringEscrows)
 	if err != nil {
-		panic(err)
+		fmt.Println("Error:", err)
 	}
-	if buf.Bytes() == nil {
-		store.Set(byteKey, []byte{})
-	} else {
-		store.Set(byteKey, buf.Bytes())
-	}
+
+	store.Set(byteKey, jsonData)
 }
 
 func (k Keeper) SetPendingEscrows(ctx sdk.Context, pendingEscrows []uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
-	
-	var buf *bytes.Buffer = new(bytes.Buffer)
 	byteKey := types.KeyPrefix(types.PendingEscrowKey)
-	binary.Write(buf, binary.BigEndian, pendingEscrows)
-	if (buf.Bytes() == nil) {
-		store.Set(byteKey, []byte{})
-	} else {
-		store.Set(byteKey, buf.Bytes())
+
+	jsonData, err := json.Marshal(pendingEscrows)
+	if err != nil {
+		fmt.Println("Error:", err)
 	}
+
+	store.Set(byteKey, jsonData)
 }
 
 // Cancels escrows ordered in end date as ascending, removes cancelled escrows from the array
@@ -581,4 +563,68 @@ func (k Keeper) SetStatus(ctx sdk.Context, escrow *types.Escrow, newStatus strin
 	}
 
 	escrow.Status = newStatus
+}
+
+// Getter for the last execs in the store
+func (k Keeper) GetLastExecs (ctx sdk.Context) map[string]string {
+	var lastExecs map[string] string
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.LastExecsKey))
+	byteKey := types.KeyPrefix(types.LastExecsKey)
+	bz := store.Get(byteKey)
+	if (len(bz) == 0) {
+		lastExecs = make(map[string]string)
+	} else {
+		err := json.Unmarshal(bz, &lastExecs)
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+	return lastExecs
+}
+
+// Setter for the last execs in the store
+func (k Keeper) SetLastExecs (ctx sdk.Context, lastExecs map[string]string) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.LastExecsKey))
+	byteKey := types.KeyPrefix(types.LastExecsKey)
+	jsonData, err := json.Marshal(lastExecs)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	store.Set(byteKey, jsonData)
+}
+
+// Utility function used for executing functions after a certain amount of time
+func (k Keeper) ExecuteAfterNSeconds(
+	ctx sdk.Context, 
+	execs []Exec) []interface{} {
+	results := make([]interface{}, 0)
+
+	lastExecs := k.GetLastExecs(ctx)
+
+	currentTime := time.Now()
+	epoch := currentTime.Unix()
+	
+	for _, exec := range execs {
+		epochString, found := lastExecs[exec.ID]
+		if !found {
+			epochString = "0"
+			lastExecs[exec.ID] = epochString
+		}
+
+		epochInt, err := strconv.ParseInt(epochString, 10, 64)
+		if err != nil {
+			fmt.Println("Error converting epoch string to int:", err)
+		} else {
+			if (epochInt + exec.DelayS < epoch) {
+				result := exec.Function(exec.Args...)
+				results = append(results, result)
+				lastExecs[exec.ID] = strconv.FormatInt(epoch, 10)
+			}
+		}
+	}
+
+	k.SetLastExecs(ctx, lastExecs)
+
+	return results
 }
