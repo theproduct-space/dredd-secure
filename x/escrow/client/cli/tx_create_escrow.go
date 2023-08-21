@@ -15,9 +15,9 @@ var _ = strconv.Itoa(0)
 
 func CmdCreateEscrow() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-escrow [initiator-coins] [fulfiller-coins] [start-date] [end-date]",
+		Use:   "create-escrow [initiator-coins] [fulfiller-coins] [start-date] [end-date] [api-conditions]",
 		Short: "Broadcast message create-escrow",
-		Args:  cobra.ExactArgs(4),
+		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argInitiatorCoins, err := sdk.ParseCoinsNormalized(args[0])
 			if err != nil {

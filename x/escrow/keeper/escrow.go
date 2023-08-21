@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"bytes"
 	"dredd-secure/x/escrow/constants"
 	"dredd-secure/x/escrow/types"
 	"encoding/binary"
@@ -112,7 +111,7 @@ func (k Keeper) GetAllEscrow(ctx sdk.Context) (list []types.Escrow) {
 // ValidateConditions validates the escrow conditions
 func (k Keeper) ValidateConditions(ctx sdk.Context, escrow types.Escrow) bool {
 	// Validate the StartDate, EndDate and ApiConditions
-	if !k.ValidateStartDate(ctx, escrow) || !k.ValidateEndDate(ctx, escrow)|| !k.ValidateApiConditions(ctx, escrow) {
+	if !k.ValidateStartDate(ctx, escrow) || !k.ValidateEndDate(ctx, escrow) || !k.ValidateApiConditions(ctx, escrow) {
 		return false
 	}
 
@@ -233,7 +232,7 @@ func makeAPIRequest(name string, tokenId string) (string, error) {
 	switch name {
 		case "coinmarketcap-token-info": 
 			url = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?id=" + tokenId; // TODO have a more flexible "additionalParams" instead of tokenId which is only for token api calls
-			headers = append(headers, types.Header{Key: "X-CMC_PRO_API_KEY", Value: "0c27f13f-c6fe-45f8-8829-2d82404d7ef9"}) // TODO do not hardcode the API KEY...
+			headers = append(headers, types.Header{Key: "X-CMC_PRO_API_KEY", Value: "8857ddb8-2b98-4334-8278-eadc75e5dda3"}) // TODO do not hardcode the API KEY...
 		default:
 			return "", errors.Wrapf(types.ErrInvalidApiConditionName, "%v", name)
 	}
@@ -332,20 +331,14 @@ func (k Keeper) GetAllPendingEscrows(ctx sdk.Context) (list []uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
 	byteKey := types.KeyPrefix(types.PendingEscrowKey)
 	bz := store.Get(byteKey)
-
-	if bz == nil {
+	if (len(bz) == 0) {
 		return
+	} 
+	err := json.Unmarshal(bz, &list)
+	if err != nil {
+		fmt.Println("Error:", err)
 	}
-
-	for i := 0; i <= len(bz); i += 8 {
-		barr := bz[i:]
-		if (len(barr) >= 8) {
-			var val uint64 = binary.BigEndian.Uint64(barr)
-			list = append(list, val)
-		}
-	}
-
-	return
+	return 
 }
 
 // GetAllExpiringEscrows returns all expiring escrows ID
@@ -353,20 +346,14 @@ func (k Keeper) GetAllExpiringEscrows(ctx sdk.Context) (list []uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
 	byteKey := types.KeyPrefix(types.ExpiringEscrowKey)
 	bz := store.Get(byteKey)
-
-	if bz == nil {
+	if (len(bz) == 0) {
 		return
+	} 
+	err := json.Unmarshal(bz, &list)
+	if err != nil {
+		fmt.Println("Error:", err)
 	}
-
-	for i := 0; i <= len(bz); i += 8 {
-		barr := bz[i:]
-		if len(barr) >= 8 {
-			val := binary.BigEndian.Uint64(barr)
-			list = append(list, val)
-		}
-	}
-
-	return
+	return 
 }
 
 // Fulfills escrows ordered in start date as ascending, removes fulfilled escrows from the array
@@ -433,31 +420,26 @@ func (k Keeper) RemoveFromExpiringList(ctx sdk.Context, escrow types.Escrow) {
 
 func (k Keeper) SetExpiringEscrows(ctx sdk.Context, expiringEscrows []uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
-
-	buf := new(bytes.Buffer)
 	byteKey := types.KeyPrefix(types.ExpiringEscrowKey)
-	err := binary.Write(buf, binary.BigEndian, expiringEscrows)
+	
+	jsonData, err := json.Marshal(expiringEscrows)
 	if err != nil {
-		panic(err)
+		fmt.Println("Error:", err)
 	}
-	if buf.Bytes() == nil {
-		store.Set(byteKey, []byte{})
-	} else {
-		store.Set(byteKey, buf.Bytes())
-	}
+
+	store.Set(byteKey, jsonData)
 }
 
 func (k Keeper) SetPendingEscrows(ctx sdk.Context, pendingEscrows []uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
-	
-	var buf *bytes.Buffer = new(bytes.Buffer)
 	byteKey := types.KeyPrefix(types.PendingEscrowKey)
-	binary.Write(buf, binary.BigEndian, pendingEscrows)
-	if (buf.Bytes() == nil) {
-		store.Set(byteKey, []byte{})
-	} else {
-		store.Set(byteKey, buf.Bytes())
+
+	jsonData, err := json.Marshal(pendingEscrows)
+	if err != nil {
+		fmt.Println("Error:", err)
 	}
+
+	store.Set(byteKey, jsonData)
 }
 
 // Cancels escrows ordered in end date as ascending, removes cancelled escrows from the array

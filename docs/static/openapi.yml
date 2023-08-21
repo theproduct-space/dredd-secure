@@ -34988,10 +34988,6 @@ paths:
                       type: string
                     ApiConditions:
                       type: string
-                    lastExecs:
-                      type: object
-                      additionalProperties:
-                        type: string
               pagination:
                 type: object
                 properties:
@@ -35159,10 +35155,6 @@ paths:
                     type: string
                   ApiConditions:
                     type: string
-                  lastExecs:
-                    type: object
-                    additionalProperties:
-                      type: string
         default:
           description: An unexpected error response.
           schema:
@@ -35255,10 +35247,6 @@ paths:
                       type: string
                     ApiConditions:
                       type: string
-                    lastExecs:
-                      type: object
-                      additionalProperties:
-                        type: string
               pagination:
                 type: object
                 properties:
@@ -71092,10 +71080,6 @@ definitions:
         type: string
       ApiConditions:
         type: string
-      lastExecs:
-        type: object
-        additionalProperties:
-          type: string
   dreddsecure.escrow.MsgCancelEscrowResponse:
     type: object
   dreddsecure.escrow.MsgCreateEscrowResponse:
@@ -71162,10 +71146,6 @@ definitions:
               type: string
             ApiConditions:
               type: string
-            lastExecs:
-              type: object
-              additionalProperties:
-                type: string
       pagination:
         type: object
         properties:
@@ -71249,10 +71229,6 @@ definitions:
               type: string
             ApiConditions:
               type: string
-            lastExecs:
-              type: object
-              additionalProperties:
-                type: string
       pagination:
         type: object
         properties:
@@ -71334,10 +71310,6 @@ definitions:
             type: string
           ApiConditions:
             type: string
-          lastExecs:
-            type: object
-            additionalProperties:
-              type: string
   dreddsecure.escrow.QueryParamsResponse:
     type: object
     properties:
