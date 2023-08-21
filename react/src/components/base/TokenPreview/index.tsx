@@ -32,7 +32,7 @@ const TokenPreview = (props: TokenPreviewProps) => {
             </div>
             <div className="flex flex-col align-start">
               <Typography variant="body" className="text-white-1000">
-                {token?.selectedAmount ?? 0}
+                {(token?.selectedAmount || token?.amount) ?? 0}
               </Typography>
               <Typography variant="body" className="uppercase text-left">
                 {token?.display}

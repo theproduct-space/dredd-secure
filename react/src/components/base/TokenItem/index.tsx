@@ -7,7 +7,7 @@ import Typography from "~baseComponents/Typography";
 
 interface TokenItemProps {
   token: IToken;
-  tokenType: "Own" | "Wanted" | "Tips";
+  tokenType?: "Own" | "Wanted" | "Tips";
   onClick?: (token: IToken) => void;
   showAmount?: boolean;
   selected: boolean;
