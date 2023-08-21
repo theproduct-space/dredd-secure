@@ -14,7 +14,7 @@ import (
 func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
-
+		PortId: types.PortID,
 		EscrowList: []types.Escrow{
 			{
 				Id: 0,
@@ -37,5 +37,6 @@ func TestGenesis(t *testing.T) {
 
 	require.ElementsMatch(t, genesisState.EscrowList, got.EscrowList)
 	require.Equal(t, genesisState.EscrowCount, got.EscrowCount)
+	require.Equal(t, genesisState.PortId, got.PortId)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

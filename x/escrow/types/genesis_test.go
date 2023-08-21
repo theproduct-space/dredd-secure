@@ -21,6 +21,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
+				PortId: types.PortID,
 				EscrowList: []types.Escrow{
 					{
 						Id: 0,

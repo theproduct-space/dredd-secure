@@ -11,6 +11,7 @@ option go_package = "dredd-secure/x/escrow/types";
 // GenesisState defines the escrow module's genesis state.
 message GenesisState {
            Params params      = 1 [(gogoproto.nullable) = false];
+           string port_id = 7;
   repeated Escrow escrowList  = 2 [(gogoproto.nullable) = false];
            uint64 escrowCount = 3;
   repeated uint64 pendingEscrows = 4 [(gogoproto.nullable) = false];

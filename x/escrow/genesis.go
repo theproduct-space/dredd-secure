@@ -21,6 +21,17 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	// Set escrow count
 	k.SetEscrowCount(ctx, genState.EscrowCount)
 	// this line is used by starport scaffolding # genesis/module/init
+	k.SetPort(ctx, genState.PortId)
+    // Only try to bind to port if it is not already bound, since we may already own
+    // port capability from capability InitGenesis
+    if !k.IsBound(ctx, genState.PortId) {
+            // module binds to the port on InitChain
+            // and claims the returned capability
+            err := k.BindPort(ctx, genState.PortId)
+            if err != nil {
+                    panic("could not claim port capability: " + err.Error())
+            }
+    }
 	k.SetParams(ctx, genState.Params)
 }
 
@@ -34,6 +45,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.PendingEscrows = k.GetAllPendingEscrows(ctx)
 	genesis.ExpiringEscrows = k.GetAllExpiringEscrows(ctx)
 	genesis.LastExecs = k.GetLastExecs(ctx)
+	genesis.PortId = k.GetPort(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

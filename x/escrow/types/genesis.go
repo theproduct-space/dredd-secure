@@ -2,6 +2,8 @@ package types
 
 import (
 	"fmt"
+
+	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
 )
 
 // DefaultIndex is the default global index
@@ -11,6 +13,7 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		EscrowList: []Escrow{},
+		PortId: PortID,
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 		PendingEscrows: []uint64{},
@@ -20,6 +23,10 @@ func DefaultGenesis() *GenesisState {
 // Validate performs basic genesis state validation returning an error upon any
 // failure.
 func (gs GenesisState) Validate() error {
+	if err := host.PortIdentifierValidator(gs.PortId); err != nil {
+		return err
+	}
+
 	// Check for duplicated ID in escrow
 	escrowIDMap := make(map[uint64]bool)
 	escrowCount := gs.GetEscrowCount()
