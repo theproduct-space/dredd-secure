@@ -9,6 +9,7 @@ import TokenPreview from "~baseComponents/TokenPreview";
 import { IContract } from "~sections/CreateContract";
 import useWallet from "../../utils/useWallet";
 import { toast } from "react-toastify";
+import { env } from "~src/env";
 
 // Assets
 import randomCubes from "~assets/random-cubes.webp";
@@ -31,7 +32,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
   const messageClient = txClient({
     signer: offlineSigner,
     prefix: "cosmos",
-    addr: "http://localhost:26657",
+    addr: env.rpcURL,
   });
 
   const handleConfirmExchange = async () => {
