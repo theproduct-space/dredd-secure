@@ -35,25 +35,25 @@ const CreateContract = (props: CreateContractProps) => {
     Wanted,
     Tips,
   }
-  const [selectedWantedAmount, setSelectedWantedAmount] = useState<number>(0);
+  enum TokenType {
+    Own,
+    Wanted,
+    Tips,
+  }
   const [selectedTipAmount, setSelectedTipAmount] = useState<number>(0);
   const [modalToOpen, setModalToOpen] = useState<Modals | undefined>();
   const [selectedOwnToken, setSelectedOwnToken] = useState<IToken | undefined>(
     contract?.initiatorCoins,
   );
-  console.log("selectedOwnToken", selectedOwnToken);
-  const [conditions, setConditions] = useState<ICondition[]>(
-    contract?.conditions ?? [],
-  );
   const [selectedWantedToken, setSelectedWantedToken] = useState<
     IToken | undefined
   >(contract?.fulfillerCoins);
+  const [conditions, setConditions] = useState<ICondition[]>(
+    contract?.conditions ?? [],
+  );
   const [selectedTokenTips, setSelectedTokenTips] = useState<
     IToken | undefined
   >(contract?.tips);
-
-  console.log("conditions", conditions);
-
   const handleSaving = (t: IToken | undefined) => {
     switch (modalToOpen) {
       case Modals.Own:
@@ -71,21 +71,37 @@ const CreateContract = (props: CreateContractProps) => {
     setModalToOpen(undefined);
   };
 
-  const handleSelectedAmountChange = (amount: number) => {
-    const newSelectedOwnToken: IToken = {
-      name: selectedOwnToken?.name || "",
-      display: selectedOwnToken?.display || "",
-      amount: selectedOwnToken?.amount || 0,
-      selectedAmount: amount,
-      denom: selectedOwnToken?.denom || "",
-      chain_name: selectedOwnToken?.chain_name || "",
-      logos: selectedOwnToken?.logos || {
-        svg: "",
-        png: "",
-      },
-    };
-
-    setSelectedOwnToken(newSelectedOwnToken);
+  const handleSelectedAmountChange = (amount: number, tokenType: TokenType) => {
+    //todo include tips
+    if (tokenType === TokenType.Own) {
+      const newSelectedOwnToken: IToken = {
+        name: selectedOwnToken?.name || "",
+        display: selectedOwnToken?.display || "",
+        amount: selectedOwnToken?.amount || 0,
+        selectedAmount: amount,
+        denom: selectedOwnToken?.denom || "",
+        chain_name: selectedOwnToken?.chain_name || "",
+        logos: selectedOwnToken?.logos || {
+          svg: "",
+          png: "",
+        },
+      };
+      setSelectedOwnToken(newSelectedOwnToken);
+    } else if (tokenType === TokenType.Wanted) {
+      const newSelectedWantedToken: IToken = {
+        name: selectedWantedToken?.name || "",
+        display: selectedWantedToken?.display || "",
+        amount: selectedWantedToken?.amount || 0,
+        selectedAmount: amount,
+        denom: selectedWantedToken?.denom || "",
+        chain_name: selectedWantedToken?.chain_name || "",
+        logos: selectedWantedToken?.logos || {
+          svg: "",
+          png: "",
+        },
+      };
+      setSelectedWantedToken(newSelectedWantedToken);
+    }
   };
 
   const displayModal = () => {
@@ -174,11 +190,14 @@ const CreateContract = (props: CreateContractProps) => {
                       {selectedOwnToken ? (
                         <TokenItem
                           token={selectedOwnToken}
+                          tokenType="Own"
                           showAmount={false}
                           selected={true}
                           input={true}
-                          selectedAmount={selectedOwnToken.selectedAmount}
-                          setSelectedAmount={handleSelectedAmountChange}
+                          selectedAmount={selectedOwnToken?.selectedAmount || 0}
+                          setSelectedAmount={(amount) =>
+                            handleSelectedAmountChange(amount, TokenType.Own)
+                          }
                           className=""
                           onClick={() => setModalToOpen(Modals.Own)}
                         />
@@ -199,12 +218,16 @@ const CreateContract = (props: CreateContractProps) => {
                       {selectedWantedToken ? (
                         <TokenItem
                           token={selectedWantedToken}
+                          tokenType="Wanted"
                           showAmount={false}
                           selected={true}
                           input={true}
-                          selectedAmount={selectedWantedAmount}
-                          setSelectedAmount={setSelectedWantedAmount}
-                          noMax
+                          selectedAmount={
+                            selectedWantedToken?.selectedAmount || 0
+                          }
+                          setSelectedAmount={(amount) =>
+                            handleSelectedAmountChange(amount, TokenType.Wanted)
+                          }
                           className=""
                           onClick={() => setModalToOpen(Modals.Wanted)}
                         />

@@ -1,5 +1,5 @@
 // React Imports
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // dredd-secure-client-ts Imports
 import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
@@ -17,7 +17,6 @@ import { ConditionTypes } from "~sections/CreateContract/AddConditions";
 import { toast } from "react-toastify";
 import Typography from "~baseComponents/Typography";
 import { Link } from "react-router-dom";
-import { IContract } from "~sections/CreateContract";
 
 //Assets Imports
 import randomCubes from "~assets/random-cubes.webp";
@@ -30,8 +29,23 @@ import BaseModal from "~baseComponents/BaseModal/Index";
 // Hooks Imports
 
 interface ReviewContractSectionProps {
-  contract: IContract;
+  contract: EscrowEscrow | undefined;
   onSuccess: () => void;
+}
+interface ParsedCondition {
+  label: string;
+  name: string;
+  value: string | number;
+  type?: string;
+  tokenOfInterest?: {
+    name: string;
+    symbol: string;
+  };
+  subConditions?: Array<{
+    label: string;
+    conditionType: string;
+    value: string | number;
+  }>;
 }
 
 function ReviewContractSection(props: ReviewContractSectionProps) {
@@ -43,24 +57,27 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
   const [modalToOpen, setModalToOpen] = useState<Modals | undefined>();
   const [selectedTips, setSelectedTips] = useState<IToken | undefined>();
   const [selectedTipAmount, setSelectedTipAmount] = useState<number>(0);
-  const [selectedTokenTips, setSelectedTokenTips] = useState<
-    IToken | undefined
-  >(contract?.tips);
+  const [parsedConditions, setParsedConditions] = useState<ParsedCondition[]>(
+    [],
+  );
+  // const [selectedTokenTips, setSelectedTokenTips] = useState<
+  //   IToken | undefined
+  // >(contract?.tips);
   const messageClient = txClient({
     signer: offlineSigner,
     prefix: "cosmos",
     addr: env.rpcURL,
   });
-  const handleSaving = (t: IToken | undefined) => {
-    switch (modalToOpen) {
-      case Modals.Tips:
-        setSelectedTokenTips(t);
-        break;
-      default:
-        break;
-    }
-    setModalToOpen(undefined);
-  };
+  // const handleSaving = (t: IToken | undefined) => {
+  //   switch (modalToOpen) {
+  //     case Modals.Tips:
+  //       setSelectedTokenTips(t);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  //   setModalToOpen(undefined);
+  // };
 
   const CoinToIToken = (c: V1Beta1Coin | undefined): IToken | undefined => {
     if (c) {
@@ -102,27 +119,27 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
       onSuccess();
     }
   };
-  const displayModal = () => {
-    let modal;
-    let showOwnedToken = false;
-    switch (modalToOpen) {
-      case Modals.Tips:
-        modal = selectedTokenTips;
-        showOwnedToken = true;
-        break;
-      default:
-        modal = null;
-        break;
-    }
-    return (
-      <TokenSelector
-        selectedToken={modal}
-        onSave={handleSaving}
-        ownedToken={showOwnedToken}
-        handleClose={() => setModalToOpen(undefined)}
-      />
-    );
-  };
+  // const displayModal = () => {
+  //   let modal;
+  //   let showOwnedToken = false;
+  //   switch (modalToOpen) {
+  //     case Modals.Tips:
+  //       modal = selectedTokenTips;
+  //       showOwnedToken = true;
+  //       break;
+  //     default:
+  //       modal = null;
+  //       break;
+  //   }
+  //   return (
+  //     <TokenSelector
+  //       selectedToken={modal}
+  //       onSave={handleSaving}
+  //       ownedToken={showOwnedToken}
+  //       handleClose={() => setModalToOpen(undefined)}
+  //     />
+  //   );
+  // };
   const formatDate = (timestamp: string): string => {
     console.log("timestamp", timestamp);
     const date = new Date(Number(timestamp) * 1000);
@@ -134,6 +151,14 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
 
   console.log("ConditionTypes", ConditionTypes);
   console.log("contract", contract);
+
+  useEffect(() => {
+    if (contract && contract.ApiConditions) {
+      const conditions = JSON.parse(contract.ApiConditions);
+      setParsedConditions(conditions);
+    }
+  }, [contract]);
+  console.log("parsedConditions", parsedConditions);
 
   return (
     <div>
@@ -160,7 +185,7 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
             </Typography>
           </div>
         </div>
-        <ContentContainer className="max-w-6xl flex gap-4">
+        <ContentContainer className="max-w-6xl flex gap-4 pb-24">
           <div className="w-7/12">
             <Card>
               <div className="p-4 md:p-8">
@@ -190,7 +215,7 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
                   Conditions
                 </Typography>
                 <div className="py-4 md:py-8">
-                  {contract?.conditions?.map((condition, index) => {
+                  {parsedConditions.map((condition, index) => {
                     return (
                       <div key={`condition-${index}`}>
                         <div className="pb-4">
@@ -265,7 +290,7 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
                   })}
                 </div>
               </div>
-              {contract?.status != "closed" && !modalToOpen && (
+              {/* {contract?.status != "closed" && !modalToOpen && (
                 <Tips
                   token={selectedTips}
                   onClick={() => setModalToOpen(Modals.Tips)}
@@ -280,7 +305,7 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
                   ownedToken={true}
                   handleClose={() => setModalToOpen(undefined)}
                 />
-              )}
+              )} */}
             </Card>
           </div>
           {contract && contract?.status != "closed" && address != "" && (
@@ -292,12 +317,12 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
           )}
         </ContentContainer>
       </div>
-      <BaseModal
+      {/* <BaseModal
         open={modalToOpen !== undefined}
         handleClose={() => setModalToOpen(undefined)}
       >
         {displayModal()}
-      </BaseModal>
+      </BaseModal> */}
     </div>
   );
 }

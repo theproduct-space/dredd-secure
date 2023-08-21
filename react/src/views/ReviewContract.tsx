@@ -87,7 +87,7 @@ const ReviewContract = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen w-full">
       {section == SectionState.NOT_LOGGED_IN ||
       section == SectionState.CONFIRMATION ? (
         <ReviewContractSection
@@ -112,7 +112,7 @@ const ReviewContract = () => {
           successBody={"Thank you for interacting with our contract."}
         />
       ) : null}
-    </>
+    </div>
   );
 };
 

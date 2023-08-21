@@ -7,6 +7,7 @@ import Typography from "~baseComponents/Typography";
 
 interface TokenItemProps {
   token: IToken;
+  tokenType: "Own" | "Wanted" | "Tips";
   onClick?: (token: IToken) => void;
   showAmount?: boolean;
   selected: boolean;
@@ -14,7 +15,6 @@ interface TokenItemProps {
   className?: string;
   selectedAmount?: number;
   setSelectedAmount?: (amount: number) => void;
-  noMax?: boolean;
 }
 
 type PropsWithSelectedAmount = Required<TokenItemProps>;
@@ -22,13 +22,13 @@ type PropsWithSelectedAmount = Required<TokenItemProps>;
 const TokenItem = (props: TokenItemProps) => {
   const {
     token,
+    tokenType,
     onClick,
     showAmount,
     selected,
     input,
     selectedAmount,
     setSelectedAmount,
-    noMax,
     className,
   } = props as PropsWithSelectedAmount;
   const logoUrl = token.logos ? token.logos.svg ?? token.logos.png : undefined;
@@ -38,31 +38,27 @@ const TokenItem = (props: TokenItemProps) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
-    const isValidInput = /^\d+(\.\d{0,4})?$/.test(newValue);
+    const isValidInput = /^\d*\.?\d*$/.test(newValue);
     if (isValidInput) {
       const enteredAmount = parseFloat(newValue);
-      const maxAmount = handleMaxAmount();
-      if (props.noMax || enteredAmount <= parseFloat(maxAmount)) {
+      if (tokenType === "Own" || tokenType === "Tips") {
+        // If token type is "own", apply the max check
+        const maxAmount =
+          token.amount !== undefined ? token.amount.toString() : "0";
+        if (enteredAmount <= parseFloat(maxAmount) || newValue === "") {
+          setInputValue(newValue);
+          setSelectedAmount && setSelectedAmount(enteredAmount || 0);
+        } else {
+          setInputValue(maxAmount);
+          setSelectedAmount && setSelectedAmount(parseFloat(maxAmount));
+        }
+      } else if (props.tokenType === "Wanted") {
+        // If token type is "wanted", don't apply any max
         setInputValue(newValue);
-        setSelectedAmount && setSelectedAmount(enteredAmount);
-      } else {
-        setInputValue(maxAmount);
-        setSelectedAmount && setSelectedAmount(parseFloat(maxAmount));
+        setSelectedAmount && setSelectedAmount(enteredAmount || 0);
       }
-    } else if (newValue === "") {
-      setInputValue("");
-      setSelectedAmount && setSelectedAmount(0);
     }
   };
-  const handleMaxAmount = () => {
-    // no max amount if nomax is true
-    if (props.noMax) {
-      return "";
-    } else {
-      return token.amount ? token.amount.toString() : "0";
-    }
-  };
-
   return (
     <>
       {selected &&
@@ -128,12 +124,11 @@ const TokenItem = (props: TokenItemProps) => {
           <TextField
             fullWidth
             variant="outlined"
-            type="number"
+            type="text"
             value={inputValue}
             onChange={handleInputChange}
             inputProps={{
               min: 0,
-              max: handleMaxAmount,
             }}
             sx={{
               "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
