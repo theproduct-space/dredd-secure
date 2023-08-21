@@ -7,7 +7,7 @@ import Typography from "~baseComponents/Typography";
 
 interface TokenItemProps {
   token: IToken;
-  tokenType: "Own" | "Wanted" | "Tips";
+  ownedToken: boolean | undefined;
   onClick?: (token: IToken) => void;
   showAmount?: boolean;
   selected: boolean;
@@ -22,7 +22,7 @@ type PropsWithSelectedAmount = Required<TokenItemProps>;
 const TokenItem = (props: TokenItemProps) => {
   const {
     token,
-    tokenType,
+    ownedToken,
     onClick,
     showAmount,
     selected,
@@ -41,7 +41,7 @@ const TokenItem = (props: TokenItemProps) => {
     const isValidInput = /^\d*\.?\d*$/.test(newValue);
     if (isValidInput) {
       const enteredAmount = parseFloat(newValue);
-      if (tokenType === "Own" || tokenType === "Tips") {
+      if (ownedToken) {
         // If token type is "own", apply the max check
         const maxAmount =
           token.amount !== undefined ? token.amount.toString() : "0";
@@ -52,7 +52,7 @@ const TokenItem = (props: TokenItemProps) => {
           setInputValue(maxAmount);
           setSelectedAmount && setSelectedAmount(parseFloat(maxAmount));
         }
-      } else if (props.tokenType === "Wanted") {
+      } else {
         // If token type is "wanted", don't apply any max
         setInputValue(newValue);
         setSelectedAmount && setSelectedAmount(enteredAmount || 0);

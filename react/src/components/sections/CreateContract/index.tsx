@@ -190,7 +190,7 @@ const CreateContract = (props: CreateContractProps) => {
                       {selectedOwnToken ? (
                         <TokenItem
                           token={selectedOwnToken}
-                          tokenType="Own"
+                          ownedToken={true}
                           showAmount={false}
                           selected={true}
                           input={true}
@@ -218,7 +218,7 @@ const CreateContract = (props: CreateContractProps) => {
                       {selectedWantedToken ? (
                         <TokenItem
                           token={selectedWantedToken}
-                          tokenType="Wanted"
+                          ownedToken={false}
                           showAmount={false}
                           selected={true}
                           input={true}
