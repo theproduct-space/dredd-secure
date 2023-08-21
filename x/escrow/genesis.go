@@ -14,6 +14,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		k.SetEscrow(ctx, elem)
 	}
 
+	k.SetPendingEscrows(ctx, genState.PendingEscrows)
+	k.SetExpiringEscrows(ctx, genState.ExpiringEscrows)
+	k.SetLastExecs(ctx, genState.LastExecs)
+
 	// Set escrow count
 	k.SetEscrowCount(ctx, genState.EscrowCount)
 	// this line is used by starport scaffolding # genesis/module/init
@@ -27,6 +31,9 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.EscrowList = k.GetAllEscrow(ctx)
 	genesis.EscrowCount = k.GetEscrowCount(ctx)
+	genesis.PendingEscrows = k.GetAllPendingEscrows(ctx)
+	genesis.ExpiringEscrows = k.GetAllExpiringEscrows(ctx)
+	genesis.LastExecs = k.GetLastExecs(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

@@ -150,8 +150,8 @@ func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {}
 // EndBlock contains the logic that is automatically triggered at the end of each block
 func (am AppModule) EndBlock(ctx sdk.Context, a abci.RequestEndBlock) []abci.ValidatorUpdate {
 	am.keeper.CancelExpiredEscrows(ctx)
-	am.keeper.FulfillPendingEscrows(ctx)
-	/*execs := []keeper.Exec {
+	// am.keeper.FulfillPendingEscrows(ctx)
+	execs := []keeper.Exec {
 		{
 			ID: "fetchAPI15mins",
 			Function: func (args ...interface{}) interface{} {
@@ -162,6 +162,6 @@ func (am AppModule) EndBlock(ctx sdk.Context, a abci.RequestEndBlock) []abci.Val
 			DelayS: 30,
 		},
 	}
-	am.keeper.ExecuteAfterNSeconds(ctx, execs)*/
+	am.keeper.ExecuteAfterNSeconds(ctx, execs)
 	return []abci.ValidatorUpdate{}
 }

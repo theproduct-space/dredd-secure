@@ -565,11 +565,8 @@ func (k Keeper) SetStatus(ctx sdk.Context, escrow *types.Escrow, newStatus strin
 	escrow.Status = newStatus
 }
 
-// Utility function used for executing functions after a certain amount of time
-func (k Keeper) ExecuteAfterNSeconds(
-	ctx sdk.Context, 
-	execs []Exec) []interface{} {
-	results := make([]interface{}, 0)
+// Getter for the last execs in the store
+func (k Keeper) GetLastExecs (ctx sdk.Context) map[string]string {
 	var lastExecs map[string] string
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.LastExecsKey))
 	byteKey := types.KeyPrefix(types.LastExecsKey)
@@ -579,10 +576,31 @@ func (k Keeper) ExecuteAfterNSeconds(
 	} else {
 		err := json.Unmarshal(bz, &lastExecs)
 		if err != nil {
-			fmt.Println("Error:", err)
-			return results
+			panic(err.Error())
 		}
 	}
+	return lastExecs
+}
+
+// Setter for the last execs in the store
+func (k Keeper) SetLastExecs (ctx sdk.Context, lastExecs map[string]string) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.LastExecsKey))
+	byteKey := types.KeyPrefix(types.LastExecsKey)
+	jsonData, err := json.Marshal(lastExecs)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	store.Set(byteKey, jsonData)
+}
+
+// Utility function used for executing functions after a certain amount of time
+func (k Keeper) ExecuteAfterNSeconds(
+	ctx sdk.Context, 
+	execs []Exec) []interface{} {
+	results := make([]interface{}, 0)
+
+	lastExecs := k.GetLastExecs(ctx)
 
 	currentTime := time.Now()
 	epoch := currentTime.Unix()
@@ -606,13 +624,7 @@ func (k Keeper) ExecuteAfterNSeconds(
 		}
 	}
 
-	jsonData, err2 := json.Marshal(lastExecs)
-	if err2 != nil {
-		fmt.Println("Error:", err2)
-		return results
-	}
-
-	store.Set(byteKey, jsonData)
+	k.SetLastExecs(ctx, lastExecs)
 
 	return results
 }
