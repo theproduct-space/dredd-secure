@@ -159,7 +159,7 @@ func (am AppModule) EndBlock(ctx sdk.Context, a abci.RequestEndBlock) []abci.Val
 				return nil
 			}, 
 			Args: []interface{}{ctx},
-			DelayS: 30,
+			DelayS: 15 * 60,
 		},
 	}
 	am.keeper.ExecuteAfterNSeconds(ctx, execs)
