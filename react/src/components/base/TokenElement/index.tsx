@@ -18,28 +18,21 @@ const TokenElement = (props: TokenElementProps) => {
   const { onClick, baseButton, token, selectedAmount, setSelectedAmount } =
     props;
   const [inputValue, setInputValue] = useState<string>("");
-
-  const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (token) token.amount = Number(event.target.value);
-  };
   const logoUrl = token.logos ? token.logos.svg ?? token.logos.png : undefined;
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
-    const isValidInput = /^\d+(\.\d{0,4})?$/.test(newValue);
+    const isValidInput = /^\d*\.?\d*$/.test(newValue);
     if (isValidInput) {
       const enteredAmount = parseFloat(newValue);
       const maxAmount =
         token.amount !== undefined ? token.amount.toString() : "0";
-      if (enteredAmount <= parseFloat(maxAmount)) {
+      if (enteredAmount <= parseFloat(maxAmount) || newValue === "") {
         setInputValue(newValue);
-        setSelectedAmount && setSelectedAmount(enteredAmount);
+        setSelectedAmount && setSelectedAmount(enteredAmount || 0);
       } else {
         setInputValue(maxAmount);
         setSelectedAmount && setSelectedAmount(parseFloat(maxAmount));
       }
-    } else if (newValue === "") {
-      setInputValue("");
-      setSelectedAmount && setSelectedAmount(0);
     }
   };
   useEffect(() => {

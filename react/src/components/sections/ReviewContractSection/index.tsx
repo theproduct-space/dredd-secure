@@ -1,5 +1,5 @@
 // React Imports
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // dredd-secure-client-ts Imports
 import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
@@ -15,7 +15,6 @@ import assets from "~src/tokens.json";
 import { env } from "~src/env";
 import { ConditionTypes } from "~sections/CreateContract/AddConditions";
 import { toast } from "react-toastify";
-import ModalContainer from "~layouts/ModalContainer";
 import Typography from "~baseComponents/Typography";
 import { Link } from "react-router-dom";
 
@@ -24,6 +23,8 @@ import randomCubes from "~assets/random-cubes.webp";
 import Card from "~baseComponents/Card";
 import Transaction from "~icons/Transaction";
 import SideCard from "~baseComponents/SideCard";
+import ContentContainer from "~layouts/ContentContainer";
+import BaseModal from "~baseComponents/BaseModal/Index";
 
 // Hooks Imports
 
@@ -31,18 +32,52 @@ interface ReviewContractSectionProps {
   contract: EscrowEscrow | undefined;
   onSuccess: () => void;
 }
+interface ParsedCondition {
+  label: string;
+  name: string;
+  value: string | number;
+  type?: string;
+  tokenOfInterest?: {
+    name: string;
+    symbol: string;
+  };
+  subConditions?: Array<{
+    label: string;
+    conditionType: string;
+    value: string | number;
+  }>;
+}
 
 function ReviewContractSection(props: ReviewContractSectionProps) {
   const { contract, onSuccess } = props;
+  enum Modals {
+    Tips,
+  }
   const { address, offlineSigner } = useWallet();
-  const [modalOpened, setModalOpened] = useState<boolean>(false);
+  const [modalToOpen, setModalToOpen] = useState<Modals | undefined>();
   const [selectedTips, setSelectedTips] = useState<IToken | undefined>();
   const [selectedTipAmount, setSelectedTipAmount] = useState<number>(0);
+  const [parsedConditions, setParsedConditions] = useState<ParsedCondition[]>(
+    [],
+  );
+  // const [selectedTokenTips, setSelectedTokenTips] = useState<
+  //   IToken | undefined
+  // >(contract?.tips);
   const messageClient = txClient({
     signer: offlineSigner,
     prefix: "cosmos",
     addr: env.rpcURL,
   });
+  // const handleSaving = (t: IToken | undefined) => {
+  //   switch (modalToOpen) {
+  //     case Modals.Tips:
+  //       setSelectedTokenTips(t);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  //   setModalToOpen(undefined);
+  // };
 
   const CoinToIToken = (c: V1Beta1Coin | undefined): IToken | undefined => {
     if (c) {
@@ -84,6 +119,27 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
       onSuccess();
     }
   };
+  // const displayModal = () => {
+  //   let modal;
+  //   let showOwnedToken = false;
+  //   switch (modalToOpen) {
+  //     case Modals.Tips:
+  //       modal = selectedTokenTips;
+  //       showOwnedToken = true;
+  //       break;
+  //     default:
+  //       modal = null;
+  //       break;
+  //   }
+  //   return (
+  //     <TokenSelector
+  //       selectedToken={modal}
+  //       onSave={handleSaving}
+  //       ownedToken={showOwnedToken}
+  //       handleClose={() => setModalToOpen(undefined)}
+  //     />
+  //   );
+  // };
   const formatDate = (timestamp: string): string => {
     console.log("timestamp", timestamp);
     const date = new Date(Number(timestamp) * 1000);
@@ -92,8 +148,17 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
       date.getDate(),
     ).padStart(2, "0")}/${date.getFullYear()}`;
   };
+
   console.log("ConditionTypes", ConditionTypes);
   console.log("contract", contract);
+
+  useEffect(() => {
+    if (contract && contract.ApiConditions) {
+      const conditions = JSON.parse(contract.ApiConditions);
+      setParsedConditions(conditions);
+    }
+  }, [contract]);
+  console.log("parsedConditions", parsedConditions);
 
   return (
     <div>
@@ -120,7 +185,7 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
             </Typography>
           </div>
         </div>
-        <ModalContainer className="max-w-6xl flex gap-4">
+        <ContentContainer className="max-w-6xl flex gap-4 pb-24">
           <div className="w-7/12">
             <Card>
               <div className="p-4 md:p-8">
@@ -150,43 +215,97 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
                   Conditions
                 </Typography>
                 <div className="py-4 md:py-8">
-                  {ConditionTypes.map((condition, index) => {
-                    if (!contract?.[condition.name]) return;
+                  {parsedConditions.map((condition, index) => {
                     return (
-                      <div className="condition" key={`condition-${index}`}>
-                        <Typography
-                          variant="body-small"
-                          className="text-white-500"
-                        >
-                          {condition.label}
-                        </Typography>
-                        <Typography variant="h6" className="condition-value">
-                          {condition.name === "startDate" ||
-                          condition.name === "endDate"
-                            ? formatDate(contract[condition.name] as string)
-                            : contract[condition.name]}
-                        </Typography>
+                      <div key={`condition-${index}`}>
+                        <div className="pb-4">
+                          <Typography
+                            variant="body-small"
+                            className="text-white-500"
+                          >
+                            {condition.label}
+                          </Typography>
+                          <Typography variant="h6" className="condition-value">
+                            {condition.name === "startDate" ||
+                            condition.name === "endDate"
+                              ? formatDate(condition.value as string)
+                              : condition.value}
+                          </Typography>
+                        </div>
+                        {condition.type === "apiCondition" && (
+                          <div className="pb-8">
+                            <Typography
+                              variant="body-small"
+                              className="text-white-500"
+                            >
+                              Token of Interest
+                            </Typography>
+                            <Typography
+                              variant="h6"
+                              className="condition-value"
+                            >
+                              {condition.tokenOfInterest?.name} (
+                              {condition.tokenOfInterest?.symbol})
+                            </Typography>
+                            {condition.subConditions &&
+                              condition.subConditions.length > 0 && (
+                                <div>
+                                  {condition.subConditions.map(
+                                    (subCondition, subIndex) => {
+                                      let conditionSymbol;
+                                      switch (subCondition.conditionType) {
+                                        case "eq":
+                                          conditionSymbol = "=";
+                                          break;
+                                        case "gt":
+                                          conditionSymbol = ">";
+                                          break;
+                                        case "lt":
+                                          conditionSymbol = "<";
+                                          break;
+                                        default:
+                                          conditionSymbol = "";
+                                          break;
+                                      }
+                                      return (
+                                        <div key={`sub-condition-${subIndex}`}>
+                                          <Typography
+                                            variant="body-small"
+                                            className="text-white-500"
+                                          >
+                                            {subCondition.label}{" "}
+                                            {conditionSymbol}{" "}
+                                            {subCondition.value}
+                                          </Typography>
+                                        </div>
+                                      );
+                                    },
+                                  )}
+                                </div>
+                              )}
+                          </div>
+                        )}
                       </div>
                     );
                   })}
                 </div>
               </div>
-              {contract?.status != "closed" && !modalOpened && (
+              {/* {contract?.status != "closed" && !modalToOpen && (
                 <Tips
                   token={selectedTips}
-                  onClick={() => setModalOpened(true)}
+                  onClick={() => setModalToOpen(Modals.Tips)}
                   selectedAmount={selectedTipAmount}
                   setSelectedAmount={setSelectedTipAmount}
                 />
               )}
-              {contract?.status != "closed" && modalOpened && (
+              {contract?.status != "closed" && modalToOpen && (
                 <TokenSelector
                   selectedToken={selectedTips}
                   onSave={setSelectedTips}
                   ownedToken={true}
-                  handleClose={() => setModalOpened(false)}
+                  handleClose={() => setModalToOpen(undefined)}
                 />
-              )}
+              )} */}
             </Card>
           </div>
           {contract && contract?.status != "closed" && address != "" && (
@@ -196,8 +315,14 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
               token={CoinToIToken(contract?.fulfillerCoins?.[0])}
             />
           )}
-        </ModalContainer>
+        </ContentContainer>
       </div>
+      {/* <BaseModal
+        open={modalToOpen !== undefined}
+        handleClose={() => setModalToOpen(undefined)}
+      >
+        {displayModal()}
+      </BaseModal> */}
     </div>
   );
 }

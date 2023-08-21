@@ -34,8 +34,7 @@ export interface TokenSelectorProps {
 }
 
 const TokenSelector = (props: TokenSelectorProps) => {
-  const [selectedToken, setSelectedToken] = useState(props.selectedToken);
-  const { onSave, ownedToken, handleClose } = props;
+  const { onSave, ownedToken, handleClose, selectedToken } = props;
   const { address } = useWallet();
   const [searchQuery, setSearchQuery] = useState("");
   const [tokens, setTokens] = useState<IToken[]>([]);
