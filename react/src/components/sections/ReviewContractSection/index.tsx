@@ -111,12 +111,14 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
 
     const response = await toast.promise(request, {
       pending: `Fulfilling Escrow #${id} in-progress`,
-      success: `Successfully fulfilled Escrow #${id}!`,
-      error: `An error happened while fulfilling Escrow #${id}!`,
     });
 
     if (response.code == 0) {
+      toast.success(`Successfully fulfilled Escrow #${id}!`);
       onSuccess();
+    } else {
+      toast.error(`An error happened while fulfilling Escrow #${id}!`);
+      toast.error(response.rawLog)
     }
   };
   // const displayModal = () => {
@@ -308,7 +310,7 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
               )} */}
             </Card>
           </div>
-          {contract && contract?.status != "closed" && address != "" && (
+          {contract && contract?.status != "closed" && address != "" && contract?.initiator !== address && (
             <SideCard
               handleConfirmExchange={handleConfirmation}
               contract={contract}
