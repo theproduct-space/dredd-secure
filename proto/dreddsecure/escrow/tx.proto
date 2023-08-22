@@ -18,9 +18,10 @@ message MsgCreateEscrow {
            string                   creator        = 1;
   repeated cosmos.base.v1beta1.Coin initiatorCoins = 2 [(gogoproto.nullable) = false];
   repeated cosmos.base.v1beta1.Coin fulfillerCoins = 3 [(gogoproto.nullable) = false];
-           string                   startDate      = 4;
-           string                   endDate        = 5;
-           string                   apiConditions  = 6;
+  repeated cosmos.base.v1beta1.Coin tips = 4 [(gogoproto.nullable) = false];
+           string                   startDate      = 5;
+           string                   endDate        = 6;
+           string                   apiConditions  = 7;
 }
 
 message MsgCreateEscrowResponse {}

@@ -101,7 +101,7 @@ const TableView = (props: TableViewProps) => {
   const handleOnClickRow = (id: number) => {
     navigate(`/escrow/${id}`);
   };
-
+  
   return (
     <div className="overflow-x-auto pb-4">
       <table className="table-auto w-full text-white-1000 border-separate border-spacing-y-2">
@@ -167,8 +167,8 @@ const TableView = (props: TableViewProps) => {
                       </button>
                     </td>
                   )}
-                {element.fulfiller === address &&
-                  !["closed", "cancelled"].includes(element.status) && (
+                {element.fulfiller === address && address !== "" &&
+                  !["open", "closed", "cancelled"].includes(element.status) && (
                     <td key={`fulfiller-${index}`}>
                       <button
                         onClick={(e) => {

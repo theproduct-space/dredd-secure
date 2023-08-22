@@ -7,27 +7,15 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { MsgCancelEscrow } from "./types/dreddsecure/escrow/tx";
-import { MsgFulfillEscrow } from "./types/dreddsecure/escrow/tx";
 import { MsgCreateEscrow } from "./types/dreddsecure/escrow/tx";
 import { MsgOptOutEscrow } from "./types/dreddsecure/escrow/tx";
+import { MsgCancelEscrow } from "./types/dreddsecure/escrow/tx";
+import { MsgFulfillEscrow } from "./types/dreddsecure/escrow/tx";
 
 import { Escrow as typeEscrow} from "./types"
 import { Params as typeParams} from "./types"
 
-export { MsgCancelEscrow, MsgFulfillEscrow, MsgCreateEscrow, MsgOptOutEscrow };
-
-type sendMsgCancelEscrowParams = {
-  value: MsgCancelEscrow,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgFulfillEscrowParams = {
-  value: MsgFulfillEscrow,
-  fee?: StdFee,
-  memo?: string
-};
+export { MsgCreateEscrow, MsgOptOutEscrow, MsgCancelEscrow, MsgFulfillEscrow };
 
 type sendMsgCreateEscrowParams = {
   value: MsgCreateEscrow,
@@ -41,14 +29,18 @@ type sendMsgOptOutEscrowParams = {
   memo?: string
 };
 
-
-type msgCancelEscrowParams = {
+type sendMsgCancelEscrowParams = {
   value: MsgCancelEscrow,
+  fee?: StdFee,
+  memo?: string
 };
 
-type msgFulfillEscrowParams = {
+type sendMsgFulfillEscrowParams = {
   value: MsgFulfillEscrow,
+  fee?: StdFee,
+  memo?: string
 };
+
 
 type msgCreateEscrowParams = {
   value: MsgCreateEscrow,
@@ -56,6 +48,14 @@ type msgCreateEscrowParams = {
 
 type msgOptOutEscrowParams = {
   value: MsgOptOutEscrow,
+};
+
+type msgCancelEscrowParams = {
+  value: MsgCancelEscrow,
+};
+
+type msgFulfillEscrowParams = {
+  value: MsgFulfillEscrow,
 };
 
 
@@ -88,41 +88,13 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendMsgCancelEscrow({ value, fee, memo }: sendMsgCancelEscrowParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgCancelEscrow: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry,});
-				let msg = this.msgCancelEscrow({ value: MsgCancelEscrow.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCancelEscrow: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgFulfillEscrow({ value, fee, memo }: sendMsgFulfillEscrowParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgFulfillEscrow: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry,});
-				let msg = this.msgFulfillEscrow({ value: MsgFulfillEscrow.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgFulfillEscrow: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
 		async sendMsgCreateEscrow({ value, fee, memo }: sendMsgCreateEscrowParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgCreateEscrow: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry,});
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
 				let msg = this.msgCreateEscrow({ value: MsgCreateEscrow.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
@@ -136,7 +108,7 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry,});
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
 				let msg = this.msgOptOutEscrow({ value: MsgOptOutEscrow.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
@@ -144,22 +116,34 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		
-		msgCancelEscrow({ value }: msgCancelEscrowParams): EncodeObject {
-			try {
-				return { typeUrl: "/dreddsecure.escrow.MsgCancelEscrow", value: MsgCancelEscrow.fromPartial( value ) }  
+		async sendMsgCancelEscrow({ value, fee, memo }: sendMsgCancelEscrowParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgCancelEscrow: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgCancelEscrow({ value: MsgCancelEscrow.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgCancelEscrow: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgCancelEscrow: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
-		msgFulfillEscrow({ value }: msgFulfillEscrowParams): EncodeObject {
-			try {
-				return { typeUrl: "/dreddsecure.escrow.MsgFulfillEscrow", value: MsgFulfillEscrow.fromPartial( value ) }  
+		async sendMsgFulfillEscrow({ value, fee, memo }: sendMsgFulfillEscrowParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgFulfillEscrow: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgFulfillEscrow({ value: MsgFulfillEscrow.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgFulfillEscrow: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgFulfillEscrow: Could not broadcast Tx: '+ e.message)
 			}
 		},
+		
 		
 		msgCreateEscrow({ value }: msgCreateEscrowParams): EncodeObject {
 			try {
@@ -174,6 +158,22 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 				return { typeUrl: "/dreddsecure.escrow.MsgOptOutEscrow", value: MsgOptOutEscrow.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgOptOutEscrow: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgCancelEscrow({ value }: msgCancelEscrowParams): EncodeObject {
+			try {
+				return { typeUrl: "/dreddsecure.escrow.MsgCancelEscrow", value: MsgCancelEscrow.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgCancelEscrow: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgFulfillEscrow({ value }: msgFulfillEscrowParams): EncodeObject {
+			try {
+				return { typeUrl: "/dreddsecure.escrow.MsgFulfillEscrow", value: MsgFulfillEscrow.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgFulfillEscrow: Could not create message: ' + e.message)
 			}
 		},
 		

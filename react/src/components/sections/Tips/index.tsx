@@ -15,7 +15,7 @@ interface TipsProps {
 
 function Tips(props: TipsProps) {
   const { token, onClick, selectedAmount, setSelectedAmount } = props;
-
+  console.log(token);
   const handleTokenClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     onClick();

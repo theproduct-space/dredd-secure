@@ -11,6 +11,7 @@ interface TokenPreviewProps {
 
 const TokenPreview = (props: TokenPreviewProps) => {
   const { token, className, tokenType } = props;
+  console.log(token);
   const logoUrl = token?.logos ? token.logos.svg ?? token.logos.png : undefined;
 
   return (
@@ -32,7 +33,7 @@ const TokenPreview = (props: TokenPreviewProps) => {
             </div>
             <div className="flex flex-col align-start">
               <Typography variant="body" className="text-white-1000">
-                {token?.amount ?? 0}
+                {token?.selectedAmount ?? 0}
               </Typography>
               <Typography variant="body" className="uppercase text-left">
                 {token?.display}

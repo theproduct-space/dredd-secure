@@ -17,9 +17,10 @@ export interface EscrowEscrow {
   fulfiller?: string;
   initiatorCoins?: V1Beta1Coin[];
   fulfillerCoins?: V1Beta1Coin[];
+  tips?: V1Beta1Coin[];
   startDate?: string;
   endDate?: string;
-  ApiConditions?: string;
+  apiConditions?: string;
 }
 
 export type EscrowMsgCancelEscrowResponse = object;

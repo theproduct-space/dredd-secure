@@ -65,14 +65,14 @@
     "vite": "^3.2.1"
   },
   "engines": {
-    "node": ">=16.0.0",
-    "npm": ">=8.0.0"
+    "node": "\u003e=16.0.0",
+    "npm": "\u003e=8.0.0"
   },
   "name": "@ignt/react-template",
   "private": true,
   "scripts": {
-    "build": "cd ../ts-client && npm install && cd ../react && tsc && vite build",
-    "dev": "npm i && vite",
+    "build": "cd ../ts-client \u0026\u0026 npm install \u0026\u0026 cd ../react \u0026\u0026 tsc \u0026\u0026 vite build",
+    "dev": "npm i \u0026\u0026 vite",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "postinstall": "node postinstall.cjs",
     "prepare": "node prepare.cjs",
