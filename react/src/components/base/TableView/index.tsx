@@ -1,5 +1,5 @@
 // React Imports
-import React, { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -10,10 +10,11 @@ import { txClient } from "dredd-secure-client-ts/dreddsecure.escrow";
 import useWallet from "../../utils/useWallet";
 
 // Custom Components Imports
-import ChevronDownIcon from "~icons/ChevronDownIcon";
-import Typography from "~baseComponents/Typography";
 import StatusPill from "~baseComponents/StatusPill";
+import Typography from "~baseComponents/Typography";
+import ChevronDownIcon from "~icons/ChevronDownIcon";
 import Garbage from "~icons/Garbage";
+import OptOut from "~icons/OptOut";
 import { env } from "~src/env";
 
 export interface TableHeader {
@@ -28,6 +29,7 @@ export interface TableData {
   status: string;
   assetsInvolved: string;
   initiator: string;
+  fulfiller: string;
 }
 
 export interface TableViewProps {
@@ -85,6 +87,17 @@ const TableView = (props: TableViewProps) => {
     });
   };
 
+  const handleOptOut = (id: number) => {
+    const request = messageClient.sendMsgOptOutEscrow({
+      value: { creator: address, id: id },
+    });
+    toast.promise(request, {
+      pending: `Opting out of Escrow #${id} in-progress`,
+      success: `Successfully opted out of Escrow #${id}!`,
+      error: `An error happened while opting out of Escrow #${id}!`,
+    });
+  }
+
   const handleOnClickRow = (id: number) => {
     navigate(`/escrow/${id}`);
   };
@@ -140,7 +153,8 @@ const TableView = (props: TableViewProps) => {
                     )}
                   </td>
                 ))}
-                {element.initiator === address &&
+                {
+                  element.initiator === address &&
                   !["closed", "cancelled"].includes(element.status) && (
                     <td key={`initiator-${index}`}>
                       <button
@@ -153,7 +167,24 @@ const TableView = (props: TableViewProps) => {
                         <Garbage height={20} width={20} />
                       </button>
                     </td>
-                  )}
+                  )
+                }
+                {
+                  element.fulfiller === address &&
+                  !["closed", "cancelled"].includes(element.status) && (
+                    <td key={`fulfiller-${index}`}>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOptOut(element.id);
+                        }}
+                        className={"flex"}
+                      >
+                        <OptOut height={20} width={20} />
+                      </button>
+                    </td>
+                  )
+                }
               </tr>
             );
           })}

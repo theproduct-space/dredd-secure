@@ -93,6 +93,7 @@ const Dashboard = () => {
         assetsInvolved: `${creatorCoin} <-> ${fulfillerCoin}`,
         status: escrow.status ?? "",
         initiator: escrow.initiator ?? "",
+        fulfiller: escrow.fulfiller ?? ""
       };
     })
     .filter(Boolean) as TableData[];
@@ -154,9 +155,12 @@ const Dashboard = () => {
             </Typography>
           </div>
           <div>
-            <Link to={"/escrow/create"}>
-              <Button text="Create Contract" className="capitalize" />
-            </Link>
+            {
+              address && address !== "" &&
+              <Link to={"/escrow/create"}>
+                <Button text="Create Contract" className="capitalize" />
+              </Link>
+            }
           </div>
         </div>
 

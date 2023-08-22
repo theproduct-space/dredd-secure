@@ -13,10 +13,16 @@ export interface GenesisState {
   escrowCount: number;
   pendingEscrows: number[];
   expiringEscrows: number[];
+  lastExecs: { [key: string]: string };
+}
+
+export interface GenesisState_LastExecsEntry {
+  key: string;
+  value: string;
 }
 
 function createBaseGenesisState(): GenesisState {
-  return { params: undefined, escrowList: [], escrowCount: 0, pendingEscrows: [], expiringEscrows: [] };
+  return { params: undefined, escrowList: [], escrowCount: 0, pendingEscrows: [], expiringEscrows: [], lastExecs: {} };
 }
 
 export const GenesisState = {
@@ -40,6 +46,9 @@ export const GenesisState = {
       writer.uint64(v);
     }
     writer.ldelim();
+    Object.entries(message.lastExecs).forEach(([key, value]) => {
+      GenesisState_LastExecsEntry.encode({ key: key as any, value }, writer.uint32(50).fork()).ldelim();
+    });
     return writer;
   },
 
@@ -79,6 +88,12 @@ export const GenesisState = {
             message.expiringEscrows.push(longToNumber(reader.uint64() as Long));
           }
           break;
+        case 6:
+          const entry6 = GenesisState_LastExecsEntry.decode(reader, reader.uint32());
+          if (entry6.value !== undefined) {
+            message.lastExecs[entry6.key] = entry6.value;
+          }
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -94,6 +109,12 @@ export const GenesisState = {
       escrowCount: isSet(object.escrowCount) ? Number(object.escrowCount) : 0,
       pendingEscrows: Array.isArray(object?.pendingEscrows) ? object.pendingEscrows.map((e: any) => Number(e)) : [],
       expiringEscrows: Array.isArray(object?.expiringEscrows) ? object.expiringEscrows.map((e: any) => Number(e)) : [],
+      lastExecs: isObject(object.lastExecs)
+        ? Object.entries(object.lastExecs).reduce<{ [key: string]: string }>((acc, [key, value]) => {
+          acc[key] = String(value);
+          return acc;
+        }, {})
+        : {},
     };
   },
 
@@ -116,6 +137,12 @@ export const GenesisState = {
     } else {
       obj.expiringEscrows = [];
     }
+    obj.lastExecs = {};
+    if (message.lastExecs) {
+      Object.entries(message.lastExecs).forEach(([k, v]) => {
+        obj.lastExecs[k] = v;
+      });
+    }
     return obj;
   },
 
@@ -128,6 +155,70 @@ export const GenesisState = {
     message.escrowCount = object.escrowCount ?? 0;
     message.pendingEscrows = object.pendingEscrows?.map((e) => e) || [];
     message.expiringEscrows = object.expiringEscrows?.map((e) => e) || [];
+    message.lastExecs = Object.entries(object.lastExecs ?? {}).reduce<{ [key: string]: string }>(
+      (acc, [key, value]) => {
+        if (value !== undefined) {
+          acc[key] = String(value);
+        }
+        return acc;
+      },
+      {},
+    );
+    return message;
+  },
+};
+
+function createBaseGenesisState_LastExecsEntry(): GenesisState_LastExecsEntry {
+  return { key: "", value: "" };
+}
+
+export const GenesisState_LastExecsEntry = {
+  encode(message: GenesisState_LastExecsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState_LastExecsEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGenesisState_LastExecsEntry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GenesisState_LastExecsEntry {
+    return { key: isSet(object.key) ? String(object.key) : "", value: isSet(object.value) ? String(object.value) : "" };
+  },
+
+  toJSON(message: GenesisState_LastExecsEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GenesisState_LastExecsEntry>, I>>(object: I): GenesisState_LastExecsEntry {
+    const message = createBaseGenesisState_LastExecsEntry();
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
     return message;
   },
 };
@@ -172,6 +263,10 @@ function longToNumber(long: Long): number {
 if (_m0.util.Long !== Long) {
   _m0.util.Long = Long as any;
   _m0.configure();
+}
+
+function isObject(value: any): boolean {
+  return typeof value === "object" && value !== null;
 }
 
 function isSet(value: any): boolean {
