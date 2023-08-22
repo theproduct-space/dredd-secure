@@ -13,11 +13,13 @@ import BaseModal from "~baseComponents/BaseModal/Index";
 import TokenItem from "~baseComponents/TokenItem";
 import Card from "~baseComponents/Card";
 import ContentContainer from "~layouts/ContentContainer";
+import { ParsedCondition } from "~sections/ReviewContractSection";
 
 export interface IContract {
   initiatorCoins: IToken;
   fulfillerCoins: IToken;
   conditions?: ICondition[];
+  apiConditions?: ParsedCondition[];
   tips?: IToken;
   status?: string;
   id?: string;
@@ -29,7 +31,6 @@ interface CreateContractProps {
 
 const CreateContract = (props: CreateContractProps) => {
   const { contract } = props;
-
   enum Modals {
     Own,
     Wanted,
@@ -51,6 +52,7 @@ const CreateContract = (props: CreateContractProps) => {
   const [conditions, setConditions] = useState<ICondition[]>(
     contract?.conditions ?? [],
   );
+
   const [selectedTokenTips, setSelectedTokenTips] = useState<
     IToken | undefined
   >(contract?.tips);
@@ -70,37 +72,37 @@ const CreateContract = (props: CreateContractProps) => {
     }
     setModalToOpen(undefined);
   };
+  console.log(selectedOwnToken, selectedWantedToken, selectedTokenTips)
 
   const handleSelectedAmountChange = (amount: number, tokenType: TokenType) => {
     //todo include tips
+    let selectedToken: IToken | undefined;
+    let func;
     if (tokenType === TokenType.Own) {
-      const newSelectedOwnToken: IToken = {
-        name: selectedOwnToken?.name || "",
-        display: selectedOwnToken?.display || "",
-        amount: selectedOwnToken?.amount || 0,
-        selectedAmount: amount,
-        denom: selectedOwnToken?.denom || "",
-        chain_name: selectedOwnToken?.chain_name || "",
-        logos: selectedOwnToken?.logos || {
-          svg: "",
-          png: "",
-        },
-      };
-      setSelectedOwnToken(newSelectedOwnToken);
+      selectedToken = selectedOwnToken;
+      func = setSelectedOwnToken;
     } else if (tokenType === TokenType.Wanted) {
-      const newSelectedWantedToken: IToken = {
-        name: selectedWantedToken?.name || "",
-        display: selectedWantedToken?.display || "",
-        amount: selectedWantedToken?.amount || 0,
+      selectedToken = selectedWantedToken;
+      func = setSelectedWantedToken;
+    } else if (tokenType === TokenType.Tips) {
+      selectedToken = selectedTokenTips;
+      func = setSelectedTokenTips;
+    }
+
+    if (selectedToken && func) {
+      const token: IToken = {
+        name: selectedToken?.name || "",
+        display: selectedToken?.display || "",
+        amount: selectedToken?.amount || 0,
         selectedAmount: amount,
-        denom: selectedWantedToken?.denom || "",
-        chain_name: selectedWantedToken?.chain_name || "",
-        logos: selectedWantedToken?.logos || {
+        denom: selectedToken?.denom || "",
+        chain_name: selectedToken?.chain_name || "",
+        logos: selectedToken?.logos || {
           svg: "",
           png: "",
-        },
+        }
       };
-      setSelectedWantedToken(newSelectedWantedToken);
+      func(token);
     }
   };
 
@@ -245,8 +247,9 @@ const CreateContract = (props: CreateContractProps) => {
               <Tips
                 token={selectedTokenTips}
                 onClick={() => setModalToOpen(Modals.Tips)}
-                selectedAmount={selectedTipAmount}
-                setSelectedAmount={setSelectedTipAmount}
+                selectedAmount={selectedTokenTips?.selectedAmount || 0}
+                setSelectedAmount={(amount) =>
+                  handleSelectedAmountChange(amount, TokenType.Tips)}
               />
             </Card>
           </div>
@@ -256,6 +259,7 @@ const CreateContract = (props: CreateContractProps) => {
               state={{
                 initiatorCoins: selectedOwnToken,
                 fulfillerCoins: selectedWantedToken,
+                tips: selectedTokenTips,
                 conditions: conditions,
               }}
             >

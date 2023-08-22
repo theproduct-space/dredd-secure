@@ -2,29 +2,27 @@
 import { useEffect, useState } from "react";
 
 // dredd-secure-client-ts Imports
-import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
 
 // Custom Imports
-import TokenPreview from "~baseComponents/TokenPreview";
-import TokenSelector, { IToken } from "~baseComponents/TokenSelector";
-import Tips from "~sections/Tips";
 import { V1Beta1Coin } from "dredd-secure-client-ts/cosmos.bank.v1beta1/rest";
 import { txClient } from "dredd-secure-client-ts/dreddsecure.escrow";
-import useWallet from "../../utils/useWallet";
-import assets from "~src/tokens.json";
-import { env } from "~src/env";
-import { ConditionTypes } from "~sections/CreateContract/AddConditions";
-import { toast } from "react-toastify";
-import Typography from "~baseComponents/Typography";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import TokenPreview from "~baseComponents/TokenPreview";
+import { IToken } from "~baseComponents/TokenSelector";
+import Typography from "~baseComponents/Typography";
+import { ConditionTypes } from "~sections/CreateContract/AddConditions";
+import { env } from "~src/env";
+import assets from "~src/tokens.json";
+import useWallet from "../../utils/useWallet";
 
 //Assets Imports
 import randomCubes from "~assets/random-cubes.webp";
 import Card from "~baseComponents/Card";
-import Transaction from "~icons/Transaction";
 import SideCard from "~baseComponents/SideCard";
 import ContentContainer from "~layouts/ContentContainer";
-import BaseModal from "~baseComponents/BaseModal/Index";
+import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
+import { CoinToIToken } from "~utils/tokenTransformer";
 
 // Hooks Imports
 
@@ -32,7 +30,7 @@ interface ReviewContractSectionProps {
   contract: EscrowEscrow | undefined;
   onSuccess: () => void;
 }
-interface ParsedCondition {
+export interface ParsedCondition {
   label: string;
   name: string;
   value: string | number;
@@ -78,25 +76,6 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
   //   }
   //   setModalToOpen(undefined);
   // };
-
-  const CoinToIToken = (c: V1Beta1Coin | undefined): IToken | undefined => {
-    if (c) {
-      const token = assets.tokens.find((t) => t.denom === c.denom);
-      if (token) {
-        console.log("token", token);
-        return {
-          name: token.name,
-          denom: token.denom,
-          amount: Number(c.amount),
-          logos: token.logos,
-          display: token.display,
-          chain_name: token.chain_name,
-        };
-      }
-    }
-
-    return;
-  };
 
   const handleConfirmation = async () => {
     if (!contract) return;
@@ -155,8 +134,8 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
   console.log("contract", contract);
 
   useEffect(() => {
-    if (contract && contract.ApiConditions) {
-      const conditions = JSON.parse(contract.ApiConditions);
+    if (contract && contract.apiConditions) {
+      const conditions = JSON.parse(contract.apiConditions);
       setParsedConditions(conditions);
     }
   }, [contract]);

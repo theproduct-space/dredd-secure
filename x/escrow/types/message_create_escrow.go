@@ -13,11 +13,12 @@ const TypeMsgCreateEscrow = "create_escrow"
 
 var _ sdk.Msg = &MsgCreateEscrow{}
 
-func NewMsgCreateEscrow(creator string, initiatorCoins sdk.Coins, fulfillerCoins sdk.Coins, startDate string, endDate string, apiConditions string) *MsgCreateEscrow {
+func NewMsgCreateEscrow(creator string, initiatorCoins sdk.Coins, fulfillerCoins sdk.Coins, tips sdk.Coins, startDate string, endDate string, apiConditions string) *MsgCreateEscrow {
 	return &MsgCreateEscrow{
 		Creator:        creator,
 		InitiatorCoins: initiatorCoins,
 		FulfillerCoins: fulfillerCoins,
+		Tips:			tips,
 		StartDate:      startDate,
 		EndDate:        endDate,
 		ApiConditions:  apiConditions,
@@ -65,8 +66,15 @@ func (msg *MsgCreateEscrow) ValidateBasic() error {
 		if !msg.InitiatorCoins[i].IsValid() {
 			return errors.Wrapf(sdkerrors.ErrInvalidCoins, "InitiatorCoins with denom %v is not a valid Coin object", msg.InitiatorCoins[i].Denom)
 		}
+	}
+	for i := 0; i < len(msg.FulfillerCoins); i++ {
 		if !msg.FulfillerCoins[i].IsValid() {
 			return errors.Wrapf(sdkerrors.ErrInvalidCoins, "FulfillerCoins with denom %v is not a valid Coin object", msg.FulfillerCoins[i].Denom)
+		}
+	}
+	for i := 0; i < len(msg.Tips); i++ {
+		if !msg.Tips[i].IsValid() {
+			return errors.Wrapf(sdkerrors.ErrInvalidCoins, "Tips with denom %v is not a valid Coin object", msg.Tips[i].Denom)
 		}
 	}
 

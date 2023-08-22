@@ -9,6 +9,7 @@ export interface MsgCreateEscrow {
   creator: string;
   initiatorCoins: Coin[];
   fulfillerCoins: Coin[];
+  tips: Coin[];
   startDate: string;
   endDate: string;
   apiConditions: string;
@@ -42,7 +43,15 @@ export interface MsgOptOutEscrowResponse {
 }
 
 function createBaseMsgCreateEscrow(): MsgCreateEscrow {
-  return { creator: "", initiatorCoins: [], fulfillerCoins: [], startDate: "", endDate: "", apiConditions: "" };
+  return {
+    creator: "",
+    initiatorCoins: [],
+    fulfillerCoins: [],
+    tips: [],
+    startDate: "",
+    endDate: "",
+    apiConditions: "",
+  };
 }
 
 export const MsgCreateEscrow = {
@@ -56,14 +65,17 @@ export const MsgCreateEscrow = {
     for (const v of message.fulfillerCoins) {
       Coin.encode(v!, writer.uint32(26).fork()).ldelim();
     }
+    for (const v of message.tips) {
+      Coin.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
     if (message.startDate !== "") {
-      writer.uint32(34).string(message.startDate);
+      writer.uint32(42).string(message.startDate);
     }
     if (message.endDate !== "") {
-      writer.uint32(42).string(message.endDate);
+      writer.uint32(50).string(message.endDate);
     }
     if (message.apiConditions !== "") {
-      writer.uint32(50).string(message.apiConditions);
+      writer.uint32(58).string(message.apiConditions);
     }
     return writer;
   },
@@ -85,12 +97,15 @@ export const MsgCreateEscrow = {
           message.fulfillerCoins.push(Coin.decode(reader, reader.uint32()));
           break;
         case 4:
-          message.startDate = reader.string();
+          message.tips.push(Coin.decode(reader, reader.uint32()));
           break;
         case 5:
-          message.endDate = reader.string();
+          message.startDate = reader.string();
           break;
         case 6:
+          message.endDate = reader.string();
+          break;
+        case 7:
           message.apiConditions = reader.string();
           break;
         default:
@@ -110,6 +125,7 @@ export const MsgCreateEscrow = {
       fulfillerCoins: Array.isArray(object?.fulfillerCoins)
         ? object.fulfillerCoins.map((e: any) => Coin.fromJSON(e))
         : [],
+      tips: Array.isArray(object?.tips) ? object.tips.map((e: any) => Coin.fromJSON(e)) : [],
       startDate: isSet(object.startDate) ? String(object.startDate) : "",
       endDate: isSet(object.endDate) ? String(object.endDate) : "",
       apiConditions: isSet(object.apiConditions) ? String(object.apiConditions) : "",
@@ -129,6 +145,11 @@ export const MsgCreateEscrow = {
     } else {
       obj.fulfillerCoins = [];
     }
+    if (message.tips) {
+      obj.tips = message.tips.map((e) => e ? Coin.toJSON(e) : undefined);
+    } else {
+      obj.tips = [];
+    }
     message.startDate !== undefined && (obj.startDate = message.startDate);
     message.endDate !== undefined && (obj.endDate = message.endDate);
     message.apiConditions !== undefined && (obj.apiConditions = message.apiConditions);
@@ -140,6 +161,7 @@ export const MsgCreateEscrow = {
     message.creator = object.creator ?? "";
     message.initiatorCoins = object.initiatorCoins?.map((e) => Coin.fromPartial(e)) || [];
     message.fulfillerCoins = object.fulfillerCoins?.map((e) => Coin.fromPartial(e)) || [];
+    message.tips = object.tips?.map((e) => Coin.fromPartial(e)) || [];
     message.startDate = object.startDate ?? "";
     message.endDate = object.endDate ?? "";
     message.apiConditions = object.apiConditions ?? "";

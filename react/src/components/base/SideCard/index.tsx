@@ -1,22 +1,22 @@
 // dredd-secure-client-ts Imports
-import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
 
 // React import
-import { useEffect, useState } from "react";
+import { Coin } from "dredd-secure-client-ts/cosmos.bank.v1beta1/types/cosmos/base/v1beta1/coin";
+import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
 import Button from "~baseComponents/Button";
 import Card from "~baseComponents/Card";
 import TokenPreview from "~baseComponents/TokenPreview";
 import { IToken } from "~baseComponents/TokenSelector";
 import Typography from "~baseComponents/Typography";
 import { IContract } from "~sections/CreateContract";
+import { CoinToIToken } from "~utils/tokenTransformer";
 
 export interface SideCardProps {
   handleConfirmExchange: () => void;
-  contract: IContract | EscrowEscrow;
+  contract: EscrowEscrow;
   paymentInterface?: boolean;
   token?: IToken;
 }
-
 const SideCard = (props: SideCardProps) => {
   const { handleConfirmExchange, contract, paymentInterface, token } = props;
   const isPaymentInterface = "tips" in contract && paymentInterface;
@@ -47,7 +47,7 @@ const SideCard = (props: SideCardProps) => {
                     >
                       Donation to dreddsecure
                     </Typography>
-                    <TokenPreview token={contract.tips} text="" />
+                    <TokenPreview token={CoinToIToken(contract.tips[0])} text="" />
                   </>
                 ) : (
                   <>
