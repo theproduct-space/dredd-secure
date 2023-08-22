@@ -28,6 +28,8 @@ export type EscrowMsgCreateEscrowResponse = object;
 
 export type EscrowMsgFulfillEscrowResponse = object;
 
+export type EscrowMsgOptOutEscrowResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */

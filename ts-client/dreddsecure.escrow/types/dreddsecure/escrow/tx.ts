@@ -33,6 +33,14 @@ export interface MsgFulfillEscrow {
 export interface MsgFulfillEscrowResponse {
 }
 
+export interface MsgOptOutEscrow {
+  creator: string;
+  id: number;
+}
+
+export interface MsgOptOutEscrowResponse {
+}
+
 function createBaseMsgCreateEscrow(): MsgCreateEscrow {
   return { creator: "", initiatorCoins: [], fulfillerCoins: [], startDate: "", endDate: "", apiConditions: "" };
 }
@@ -372,11 +380,109 @@ export const MsgFulfillEscrowResponse = {
   },
 };
 
+function createBaseMsgOptOutEscrow(): MsgOptOutEscrow {
+  return { creator: "", id: 0 };
+}
+
+export const MsgOptOutEscrow = {
+  encode(message: MsgOptOutEscrow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.id !== 0) {
+      writer.uint32(16).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgOptOutEscrow {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgOptOutEscrow();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgOptOutEscrow {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      id: isSet(object.id) ? Number(object.id) : 0,
+    };
+  },
+
+  toJSON(message: MsgOptOutEscrow): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgOptOutEscrow>, I>>(object: I): MsgOptOutEscrow {
+    const message = createBaseMsgOptOutEscrow();
+    message.creator = object.creator ?? "";
+    message.id = object.id ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgOptOutEscrowResponse(): MsgOptOutEscrowResponse {
+  return {};
+}
+
+export const MsgOptOutEscrowResponse = {
+  encode(_: MsgOptOutEscrowResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgOptOutEscrowResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgOptOutEscrowResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgOptOutEscrowResponse {
+    return {};
+  },
+
+  toJSON(_: MsgOptOutEscrowResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgOptOutEscrowResponse>, I>>(_: I): MsgOptOutEscrowResponse {
+    const message = createBaseMsgOptOutEscrowResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   CreateEscrow(request: MsgCreateEscrow): Promise<MsgCreateEscrowResponse>;
   CancelEscrow(request: MsgCancelEscrow): Promise<MsgCancelEscrowResponse>;
   FulfillEscrow(request: MsgFulfillEscrow): Promise<MsgFulfillEscrowResponse>;
+  OptOutEscrow(request: MsgOptOutEscrow): Promise<MsgOptOutEscrowResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -386,6 +492,7 @@ export class MsgClientImpl implements Msg {
     this.CreateEscrow = this.CreateEscrow.bind(this);
     this.CancelEscrow = this.CancelEscrow.bind(this);
     this.FulfillEscrow = this.FulfillEscrow.bind(this);
+    this.OptOutEscrow = this.OptOutEscrow.bind(this);
   }
   CreateEscrow(request: MsgCreateEscrow): Promise<MsgCreateEscrowResponse> {
     const data = MsgCreateEscrow.encode(request).finish();
@@ -403,6 +510,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgFulfillEscrow.encode(request).finish();
     const promise = this.rpc.request("dreddsecure.escrow.Msg", "FulfillEscrow", data);
     return promise.then((data) => MsgFulfillEscrowResponse.decode(new _m0.Reader(data)));
+  }
+
+  OptOutEscrow(request: MsgOptOutEscrow): Promise<MsgOptOutEscrowResponse> {
+    const data = MsgOptOutEscrow.encode(request).finish();
+    const promise = this.rpc.request("dreddsecure.escrow.Msg", "OptOutEscrow", data);
+    return promise.then((data) => MsgOptOutEscrowResponse.decode(new _m0.Reader(data)));
   }
 }
 
