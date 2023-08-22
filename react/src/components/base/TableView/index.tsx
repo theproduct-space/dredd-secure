@@ -96,7 +96,7 @@ const TableView = (props: TableViewProps) => {
       success: `Successfully opted out of Escrow #${id}!`,
       error: `An error happened while opting out of Escrow #${id}!`,
     });
-  }
+  };
 
   const handleOnClickRow = (id: number) => {
     navigate(`/escrow/${id}`);
@@ -153,8 +153,7 @@ const TableView = (props: TableViewProps) => {
                     )}
                   </td>
                 ))}
-                {
-                  element.initiator === address &&
+                {element.initiator === address &&
                   !["closed", "cancelled"].includes(element.status) && (
                     <td key={`initiator-${index}`}>
                       <button
@@ -167,10 +166,8 @@ const TableView = (props: TableViewProps) => {
                         <Garbage height={20} width={20} />
                       </button>
                     </td>
-                  )
-                }
-                {
-                  element.fulfiller === address &&
+                  )}
+                {element.fulfiller === address &&
                   !["closed", "cancelled"].includes(element.status) && (
                     <td key={`fulfiller-${index}`}>
                       <button
@@ -183,8 +180,7 @@ const TableView = (props: TableViewProps) => {
                         <OptOut height={20} width={20} />
                       </button>
                     </td>
-                  )
-                }
+                  )}
               </tr>
             );
           })}

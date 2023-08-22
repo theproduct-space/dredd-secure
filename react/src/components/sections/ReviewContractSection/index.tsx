@@ -118,7 +118,7 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
       onSuccess();
     } else {
       toast.error(`An error happened while fulfilling Escrow #${id}!`);
-      toast.error(response.rawLog)
+      toast.error(response.rawLog);
     }
   };
   // const displayModal = () => {
@@ -310,13 +310,16 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
               )} */}
             </Card>
           </div>
-          {contract && contract?.status != "closed" && address != "" && contract?.initiator !== address && (
-            <SideCard
-              handleConfirmExchange={handleConfirmation}
-              contract={contract}
-              token={CoinToIToken(contract?.fulfillerCoins?.[0])}
-            />
-          )}
+          {contract &&
+            contract?.status != "closed" &&
+            address != "" &&
+            contract?.initiator !== address && (
+              <SideCard
+                handleConfirmExchange={handleConfirmation}
+                contract={contract}
+                token={CoinToIToken(contract?.fulfillerCoins?.[0])}
+              />
+            )}
         </ContentContainer>
       </div>
       {/* <BaseModal
