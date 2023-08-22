@@ -71088,6 +71088,8 @@ definitions:
     type: object
   dreddsecure.escrow.MsgOptOutEscrowResponse:
     type: object
+  dreddsecure.escrow.MsgSendOracleRequestPacketDataResponse:
+    type: object
   dreddsecure.escrow.Params:
     type: object
     description: Params defines the parameters for the module.

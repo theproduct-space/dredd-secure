@@ -32,6 +32,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdCancelEscrow())
 	cmd.AddCommand(CmdFulfillEscrow())
 	cmd.AddCommand(CmdOptOutEscrow())
+	cmd.AddCommand(CmdSendOracleRequestPacketData())
 	// this line is used by starport scaffolding # 1
 
 	return cmd
