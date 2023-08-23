@@ -50,7 +50,7 @@ message MsgOptOutEscrowResponse {}
 message MsgSendOracleRequestPacketData {
            string                   clientId         =  5;
            uint64                   oracleScriptId   =  6;
-           string                   calldata         =  7;
+           bytes                    calldata         =  7;
            uint64                   askCount         =  8;
            uint64                   minCount         =  9;
   repeated cosmos.base.v1beta1.Coin feeLimit         = 10 [(gogoproto.nullable) = false];

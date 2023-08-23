@@ -35,7 +35,7 @@ func CmdSendOracleRequestPacketData() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			argCalldata := args[4]
+			argCalldata := []byte(args[4])
 			argAskCount, err := cast.ToUint64E(args[5])
 			if err != nil {
 				return err

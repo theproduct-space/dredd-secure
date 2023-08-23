@@ -16,7 +16,7 @@ func NewMsgSendOracleRequestPacketData(
 	timeoutTimestamp uint64,
 	clientId string,
 	oracleScriptId uint64,
-	calldata string,
+	calldata []byte,
 	askCount uint64,
 	minCount uint64,
 	feeLimit sdk.Coins,
