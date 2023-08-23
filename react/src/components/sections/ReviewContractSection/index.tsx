@@ -25,12 +25,14 @@ import Transaction from "~icons/Transaction";
 import SideCard from "~baseComponents/SideCard";
 import ContentContainer from "~layouts/ContentContainer";
 import BaseModal from "~baseComponents/BaseModal/Index";
+import { SectionState } from "~views/ReviewContract";
 
 // Hooks Imports
 
 interface ReviewContractSectionProps {
   contract: EscrowEscrow | undefined;
   onSuccess: () => void;
+  status?: SectionState;
 }
 interface ParsedCondition {
   label: string;
@@ -49,10 +51,11 @@ interface ParsedCondition {
 }
 
 function ReviewContractSection(props: ReviewContractSectionProps) {
-  const { contract, onSuccess } = props;
+  const { contract, onSuccess, status } = props;
   enum Modals {
     Tips,
   }
+  console.log("status", status);
   const { address, offlineSigner } = useWallet();
   const [modalToOpen, setModalToOpen] = useState<Modals | undefined>();
   const [selectedTips, setSelectedTips] = useState<IToken | undefined>();
@@ -60,6 +63,7 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
   const [parsedConditions, setParsedConditions] = useState<ParsedCondition[]>(
     [],
   );
+  console.log("contract", contract);
   // const [selectedTokenTips, setSelectedTokenTips] = useState<
   //   IToken | undefined
   // >(contract?.tips);
@@ -83,7 +87,6 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
     if (c) {
       const token = assets.tokens.find((t) => t.denom === c.denom);
       if (token) {
-        console.log("token", token);
         return {
           name: token.name,
           denom: token.denom,
@@ -141,16 +144,11 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
   //   );
   // };
   const formatDate = (timestamp: string): string => {
-    console.log("timestamp", timestamp);
     const date = new Date(Number(timestamp) * 1000);
-    console.log("date", date);
     return `${String(date.getMonth() + 1).padStart(2, "0")}/${String(
       date.getDate(),
     ).padStart(2, "0")}/${date.getFullYear()}`;
   };
-
-  console.log("ConditionTypes", ConditionTypes);
-  console.log("contract", contract);
 
   useEffect(() => {
     if (contract && contract.ApiConditions) {
@@ -158,7 +156,6 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
       setParsedConditions(conditions);
     }
   }, [contract]);
-  console.log("parsedConditions", parsedConditions);
 
   return (
     <div>
@@ -179,14 +176,31 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
         </Link>
         <div className="relative mx-auto pt-32 max-w-6xl px-4 md:px-8 xl:px-16">
           <div className="title-2">
-            {/* <div className="messages">messages here</div> */}
-            <Typography variant="h5" className="font-revalia pb-4">
+            <Typography variant="h5" className="font-revalia pb-2">
               Escrow Contract #{contract?.id}
             </Typography>
+            {address === "" &&
+              contract?.status != "closed" &&
+              contract?.status != "cancelled" && (
+                <Typography variant="body-small" className="pb-4">
+                  *To complete this escrow, you must connect your wallet.
+                </Typography>
+              )}
+            {contract?.status === "cancelled" && (
+              <Typography variant="body-small" className="pb-4">
+                *This Escrow has been cancelled.
+              </Typography>
+            )}
           </div>
         </div>
         <ContentContainer className="max-w-6xl flex gap-4 pb-24">
-          <div className="w-7/12">
+          <div
+            className={
+              contract?.status === "closed" || address != ""
+                ? "w-7/12"
+                : "w-full"
+            }
+          >
             <Card>
               <div className="p-4 md:p-8">
                 <div className="flex flex-col gap-6">
@@ -198,6 +212,7 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
                       token={CoinToIToken(contract?.initiatorCoins?.[0])}
                       tokenType="initiator"
                       text="Offering"
+                      className="max-w-2xl"
                     />
                   </div>
                   <div>
@@ -208,6 +223,7 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
                       token={CoinToIToken(contract?.fulfillerCoins?.[0])}
                       tokenType="fulfiller"
                       text="Wanted"
+                      className="max-w-2xl"
                     />
                   </div>
                 </div>
@@ -215,23 +231,27 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
                   Conditions
                 </Typography>
                 <div className="py-4 md:py-8">
+                  <div className="pb-4">
+                    <Typography variant="body-small" className="text-white-500">
+                      {contract?.startDate ? "Start Date" : ""}
+                    </Typography>
+                    <Typography variant="h6" className="condition-value">
+                      {contract?.startDate
+                        ? formatDate(contract.startDate as string)
+                        : ""}
+                    </Typography>
+                    <Typography variant="body-small" className="text-white-500">
+                      {contract?.endDate ? "End Date" : ""}
+                    </Typography>
+                    <Typography variant="h6" className="condition-value">
+                      {contract?.endDate
+                        ? formatDate(contract.endDate as string)
+                        : ""}
+                    </Typography>
+                  </div>
                   {parsedConditions.map((condition, index) => {
                     return (
                       <div key={`condition-${index}`}>
-                        <div className="pb-4">
-                          <Typography
-                            variant="body-small"
-                            className="text-white-500"
-                          >
-                            {condition.label}
-                          </Typography>
-                          <Typography variant="h6" className="condition-value">
-                            {condition.name === "startDate" ||
-                            condition.name === "endDate"
-                              ? formatDate(condition.value as string)
-                              : condition.value}
-                          </Typography>
-                        </div>
                         {condition.type === "apiCondition" && (
                           <div className="pb-8">
                             <Typography
@@ -308,13 +328,28 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
               )} */}
             </Card>
           </div>
-          {contract && contract?.status != "closed" && address != "" && (
-            <SideCard
-              handleConfirmExchange={handleConfirmation}
-              contract={contract}
-              token={CoinToIToken(contract?.fulfillerCoins?.[0])}
-            />
-          )}
+          {contract &&
+            contract?.status != "closed" &&
+            address != "" &&
+            status != SectionState.WALLET_FAILURE && (
+              <SideCard
+                handleConfirmExchange={handleConfirmation}
+                contract={contract}
+                token={CoinToIToken(contract?.fulfillerCoins?.[0])}
+              />
+            )}
+          {contract &&
+            contract?.status != "closed" &&
+            address != "" &&
+            status === SectionState.WALLET_FAILURE && (
+              <SideCard
+                handleConfirmExchange={handleConfirmation}
+                contract={contract}
+                token={CoinToIToken(contract?.fulfillerCoins?.[0])}
+                walletFailure
+              />
+            )}
+          {contract?.status === "closed" && <></>}
         </ContentContainer>
       </div>
       {/* <BaseModal

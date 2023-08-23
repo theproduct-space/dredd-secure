@@ -15,15 +15,14 @@ import useWallet from "../components/utils/useWallet";
 import Failure from "./Failure";
 import Success from "./Success";
 
+export enum SectionState {
+  NOT_LOGGED_IN,
+  LOADING,
+  WALLET_FAILURE,
+  CONFIRMATION,
+  ESCROW_FULFILLED,
+}
 const ReviewContract = () => {
-  enum SectionState {
-    NOT_LOGGED_IN,
-    LOADING,
-    WALLET_FAILURE,
-    CONFIRMATION,
-    ESCROW_FULFILLED,
-  }
-
   const { address } = useWallet();
 
   const [section, setSection] = useState(SectionState.NOT_LOGGED_IN);
@@ -35,7 +34,6 @@ const ReviewContract = () => {
       setSection(SectionState.LOADING);
     }
   };
-  //TODO use contract instead of EscrowEscrow or make sure Escrow has all the contract info
   const fetchEscrow = async () => {
     try {
       const request = queryClient().queryEscrow(id ?? "");
@@ -85,26 +83,23 @@ const ReviewContract = () => {
   const handleContinueFailureButton = () => {
     setSection(SectionState.LOADING);
   };
-
+  //todo work on logic
   return (
     <div className="min-h-screen w-full">
       {section == SectionState.NOT_LOGGED_IN ||
       section == SectionState.CONFIRMATION ? (
         <ReviewContractSection
           contract={contract}
+          status={section}
           onSuccess={() => setSection(SectionState.ESCROW_FULFILLED)}
         />
       ) : section == SectionState.LOADING ? (
         <Loading />
       ) : section == SectionState.WALLET_FAILURE ? (
-        <Failure
-          errorTitle={
-            "The assets needed for this escrow contract were not found in your wallet"
-          }
-          errorBody={"Please connect a different wallet with these assets"}
-          continueButton={
-            <button onClick={handleContinueFailureButton}>Try again</button>
-          }
+        <ReviewContractSection
+          contract={contract}
+          status={section}
+          onSuccess={() => setSection(SectionState.ESCROW_FULFILLED)}
         />
       ) : section == SectionState.ESCROW_FULFILLED ? (
         <Success
