@@ -1,23 +1,23 @@
 // React Imports
-import { Coin } from "dredd-secure-client-ts/cosmos.bank.v1beta1/types/cosmos/base/v1beta1/coin";
 import { txClient } from "dredd-secure-client-ts/dreddsecure.escrow";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 // Custom Imports
+import { toast } from "react-toastify";
 import TokenPreview from "~baseComponents/TokenPreview";
 import { IContract } from "~sections/CreateContract";
+import { env } from "~src/env";
 import useWallet from "../../utils/useWallet";
-import { toast } from "react-toastify";
 
 // Assets
 import randomCubes from "~assets/random-cubes.webp";
-import Typography from "~baseComponents/Typography";
 import Card from "~baseComponents/Card";
-import Transaction from "~icons/Transaction";
-import { ICondition } from "~sections/CreateContract/AddConditions";
 import SideCard from "~baseComponents/SideCard";
+import Typography from "~baseComponents/Typography";
+import Transaction from "~icons/Transaction";
 import ContentContainer from "~layouts/ContentContainer";
+import { ContractToEscrow } from "~utils/tokenTransformer";
 
 interface PaymentSectionProps {
   contract: IContract;
@@ -25,65 +25,23 @@ interface PaymentSectionProps {
 
 const PaymentSection = (props: PaymentSectionProps) => {
   const { contract } = props;
+  console.log("contract", contract);
   const { address, offlineSigner } = useWallet();
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const navigate = useNavigate();
   const messageClient = txClient({
     signer: offlineSigner,
     prefix: "cosmos",
-    addr: "http://localhost:26657",
+    addr: env.rpcURL,
   });
 
   const handleConfirmExchange = async () => {
-    const initiatorCoins: Coin[] = [
-      {
-        denom: contract.initiatorCoins.denom,
-        amount: contract.initiatorCoins.selectedAmount?.toString() ?? "0",
-      },
-    ];
-    const fulfillerCoins: Coin[] = [
-      {
-        denom: contract.fulfillerCoins.denom,
-        amount: contract.fulfillerCoins.selectedAmount?.toString() ?? "1", // TODO set back to 0
-      },
-    ];
-
-    // Conditions message preparation
-    let endDate = String((new Date("9999-12-31").getTime() / 1000).toFixed());
-    let startDate = String((Date.now() / 1000).toFixed());
-    const apiConditionsArray: ICondition[] = [];
-    contract.conditions?.map((condition) => {
-      switch (condition.type) {
-        case "startDate":
-          startDate = String(condition.value);
-          return;
-        case "endDate":
-          endDate = String(condition.value);
-          return;
-        case "apiCondition":
-          apiConditionsArray.push(condition);
-          return;
-      }
-    });
-
-    // the sendMsgCreateEscrow will accept a apiConditions array stringified
-    const apiConditions: string = JSON.stringify(apiConditionsArray);
-
-    console.log({ address });
-    console.log({ initiatorCoins });
-    console.log({ fulfillerCoins });
-    console.log({ startDate });
-    console.log({ endDate });
-    console.log({ apiConditions });
+    const c = ContractToEscrow(contract);
 
     const request = messageClient.sendMsgCreateEscrow({
       value: {
         creator: address,
-        initiatorCoins: initiatorCoins,
-        fulfillerCoins: fulfillerCoins,
-        startDate: startDate,
-        endDate: endDate,
-        apiConditions: apiConditions,
+        ...c,
       },
     });
 
@@ -237,7 +195,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
           </div>
           <SideCard
             handleConfirmExchange={handleConfirmExchange}
-            contract={contract}
+            contract={ContractToEscrow(contract)}
             paymentInterface
             token={contract.initiatorCoins}
           />

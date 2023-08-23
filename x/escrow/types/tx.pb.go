@@ -33,9 +33,10 @@ type MsgCreateEscrow struct {
 	Creator        string       `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	InitiatorCoins []types.Coin `protobuf:"bytes,2,rep,name=initiatorCoins,proto3" json:"initiatorCoins"`
 	FulfillerCoins []types.Coin `protobuf:"bytes,3,rep,name=fulfillerCoins,proto3" json:"fulfillerCoins"`
-	StartDate      string       `protobuf:"bytes,4,opt,name=startDate,proto3" json:"startDate,omitempty"`
-	EndDate        string       `protobuf:"bytes,5,opt,name=endDate,proto3" json:"endDate,omitempty"`
-	ApiConditions  string       `protobuf:"bytes,6,opt,name=apiConditions,proto3" json:"apiConditions,omitempty"`
+	Tips           []types.Coin `protobuf:"bytes,4,rep,name=tips,proto3" json:"tips"`
+	StartDate      string       `protobuf:"bytes,5,opt,name=startDate,proto3" json:"startDate,omitempty"`
+	EndDate        string       `protobuf:"bytes,6,opt,name=endDate,proto3" json:"endDate,omitempty"`
+	ApiConditions  string       `protobuf:"bytes,7,opt,name=apiConditions,proto3" json:"apiConditions,omitempty"`
 }
 
 func (m *MsgCreateEscrow) Reset()         { *m = MsgCreateEscrow{} }
@@ -88,6 +89,13 @@ func (m *MsgCreateEscrow) GetInitiatorCoins() []types.Coin {
 func (m *MsgCreateEscrow) GetFulfillerCoins() []types.Coin {
 	if m != nil {
 		return m.FulfillerCoins
+	}
+	return nil
+}
+
+func (m *MsgCreateEscrow) GetTips() []types.Coin {
+	if m != nil {
+		return m.Tips
 	}
 	return nil
 }
@@ -325,6 +333,94 @@ func (m *MsgFulfillEscrowResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgFulfillEscrowResponse proto.InternalMessageInfo
 
+type MsgOptOutEscrow struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Id      uint64 `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (m *MsgOptOutEscrow) Reset()         { *m = MsgOptOutEscrow{} }
+func (m *MsgOptOutEscrow) String() string { return proto.CompactTextString(m) }
+func (*MsgOptOutEscrow) ProtoMessage()    {}
+func (*MsgOptOutEscrow) Descriptor() ([]byte, []int) {
+	return fileDescriptor_92b765ed5c8100e9, []int{6}
+}
+func (m *MsgOptOutEscrow) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgOptOutEscrow) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgOptOutEscrow.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgOptOutEscrow) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgOptOutEscrow.Merge(m, src)
+}
+func (m *MsgOptOutEscrow) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgOptOutEscrow) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgOptOutEscrow.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgOptOutEscrow proto.InternalMessageInfo
+
+func (m *MsgOptOutEscrow) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgOptOutEscrow) GetId() uint64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+type MsgOptOutEscrowResponse struct {
+}
+
+func (m *MsgOptOutEscrowResponse) Reset()         { *m = MsgOptOutEscrowResponse{} }
+func (m *MsgOptOutEscrowResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgOptOutEscrowResponse) ProtoMessage()    {}
+func (*MsgOptOutEscrowResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_92b765ed5c8100e9, []int{7}
+}
+func (m *MsgOptOutEscrowResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgOptOutEscrowResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgOptOutEscrowResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgOptOutEscrowResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgOptOutEscrowResponse.Merge(m, src)
+}
+func (m *MsgOptOutEscrowResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgOptOutEscrowResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgOptOutEscrowResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgOptOutEscrowResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgCreateEscrow)(nil), "dreddsecure.escrow.MsgCreateEscrow")
 	proto.RegisterType((*MsgCreateEscrowResponse)(nil), "dreddsecure.escrow.MsgCreateEscrowResponse")
@@ -332,39 +428,43 @@ func init() {
 	proto.RegisterType((*MsgCancelEscrowResponse)(nil), "dreddsecure.escrow.MsgCancelEscrowResponse")
 	proto.RegisterType((*MsgFulfillEscrow)(nil), "dreddsecure.escrow.MsgFulfillEscrow")
 	proto.RegisterType((*MsgFulfillEscrowResponse)(nil), "dreddsecure.escrow.MsgFulfillEscrowResponse")
+	proto.RegisterType((*MsgOptOutEscrow)(nil), "dreddsecure.escrow.MsgOptOutEscrow")
+	proto.RegisterType((*MsgOptOutEscrowResponse)(nil), "dreddsecure.escrow.MsgOptOutEscrowResponse")
 }
 
 func init() { proto.RegisterFile("dreddsecure/escrow/tx.proto", fileDescriptor_92b765ed5c8100e9) }
 
 var fileDescriptor_92b765ed5c8100e9 = []byte{
-	// 420 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x53, 0x4d, 0x6f, 0xda, 0x40,
-	0x10, 0xb5, 0x0d, 0xa5, 0x62, 0x5b, 0x68, 0xb5, 0xaa, 0x54, 0xe3, 0x56, 0x2e, 0xa2, 0x1c, 0x90,
-	0xda, 0xac, 0x05, 0x51, 0x4e, 0xc9, 0x09, 0xf2, 0x71, 0xe2, 0xe2, 0x63, 0x4e, 0x31, 0xf6, 0x62,
-	0xad, 0xe4, 0xec, 0x5a, 0xde, 0x25, 0x21, 0xff, 0x22, 0xf7, 0xfc, 0x87, 0xfc, 0x0e, 0x8e, 0x1c,
-	0x73, 0x8a, 0x22, 0xf8, 0x23, 0x91, 0xbd, 0x36, 0xb1, 0x9d, 0xa0, 0x90, 0x9b, 0x67, 0xde, 0x9b,
-	0xf7, 0x3c, 0xcf, 0x1e, 0xf0, 0xcb, 0x8b, 0xb0, 0xe7, 0x71, 0xec, 0xce, 0x22, 0x6c, 0x61, 0xee,
-	0x46, 0xec, 0xda, 0x12, 0x73, 0x14, 0x46, 0x4c, 0x30, 0x08, 0x73, 0x20, 0x92, 0xa0, 0xf1, 0xc3,
-	0x67, 0x3e, 0x4b, 0x60, 0x2b, 0x7e, 0x92, 0x4c, 0xc3, 0x74, 0x19, 0xbf, 0x64, 0xdc, 0x9a, 0x38,
-	0x1c, 0x5b, 0x57, 0xfd, 0x09, 0x16, 0x4e, 0xdf, 0x72, 0x19, 0xa1, 0x12, 0xef, 0xdc, 0x69, 0xe0,
-	0xdb, 0x98, 0xfb, 0xa3, 0x08, 0x3b, 0x02, 0x9f, 0x24, 0x4a, 0x50, 0x07, 0x9f, 0xdd, 0xb8, 0x66,
-	0x91, 0xae, 0xb6, 0xd5, 0x5e, 0xdd, 0xce, 0x4a, 0x78, 0x06, 0x9a, 0x84, 0x12, 0x41, 0xe2, 0x62,
-	0xc4, 0x08, 0xe5, 0xba, 0xd6, 0xae, 0xf4, 0xbe, 0x0c, 0x5a, 0x48, 0xda, 0xa0, 0xd8, 0x06, 0xa5,
-	0x36, 0x28, 0x66, 0x0c, 0xab, 0x8b, 0xc7, 0x3f, 0x8a, 0x5d, 0x1a, 0x8b, 0x85, 0xa6, 0xb3, 0x60,
-	0x4a, 0x82, 0x00, 0xa7, 0x42, 0x95, 0x1d, 0x85, 0x8a, 0x63, 0xf0, 0x37, 0xa8, 0x73, 0xe1, 0x44,
-	0xe2, 0xd8, 0x11, 0x58, 0xaf, 0x26, 0x6f, 0xfb, 0xd2, 0x88, 0x37, 0xc1, 0xd4, 0x4b, 0xb0, 0x4f,
-	0x72, 0x93, 0xb4, 0x84, 0x5d, 0xd0, 0x70, 0x42, 0x32, 0x62, 0xd4, 0x23, 0x82, 0x30, 0xca, 0xf5,
-	0x5a, 0x82, 0x17, 0x9b, 0x9d, 0x16, 0xf8, 0x59, 0x0a, 0xc7, 0xc6, 0x3c, 0x64, 0x94, 0xe3, 0xce,
-	0xa1, 0xcc, 0xcd, 0xa1, 0x2e, 0x0e, 0xde, 0xcd, 0xad, 0x09, 0x34, 0xe2, 0xe9, 0x5a, 0x5b, 0xed,
-	0x55, 0x6d, 0x8d, 0x78, 0x99, 0x6e, 0x6e, 0x78, 0xa3, 0x7b, 0x04, 0xbe, 0x8f, 0xb9, 0x7f, 0x2a,
-	0xb7, 0xfc, 0xb0, 0xb0, 0x01, 0xf4, 0xf2, 0x74, 0xa6, 0x3c, 0xb8, 0xd7, 0x40, 0x65, 0xcc, 0x7d,
-	0x78, 0x01, 0xbe, 0x16, 0x3e, 0xf7, 0x5f, 0xf4, 0xfa, 0x6f, 0x42, 0xa5, 0xb5, 0x8d, 0x7f, 0x3b,
-	0x90, 0x32, 0xa7, 0xc4, 0x21, 0x1f, 0xcc, 0x56, 0x87, 0x1c, 0x69, 0xbb, 0xc3, 0x1b, 0x29, 0x41,
-	0x17, 0x34, 0x8a, 0x11, 0x75, 0xb7, 0x4c, 0x17, 0x58, 0xc6, 0xff, 0x5d, 0x58, 0x99, 0xc9, 0xf0,
-	0x60, 0xb1, 0x32, 0xd5, 0xe5, 0xca, 0x54, 0x9f, 0x56, 0xa6, 0x7a, 0xbb, 0x36, 0x95, 0xe5, 0xda,
-	0x54, 0x1e, 0xd6, 0xa6, 0x72, 0x2e, 0x8f, 0x73, 0x2f, 0xbd, 0xce, 0xf9, 0xe6, 0x3e, 0x6f, 0x42,
-	0xcc, 0x27, 0xb5, 0xe4, 0xb2, 0xf6, 0x9f, 0x03, 0x00, 0x00, 0xff, 0xff, 0xaf, 0xde, 0xce, 0x2c,
-	0xc2, 0x03, 0x00, 0x00,
+	// 451 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x54, 0xcb, 0x8e, 0xd3, 0x30,
+	0x14, 0xcd, 0x8b, 0x19, 0x8d, 0x61, 0x06, 0x64, 0x21, 0xe1, 0x09, 0x28, 0x54, 0x65, 0x16, 0x95,
+	0x00, 0x47, 0x33, 0x23, 0x56, 0xb0, 0x6a, 0x79, 0xac, 0xaa, 0x4a, 0x59, 0xb2, 0x22, 0x4d, 0xdc,
+	0xc8, 0x52, 0xb0, 0xa3, 0xd8, 0x85, 0xf2, 0x17, 0xfd, 0xac, 0x2e, 0xbb, 0x64, 0x85, 0x50, 0xfb,
+	0x23, 0x28, 0x76, 0x52, 0x92, 0xd0, 0x88, 0xc0, 0x2e, 0x37, 0xf7, 0x3c, 0x7c, 0x8f, 0xad, 0x0b,
+	0x1e, 0xc7, 0x39, 0x89, 0x63, 0x41, 0xa2, 0x65, 0x4e, 0x7c, 0x22, 0xa2, 0x9c, 0x7f, 0xf5, 0xe5,
+	0x0a, 0x67, 0x39, 0x97, 0x1c, 0xc2, 0x5a, 0x13, 0xeb, 0xa6, 0xfb, 0x30, 0xe1, 0x09, 0x57, 0x6d,
+	0xbf, 0xf8, 0xd2, 0x48, 0xd7, 0x8b, 0xb8, 0xf8, 0xcc, 0x85, 0x3f, 0x0f, 0x05, 0xf1, 0xbf, 0x5c,
+	0xcf, 0x89, 0x0c, 0xaf, 0xfd, 0x88, 0x53, 0xa6, 0xfb, 0xc3, 0xad, 0x05, 0xee, 0x4f, 0x45, 0x32,
+	0xc9, 0x49, 0x28, 0xc9, 0x3b, 0xa5, 0x04, 0x11, 0x38, 0x8d, 0x8a, 0x9a, 0xe7, 0xc8, 0x1c, 0x98,
+	0xa3, 0xb3, 0xa0, 0x2a, 0xe1, 0x07, 0x70, 0x41, 0x19, 0x95, 0xb4, 0x28, 0x26, 0x9c, 0x32, 0x81,
+	0xac, 0x81, 0x3d, 0xba, 0x7b, 0x73, 0x89, 0xb5, 0x0d, 0x2e, 0x6c, 0x70, 0x69, 0x83, 0x0b, 0xc4,
+	0xd8, 0xd9, 0xfc, 0x78, 0x6a, 0x04, 0x2d, 0x5a, 0x21, 0xb4, 0x58, 0xa6, 0x0b, 0x9a, 0xa6, 0xa4,
+	0x14, 0xb2, 0x7b, 0x0a, 0x35, 0x69, 0xf0, 0x16, 0x38, 0x92, 0x66, 0x02, 0x39, 0xfd, 0xe8, 0x0a,
+	0x0c, 0x9f, 0x80, 0x33, 0x21, 0xc3, 0x5c, 0xbe, 0x0d, 0x25, 0x41, 0x77, 0xd4, 0x88, 0xbf, 0x7f,
+	0x14, 0xe3, 0x13, 0x16, 0xab, 0xde, 0x89, 0x1e, 0xbf, 0x2c, 0xe1, 0x15, 0x38, 0x0f, 0x33, 0x3a,
+	0xe1, 0x2c, 0xa6, 0x92, 0x72, 0x26, 0xd0, 0xa9, 0xea, 0x37, 0x7f, 0x0e, 0x2f, 0xc1, 0xa3, 0x56,
+	0xa2, 0x01, 0x11, 0x19, 0x67, 0x82, 0x0c, 0x5f, 0xeb, 0xb0, 0x43, 0x16, 0x91, 0xf4, 0xaf, 0x61,
+	0x5f, 0x00, 0x8b, 0xc6, 0xc8, 0x1a, 0x98, 0x23, 0x27, 0xb0, 0x68, 0x5c, 0xe9, 0xd6, 0xc8, 0x07,
+	0xdd, 0x37, 0xe0, 0xc1, 0x54, 0x24, 0xef, 0x75, 0x34, 0xff, 0x2c, 0xec, 0x02, 0xd4, 0x66, 0xb7,
+	0x4e, 0x3c, 0xcb, 0xe4, 0x6c, 0x29, 0xff, 0xf3, 0xc4, 0x75, 0x72, 0xa5, 0x7b, 0xb3, 0xb6, 0x81,
+	0x3d, 0x15, 0x09, 0xfc, 0x04, 0xee, 0x35, 0xde, 0xde, 0x33, 0xfc, 0xe7, 0xd3, 0xc6, 0xad, 0x38,
+	0xdd, 0xe7, 0x3d, 0x40, 0x95, 0x93, 0x72, 0xa8, 0x07, 0xde, 0xe9, 0x50, 0x03, 0x75, 0x3b, 0x1c,
+	0x49, 0x1f, 0x46, 0xe0, 0xbc, 0x19, 0xfd, 0x55, 0x07, 0xbb, 0x81, 0x72, 0x5f, 0xf4, 0x41, 0xd5,
+	0xc7, 0x68, 0xdc, 0x42, 0xd7, 0x18, 0x75, 0x50, 0xe7, 0x18, 0xc7, 0xae, 0x64, 0xfc, 0x6a, 0xb3,
+	0xf3, 0xcc, 0xed, 0xce, 0x33, 0x7f, 0xee, 0x3c, 0x73, 0xbd, 0xf7, 0x8c, 0xed, 0xde, 0x33, 0xbe,
+	0xef, 0x3d, 0xe3, 0xa3, 0xde, 0x45, 0x2f, 0xcb, 0x65, 0xb4, 0x3a, 0xac, 0xa3, 0x6f, 0x19, 0x11,
+	0xf3, 0x13, 0xb5, 0x48, 0x6e, 0x7f, 0x05, 0x00, 0x00, 0xff, 0xff, 0x66, 0x0f, 0xa8, 0x38, 0xb1,
+	0x04, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -382,6 +482,7 @@ type MsgClient interface {
 	CreateEscrow(ctx context.Context, in *MsgCreateEscrow, opts ...grpc.CallOption) (*MsgCreateEscrowResponse, error)
 	CancelEscrow(ctx context.Context, in *MsgCancelEscrow, opts ...grpc.CallOption) (*MsgCancelEscrowResponse, error)
 	FulfillEscrow(ctx context.Context, in *MsgFulfillEscrow, opts ...grpc.CallOption) (*MsgFulfillEscrowResponse, error)
+	OptOutEscrow(ctx context.Context, in *MsgOptOutEscrow, opts ...grpc.CallOption) (*MsgOptOutEscrowResponse, error)
 }
 
 type msgClient struct {
@@ -419,11 +520,21 @@ func (c *msgClient) FulfillEscrow(ctx context.Context, in *MsgFulfillEscrow, opt
 	return out, nil
 }
 
+func (c *msgClient) OptOutEscrow(ctx context.Context, in *MsgOptOutEscrow, opts ...grpc.CallOption) (*MsgOptOutEscrowResponse, error) {
+	out := new(MsgOptOutEscrowResponse)
+	err := c.cc.Invoke(ctx, "/dreddsecure.escrow.Msg/OptOutEscrow", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	CreateEscrow(context.Context, *MsgCreateEscrow) (*MsgCreateEscrowResponse, error)
 	CancelEscrow(context.Context, *MsgCancelEscrow) (*MsgCancelEscrowResponse, error)
 	FulfillEscrow(context.Context, *MsgFulfillEscrow) (*MsgFulfillEscrowResponse, error)
+	OptOutEscrow(context.Context, *MsgOptOutEscrow) (*MsgOptOutEscrowResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -438,6 +549,9 @@ func (*UnimplementedMsgServer) CancelEscrow(ctx context.Context, req *MsgCancelE
 }
 func (*UnimplementedMsgServer) FulfillEscrow(ctx context.Context, req *MsgFulfillEscrow) (*MsgFulfillEscrowResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FulfillEscrow not implemented")
+}
+func (*UnimplementedMsgServer) OptOutEscrow(ctx context.Context, req *MsgOptOutEscrow) (*MsgOptOutEscrowResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OptOutEscrow not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -498,6 +612,24 @@ func _Msg_FulfillEscrow_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_OptOutEscrow_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgOptOutEscrow)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).OptOutEscrow(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/dreddsecure.escrow.Msg/OptOutEscrow",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).OptOutEscrow(ctx, req.(*MsgOptOutEscrow))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "dreddsecure.escrow.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -513,6 +645,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FulfillEscrow",
 			Handler:    _Msg_FulfillEscrow_Handler,
+		},
+		{
+			MethodName: "OptOutEscrow",
+			Handler:    _Msg_OptOutEscrow_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -544,21 +680,35 @@ func (m *MsgCreateEscrow) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.ApiConditions)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.ApiConditions)))
 		i--
-		dAtA[i] = 0x32
+		dAtA[i] = 0x3a
 	}
 	if len(m.EndDate) > 0 {
 		i -= len(m.EndDate)
 		copy(dAtA[i:], m.EndDate)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.EndDate)))
 		i--
-		dAtA[i] = 0x2a
+		dAtA[i] = 0x32
 	}
 	if len(m.StartDate) > 0 {
 		i -= len(m.StartDate)
 		copy(dAtA[i:], m.StartDate)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.StartDate)))
 		i--
-		dAtA[i] = 0x22
+		dAtA[i] = 0x2a
+	}
+	if len(m.Tips) > 0 {
+		for iNdEx := len(m.Tips) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Tips[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTx(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x22
+		}
 	}
 	if len(m.FulfillerCoins) > 0 {
 		for iNdEx := len(m.FulfillerCoins) - 1; iNdEx >= 0; iNdEx-- {
@@ -737,6 +887,64 @@ func (m *MsgFulfillEscrowResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgOptOutEscrow) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgOptOutEscrow) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgOptOutEscrow) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Id != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgOptOutEscrowResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgOptOutEscrowResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgOptOutEscrowResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -766,6 +974,12 @@ func (m *MsgCreateEscrow) Size() (n int) {
 	}
 	if len(m.FulfillerCoins) > 0 {
 		for _, e := range m.FulfillerCoins {
+			l = e.Size()
+			n += 1 + l + sovTx(uint64(l))
+		}
+	}
+	if len(m.Tips) > 0 {
+		for _, e := range m.Tips {
 			l = e.Size()
 			n += 1 + l + sovTx(uint64(l))
 		}
@@ -836,6 +1050,31 @@ func (m *MsgFulfillEscrow) Size() (n int) {
 }
 
 func (m *MsgFulfillEscrowResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgOptOutEscrow) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.Id != 0 {
+		n += 1 + sovTx(uint64(m.Id))
+	}
+	return n
+}
+
+func (m *MsgOptOutEscrowResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -981,6 +1220,40 @@ func (m *MsgCreateEscrow) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Tips", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Tips = append(m.Tips, types.Coin{})
+			if err := m.Tips[len(m.Tips)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field StartDate", wireType)
 			}
 			var stringLen uint64
@@ -1011,7 +1284,7 @@ func (m *MsgCreateEscrow) Unmarshal(dAtA []byte) error {
 			}
 			m.StartDate = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 5:
+		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field EndDate", wireType)
 			}
@@ -1043,7 +1316,7 @@ func (m *MsgCreateEscrow) Unmarshal(dAtA []byte) error {
 			}
 			m.EndDate = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 6:
+		case 7:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ApiConditions", wireType)
 			}
@@ -1425,6 +1698,157 @@ func (m *MsgFulfillEscrowResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgFulfillEscrowResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgOptOutEscrow) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgOptOutEscrow: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgOptOutEscrow: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			m.Id = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Id |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgOptOutEscrowResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgOptOutEscrowResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgOptOutEscrowResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

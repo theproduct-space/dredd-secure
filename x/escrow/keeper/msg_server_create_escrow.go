@@ -21,6 +21,7 @@ func (k msgServer) CreateEscrow(goCtx context.Context, msg *types.MsgCreateEscro
 		Fulfiller:      "",
 		InitiatorCoins: msg.InitiatorCoins,
 		FulfillerCoins: msg.FulfillerCoins,
+		Tips:			msg.Tips,
 		StartDate:      msg.StartDate,
 		EndDate:        msg.EndDate,
 		ApiConditions:  msg.ApiConditions,
@@ -32,7 +33,12 @@ func (k msgServer) CreateEscrow(goCtx context.Context, msg *types.MsgCreateEscro
 	}
 
 	// Transfer the initiator's coins from their account to the escrow module
-	errSendCoins := k.bank.SendCoinsFromAccountToModule(ctx, initiator, types.ModuleName, escrow.InitiatorCoins)
+	sendingCoins := escrow.InitiatorCoins
+	if escrow.Tips != nil {
+		sendingCoins = []sdk.Coin{escrow.InitiatorCoins[0], escrow.Tips[0]}
+	}
+
+	errSendCoins := k.bank.SendCoinsFromAccountToModule(ctx, initiator, types.ModuleName, sendingCoins)
 	if errSendCoins != nil {
 		return nil, errors.Wrapf(errSendCoins, types.ErrInitiatorCannotPay.Error())
 	}

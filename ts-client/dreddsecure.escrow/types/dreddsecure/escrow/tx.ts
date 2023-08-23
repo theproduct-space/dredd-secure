@@ -9,6 +9,7 @@ export interface MsgCreateEscrow {
   creator: string;
   initiatorCoins: Coin[];
   fulfillerCoins: Coin[];
+  tips: Coin[];
   startDate: string;
   endDate: string;
   apiConditions: string;
@@ -33,8 +34,24 @@ export interface MsgFulfillEscrow {
 export interface MsgFulfillEscrowResponse {
 }
 
+export interface MsgOptOutEscrow {
+  creator: string;
+  id: number;
+}
+
+export interface MsgOptOutEscrowResponse {
+}
+
 function createBaseMsgCreateEscrow(): MsgCreateEscrow {
-  return { creator: "", initiatorCoins: [], fulfillerCoins: [], startDate: "", endDate: "", apiConditions: "" };
+  return {
+    creator: "",
+    initiatorCoins: [],
+    fulfillerCoins: [],
+    tips: [],
+    startDate: "",
+    endDate: "",
+    apiConditions: "",
+  };
 }
 
 export const MsgCreateEscrow = {
@@ -48,14 +65,17 @@ export const MsgCreateEscrow = {
     for (const v of message.fulfillerCoins) {
       Coin.encode(v!, writer.uint32(26).fork()).ldelim();
     }
+    for (const v of message.tips) {
+      Coin.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
     if (message.startDate !== "") {
-      writer.uint32(34).string(message.startDate);
+      writer.uint32(42).string(message.startDate);
     }
     if (message.endDate !== "") {
-      writer.uint32(42).string(message.endDate);
+      writer.uint32(50).string(message.endDate);
     }
     if (message.apiConditions !== "") {
-      writer.uint32(50).string(message.apiConditions);
+      writer.uint32(58).string(message.apiConditions);
     }
     return writer;
   },
@@ -77,12 +97,15 @@ export const MsgCreateEscrow = {
           message.fulfillerCoins.push(Coin.decode(reader, reader.uint32()));
           break;
         case 4:
-          message.startDate = reader.string();
+          message.tips.push(Coin.decode(reader, reader.uint32()));
           break;
         case 5:
-          message.endDate = reader.string();
+          message.startDate = reader.string();
           break;
         case 6:
+          message.endDate = reader.string();
+          break;
+        case 7:
           message.apiConditions = reader.string();
           break;
         default:
@@ -102,6 +125,7 @@ export const MsgCreateEscrow = {
       fulfillerCoins: Array.isArray(object?.fulfillerCoins)
         ? object.fulfillerCoins.map((e: any) => Coin.fromJSON(e))
         : [],
+      tips: Array.isArray(object?.tips) ? object.tips.map((e: any) => Coin.fromJSON(e)) : [],
       startDate: isSet(object.startDate) ? String(object.startDate) : "",
       endDate: isSet(object.endDate) ? String(object.endDate) : "",
       apiConditions: isSet(object.apiConditions) ? String(object.apiConditions) : "",
@@ -121,6 +145,11 @@ export const MsgCreateEscrow = {
     } else {
       obj.fulfillerCoins = [];
     }
+    if (message.tips) {
+      obj.tips = message.tips.map((e) => e ? Coin.toJSON(e) : undefined);
+    } else {
+      obj.tips = [];
+    }
     message.startDate !== undefined && (obj.startDate = message.startDate);
     message.endDate !== undefined && (obj.endDate = message.endDate);
     message.apiConditions !== undefined && (obj.apiConditions = message.apiConditions);
@@ -132,6 +161,7 @@ export const MsgCreateEscrow = {
     message.creator = object.creator ?? "";
     message.initiatorCoins = object.initiatorCoins?.map((e) => Coin.fromPartial(e)) || [];
     message.fulfillerCoins = object.fulfillerCoins?.map((e) => Coin.fromPartial(e)) || [];
+    message.tips = object.tips?.map((e) => Coin.fromPartial(e)) || [];
     message.startDate = object.startDate ?? "";
     message.endDate = object.endDate ?? "";
     message.apiConditions = object.apiConditions ?? "";
@@ -372,11 +402,109 @@ export const MsgFulfillEscrowResponse = {
   },
 };
 
+function createBaseMsgOptOutEscrow(): MsgOptOutEscrow {
+  return { creator: "", id: 0 };
+}
+
+export const MsgOptOutEscrow = {
+  encode(message: MsgOptOutEscrow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.id !== 0) {
+      writer.uint32(16).uint64(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgOptOutEscrow {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgOptOutEscrow();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.id = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgOptOutEscrow {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      id: isSet(object.id) ? Number(object.id) : 0,
+    };
+  },
+
+  toJSON(message: MsgOptOutEscrow): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgOptOutEscrow>, I>>(object: I): MsgOptOutEscrow {
+    const message = createBaseMsgOptOutEscrow();
+    message.creator = object.creator ?? "";
+    message.id = object.id ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgOptOutEscrowResponse(): MsgOptOutEscrowResponse {
+  return {};
+}
+
+export const MsgOptOutEscrowResponse = {
+  encode(_: MsgOptOutEscrowResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgOptOutEscrowResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgOptOutEscrowResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgOptOutEscrowResponse {
+    return {};
+  },
+
+  toJSON(_: MsgOptOutEscrowResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgOptOutEscrowResponse>, I>>(_: I): MsgOptOutEscrowResponse {
+    const message = createBaseMsgOptOutEscrowResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   CreateEscrow(request: MsgCreateEscrow): Promise<MsgCreateEscrowResponse>;
   CancelEscrow(request: MsgCancelEscrow): Promise<MsgCancelEscrowResponse>;
   FulfillEscrow(request: MsgFulfillEscrow): Promise<MsgFulfillEscrowResponse>;
+  OptOutEscrow(request: MsgOptOutEscrow): Promise<MsgOptOutEscrowResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -386,6 +514,7 @@ export class MsgClientImpl implements Msg {
     this.CreateEscrow = this.CreateEscrow.bind(this);
     this.CancelEscrow = this.CancelEscrow.bind(this);
     this.FulfillEscrow = this.FulfillEscrow.bind(this);
+    this.OptOutEscrow = this.OptOutEscrow.bind(this);
   }
   CreateEscrow(request: MsgCreateEscrow): Promise<MsgCreateEscrowResponse> {
     const data = MsgCreateEscrow.encode(request).finish();
@@ -403,6 +532,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgFulfillEscrow.encode(request).finish();
     const promise = this.rpc.request("dreddsecure.escrow.Msg", "FulfillEscrow", data);
     return promise.then((data) => MsgFulfillEscrowResponse.decode(new _m0.Reader(data)));
+  }
+
+  OptOutEscrow(request: MsgOptOutEscrow): Promise<MsgOptOutEscrowResponse> {
+    const data = MsgOptOutEscrow.encode(request).finish();
+    const promise = this.rpc.request("dreddsecure.escrow.Msg", "OptOutEscrow", data);
+    return promise.then((data) => MsgOptOutEscrowResponse.decode(new _m0.Reader(data)));
   }
 }
 

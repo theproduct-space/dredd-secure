@@ -15,9 +15,9 @@ var _ = strconv.Itoa(0)
 
 func CmdCreateEscrow() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-escrow [initiator-coins] [fulfiller-coins] [start-date] [end-date]",
+		Use:   "create-escrow [initiator-coins] [fulfiller-coins] [tips] [start-date] [end-date] [api-conditions]",
 		Short: "Broadcast message create-escrow",
-		Args:  cobra.ExactArgs(4),
+		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argInitiatorCoins, err := sdk.ParseCoinsNormalized(args[0])
 			if err != nil {
@@ -27,9 +27,14 @@ func CmdCreateEscrow() *cobra.Command {
 			if err != nil {
 				return err
 			}
+			argTips, err := sdk.ParseCoinsNormalized(args[2])
+			if err != nil {
+				return err
+			}
 			argStartDate := args[2]
 			argEndDate := args[3]
 			argApiConditions := args[4]
+			
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -40,6 +45,7 @@ func CmdCreateEscrow() *cobra.Command {
 				clientCtx.GetFromAddress().String(),
 				argInitiatorCoins,
 				argFulfillerCoins,
+				argTips,
 				argStartDate,
 				argEndDate,
 				argApiConditions,

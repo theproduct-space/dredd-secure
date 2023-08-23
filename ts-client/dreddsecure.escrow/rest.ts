@@ -17,9 +17,10 @@ export interface EscrowEscrow {
   fulfiller?: string;
   initiatorCoins?: V1Beta1Coin[];
   fulfillerCoins?: V1Beta1Coin[];
+  tips?: V1Beta1Coin[];
   startDate?: string;
   endDate?: string;
-  ApiConditions?: string;
+  apiConditions?: string;
 }
 
 export type EscrowMsgCancelEscrowResponse = object;
@@ -27,6 +28,8 @@ export type EscrowMsgCancelEscrowResponse = object;
 export type EscrowMsgCreateEscrowResponse = object;
 
 export type EscrowMsgFulfillEscrowResponse = object;
+
+export type EscrowMsgOptOutEscrowResponse = object;
 
 /**
  * Params defines the parameters for the module.

@@ -11,6 +11,7 @@ interface TokenPreviewProps {
 
 const TokenPreview = (props: TokenPreviewProps) => {
   const { token, className, tokenType } = props;
+  console.log(token);
   const logoUrl = token?.logos ? token.logos.svg ?? token.logos.png : undefined;
 
   return (
