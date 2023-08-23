@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"dredd-secure/x/escrow/constants"
 	"dredd-secure/x/escrow/types"
 	"fmt"
 
@@ -14,6 +15,10 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
 	"github.com/cosmos/ibc-go/v7/modules/core/exported"
+
+	"strings"
+
+	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
 )
 
 type (
@@ -109,4 +114,29 @@ func (k Keeper) ClaimCapability(ctx sdk.Context, cap *capabilitytypes.Capability
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
+}
+
+// StoreOracleResponsePacket is a function that receives an OracleResponsePacketData from BandChain.
+func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleResponsePacketData) error {
+    
+    // Find the oracleId from the clientID
+    oracleId := strings.Split(res.ClientID, "_")[0]
+
+
+    switch (oracleId) {
+		case constants.OracleCryptoCurrencyPriceScriptId: 
+			// Decode the result from the response packet.
+			result, err := bandtypes.DecodeResult(res.Result)
+			fmt.Println(result)
+			if err != nil {
+				return err
+
+			}
+	}
+
+	
+
+	
+
+	return nil
 }

@@ -3,7 +3,12 @@ package keeper
 import (
 	"context"
 
+	"strconv"
+
+	"github.com/google/uuid"
+
 	"dredd-secure/x/escrow/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 )
@@ -11,12 +16,15 @@ import (
 func (k msgServer) SendOracleRequestPacketData(goCtx context.Context, msg *types.MsgSendOracleRequestPacketData) (*types.MsgSendOracleRequestPacketDataResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: logic before transmitting the packet
+
+	// Generate a new UUID
+	uid := uuid.New()
 
 	// Construct the packet
 	var packet types.OracleRequestPacketDataPacketData
 
-	packet.ClientId = msg.ClientId
+	// using the oracleScriptId in the clientId for data treater upon OracleResponsePacketData reception
+	packet.ClientId = strconv.FormatUint(msg.OracleScriptId, 10) + "_" + uid.String()
 	packet.OracleScriptId = msg.OracleScriptId
 	packet.Calldata = msg.Calldata
 	packet.AskCount = msg.AskCount

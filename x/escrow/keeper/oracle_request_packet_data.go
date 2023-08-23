@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"dredd-secure/x/escrow/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
@@ -40,7 +41,7 @@ func (k Keeper) OnRecvOracleRequestPacketDataPacket(ctx sdk.Context, packet chan
 		return packetAck, err
 	}
 
-	// TODO: packet reception logic
+	// TODO: packet reception logic, can be delete as we will never receive these types of packet..???
 
 	return packetAck, nil
 }

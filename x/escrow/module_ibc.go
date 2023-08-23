@@ -159,6 +159,10 @@ func (im IBCModule) OnRecvPacket(
 		return channeltypes.NewErrorAcknowledgement(types.ErrOracleResolveStatusNotSuccess)
 	}
 
+	if err := im.keeper.StoreOracleResponsePacket(ctx, packet); err != nil {
+		return channeltypes.NewErrorAcknowledgement(err)
+	}
+
 	// TODO, store the OracleResponsePacket
 	// -> what is the data type used to store the response packet?
 	// -> needs to be general in order to match multiple oracle scripts data types response
