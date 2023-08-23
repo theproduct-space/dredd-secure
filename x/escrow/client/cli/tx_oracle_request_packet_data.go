@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"dredd-secure/x/escrow/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -17,7 +18,7 @@ var _ = strconv.Itoa(0)
 
 func CmdSendOracleRequestPacketData() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "send-oracle-request-packet-data [src-port] [src-channel] [client-id] [oracle-script-id] [calldata] [ask-count] [min-count] [fee-limit] [prepare-gas] [execute-gas]",
+		Use:   "send-oracle-request-packet-data [src-port] [src-channel] [oracle-script-id] [calldata] [ask-count] [min-count] [fee-limit] [prepare-gas] [execute-gas]",
 		Short: "Send a OracleRequestPacketData over IBC",
 		Args:  cobra.ExactArgs(10),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -30,8 +31,7 @@ func CmdSendOracleRequestPacketData() *cobra.Command {
 			srcPort := args[0]
 			srcChannel := args[1]
 
-			argClientId := args[2]
-			argOracleScriptId, err := cast.ToUint64E(args[3])
+			argOracleScriptId, err := cast.ToUint64E(args[2])
 			if err != nil {
 				return err
 			}
@@ -40,19 +40,19 @@ func CmdSendOracleRequestPacketData() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			argMinCount, err := cast.ToUint64E(args[6])
+			argMinCount, err := cast.ToUint64E(args[5])
 			if err != nil {
 				return err
 			}
-			argFeeLimit, err := sdk.ParseCoinsNormalized(args[7])
+			argFeeLimit, err := sdk.ParseCoinsNormalized(args[6])
 			if err != nil {
 				return err
 			}
-			argPrepareGas, err := cast.ToUint64E(args[8])
+			argPrepareGas, err := cast.ToUint64E(args[7])
 			if err != nil {
 				return err
 			}
-			argExecuteGas, err := cast.ToUint64E(args[9])
+			argExecuteGas, err := cast.ToUint64E(args[8])
 			if err != nil {
 				return err
 			}
@@ -70,7 +70,7 @@ func CmdSendOracleRequestPacketData() *cobra.Command {
 				timeoutTimestamp = consensusState.GetTimestamp() + timeoutTimestamp
 			}
 
-			msg := types.NewMsgSendOracleRequestPacketData(creator, srcPort, srcChannel, timeoutTimestamp, argClientId, argOracleScriptId, argCalldata, argAskCount, argMinCount, argFeeLimit, argPrepareGas, argExecuteGas)
+			msg := types.NewMsgSendOracleRequestPacketData(creator, srcPort, srcChannel, timeoutTimestamp, argOracleScriptId, argCalldata, argAskCount, argMinCount, argFeeLimit, argPrepareGas, argExecuteGas)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

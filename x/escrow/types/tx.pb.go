@@ -414,14 +414,13 @@ func (m *MsgOptOutEscrowResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgOptOutEscrowResponse proto.InternalMessageInfo
 
 type MsgSendOracleRequestPacketData struct {
-	ClientId         string       `protobuf:"bytes,5,opt,name=clientId,proto3" json:"clientId,omitempty"`
-	OracleScriptId   uint64       `protobuf:"varint,6,opt,name=oracleScriptId,proto3" json:"oracleScriptId,omitempty"`
-	Calldata         []byte       `protobuf:"bytes,7,opt,name=calldata,proto3" json:"calldata,omitempty"`
-	AskCount         uint64       `protobuf:"varint,8,opt,name=askCount,proto3" json:"askCount,omitempty"`
-	MinCount         uint64       `protobuf:"varint,9,opt,name=minCount,proto3" json:"minCount,omitempty"`
-	FeeLimit         []types.Coin `protobuf:"bytes,10,rep,name=feeLimit,proto3" json:"feeLimit"`
-	PrepareGas       uint64       `protobuf:"varint,11,opt,name=prepareGas,proto3" json:"prepareGas,omitempty"`
-	ExecuteGas       uint64       `protobuf:"varint,12,opt,name=executeGas,proto3" json:"executeGas,omitempty"`
+	OracleScriptId   uint64       `protobuf:"varint,5,opt,name=oracleScriptId,proto3" json:"oracleScriptId,omitempty"`
+	Calldata         []byte       `protobuf:"bytes,6,opt,name=calldata,proto3" json:"calldata,omitempty"`
+	AskCount         uint64       `protobuf:"varint,7,opt,name=askCount,proto3" json:"askCount,omitempty"`
+	MinCount         uint64       `protobuf:"varint,8,opt,name=minCount,proto3" json:"minCount,omitempty"`
+	FeeLimit         []types.Coin `protobuf:"bytes,9,rep,name=feeLimit,proto3" json:"feeLimit"`
+	PrepareGas       uint64       `protobuf:"varint,10,opt,name=prepareGas,proto3" json:"prepareGas,omitempty"`
+	ExecuteGas       uint64       `protobuf:"varint,11,opt,name=executeGas,proto3" json:"executeGas,omitempty"`
 	Creator          string       `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Port             string       `protobuf:"bytes,2,opt,name=port,proto3" json:"port,omitempty"`
 	ChannelID        string       `protobuf:"bytes,3,opt,name=channelID,proto3" json:"channelID,omitempty"`
@@ -460,13 +459,6 @@ func (m *MsgSendOracleRequestPacketData) XXX_DiscardUnknown() {
 }
 
 var xxx_messageInfo_MsgSendOracleRequestPacketData proto.InternalMessageInfo
-
-func (m *MsgSendOracleRequestPacketData) GetClientId() string {
-	if m != nil {
-		return m.ClientId
-	}
-	return ""
-}
 
 func (m *MsgSendOracleRequestPacketData) GetOracleScriptId() uint64 {
 	if m != nil {
@@ -1210,13 +1202,6 @@ func (m *MsgSendOracleRequestPacketData) MarshalToSizedBuffer(dAtA []byte) (int,
 		i--
 		dAtA[i] = 0x30
 	}
-	if len(m.ClientId) > 0 {
-		i -= len(m.ClientId)
-		copy(dAtA[i:], m.ClientId)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.ClientId)))
-		i--
-		dAtA[i] = 0x2a
-	}
 	if m.TimeoutTimestamp != 0 {
 		i = encodeVarintTx(dAtA, i, uint64(m.TimeoutTimestamp))
 		i--
@@ -1421,10 +1406,6 @@ func (m *MsgSendOracleRequestPacketData) Size() (n int) {
 	}
 	if m.TimeoutTimestamp != 0 {
 		n += 1 + sovTx(uint64(m.TimeoutTimestamp))
-	}
-	l = len(m.ClientId)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
 	}
 	if m.OracleScriptId != 0 {
 		n += 1 + sovTx(uint64(m.OracleScriptId))
@@ -2363,38 +2344,6 @@ func (m *MsgSendOracleRequestPacketData) Unmarshal(dAtA []byte) error {
 				}
 			}
 		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ClientId", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ClientId = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 6:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OracleScriptId", wireType)
 			}
@@ -2413,7 +2362,7 @@ func (m *MsgSendOracleRequestPacketData) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
-		case 7:
+		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Calldata", wireType)
 			}
@@ -2447,7 +2396,7 @@ func (m *MsgSendOracleRequestPacketData) Unmarshal(dAtA []byte) error {
 				m.Calldata = []byte{}
 			}
 			iNdEx = postIndex
-		case 8:
+		case 7:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field AskCount", wireType)
 			}
@@ -2466,7 +2415,7 @@ func (m *MsgSendOracleRequestPacketData) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
-		case 9:
+		case 8:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field MinCount", wireType)
 			}
@@ -2485,7 +2434,7 @@ func (m *MsgSendOracleRequestPacketData) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
-		case 10:
+		case 9:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field FeeLimit", wireType)
 			}
@@ -2519,7 +2468,7 @@ func (m *MsgSendOracleRequestPacketData) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
-		case 11:
+		case 10:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field PrepareGas", wireType)
 			}
@@ -2538,7 +2487,7 @@ func (m *MsgSendOracleRequestPacketData) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
-		case 12:
+		case 11:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field ExecuteGas", wireType)
 			}
