@@ -20,7 +20,7 @@ message NoData {}
 message OracleRequestPacketDataPacketData {
            string                   clientId       = 1;
            uint64                   oracleScriptId = 2;
-           string                   calldata       = 3;
+           bytes                    calldata       = 3;
            uint64                   askCount       = 4;
            uint64                   minCount       = 5;
   repeated cosmos.base.v1beta1.Coin feeLimit       = 6 [(gogoproto.nullable) = false];
