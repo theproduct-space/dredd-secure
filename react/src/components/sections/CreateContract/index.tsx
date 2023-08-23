@@ -40,7 +40,6 @@ const CreateContract = (props: CreateContractProps) => {
     Wanted,
     Tips,
   }
-  const [selectedTipAmount, setSelectedTipAmount] = useState<number>(0);
   const [modalToOpen, setModalToOpen] = useState<Modals | undefined>();
   const [selectedOwnToken, setSelectedOwnToken] = useState<IToken | undefined>(
     contract?.initiatorCoins,
@@ -73,34 +72,33 @@ const CreateContract = (props: CreateContractProps) => {
 
   const handleSelectedAmountChange = (amount: number, tokenType: TokenType) => {
     //todo include tips
+    let selectedToken: IToken | undefined;
+    let func;
     if (tokenType === TokenType.Own) {
-      const newSelectedOwnToken: IToken = {
-        name: selectedOwnToken?.name || "",
-        display: selectedOwnToken?.display || "",
-        amount: selectedOwnToken?.amount || 0,
-        selectedAmount: amount,
-        denom: selectedOwnToken?.denom || "",
-        chain_name: selectedOwnToken?.chain_name || "",
-        logos: selectedOwnToken?.logos || {
-          svg: "",
-          png: "",
-        },
-      };
-      setSelectedOwnToken(newSelectedOwnToken);
+      selectedToken = selectedOwnToken;
+      func = setSelectedOwnToken;
     } else if (tokenType === TokenType.Wanted) {
-      const newSelectedWantedToken: IToken = {
-        name: selectedWantedToken?.name || "",
-        display: selectedWantedToken?.display || "",
-        amount: selectedWantedToken?.amount || 0,
+      selectedToken = selectedWantedToken;
+      func = setSelectedWantedToken;
+    } else if (tokenType === TokenType.Tips) {
+      selectedToken = selectedTokenTips;
+      func = setSelectedTokenTips;
+    }
+
+    if (selectedToken && func) {
+      const token: IToken = {
+        name: selectedToken?.name || "",
+        display: selectedToken?.display || "",
+        amount: selectedToken?.amount || 0,
         selectedAmount: amount,
-        denom: selectedWantedToken?.denom || "",
-        chain_name: selectedWantedToken?.chain_name || "",
-        logos: selectedWantedToken?.logos || {
+        denom: selectedToken?.denom || "",
+        chain_name: selectedToken?.chain_name || "",
+        logos: selectedToken?.logos || {
           svg: "",
           png: "",
         },
       };
-      setSelectedWantedToken(newSelectedWantedToken);
+      func(token);
     }
   };
 
@@ -245,8 +243,10 @@ const CreateContract = (props: CreateContractProps) => {
               <Tips
                 token={selectedTokenTips}
                 onClick={() => setModalToOpen(Modals.Tips)}
-                selectedAmount={selectedTipAmount}
-                setSelectedAmount={setSelectedTipAmount}
+                selectedAmount={selectedTokenTips?.selectedAmount || 0}
+                setSelectedAmount={(amount) =>
+                  handleSelectedAmountChange(amount, TokenType.Tips)
+                }
               />
             </Card>
           </div>

@@ -219,7 +219,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
                 <Typography variant="h6" className="font-revalia pb-8">
                   You are exchanging
                 </Typography>
-                <div className="flex justify-between items-center gap-4">
+                <div className="flex justify-between items-center gap-4 min-h-fit">
                   <TokenPreview
                     token={contract.initiatorCoins}
                     tokenType="initiator"
@@ -239,6 +239,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
             handleConfirmExchange={handleConfirmExchange}
             contract={contract}
             paymentInterface
+            token={contract.initiatorCoins}
           />
         </ContentContainer>
       </div>

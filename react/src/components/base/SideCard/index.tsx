@@ -32,6 +32,7 @@ const SideCard = (props: SideCardProps) => {
   const handleCheck = () => {
     setChecked(!checked);
   };
+  console.log("contract", contract);
   return (
     <>
       <Card className="w-4/12 h-fit">

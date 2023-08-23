@@ -179,6 +179,7 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
             <Typography variant="h5" className="font-revalia pb-2">
               Escrow Contract #{contract?.id}
             </Typography>
+            {/* //todo better logic */}
             {address === "" &&
               contract?.status != "closed" &&
               contract?.status != "cancelled" && (
@@ -191,14 +192,23 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
                 *This Escrow has been cancelled.
               </Typography>
             )}
+            {address === contract?.initiator &&
+              contract?.status != "closed" &&
+              contract?.status != "cancelled" && (
+                <Typography variant="body-small" className="pb-4">
+                  *This is your contract.
+                </Typography>
+              )}
           </div>
         </div>
         <ContentContainer className="max-w-6xl flex gap-4 pb-24">
           <div
             className={
-              contract?.status === "closed" || address != ""
-                ? "w-7/12"
-                : "w-full"
+              contract?.status != "open" ||
+              address != "" ||
+              address != contract?.initiator
+                ? "w-full"
+                : "w-7/12"
             }
           >
             <Card>
@@ -330,7 +340,9 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
           </div>
           {contract &&
             contract?.status != "closed" &&
+            contract?.status != "cancelled" &&
             address != "" &&
+            address != contract?.initiator &&
             status != SectionState.WALLET_FAILURE && (
               <SideCard
                 handleConfirmExchange={handleConfirmation}
@@ -340,7 +352,9 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
             )}
           {contract &&
             contract?.status != "closed" &&
+            contract?.status != "cancelled" &&
             address != "" &&
+            address != contract?.initiator &&
             status === SectionState.WALLET_FAILURE && (
               <SideCard
                 handleConfirmExchange={handleConfirmation}
@@ -349,7 +363,10 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
                 walletFailure
               />
             )}
-          {contract?.status === "closed" && <></>}
+          {contract?.status === "closed" ||
+            contract?.status === "cancelled" ||
+            contract?.status === "pending" ||
+            (address === contract?.initiator && <></>)}
         </ContentContainer>
       </div>
       {/* <BaseModal
