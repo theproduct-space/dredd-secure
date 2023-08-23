@@ -13,6 +13,8 @@ import (
 	porttypes "github.com/cosmos/ibc-go/v7/modules/core/05-port/types"
 	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
 	ibcexported "github.com/cosmos/ibc-go/v7/modules/core/exported"
+
+	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
 )
 
 type IBCModule struct {
@@ -139,44 +141,70 @@ func (im IBCModule) OnRecvPacket(
 	modulePacket channeltypes.Packet,
 	relayer sdk.AccAddress,
 ) ibcexported.Acknowledgement {
-	var ack channeltypes.Acknowledgement
+	// var ack channeltypes.Acknowledgement
+	var packet bandtypes.OracleResponsePacketData
 
-	// this line is used by starport scaffolding # oracle/packet/module/recv
-
-	var modulePacketData types.EscrowPacketData
-	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
-		return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error()))
-	}
-
-	// Dispatch packet
-	switch packet := modulePacketData.Packet.(type) {
-	case *types.EscrowPacketData_OracleRequestPacketDataPacket:
-		packetAck, err := im.keeper.OnRecvOracleRequestPacketDataPacket(ctx, modulePacket, *packet.OracleRequestPacketDataPacket)
-		if err != nil {
-			ack = channeltypes.NewErrorAcknowledgement(err)
-		} else {
-			// Encode packet acknowledgment
-			packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
-			if err != nil {
-				return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error()))
-			}
-			ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
-		}
-		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(
-				types.EventTypeOracleRequestPacketDataPacket,
-				sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
-			),
-		)
-		// this line is used by starport scaffolding # ibc/packet/module/recv
-	default:
-		err := fmt.Errorf("unrecognized %s packet type: %T", types.ModuleName, packet)
+	// Unmarshal the data from the module packet into the OracleResponsePacketData object.
+	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &packet); err != nil {
 		return channeltypes.NewErrorAcknowledgement(err)
 	}
 
+	// Request has been resolved 
+	ctx.EventManager().EmitEvent(sdk.NewEvent(
+		types.EventTypeOracleResponsePacketDataPacket,
+		sdk.NewAttribute(types.AttributeKeyRequestID, fmt.Sprintf("%d", packet.RequestID)),
+	))
+
+	if packet.ResolveStatus != bandtypes.RESOLVE_STATUS_SUCCESS {
+		return channeltypes.NewErrorAcknowledgement(types.ErrOracleResolveStatusNotSuccess)
+	}
+
+	// TODO, store the OracleResponsePacket
+	// -> what is the data type used to store the response packet?
+	// -> needs to be general in order to match multiple oracle scripts data types response
+
+	// if err := im.keeper.StoreOracleResponsePacket(ctx, packet); err != nil {
+	// 	return channeltypes.NewErrorAcknowledgement(err)
+	// }
+	// this line is used by starport scaffolding # oracle/packet/module/recv
+
+	// BEGIN SCAFFOLDING FROM IGNITE THAT WE MIGHT NOT NEED
+	// var modulePacketData types.EscrowPacketData
+	// if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
+	// 	return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error()))
+	// }
+
+	// // Dispatch packet
+	// switch packet := modulePacketData.Packet.(type) {
+	// case *types.EscrowPacketData_OracleRequestPacketDataPacket:
+	// 	packetAck, err := im.keeper.OnRecvOracleRequestPacketDataPacket(ctx, modulePacket, *packet.OracleRequestPacketDataPacket)
+	// 	if err != nil {
+	// 		ack = channeltypes.NewErrorAcknowledgement(err)
+	// 	} else {
+	// 		// Encode packet acknowledgment
+	// 		packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
+	// 		if err != nil {
+	// 			return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error()))
+	// 		}
+	// 		ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+	// 	}
+	// 	ctx.EventManager().EmitEvent(
+	// 		sdk.NewEvent(
+	// 			types.EventTypeOracleRequestPacketDataPacket,
+	// 			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+	// 			sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
+	// 		),
+	// 	)
+	// 	// this line is used by starport scaffolding # ibc/packet/module/recv
+	// default:
+	// 	err := fmt.Errorf("unrecognized %s packet type: %T", types.ModuleName, packet)
+	// 	return channeltypes.NewErrorAcknowledgement(err)
+	// }
+
+	// END SCAFFOLDING FROM IGNITE THAT WE MIGHT NOT NEED
+
 	// NOTE: acknowledgement will be written synchronously during IBC handler execution.
-	return ack
+	return channeltypes.NewResultAcknowledgement(nil)
 }
 
 // OnAcknowledgementPacket implements the IBCModule interface
