@@ -33,14 +33,16 @@ func (k msgServer) CreateEscrow(goCtx context.Context, msg *types.MsgCreateEscro
 	}
 
 	// Transfer the initiator's coins from their account to the escrow module
-	sendingCoins := escrow.InitiatorCoins
-	if escrow.Tips != nil {
-		sendingCoins = []sdk.Coin{escrow.InitiatorCoins[0], escrow.Tips[0]}
-	}
-
-	errSendCoins := k.bank.SendCoinsFromAccountToModule(ctx, initiator, types.ModuleName, sendingCoins)
+	errSendCoins := k.bank.SendCoinsFromAccountToModule(ctx, initiator, types.ModuleName, escrow.InitiatorCoins)
 	if errSendCoins != nil {
 		return nil, errors.Wrapf(errSendCoins, types.ErrInitiatorCannotPay.Error())
+	}
+
+	if escrow.Tips != nil {
+		errSendCoinsTips := k.bank.SendCoinsFromAccountToModule(ctx, initiator, types.ModuleName, escrow.Tips)
+		if errSendCoins != nil {
+			return nil, errors.Wrapf(errSendCoinsTips, types.ErrInitiatorCannotPay.Error())
+		}
 	}
 
 	// Append the newly created escrow to the store

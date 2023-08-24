@@ -39,6 +39,8 @@ func TestCreateEscrowTips(t *testing.T) {
 	// Expect the bank to receive payment from the creator
 	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{
 		{Denom: "token", Amount: sdk.NewInt(999)},
+	})
+	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{
 		{Denom: "token", Amount: sdk.NewInt(1)},
 	})
 
