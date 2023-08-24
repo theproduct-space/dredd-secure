@@ -31,16 +31,15 @@ func CmdCreateEscrow() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			argStartDate := args[2]
-			argEndDate := args[3]
-			argApiConditions := args[4]
+			argStartDate := args[3]
+			argEndDate := args[4]
+			argApiConditions := args[5]
 			
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
-
 			msg := types.NewMsgCreateEscrow(
 				clientCtx.GetFromAddress().String(),
 				argInitiatorCoins,
