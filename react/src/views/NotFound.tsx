@@ -1,6 +1,6 @@
 import Typography from "~baseComponents/Typography";
 
-const NotFound = (props: NotFoundProps) => {
+const NotFound = () => {
   return (
     <div className="h-screen w-100 bg-black bg-no-repeat bg-center bg-cover flex items-center justify-center">
       <Typography
