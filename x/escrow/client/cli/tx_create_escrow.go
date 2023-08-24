@@ -40,6 +40,7 @@ func CmdCreateEscrow() *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			msg := types.NewMsgCreateEscrow(
 				clientCtx.GetFromAddress().String(),
 				argInitiatorCoins,
