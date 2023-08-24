@@ -193,9 +193,15 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
                 *This Escrow has been cancelled.
               </Typography>
             )}
+            {contract?.status === "pending" && (
+              <Typography variant="body-small" className="pb-4">
+                *This Escrow is pending.
+              </Typography>
+            )}
             {address === contract?.initiator &&
               contract?.status != "closed" &&
-              contract?.status != "cancelled" && (
+              contract?.status != "cancelled" &&
+              contract?.status != "pending" && (
                 <Typography variant="body-small" className="pb-4">
                   *This is your contract.
                 </Typography>
@@ -340,8 +346,7 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
             </Card>
           </div>
           {contract &&
-            contract?.status != "closed" &&
-            contract?.status != "cancelled" &&
+            contract?.status === "open" &&
             address != "" &&
             address != contract?.initiator &&
             status != SectionState.WALLET_FAILURE && (
@@ -352,8 +357,7 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
               />
             )}
           {contract &&
-            contract?.status != "closed" &&
-            contract?.status != "cancelled" &&
+            contract?.status === "open" &&
             address != "" &&
             address != contract?.initiator &&
             status === SectionState.WALLET_FAILURE && (
@@ -364,9 +368,7 @@ function ReviewContractSection(props: ReviewContractSectionProps) {
                 walletFailure
               />
             )}
-          {contract?.status === "closed" ||
-            contract?.status === "cancelled" ||
-            contract?.status === "pending" ||
+          {contract?.status != "open" ||
             (address === contract?.initiator && <></>)}
         </ContentContainer>
       </div>
