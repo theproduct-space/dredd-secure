@@ -10,6 +10,7 @@ import Header from "~layouts/Header";
 import Dashboard from "~sections/Dashboard";
 import CreateContractPage from "~views/CreateContract";
 import Landing from "~views/Home";
+import NotFound from "~views/NotFound";
 import PaymentView from "~views/Payment";
 import ReviewContract from "~views/ReviewContract";
 
@@ -38,6 +39,11 @@ const otherPages = [
     label: "ViewEscrow",
     to: "/escrow/:id",
     view: <ReviewContract />,
+  },
+  {
+    label: "NotFound",
+    to: "*",
+    view: <NotFound />,
   },
 ];
 const allPages = otherPages.concat(home);

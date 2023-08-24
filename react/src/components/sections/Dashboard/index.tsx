@@ -29,6 +29,13 @@ const Dashboard = () => {
   // TODO: Get address from keplr or other wallet manager
   const { address } = useWallet();
 
+  const formatDate = (timestamp: string): string => {
+    const date = new Date(Number(timestamp) * 1000);
+    return `${String(date.getMonth() + 1).padStart(2, "0")}/${String(
+      date.getDate(),
+    ).padStart(2, "0")}/${date.getFullYear()}`;
+  };
+
   const tableHeaders = [
     {
       label: "contract id#",
@@ -89,7 +96,7 @@ const Dashboard = () => {
 
       return {
         id: escrow.id ?? -1,
-        deadline: escrow.endDate ?? "",
+        deadline: formatDate(escrow.endDate as string) ?? "",
         assetsInvolved: `${creatorCoin} <-> ${fulfillerCoin}`,
         status: escrow.status ?? "",
         initiator: escrow.initiator ?? "",

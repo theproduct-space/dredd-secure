@@ -41,7 +41,6 @@ const CreateContract = (props: CreateContractProps) => {
     Wanted,
     Tips,
   }
-  const [selectedTipAmount, setSelectedTipAmount] = useState<number>(0);
   const [modalToOpen, setModalToOpen] = useState<Modals | undefined>();
   const [selectedOwnToken, setSelectedOwnToken] = useState<IToken | undefined>(
     contract?.initiatorCoins,
@@ -72,35 +71,33 @@ const CreateContract = (props: CreateContractProps) => {
     }
     setModalToOpen(undefined);
   };
-  console.log(selectedOwnToken, selectedWantedToken, selectedTokenTips)
+  console.log(selectedOwnToken, selectedWantedToken, selectedTokenTips);
 
   const handleSelectedAmountChange = (amount: number, tokenType: TokenType) => {
-    //todo include tips
     let selectedToken: IToken | undefined;
-    let func;
-    if (tokenType === TokenType.Own) {
-      selectedToken = selectedOwnToken;
-      func = setSelectedOwnToken;
-    } else if (tokenType === TokenType.Wanted) {
-      selectedToken = selectedWantedToken;
-      func = setSelectedWantedToken;
-    } else if (tokenType === TokenType.Tips) {
-      selectedToken = selectedTokenTips;
-      func = setSelectedTokenTips;
+    let func: React.Dispatch<React.SetStateAction<IToken | undefined>>;
+
+    switch (tokenType) {
+      case TokenType.Own:
+        selectedToken = selectedOwnToken;
+        func = setSelectedOwnToken;
+        break;
+      case TokenType.Wanted:
+        selectedToken = selectedWantedToken;
+        func = setSelectedWantedToken;
+        break;
+      case TokenType.Tips:
+        selectedToken = selectedTokenTips;
+        func = setSelectedTokenTips;
+        break;
+      default:
+        return;
     }
 
     if (selectedToken && func) {
       const token: IToken = {
-        name: selectedToken?.name || "",
-        display: selectedToken?.display || "",
-        amount: selectedToken?.amount || 0,
+        ...selectedToken,
         selectedAmount: amount,
-        denom: selectedToken?.denom || "",
-        chain_name: selectedToken?.chain_name || "",
-        logos: selectedToken?.logos || {
-          svg: "",
-          png: "",
-        }
       };
       func(token);
     }
@@ -192,7 +189,6 @@ const CreateContract = (props: CreateContractProps) => {
                       {selectedOwnToken ? (
                         <TokenItem
                           token={selectedOwnToken}
-                          ownedToken={true}
                           showAmount={false}
                           selected={true}
                           input={true}
@@ -220,7 +216,6 @@ const CreateContract = (props: CreateContractProps) => {
                       {selectedWantedToken ? (
                         <TokenItem
                           token={selectedWantedToken}
-                          ownedToken={false}
                           showAmount={false}
                           selected={true}
                           input={true}
@@ -249,7 +244,8 @@ const CreateContract = (props: CreateContractProps) => {
                 onClick={() => setModalToOpen(Modals.Tips)}
                 selectedAmount={selectedTokenTips?.selectedAmount || 0}
                 setSelectedAmount={(amount) =>
-                  handleSelectedAmountChange(amount, TokenType.Tips)}
+                  handleSelectedAmountChange(amount, TokenType.Tips)
+                }
               />
             </Card>
           </div>

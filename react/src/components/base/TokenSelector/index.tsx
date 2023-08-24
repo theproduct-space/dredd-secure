@@ -76,6 +76,7 @@ const TokenSelector = (props: TokenSelectorProps) => {
         <TokenItem
           key={`token-selector-${index}`}
           token={token}
+          tokenType="Own"
           onClick={onSave}
           selected={selectedToken?.denom === token.denom}
           ownedToken={ownedToken}

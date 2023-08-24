@@ -25,7 +25,7 @@ interface PaymentSectionProps {
 
 const PaymentSection = (props: PaymentSectionProps) => {
   const { contract } = props;
-  console.log("contract", contract)
+  console.log("contract", contract);
   const { address, offlineSigner } = useWallet();
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
     const request = messageClient.sendMsgCreateEscrow({
       value: {
         creator: address,
-        ...c
+        ...c,
       },
     });
 
@@ -112,7 +112,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
                           </Typography>
                           <Typography variant="h6" className="condition-value">
                             {condition.name === "startDate" ||
-                              condition.name === "endDate"
+                            condition.name === "endDate"
                               ? formatDate(condition.value as string)
                               : condition.value}
                           </Typography>
@@ -177,7 +177,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
                 <Typography variant="h6" className="font-revalia pb-8">
                   You are exchanging
                 </Typography>
-                <div className="flex justify-between items-center gap-4">
+                <div className="flex justify-between items-center gap-4 min-h-fit">
                   <TokenPreview
                     token={contract.initiatorCoins}
                     tokenType="initiator"
@@ -197,6 +197,7 @@ const PaymentSection = (props: PaymentSectionProps) => {
             handleConfirmExchange={handleConfirmExchange}
             contract={ContractToEscrow(contract)}
             paymentInterface
+            token={contract.initiatorCoins}
           />
         </ContentContainer>
       </div>
