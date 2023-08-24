@@ -1,8 +1,10 @@
+import react, { useEffect, useState } from "react";
 // dredd-secure-client-ts Imports
+import { Checkbox } from "@mui/material";
+import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
 
 // React import
 import { Coin } from "dredd-secure-client-ts/cosmos.bank.v1beta1/types/cosmos/base/v1beta1/coin";
-import { EscrowEscrow } from "dredd-secure-client-ts/dreddsecure.escrow/rest";
 import Button from "~baseComponents/Button";
 import Card from "~baseComponents/Card";
 import TokenPreview from "~baseComponents/TokenPreview";
@@ -16,10 +18,22 @@ export interface SideCardProps {
   contract: EscrowEscrow;
   paymentInterface?: boolean;
   token?: IToken;
+  walletFailure?: boolean;
 }
 const SideCard = (props: SideCardProps) => {
-  const { handleConfirmExchange, contract, paymentInterface, token } = props;
+  const {
+    handleConfirmExchange,
+    contract,
+    paymentInterface,
+    token,
+    walletFailure,
+  } = props;
   const isPaymentInterface = "tips" in contract && paymentInterface;
+  const [checked, setChecked] = useState<boolean>(false);
+  const handleCheck = () => {
+    setChecked(!checked);
+  };
+  console.log("contract", contract);
   return (
     <>
       <Card className="w-4/12 h-fit">
@@ -47,7 +61,10 @@ const SideCard = (props: SideCardProps) => {
                     >
                       Donation to dreddsecure
                     </Typography>
-                    <TokenPreview token={CoinToIToken(contract.tips[0])} text="" />
+                    <TokenPreview
+                      token={CoinToIToken(contract.tips[0])}
+                      text=""
+                    />
                   </>
                 ) : (
                   <>
@@ -93,25 +110,54 @@ const SideCard = (props: SideCardProps) => {
                 >
                   What You're Offering
                 </Typography>
-                {/*todo add token preview*/}
                 {token && (
                   <TokenPreview token={token} tokenType="fulfiller" text="" />
                 )}
               </div>
-              {/*todo add agreement checkbox*/}
             </div>
           )}
-          {isPaymentInterface ? (
-            <Button
-              text="Deploy Contract"
-              className="w-full"
-              onClick={handleConfirmExchange}
-            />
-          ) : (
+          {paymentInterface && (
+            <div>
+              <div className="flex items-start">
+                <Checkbox checked={checked} onChange={handleCheck} />
+                <Typography variant="small" className="pb-2">
+                  *By checking this box, you are agreeing to this contract and
+                  your assets will be exchanged upon review of this submission
+                </Typography>
+              </div>
+              {checked ? (
+                <Button
+                  text="Deploy Contract"
+                  className="w-full"
+                  onClick={handleConfirmExchange}
+                />
+              ) : (
+                <Button
+                  text="Deploy Contract"
+                  className="w-full"
+                  onClick={handleConfirmExchange}
+                  disabled
+                />
+              )}
+            </div>
+          )}
+          {walletFailure && !paymentInterface && (
+            <div>
+              <Typography variant="body-small" className="text-red-500">
+                *Not enough funds in your wallet to complete this transaction
+              </Typography>
+              <Button
+                text="Confirm Exchange"
+                className="w-full"
+                disabled
+                onClick={handleConfirmExchange}
+              />
+            </div>
+          )}
+          {!paymentInterface && !walletFailure && (
             <Button
               text="Confirm Exchange"
               className="w-full"
-              //todo pass handle confirmation instead
               onClick={handleConfirmExchange}
             />
           )}

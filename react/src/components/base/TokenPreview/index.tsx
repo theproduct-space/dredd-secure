@@ -32,9 +32,16 @@ const TokenPreview = (props: TokenPreviewProps) => {
               {logoUrl && <img src={logoUrl} alt="token" />}
             </div>
             <div className="flex flex-col align-start">
-              <Typography variant="body" className="text-white-1000">
-                {token?.selectedAmount ?? 0}
-              </Typography>
+              {token?.selectedAmount || token?.amount ? (
+                <Typography variant="body" className="text-white-1000">
+                  {token?.selectedAmount || token?.amount}
+                </Typography>
+              ) : (
+                <Typography variant="body-small" className="text-white-500">
+                  No asset selected
+                </Typography>
+              )}
+
               <Typography variant="body" className="uppercase text-left">
                 {token?.display}
               </Typography>

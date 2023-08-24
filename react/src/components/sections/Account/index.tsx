@@ -100,7 +100,7 @@ function Account() {
       {wallet ? (
         <button
           className={
-            "shadow-std acc-dd-btn flex items-center p-3 rounded-lg mr-3 hover:bg-gray-100 text-sm font-bold " +
+            "shadow-std acc-dd-btn flex items-center p-3 rounded-lg mr-3 hover:bg-gray-100 text-sm" +
             (state.accountDropdown ? "active" : "")
           }
           onClick={() => {
@@ -119,6 +119,7 @@ function Account() {
         <IgntButton
           aria-label="Connect wallet"
           type="primary"
+          className="bg-orange transition duration-300 ease-in-out hover:-translate-y-0.5 active:-translate-y-0.5 text-white-1000 py-3 px-5 rounded flex gap-3 items-center justify-center sm:py-3 sm:px-6 "
           onClick={() => {
             setState((oldState) => ({ ...oldState, connectWalletModal: true }));
           }}
