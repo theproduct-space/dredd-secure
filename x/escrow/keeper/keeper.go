@@ -122,7 +122,6 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
     // Find the oracleId from the clientID
     oracleId := strings.Split(res.ClientID, "_")[0]
 
-
     switch (oracleId) {
 		case constants.OracleCryptoCurrencyPriceScriptId: 
 			// Decode the result from the response packet.

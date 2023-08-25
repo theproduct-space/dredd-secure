@@ -20,7 +20,7 @@ func CmdSendOracleRequestPacketData() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "send-oracle-request-packet-data [src-port] [src-channel] [oracle-script-id] [calldata] [ask-count] [min-count] [fee-limit] [prepare-gas] [execute-gas]",
 		Short: "Send a OracleRequestPacketData over IBC",
-		Args:  cobra.ExactArgs(10),
+		Args:  cobra.ExactArgs(9),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -35,8 +35,8 @@ func CmdSendOracleRequestPacketData() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			argCalldata := []byte(args[4])
-			argAskCount, err := cast.ToUint64E(args[5])
+			argCalldata := []byte(args[3])
+			argAskCount, err := cast.ToUint64E(args[4])
 			if err != nil {
 				return err
 			}

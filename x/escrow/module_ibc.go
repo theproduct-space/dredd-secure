@@ -2,6 +2,7 @@ package escrow
 
 import (
 	"fmt"
+	"strings"
 
 	"dredd-secure/x/escrow/keeper"
 	"dredd-secure/x/escrow/types"
@@ -43,6 +44,10 @@ func (im IBCModule) OnChanOpenInit(
 	boundPort := im.keeper.GetPort(ctx)
 	if boundPort != portID {
 		return "", sdkerrors.Wrapf(porttypes.ErrInvalidPort, "invalid port: %s, expected %s", portID, boundPort)
+	}
+
+	if strings.TrimSpace(version) == "" {
+		version = types.Version
 	}
 
 	if version != types.Version {
