@@ -13,6 +13,7 @@ func DefaultGenesis() *GenesisState {
 		EscrowList: []Escrow{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
+		PendingEscrows: []uint64{},
 	}
 }
 
@@ -20,16 +21,16 @@ func DefaultGenesis() *GenesisState {
 // failure.
 func (gs GenesisState) Validate() error {
 	// Check for duplicated ID in escrow
-	escrowIdMap := make(map[uint64]bool)
+	escrowIDMap := make(map[uint64]bool)
 	escrowCount := gs.GetEscrowCount()
 	for _, elem := range gs.EscrowList {
-		if _, ok := escrowIdMap[elem.Id]; ok {
+		if _, ok := escrowIDMap[elem.Id]; ok {
 			return fmt.Errorf("duplicated id for escrow")
 		}
 		if elem.Id >= escrowCount {
 			return fmt.Errorf("escrow id should be lower or equal than the last id")
 		}
-		escrowIdMap[elem.Id] = true
+		escrowIDMap[elem.Id] = true
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

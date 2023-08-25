@@ -21,4 +21,7 @@ func KeyPrefix(p string) []byte {
 const (
 	EscrowKey      = "Escrow/value/"
 	EscrowCountKey = "Escrow/count/"
+	PendingEscrowKey = "Escrow/pending/"
+	ExpiringEscrowKey = "Escrow/expiring/"
+	LastExecsKey = "Escrow/lastExec/"
 )

@@ -1,10 +1,10 @@
 package simulation
 
 import (
-	"math/rand"
-
 	"dredd-secure/x/escrow/keeper"
 	"dredd-secure/x/escrow/types"
+	"math/rand"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"

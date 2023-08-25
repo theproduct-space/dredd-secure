@@ -2,31 +2,30 @@ package types
 
 import (
 	"cosmossdk.io/errors"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const TypeMsgFulfillEscrow = "fulfill_escrow"
+const TypeMsgOptOutEscrow = "opt_out_escrow"
 
-var _ sdk.Msg = &MsgFulfillEscrow{}
+var _ sdk.Msg = &MsgOptOutEscrow{}
 
-func NewMsgFulfillEscrow(creator string, id uint64) *MsgFulfillEscrow {
-	return &MsgFulfillEscrow{
+func NewMsgOptOutEscrow(creator string, id uint64) *MsgOptOutEscrow {
+	return &MsgOptOutEscrow{
 		Creator: creator,
 		Id:      id,
 	}
 }
 
-func (msg *MsgFulfillEscrow) Route() string {
+func (msg *MsgOptOutEscrow) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgFulfillEscrow) Type() string {
-	return TypeMsgFulfillEscrow
+func (msg *MsgOptOutEscrow) Type() string {
+	return TypeMsgOptOutEscrow
 }
 
-func (msg *MsgFulfillEscrow) GetSigners() []sdk.AccAddress {
+func (msg *MsgOptOutEscrow) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -34,12 +33,12 @@ func (msg *MsgFulfillEscrow) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgFulfillEscrow) GetSignBytes() []byte {
+func (msg *MsgOptOutEscrow) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgFulfillEscrow) ValidateBasic() error {
+func (msg *MsgOptOutEscrow) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return errors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

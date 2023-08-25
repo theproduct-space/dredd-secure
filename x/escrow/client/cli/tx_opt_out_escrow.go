@@ -13,10 +13,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdFulfillEscrow() *cobra.Command {
+func CmdOptOutEscrow() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "fulfill-escrow [id]",
-		Short: "Broadcast message fulfill_escrow",
+		Use:   "opt-out-escrow [id]",
+		Short: "Broadcast message opt_out_escrow",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argID, err := cast.ToUint64E(args[0])
@@ -29,7 +29,7 @@ func CmdFulfillEscrow() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgFulfillEscrow(
+			msg := types.NewMsgOptOutEscrow(
 				clientCtx.GetFromAddress().String(),
 				argID,
 			)

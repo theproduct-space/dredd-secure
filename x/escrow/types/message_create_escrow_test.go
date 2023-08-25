@@ -1,9 +1,8 @@
 package types
 
 import (
-	"testing"
-
 	"dredd-secure/testutil/sample"
+	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -21,28 +20,30 @@ func TestMsgCreateEscrow_ValidateBasic(t *testing.T) {
 			msg: MsgCreateEscrow{
 				Creator: "invalid_address",
 				InitiatorCoins: []sdk.Coin{{
-					Denom: "token",
+					Denom:  "token",
 					Amount: sdk.NewInt(1000),
 				}},
 				FulfillerCoins: []sdk.Coin{{
-					Denom: "stake",
+					Denom:  "stake",
 					Amount: sdk.NewInt(9000),
 				}},
-				StartDate:      "1188148578",
-				EndDate:        "2188148578",
+				Tips: nil,
+				StartDate: "1188148578",
+				EndDate:   "2188148578",
 			},
 			err: sdkerrors.ErrInvalidAddress,
-		}, 
+		},
 		{
 			name: "invalid request, missing IniatiatorCoins",
 			msg: MsgCreateEscrow{
 				Creator: sample.AccAddress(),
 				FulfillerCoins: []sdk.Coin{{
-					Denom: "stake",
+					Denom:  "stake",
 					Amount: sdk.NewInt(9000),
 				}},
-				StartDate:      "1188148578",
-				EndDate:        "2188148578",
+				Tips: nil,
+				StartDate: "1188148578",
+				EndDate:   "2188148578",
 			},
 			err: sdkerrors.ErrInvalidRequest,
 		},
@@ -51,28 +52,30 @@ func TestMsgCreateEscrow_ValidateBasic(t *testing.T) {
 			msg: MsgCreateEscrow{
 				Creator: sample.AccAddress(),
 				InitiatorCoins: []sdk.Coin{{
-					Denom: "token",
+					Denom:  "token",
 					Amount: sdk.NewInt(1000),
 				}},
-				StartDate:      "1188148578",
-				EndDate:        "2188148578",
+				Tips: nil,
+				StartDate: "1188148578",
+				EndDate:   "2188148578",
 			},
 			err: sdkerrors.ErrInvalidRequest,
-		}, 
+		},
 		{
 			name: "invalid InitiatorCoins denom",
 			msg: MsgCreateEscrow{
 				Creator: sample.AccAddress(),
 				InitiatorCoins: []sdk.Coin{{
-					Denom: "*this_is_an_invalid_denom*",
+					Denom:  "*this_is_an_invalid_denom*",
 					Amount: sdk.NewInt(1000),
 				}},
 				FulfillerCoins: []sdk.Coin{{
-					Denom: "stake",
+					Denom:  "stake",
 					Amount: sdk.NewInt(9000),
 				}},
-				StartDate:      "1188148578",
-				EndDate:        "2188148578",
+				Tips: nil,
+				StartDate: "1188148578",
+				EndDate:   "2188148578",
 			},
 			err: sdkerrors.ErrInvalidCoins,
 		},
@@ -81,15 +84,16 @@ func TestMsgCreateEscrow_ValidateBasic(t *testing.T) {
 			msg: MsgCreateEscrow{
 				Creator: sample.AccAddress(),
 				InitiatorCoins: []sdk.Coin{{
-					Denom: "token",
+					Denom:  "token",
 					Amount: sdk.NewInt(1000),
 				}},
 				FulfillerCoins: []sdk.Coin{{
-					Denom: "*this_is_an_invalid_denom*",
+					Denom:  "*this_is_an_invalid_denom*",
 					Amount: sdk.NewInt(9000),
 				}},
-				StartDate:      "1188148578",
-				EndDate:        "2188148578",
+				Tips: nil,
+				StartDate: "1188148578",
+				EndDate:   "2188148578",
 			},
 			err: sdkerrors.ErrInvalidCoins,
 		},
@@ -98,15 +102,16 @@ func TestMsgCreateEscrow_ValidateBasic(t *testing.T) {
 			msg: MsgCreateEscrow{
 				Creator: sample.AccAddress(),
 				InitiatorCoins: []sdk.Coin{{
-					Denom: "token",
+					Denom:  "token",
 					Amount: sdk.NewInt(-1000),
 				}},
 				FulfillerCoins: []sdk.Coin{{
-					Denom: "stake",
+					Denom:  "stake",
 					Amount: sdk.NewInt(9000),
 				}},
-				StartDate:      "1188148578",
-				EndDate:        "2188148578",
+				Tips: nil,
+				StartDate: "1188148578",
+				EndDate:   "2188148578",
 			},
 			err: sdkerrors.ErrInvalidCoins,
 		},
@@ -115,15 +120,16 @@ func TestMsgCreateEscrow_ValidateBasic(t *testing.T) {
 			msg: MsgCreateEscrow{
 				Creator: sample.AccAddress(),
 				InitiatorCoins: []sdk.Coin{{
-					Denom: "token",
+					Denom:  "token",
 					Amount: sdk.NewInt(1000),
 				}},
 				FulfillerCoins: []sdk.Coin{{
-					Denom: "stake",
+					Denom:  "stake",
 					Amount: sdk.NewInt(-9000),
 				}},
-				StartDate:      "1188148578",
-				EndDate:        "2188148578",
+				Tips: nil,
+				StartDate: "1188148578",
+				EndDate:   "2188148578",
 			},
 			err: sdkerrors.ErrInvalidCoins,
 		},
@@ -132,15 +138,16 @@ func TestMsgCreateEscrow_ValidateBasic(t *testing.T) {
 			msg: MsgCreateEscrow{
 				Creator: sample.AccAddress(),
 				InitiatorCoins: []sdk.Coin{{
-					Denom: "token",
+					Denom:  "token",
 					Amount: sdk.NewInt(1000),
 				}},
 				FulfillerCoins: []sdk.Coin{{
-					Denom: "stake",
+					Denom:  "stake",
 					Amount: sdk.NewInt(9000),
 				}},
-				StartDate:      "1188148578",
-				EndDate:        "1688148884",
+				Tips: nil,
+				StartDate: "1188148578",
+				EndDate:   "1688148884",
 			},
 			err: sdkerrors.ErrInvalidRequest,
 		},
@@ -149,15 +156,16 @@ func TestMsgCreateEscrow_ValidateBasic(t *testing.T) {
 			msg: MsgCreateEscrow{
 				Creator: sample.AccAddress(),
 				InitiatorCoins: []sdk.Coin{{
-					Denom: "token",
+					Denom:  "token",
 					Amount: sdk.NewInt(1000),
 				}},
 				FulfillerCoins: []sdk.Coin{{
-					Denom: "stake",
+					Denom:  "stake",
 					Amount: sdk.NewInt(9000),
 				}},
-				StartDate:      "1888148578",
-				EndDate:        "1788148978",
+				Tips: nil,
+				StartDate: "1888148578",
+				EndDate:   "1788148978",
 			},
 			err: sdkerrors.ErrInvalidRequest,
 		},
@@ -166,15 +174,16 @@ func TestMsgCreateEscrow_ValidateBasic(t *testing.T) {
 			msg: MsgCreateEscrow{
 				Creator: sample.AccAddress(),
 				InitiatorCoins: []sdk.Coin{{
-					Denom: "token",
+					Denom:  "token",
 					Amount: sdk.NewInt(1000),
 				}},
 				FulfillerCoins: []sdk.Coin{{
-					Denom: "stake",
+					Denom:  "stake",
 					Amount: sdk.NewInt(9000),
 				}},
-				StartDate:      "1588148578",
-				EndDate:        "2788148978",
+				Tips: nil,
+				StartDate: "1588148578",
+				EndDate:   "2788148978",
 			},
 		},
 	}

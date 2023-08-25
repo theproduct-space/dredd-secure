@@ -1,7 +1,9 @@
 package cli
 
 import (
+	"dredd-secure/x/escrow/types"
 	"fmt"
+
 	// "strings"
 
 	"github.com/spf13/cobra"
@@ -9,8 +11,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	// "github.com/cosmos/cosmos-sdk/client/flags"
 	// sdk "github.com/cosmos/cosmos-sdk/types"
-
-	"dredd-secure/x/escrow/types"
 )
 
 // GetQueryCmd returns the cli query commands for this module
@@ -28,6 +28,7 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdListEscrow())
 	cmd.AddCommand(CmdShowEscrow())
 	cmd.AddCommand(CmdEscrowsByAddress())
+	cmd.AddCommand(CmdPendingEscrows())
 
 	// this line is used by starport scaffolding # 1
 

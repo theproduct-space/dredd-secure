@@ -1,28 +1,30 @@
-package types
+package types_test
 
 import (
 	"dredd-secure/testutil/sample"
+	"dredd-secure/x/escrow/types"
 	"testing"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgFulfillEscrow_ValidateBasic(t *testing.T) {
+func TestMsgOptOutEscrow_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgFulfillEscrow
+		msg  types.MsgOptOutEscrow
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgFulfillEscrow{
+			msg: types.MsgOptOutEscrow{
 				Creator: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgFulfillEscrow{
+			msg: types.MsgOptOutEscrow{
 				Creator: sample.AccAddress(),
 			},
 		},

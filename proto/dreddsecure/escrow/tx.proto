@@ -12,13 +12,16 @@ service Msg {
   rpc CreateEscrow  (MsgCreateEscrow ) returns (MsgCreateEscrowResponse );
   rpc CancelEscrow  (MsgCancelEscrow ) returns (MsgCancelEscrowResponse );
   rpc FulfillEscrow (MsgFulfillEscrow) returns (MsgFulfillEscrowResponse);
+  rpc OptOutEscrow  (MsgOptOutEscrow ) returns (MsgOptOutEscrowResponse);
 }
 message MsgCreateEscrow {
            string                   creator        = 1;
   repeated cosmos.base.v1beta1.Coin initiatorCoins = 2 [(gogoproto.nullable) = false];
   repeated cosmos.base.v1beta1.Coin fulfillerCoins = 3 [(gogoproto.nullable) = false];
-           string                   startDate      = 4;
-           string                   endDate        = 5;
+  repeated cosmos.base.v1beta1.Coin tips = 4 [(gogoproto.nullable) = false];
+           string                   startDate      = 5;
+           string                   endDate        = 6;
+           string                   apiConditions  = 7;
 }
 
 message MsgCreateEscrowResponse {}
@@ -37,3 +40,9 @@ message MsgFulfillEscrow {
 
 message MsgFulfillEscrowResponse {}
 
+message MsgOptOutEscrow {
+  string creator = 1;
+  uint64 id      = 2;
+}
+
+message MsgOptOutEscrowResponse {}

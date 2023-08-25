@@ -34982,9 +34982,29 @@ paths:
                           custom method
 
                           signatures required by gogoproto.
+                    tips:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          denom:
+                            type: string
+                          amount:
+                            type: string
+                        description: >-
+                          Coin defines a token with a denomination and an
+                          amount.
+
+
+                          NOTE: The amount field is an Int which implements the
+                          custom method
+
+                          signatures required by gogoproto.
                     startDate:
                       type: string
                     endDate:
+                      type: string
+                    ApiConditions:
                       type: string
               pagination:
                 type: object
@@ -35147,9 +35167,28 @@ paths:
                         custom method
 
                         signatures required by gogoproto.
+                  tips:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        denom:
+                          type: string
+                        amount:
+                          type: string
+                      description: >-
+                        Coin defines a token with a denomination and an amount.
+
+
+                        NOTE: The amount field is an Int which implements the
+                        custom method
+
+                        signatures required by gogoproto.
                   startDate:
                     type: string
                   endDate:
+                    type: string
+                  ApiConditions:
                     type: string
         default:
           description: An unexpected error response.
@@ -35237,9 +35276,29 @@ paths:
                           custom method
 
                           signatures required by gogoproto.
+                    tips:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          denom:
+                            type: string
+                          amount:
+                            type: string
+                        description: >-
+                          Coin defines a token with a denomination and an
+                          amount.
+
+
+                          NOTE: The amount field is an Int which implements the
+                          custom method
+
+                          signatures required by gogoproto.
                     startDate:
                       type: string
                     endDate:
+                      type: string
+                    ApiConditions:
                       type: string
               pagination:
                 type: object
@@ -35366,6 +35425,40 @@ paths:
             description: >-
               QueryParamsResponse is response type for the Query/Params RPC
               method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /dredd-secure/escrow/pending_escrows:
+    get:
+      operationId: DreddsecureEscrowPendingEscrows
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              ids:
+                type: array
+                items:
+                  type: string
+                  format: uint64
         default:
           description: An unexpected error response.
           schema:
@@ -71034,15 +71127,33 @@ definitions:
 
             NOTE: The amount field is an Int which implements the custom method
             signatures required by gogoproto.
+      tips:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            amount:
+              type: string
+          description: |-
+            Coin defines a token with a denomination and an amount.
+
+            NOTE: The amount field is an Int which implements the custom method
+            signatures required by gogoproto.
       startDate:
         type: string
       endDate:
+        type: string
+      ApiConditions:
         type: string
   dreddsecure.escrow.MsgCancelEscrowResponse:
     type: object
   dreddsecure.escrow.MsgCreateEscrowResponse:
     type: object
   dreddsecure.escrow.MsgFulfillEscrowResponse:
+    type: object
+  dreddsecure.escrow.MsgOptOutEscrowResponse:
     type: object
   dreddsecure.escrow.Params:
     type: object
@@ -71098,9 +71209,28 @@ definitions:
                   method
 
                   signatures required by gogoproto.
+            tips:
+              type: array
+              items:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+                description: >-
+                  Coin defines a token with a denomination and an amount.
+
+
+                  NOTE: The amount field is an Int which implements the custom
+                  method
+
+                  signatures required by gogoproto.
             startDate:
               type: string
             endDate:
+              type: string
+            ApiConditions:
               type: string
       pagination:
         type: object
@@ -71179,9 +71309,28 @@ definitions:
                   method
 
                   signatures required by gogoproto.
+            tips:
+              type: array
+              items:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+                description: >-
+                  Coin defines a token with a denomination and an amount.
+
+
+                  NOTE: The amount field is an Int which implements the custom
+                  method
+
+                  signatures required by gogoproto.
             startDate:
               type: string
             endDate:
+              type: string
+            ApiConditions:
               type: string
       pagination:
         type: object
@@ -71258,9 +71407,28 @@ definitions:
                 method
 
                 signatures required by gogoproto.
+          tips:
+            type: array
+            items:
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
+              description: >-
+                Coin defines a token with a denomination and an amount.
+
+
+                NOTE: The amount field is an Int which implements the custom
+                method
+
+                signatures required by gogoproto.
           startDate:
             type: string
           endDate:
+            type: string
+          ApiConditions:
             type: string
   dreddsecure.escrow.QueryParamsResponse:
     type: object
@@ -71269,6 +71437,14 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  dreddsecure.escrow.QueryPendingEscrowsResponse:
+    type: object
+    properties:
+      ids:
+        type: array
+        items:
+          type: string
+          format: uint64
   ibc.applications.interchain_accounts.controller.v1.MsgRegisterInterchainAccountResponse:
     type: object
     properties:

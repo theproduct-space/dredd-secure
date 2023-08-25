@@ -1,19 +1,21 @@
 package cli
 
 import (
-	"dredd-secure/x/escrow/types"
+	"strconv"
 
+	"dredd-secure/x/escrow/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
 )
 
-func CmdQueryParams() *cobra.Command {
+var _ = strconv.Itoa(0)
+
+func CmdPendingEscrows() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "params",
-		Short: "shows the parameters of the module",
-		Args:  cobra.NoArgs,
-		RunE: func(cmd *cobra.Command, args []string) error {
+		Use:   "pending-escrows",
+		Short: "Query pending-escrows",
+		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
@@ -21,7 +23,9 @@ func CmdQueryParams() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			res, err := queryClient.Params(cmd.Context(), &types.QueryParamsRequest{})
+			params := &types.QueryPendingEscrowsRequest{}
+
+			res, err := queryClient.PendingEscrows(cmd.Context(), params)
 			if err != nil {
 				return err
 			}
@@ -30,6 +34,7 @@ func CmdQueryParams() *cobra.Command {
 		},
 	}
 
+	flags.AddPaginationFlagsToCmd(cmd, cmd.Use)
 	flags.AddQueryFlagsToCmd(cmd)
 
 	return cmd
