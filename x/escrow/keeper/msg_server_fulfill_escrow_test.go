@@ -36,7 +36,12 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 	k.SetOraclePrice(ctx, types.OraclePrice{
 		Symbol: "BTC",
 		ResolveTime: "120",
-		Price: "25983000000000",
+		Price: "25983000000000", // $25983 
+	})
+	k.SetOraclePrice(ctx, types.OraclePrice{
+		Symbol: "ATOM",
+		ResolveTime: "140",
+		Price: "7000000000", // $7
 	})
 
 	// Expect the bank to receive payment from the creator
@@ -63,7 +68,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		},
 		StartDate:     "1588148578",
 		EndDate:       "2788148978",
-		OracleConditions: `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","1","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":100},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
+		OracleConditions: `[{"label":"Oracle Token Price","name":"oracle-token-price","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"BTC"}},{"label":"Oracle Token Price","name":"oracle-token-price","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"ATOM"}}]`,
 	})
 	require.Nil(tb, errFirstCreate)
 
@@ -266,7 +271,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		},
 		StartDate:     "1588148578",
 		EndDate:       "2788148978",
-		OracleConditions: `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","1","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
+		OracleConditions: `[{"label":"Oracle Token Price","name":"oracle-token-price","type":"OracleCondition","subConditions":[{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":0},{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"BTC"}},{"label":"Oracle Token Price","name":"oracle-token-price","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"ATOM"}}]`,
 	})
 	require.Nil(tb, errNinthCreate)
 
@@ -293,7 +298,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		},
 		StartDate:     "1588148578",
 		EndDate:       "2788148978",
-		OracleConditions: `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"OracleCondition","subConditions":[{"conditionType":"eq","dataType":"text","name":"slug","path":["data","1","slug"],"label":"Token Name","value":"bitcoin"},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":10},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
+		OracleConditions: `[{"label":"Oracle Token Price","name":"oracle-token-price","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"BTC"}},{"label":"Oracle Token Price","name":"oracle-token-price","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"ATOM"}}]`,
 	})
 	require.Nil(tb, errTenthCreate)
 

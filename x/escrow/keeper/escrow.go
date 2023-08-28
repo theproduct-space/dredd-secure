@@ -173,7 +173,7 @@ func (k Keeper) ValidateOracleCondition(ctx sdk.Context, escrow types.Escrow) bo
 							return false
 						}
 					}
-				// TODO, configure new condition options !
+				// TODO, configure new oracle condition options !
 			default:
 				fmt.Println("Error, this condition is not configured on the module.")
 				return false
