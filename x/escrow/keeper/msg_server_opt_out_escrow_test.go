@@ -51,9 +51,10 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Denom:  "stake",
 			Amount: sdk.NewInt(9000),
 		}},
-		StartDate:     strconv.FormatInt(now.Unix()+60, 10),
-		EndDate:       "2788148978",
-		OracleConditions: "[]",
+		Tips: nil,
+		StartDate: strconv.FormatInt(now.Unix()+60, 10),
+		EndDate:   "2788148978",
+		OracleConditions: "",
 	})
 
 	if err != nil {
@@ -92,9 +93,10 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Denom:  "stake",
 			Amount: sdk.NewInt(900),
 		}},
-		StartDate:     "1588148578",
-		EndDate:       "2788148978",
-		OracleConditions: "[]",
+		Tips: nil,
+		StartDate: "1588148578",
+		EndDate:   "2788148978",
+		OracleConditions: "",
 	})
 
 	if err2 != nil {

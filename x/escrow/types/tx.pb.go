@@ -33,9 +33,10 @@ type MsgCreateEscrow struct {
 	Creator          string       `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	InitiatorCoins   []types.Coin `protobuf:"bytes,2,rep,name=initiatorCoins,proto3" json:"initiatorCoins"`
 	FulfillerCoins   []types.Coin `protobuf:"bytes,3,rep,name=fulfillerCoins,proto3" json:"fulfillerCoins"`
-	StartDate        string       `protobuf:"bytes,4,opt,name=startDate,proto3" json:"startDate,omitempty"`
-	EndDate          string       `protobuf:"bytes,5,opt,name=endDate,proto3" json:"endDate,omitempty"`
-	OracleConditions string       `protobuf:"bytes,6,opt,name=OracleConditions,proto3" json:"OracleConditions,omitempty"`
+	Tips             []types.Coin `protobuf:"bytes,4,rep,name=tips,proto3" json:"tips"`
+	StartDate        string       `protobuf:"bytes,5,opt,name=startDate,proto3" json:"startDate,omitempty"`
+	EndDate          string       `protobuf:"bytes,6,opt,name=endDate,proto3" json:"endDate,omitempty"`
+	OracleConditions string       `protobuf:"bytes,7,opt,name=OracleConditions,proto3" json:"OracleConditions,omitempty"`
 }
 
 func (m *MsgCreateEscrow) Reset()         { *m = MsgCreateEscrow{} }
@@ -88,6 +89,13 @@ func (m *MsgCreateEscrow) GetInitiatorCoins() []types.Coin {
 func (m *MsgCreateEscrow) GetFulfillerCoins() []types.Coin {
 	if m != nil {
 		return m.FulfillerCoins
+	}
+	return nil
+}
+
+func (m *MsgCreateEscrow) GetTips() []types.Coin {
+	if m != nil {
+		return m.Tips
 	}
 	return nil
 }
@@ -893,21 +901,35 @@ func (m *MsgCreateEscrow) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.OracleConditions)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.OracleConditions)))
 		i--
-		dAtA[i] = 0x32
+		dAtA[i] = 0x3a
 	}
 	if len(m.EndDate) > 0 {
 		i -= len(m.EndDate)
 		copy(dAtA[i:], m.EndDate)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.EndDate)))
 		i--
-		dAtA[i] = 0x2a
+		dAtA[i] = 0x32
 	}
 	if len(m.StartDate) > 0 {
 		i -= len(m.StartDate)
 		copy(dAtA[i:], m.StartDate)
 		i = encodeVarintTx(dAtA, i, uint64(len(m.StartDate)))
 		i--
-		dAtA[i] = 0x22
+		dAtA[i] = 0x2a
+	}
+	if len(m.Tips) > 0 {
+		for iNdEx := len(m.Tips) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Tips[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTx(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x22
+		}
 	}
 	if len(m.FulfillerCoins) > 0 {
 		for iNdEx := len(m.FulfillerCoins) - 1; iNdEx >= 0; iNdEx-- {
@@ -1302,6 +1324,12 @@ func (m *MsgCreateEscrow) Size() (n int) {
 			n += 1 + l + sovTx(uint64(l))
 		}
 	}
+	if len(m.Tips) > 0 {
+		for _, e := range m.Tips {
+			l = e.Size()
+			n += 1 + l + sovTx(uint64(l))
+		}
+	}
 	l = len(m.StartDate)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
@@ -1600,6 +1628,40 @@ func (m *MsgCreateEscrow) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Tips", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Tips = append(m.Tips, types.Coin{})
+			if err := m.Tips[len(m.Tips)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field StartDate", wireType)
 			}
 			var stringLen uint64
@@ -1630,7 +1692,7 @@ func (m *MsgCreateEscrow) Unmarshal(dAtA []byte) error {
 			}
 			m.StartDate = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 5:
+		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field EndDate", wireType)
 			}
@@ -1662,7 +1724,7 @@ func (m *MsgCreateEscrow) Unmarshal(dAtA []byte) error {
 			}
 			m.EndDate = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 6:
+		case 7:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OracleConditions", wireType)
 			}

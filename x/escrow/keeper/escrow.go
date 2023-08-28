@@ -515,18 +515,17 @@ func (k Keeper) SetStatus(ctx sdk.Context, escrow *types.Escrow, newStatus strin
 }
 
 // Getter for the last execs in the store
-func (k Keeper) GetLastExecs(ctx sdk.Context) map[string]string {
-	var lastExecs map[string]string
+func (k Keeper) GetLastExecs (ctx sdk.Context) map[string]string {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.LastExecsKey))
 	byteKey := types.KeyPrefix(types.LastExecsKey)
 	bz := store.Get(byteKey)
-	if len(bz) == 0 {
+	var lastExecs map[string]string
+	err := json.Unmarshal(bz, &lastExecs)
+	if err != nil {
+		panic(err.Error())
+	}
+	if len(lastExecs) == 0 {
 		lastExecs = make(map[string]string)
-	} else {
-		err := json.Unmarshal(bz, &lastExecs)
-		if err != nil {
-			panic(err.Error())
-		}
 	}
 	return lastExecs
 }

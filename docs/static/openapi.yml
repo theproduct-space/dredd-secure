@@ -34982,6 +34982,24 @@ paths:
                           custom method
 
                           signatures required by gogoproto.
+                    tips:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          denom:
+                            type: string
+                          amount:
+                            type: string
+                        description: >-
+                          Coin defines a token with a denomination and an
+                          amount.
+
+
+                          NOTE: The amount field is an Int which implements the
+                          custom method
+
+                          signatures required by gogoproto.
                     startDate:
                       type: string
                     endDate:
@@ -35149,6 +35167,23 @@ paths:
                         custom method
 
                         signatures required by gogoproto.
+                  tips:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        denom:
+                          type: string
+                        amount:
+                          type: string
+                      description: >-
+                        Coin defines a token with a denomination and an amount.
+
+
+                        NOTE: The amount field is an Int which implements the
+                        custom method
+
+                        signatures required by gogoproto.
                   startDate:
                     type: string
                   endDate:
@@ -35224,6 +35259,24 @@ paths:
 
                           signatures required by gogoproto.
                     fulfillerCoins:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          denom:
+                            type: string
+                          amount:
+                            type: string
+                        description: >-
+                          Coin defines a token with a denomination and an
+                          amount.
+
+
+                          NOTE: The amount field is an Int which implements the
+                          custom method
+
+                          signatures required by gogoproto.
+                    tips:
                       type: array
                       items:
                         type: object
@@ -71243,6 +71296,20 @@ definitions:
 
             NOTE: The amount field is an Int which implements the custom method
             signatures required by gogoproto.
+      tips:
+        type: array
+        items:
+          type: object
+          properties:
+            denom:
+              type: string
+            amount:
+              type: string
+          description: |-
+            Coin defines a token with a denomination and an amount.
+
+            NOTE: The amount field is an Int which implements the custom method
+            signatures required by gogoproto.
       startDate:
         type: string
       endDate:
@@ -71306,6 +71373,23 @@ definitions:
 
                   signatures required by gogoproto.
             fulfillerCoins:
+              type: array
+              items:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+                description: >-
+                  Coin defines a token with a denomination and an amount.
+
+
+                  NOTE: The amount field is an Int which implements the custom
+                  method
+
+                  signatures required by gogoproto.
+            tips:
               type: array
               items:
                 type: object
@@ -71445,6 +71529,23 @@ definitions:
                   method
 
                   signatures required by gogoproto.
+            tips:
+              type: array
+              items:
+                type: object
+                properties:
+                  denom:
+                    type: string
+                  amount:
+                    type: string
+                description: >-
+                  Coin defines a token with a denomination and an amount.
+
+
+                  NOTE: The amount field is an Int which implements the custom
+                  method
+
+                  signatures required by gogoproto.
             startDate:
               type: string
             endDate:
@@ -71510,6 +71611,23 @@ definitions:
 
                 signatures required by gogoproto.
           fulfillerCoins:
+            type: array
+            items:
+              type: object
+              properties:
+                denom:
+                  type: string
+                amount:
+                  type: string
+              description: >-
+                Coin defines a token with a denomination and an amount.
+
+
+                NOTE: The amount field is an Int which implements the custom
+                method
+
+                signatures required by gogoproto.
+          tips:
             type: array
             items:
               type: object

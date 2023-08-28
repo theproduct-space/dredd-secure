@@ -12,7 +12,8 @@ message Escrow {
   string fulfiller = 4; 
   repeated cosmos.base.v1beta1.Coin initiatorCoins = 5 [(gogoproto.nullable) = false]; 
   repeated cosmos.base.v1beta1.Coin fulfillerCoins = 6 [(gogoproto.nullable) = false]; 
-  string startDate = 7; 
-  string endDate = 8; 
-  string OracleConditions = 9; 
+  repeated cosmos.base.v1beta1.Coin tips = 7 [(gogoproto.nullable) = false]; 
+  string startDate = 8; 
+  string endDate = 9; 
+  string OracleConditions = 10; 
 }
