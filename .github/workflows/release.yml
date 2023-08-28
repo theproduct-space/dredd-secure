@@ -51,3 +51,14 @@ jobs:
           prerelease: true 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Deploy to DigitalOcean  
+        uses: appleboy/ssh-action@v0.1.4
+        if: ${{ steps.vars.outputs.should_release == 'true' }}
+        with:
+          host: ${{ secrets.DO_HOST }}  # Add your DigitalOcean droplet IP/domain
+          username: ${{ secrets.DO_SSH_USERNAME }}  # SSH username for your droplet
+          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}  # Private key with appropriate access
+          port: 22
+          script: |
+            docker run -d --name dredd-secure -p 1317:1317 -p 3000:3000 -p 4500:4500 -p 5000:5000 -p 26657:26657 dredd-secure_i:${{ github.sha }}
