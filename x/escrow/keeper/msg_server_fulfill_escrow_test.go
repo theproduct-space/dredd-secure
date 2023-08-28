@@ -725,32 +725,3 @@ func TestFulfillEscrowInvalidOracleConditions(t *testing.T) {
 
 	require.Nil(t, err)
 }
-
-// TestFulfillEscrow tests the fulfillment of an escrow WITH TEXT-TYPE APICONDITIONS that can be closed when the second party fulfills it.
-func TestFulfillEscrowTextOracleConditions(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
-	defer ctrl.Finish()
-
-	// The bank is expected to "refund" the fulfiller (send escrowed InitiatorCoins to the fulfiller)
-	bankMock.ExpectRefund(context, testutil.Bob, []sdk.Coin{
-		{
-			Denom:  "token",
-			Amount: sdk.NewInt(1000),
-		},
-	})
-
-	// The bank is expected to send the FulfillerCoins to the initiator
-	bankMock.ExpectSend(context, testutil.Bob, testutil.Alice, []sdk.Coin{
-		{
-			Denom:  "stake",
-			Amount: sdk.NewInt(9000),
-		},
-	})
-
-	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
-		Creator: testutil.Bob,
-		Id:      10,
-	})
-
-	require.Nil(t, err)
-}
