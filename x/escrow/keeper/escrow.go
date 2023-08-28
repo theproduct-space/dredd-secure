@@ -8,17 +8,10 @@ import (
 	"fmt"
 	"sort"
 	"strconv"
-	"strings"
 	"time"
 
-	"io/ioutil"
-	"net/http"
-
-	"cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-
-	"github.com/tidwall/gjson"
 )
 
 // GetEscrowCount get the total number of escrow
@@ -111,7 +104,7 @@ func (k Keeper) GetAllEscrow(ctx sdk.Context) (list []types.Escrow) {
 // ValidateConditions validates the escrow conditions
 func (k Keeper) ValidateConditions(ctx sdk.Context, escrow types.Escrow) bool {
 	// Validate the StartDate, EndDate and ApiConditions
-	if !k.ValidateStartDate(ctx, escrow) || !k.ValidateEndDate(ctx, escrow) || !k.ValidateApiConditions(ctx, escrow) {
+	if !k.ValidateStartDate(ctx, escrow) || !k.ValidateEndDate(ctx, escrow) || !k.ValidateOracleCondition(ctx, escrow) {
 		return false
 	}
 
@@ -152,28 +145,37 @@ func (k Keeper) ValidateEndDate(ctx sdk.Context, escrow types.Escrow) bool {
 	return true
 }
 
-// ValidateApiConditions validates the ApiConditions by making the api calls and comparing the relevant fields with their expected values
-func (k Keeper) ValidateApiConditions(ctx sdk.Context, escrow types.Escrow) bool {
+// ValidateOracleCondition validates the OracleConditions by fetching the stored oracle data and comparing the relevant fields with their expected values
+func (k Keeper) ValidateOracleCondition(ctx sdk.Context, escrow types.Escrow) bool {
 	apiConditionsString := escrow.ApiConditions
 
-	var apiConditions []types.ApiCondition
-	err := json.Unmarshal([]byte(apiConditionsString), &apiConditions)
-	if err != nil {
-		fmt.Println("Error:", err)
-		return false
-	}
-
-	for _, condition := range apiConditions {
-		apiRes, err := makeAPIRequest(condition.Name, strconv.Itoa(condition.TokenOfInterest.ID))
-
+	if (apiConditionsString != "") {
+		var apiConditions []types.ApiCondition
+		err := json.Unmarshal([]byte(apiConditionsString), &apiConditions)
 		if err != nil {
+			fmt.Println("Error:", err)
 			return false
 		}
+	
+		for _, condition := range apiConditions {
+			switch condition.Name {
+				case "oracle-token-price": 
+					price, found := k.GetOraclePrice(ctx, condition.TokenOfInterest.Symbol)
+					if (!found) {
+						fmt.Println("Error: Oracle price not found")
+						return false
+					}
 
-		for _, subCondition := range condition.SubConditions {
-			result := ValidateSubCondition(subCondition, apiRes)
-			// If the result is false, return false immediately; otherwise, continue validating
-			if !result {
+					for _, subCondition := range condition.SubConditions {
+						result := CompareTokenPrice(subCondition, price)
+						// If the result is false, return false immediately; otherwise, continue validating
+						if !result {
+							return false
+						}
+					}
+				// TODO, configure new condition options !
+			default:
+				fmt.Println("Error, this condition is not configured on the module.")
 				return false
 			}
 		}
@@ -183,86 +185,33 @@ func (k Keeper) ValidateApiConditions(ctx sdk.Context, escrow types.Escrow) bool
 }
 
 // Validates a SubCondition by comparing the subCondition value with the one fetched from the API
-func ValidateSubCondition(subCondition types.SubCondition, apiRes string) bool {
-	// access the data of interest (navigate apiRes using subcondition.path) in the appropriate type (using subCondition.dataType)
-	pathString := strings.Join(subCondition.Path, ".")
-	var dataToCompare interface{}
-	if subCondition.DataType == "number" {
-		dataToCompare = gjson.Get(apiRes, pathString).Float()
-	} else if subCondition.DataType == "text" {
-		dataToCompare = gjson.Get(apiRes, pathString).String()
-	} else {
-		fmt.Println("Invalid data type")
-		return false
-	}
+func CompareTokenPrice(subCondition types.SubCondition, oraclePrice types.OraclePrice) bool {
+	// retrieve the expected value as a float64
+	expectedValue := subCondition.Value.(float64)
 
-	// Depending on the dataToCompare type,
-	switch value := dataToCompare.(type) {
-	case float64:
-		// retrieve the expected value as a float64
-		expectedValue := subCondition.Value.(float64)
-		// make the appropriate comparison as described in subCondition.ConditionType
-		switch subCondition.ConditionType {
-		case "eq":
-			return value == expectedValue
-		case "lt":
-			return value < expectedValue
-		case "gt":
-			return value > expectedValue
-		default:
-			fmt.Println("Unknown data type")
-			return false
-		}
-	case string:
-		// retrieve the expected value as a string
-		expectedValue := subCondition.Value.(string)
-		// make a strict string comparison
-		return value == expectedValue
+	// the bandchain oracle provides the price as a string of the value * 1e9
+	// so we convert it to a float and divide it by 1e9
+	oracleValue, err := strconv.ParseFloat(oraclePrice.Price, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return  false
+	}
+	oracleValueFormatted :=  oracleValue / 1e9;
+
+	// make the appropriate comparison as described in subCondition.ConditionType
+	switch subCondition.ConditionType {
+	case "eq":
+		return oracleValueFormatted == expectedValue
+	case "lt":
+		return oracleValueFormatted < expectedValue
+	case "gt":
+		return oracleValueFormatted > expectedValue
 	default:
-		fmt.Println("Unknown data type")
+		fmt.Println("Unknown condition type")
 		return false
 	}
 }
 
-// Make an API Request to the configured endpoints. Uses the "name" identifier to know which endpoint to use.
-func makeAPIRequest(name string, tokenId string) (string, error) {
-	var url string
-	var headers []types.Header
-
-	switch name {
-	case "coinmarketcap-token-info":
-		url = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?id=" + tokenId                          // TODO have a more flexible "additionalParams" instead of tokenId which is only for token api calls
-		headers = append(headers, types.Header{Key: "X-CMC_PRO_API_KEY", Value: "0c27f13f-c6fe-45f8-8829-2d82404d7ef9"}) // TODO do not hardcode the API KEY...
-	default:
-		return "", errors.Wrapf(types.ErrInvalidApiConditionName, "%v", name)
-	}
-
-	// Create a new HTTP request
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return "", err
-	}
-
-	// Add headers to the request
-	for _, header := range headers {
-		req.Header.Add(header.Key, header.Value)
-	}
-
-	// Perform the request
-	client := &http.Client{}
-	response, err := client.Do(req)
-	if err != nil {
-		return "", err
-	}
-	defer response.Body.Close()
-
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return "", err
-	}
-
-	return string(body), nil
-}
 
 // ReleaseAssets releases the escrowed assets to the respective parties. The Initiator receives the FulfillerCoins, vice-versa
 func (k Keeper) ReleaseAssets(ctx sdk.Context, escrow types.Escrow) {
