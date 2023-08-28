@@ -14,7 +14,7 @@ type TokenOfInterest struct {
 	Symbol string `json:"symbol"`
 }
 
-type ApiCondition struct {
+type OracleCondition struct {
 	Label           string          `json:"label"`
 	Name            string          `json:"name"`
 	Type            string          `json:"type"`

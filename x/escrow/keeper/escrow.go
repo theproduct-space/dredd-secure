@@ -150,7 +150,7 @@ func (k Keeper) ValidateOracleCondition(ctx sdk.Context, escrow types.Escrow) bo
 	OracleConditionsString := escrow.OracleConditions
 
 	if (OracleConditionsString != "") {
-		var OracleConditions []types.ApiCondition
+		var OracleConditions []types.OracleCondition
 		err := json.Unmarshal([]byte(OracleConditionsString), &OracleConditions)
 		if err != nil {
 			fmt.Println("Error:", err)
