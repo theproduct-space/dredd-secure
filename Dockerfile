@@ -32,7 +32,7 @@ EXPOSE 1317 3000 4500 5000 26657
 
 WORKDIR /dredd-secure
 
-CMD ["./dredd-secure"]
+CMD ["docker run -d --name dredd-secure -p 1317:1317 -p 3000:3000 -p 4500:4500 -p 5000:5000 -p 26657:26657 dredd-secure_i:${{ github.sha }}"]
 # COPY go.mod /dredd-secure/go.mod
 # RUN go mod download
 # RUN rm /dredd-secure/go.mod
