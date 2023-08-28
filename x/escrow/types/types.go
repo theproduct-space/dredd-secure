@@ -11,6 +11,7 @@ type SubCondition struct {
 }
 
 type TokenOfInterest struct {
+	Name   string `json:"name"`
 	Symbol string `json:"symbol"`
 }
 
