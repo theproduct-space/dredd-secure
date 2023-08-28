@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"testing"
 	"time"
+	"fmt"
 
 	keepertest "dredd-secure/testutil/keeper"
 
@@ -54,6 +55,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 				Amount: sdk.NewInt(9000),
 			},
 		},
+		Tips: nil,
 		StartDate: "1588148578",
 		EndDate: "2788148978",
 		ApiConditions:  `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","1","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":100},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
@@ -83,6 +85,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 				Amount: sdk.NewInt(1111),
 			},
 		},
+		Tips: nil,
 		StartDate: "4588148578",
 		EndDate:   "4788148978",
 		ApiConditions:   "[]",
@@ -105,6 +108,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 			Denom:  "stake",
 			Amount: sdk.NewInt(111),
 		}},
+		Tips: nil,
 		StartDate: "2588148578",
 		EndDate:   "2788148978",
 		ApiConditions:   "[]",
@@ -126,6 +130,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 			Denom:  "stake",
 			Amount: sdk.NewInt(1100),
 		}},
+		Tips: nil,
 		StartDate: strconv.FormatInt(now.Unix()+5, 10),
 		EndDate:   "2788148978",
 		ApiConditions:   "[]",
@@ -147,6 +152,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 			Denom:  "stake",
 			Amount: sdk.NewInt(110),
 		}},
+		Tips: nil,
 		StartDate: strconv.FormatInt(now.Unix()+6, 10),
 		EndDate:   "2788148978",
 		ApiConditions:   "[]",
@@ -168,6 +174,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 			Denom:  "stake",
 			Amount: sdk.NewInt(99),
 		}},
+		Tips: nil,
 		StartDate: strconv.FormatInt(now.Unix()+7, 10),
 		EndDate:   "2788148978",
 		ApiConditions:   "[]",
@@ -189,6 +196,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 			Denom:  "stake",
 			Amount: sdk.NewInt(88),
 		}},
+		Tips: nil,
 		StartDate: strconv.FormatInt(now.Unix()+160, 10),
 		EndDate:   "2788148978",
 		ApiConditions:   "[]",
@@ -210,6 +218,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 			Denom:  "stake",
 			Amount: sdk.NewInt(77),
 		}},
+		Tips: nil,
 		StartDate: strconv.FormatInt(now.Unix()+180, 10),
 		EndDate:   "2788148978",
 		ApiConditions:   "[]",
@@ -231,6 +240,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 			Denom:  "stake",
 			Amount: sdk.NewInt(66),
 		}},
+		Tips: nil,
 		StartDate: strconv.FormatInt(now.Unix()+200, 10),
 		EndDate:   "2788148978",
 		ApiConditions:   "[]",
@@ -257,6 +267,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 				Amount: sdk.NewInt(9000),
 			},
 		},
+		Tips: nil,
 		StartDate: "1588148578",
 		EndDate: "2788148978",
 		ApiConditions:  `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","1","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
@@ -284,6 +295,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 				Amount: sdk.NewInt(9000),
 			},
 		},
+		Tips: nil,
 		StartDate: "1588148578",
 		EndDate: "2788148978",
 		ApiConditions:  `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"eq","dataType":"text","name":"slug","path":["data","1","slug"],"label":"Token Name","value":"bitcoin"},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":10},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
@@ -480,6 +492,60 @@ func TestFulfillEscrowsNearFuture(t *testing.T) {
 	require.EqualValues(t, pendingEscrowsIdListAfter, controlPendingEscrowsIdListAfter)
 
 	require.Nil(t, err)
+}
+
+func test1Function(args ...interface{}) interface{} {
+    return "Test1"
+}
+
+func test2Function(args ...interface{}) interface{} {
+    if len(args) > 0 {
+        return args[0]
+    }
+    return nil
+}
+
+// Tests if the function used to execute a function every X seconds works correctly
+func TestExecTimerUtilFunc(t *testing.T) {
+	_, k, context, _, _ := setupMsgServerFulfillEscrow(t)
+
+	execs := []keeper.Exec{
+		{
+			ID: "test1", 
+			Function: test1Function,
+			Args: nil,
+			DelayS: -1,
+		},
+		{
+			ID: "test2", 
+			Function: test2Function,
+			Args: []interface{}{"Test2"},
+			DelayS: 1,
+		},
+	}
+
+	exec1 := []string{"Test1", "Test2"}
+	exec2 := []string{"Test1"}
+	exec3 := []string{"Test1", "Test2"}
+	results := k.ExecuteAfterNSeconds(sdk.UnwrapSDKContext(context), execs)
+	castResults := make([]string, 0)
+	for _, result := range results {
+		castResults = append(castResults, fmt.Sprintf("%v", result))
+	}
+	require.EqualValues(t, exec1, castResults)
+	results = k.ExecuteAfterNSeconds(sdk.UnwrapSDKContext(context), execs)
+	castResults = make([]string, 0)
+	for _, result := range results {
+		castResults = append(castResults, fmt.Sprintf("%v", result))
+	}
+	require.EqualValues(t, exec2, castResults)
+	time.Sleep(2 * time.Second)
+	results = k.ExecuteAfterNSeconds(sdk.UnwrapSDKContext(context), execs)
+	castResults = make([]string, 0)
+	for _, result := range results {
+		castResults = append(castResults, fmt.Sprintf("%v", result))
+	}
+	require.EqualValues(t, exec3, castResults)
 }
 
 // TestFulfillEscrowAsInitiator tests the case where the initiator tries to fulfill the escrow.

@@ -23,4 +23,5 @@ const (
 	EscrowCountKey = "Escrow/count/"
 	PendingEscrowKey = "Escrow/pending/"
 	ExpiringEscrowKey = "Escrow/expiring/"
+	LastExecsKey = "Escrow/lastExec/"
 )

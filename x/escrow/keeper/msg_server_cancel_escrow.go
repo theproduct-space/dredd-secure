@@ -41,7 +41,7 @@ func (k msgServer) CancelEscrow(goCtx context.Context, msg *types.MsgCancelEscro
 	}
 
 	// Update the escrow's status to "cancelled"
-	escrow.Status = constants.StatusCancelled
+	k.SetStatus(ctx, &escrow, constants.StatusCancelled)
 	k.SetEscrow(ctx, escrow)
 
 	return &types.MsgCancelEscrowResponse{}, nil
