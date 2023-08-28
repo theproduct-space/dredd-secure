@@ -74,7 +74,7 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Amount: sdk.NewInt(900),
 		}},
 		StartDate: "1288148578",
-		EndDate:    strconv.FormatInt(now.Unix()-2, 10),
+		EndDate:   strconv.FormatInt(now.Unix()-2, 10),
 	})
 	if err2 != nil {
 		tb.Fatalf("Failed to create escrow: %s", err2)
@@ -97,7 +97,7 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Amount: sdk.NewInt(900),
 		}},
 		StartDate: "1288148578",
-		EndDate:    strconv.FormatInt(now.Unix()-3, 10),
+		EndDate:   strconv.FormatInt(now.Unix()-3, 10),
 	})
 	if err3 != nil {
 		tb.Fatalf("Failed to create escrow: %s", err3)
@@ -108,7 +108,7 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 		Denom:  "token",
 		Amount: sdk.NewInt(100),
 	}})
-	
+
 	// Create an escrow using the message server and a valid MsgCreateEscrow
 	_, err4 := server.CreateEscrow(context, &types.MsgCreateEscrow{
 		Creator: testutil.Alice,
@@ -121,7 +121,7 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Amount: sdk.NewInt(900),
 		}},
 		StartDate: "1288148578",
-		EndDate:    strconv.FormatInt(now.Unix()-1, 10),
+		EndDate:   strconv.FormatInt(now.Unix()-1, 10),
 	})
 	if err4 != nil {
 		tb.Fatalf("Failed to create escrow: %s", err4)
@@ -154,7 +154,6 @@ func TestCancelExpiredEscrows(t *testing.T) {
 
 	k.CancelExpiredEscrows(sdk.UnwrapSDKContext(context))
 }
-
 
 // TestCancelEscrow tests the CancelEscrow message server function
 func TestCancelEscrow(t *testing.T) {

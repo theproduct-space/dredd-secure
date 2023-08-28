@@ -7,10 +7,10 @@ import (
 	"dredd-secure/x/escrow/testutil"
 	"dredd-secure/x/escrow/types"
 	"errors"
+	"fmt"
 	"strconv"
 	"testing"
 	"time"
-	"fmt"
 
 	keepertest "dredd-secure/testutil/keeper"
 
@@ -55,9 +55,9 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 				Amount: sdk.NewInt(9000),
 			},
 		},
-		StartDate: "1588148578",
-		EndDate: "2788148978",
-		ApiConditions:  `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","1","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":100},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
+		StartDate:     "1588148578",
+		EndDate:       "2788148978",
+		ApiConditions: `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","1","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":100},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
 	})
 	require.Nil(tb, errFirstCreate)
 
@@ -84,9 +84,9 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 				Amount: sdk.NewInt(1111),
 			},
 		},
-		StartDate: "4588148578",
-		EndDate:   "4788148978",
-		ApiConditions:   "[]",
+		StartDate:     "4588148578",
+		EndDate:       "4788148978",
+		ApiConditions: "[]",
 	})
 	require.Nil(tb, errSecondCreate)
 
@@ -106,9 +106,9 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 			Denom:  "stake",
 			Amount: sdk.NewInt(111),
 		}},
-		StartDate: "2588148578",
-		EndDate:   "2788148978",
-		ApiConditions:   "[]",
+		StartDate:     "2588148578",
+		EndDate:       "2788148978",
+		ApiConditions: "[]",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -127,9 +127,9 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 			Denom:  "stake",
 			Amount: sdk.NewInt(1100),
 		}},
-		StartDate: strconv.FormatInt(now.Unix()+5, 10),
-		EndDate:   "2788148978",
-		ApiConditions:   "[]",
+		StartDate:     strconv.FormatInt(now.Unix()+5, 10),
+		EndDate:       "2788148978",
+		ApiConditions: "[]",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -148,9 +148,9 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 			Denom:  "stake",
 			Amount: sdk.NewInt(110),
 		}},
-		StartDate: strconv.FormatInt(now.Unix()+6, 10),
-		EndDate:   "2788148978",
-		ApiConditions:   "[]",
+		StartDate:     strconv.FormatInt(now.Unix()+6, 10),
+		EndDate:       "2788148978",
+		ApiConditions: "[]",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -169,9 +169,9 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 			Denom:  "stake",
 			Amount: sdk.NewInt(99),
 		}},
-		StartDate: strconv.FormatInt(now.Unix()+7, 10),
-		EndDate:   "2788148978",
-		ApiConditions:   "[]",
+		StartDate:     strconv.FormatInt(now.Unix()+7, 10),
+		EndDate:       "2788148978",
+		ApiConditions: "[]",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -190,9 +190,9 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 			Denom:  "stake",
 			Amount: sdk.NewInt(88),
 		}},
-		StartDate: strconv.FormatInt(now.Unix()+160, 10),
-		EndDate:   "2788148978",
-		ApiConditions:   "[]",
+		StartDate:     strconv.FormatInt(now.Unix()+160, 10),
+		EndDate:       "2788148978",
+		ApiConditions: "[]",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -211,9 +211,9 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 			Denom:  "stake",
 			Amount: sdk.NewInt(77),
 		}},
-		StartDate: strconv.FormatInt(now.Unix()+180, 10),
-		EndDate:   "2788148978",
-		ApiConditions:   "[]",
+		StartDate:     strconv.FormatInt(now.Unix()+180, 10),
+		EndDate:       "2788148978",
+		ApiConditions: "[]",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -232,9 +232,9 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 			Denom:  "stake",
 			Amount: sdk.NewInt(66),
 		}},
-		StartDate: strconv.FormatInt(now.Unix()+200, 10),
-		EndDate:   "2788148978",
-		ApiConditions:   "[]",
+		StartDate:     strconv.FormatInt(now.Unix()+200, 10),
+		EndDate:       "2788148978",
+		ApiConditions: "[]",
 	})
 
 	// The bank is expected to receive the CreatorCoins from the creator (to be escrowed)
@@ -258,9 +258,9 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 				Amount: sdk.NewInt(9000),
 			},
 		},
-		StartDate: "1588148578",
-		EndDate: "2788148978",
-		ApiConditions:  `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","1","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
+		StartDate:     "1588148578",
+		EndDate:       "2788148978",
+		ApiConditions: `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","1","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
 	})
 	require.Nil(tb, errNinthCreate)
 
@@ -285,9 +285,9 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 				Amount: sdk.NewInt(9000),
 			},
 		},
-		StartDate: "1588148578",
-		EndDate: "2788148978",
-		ApiConditions:  `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"eq","dataType":"text","name":"slug","path":["data","1","slug"],"label":"Token Name","value":"bitcoin"},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":10},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
+		StartDate:     "1588148578",
+		EndDate:       "2788148978",
+		ApiConditions: `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"eq","dataType":"text","name":"slug","path":["data","1","slug"],"label":"Token Name","value":"bitcoin"},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":10},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
 	})
 	require.Nil(tb, errTenthCreate)
 
@@ -484,14 +484,14 @@ func TestFulfillEscrowsNearFuture(t *testing.T) {
 }
 
 func test1Function(args ...interface{}) interface{} {
-    return "Test1"
+	return "Test1"
 }
 
 func test2Function(args ...interface{}) interface{} {
-    if len(args) > 0 {
-        return args[0]
-    }
-    return nil
+	if len(args) > 0 {
+		return args[0]
+	}
+	return nil
 }
 
 // Tests if the function used to execute a function every X seconds works correctly
@@ -500,16 +500,16 @@ func TestExecTimerUtilFunc(t *testing.T) {
 
 	execs := []keeper.Exec{
 		{
-			ID: "test1", 
+			ID:       "test1",
 			Function: test1Function,
-			Args: nil,
-			DelayS: -1,
+			Args:     nil,
+			DelayS:   -1,
 		},
 		{
-			ID: "test2", 
+			ID:       "test2",
 			Function: test2Function,
-			Args: []interface{}{"Test2"},
-			DelayS: 1,
+			Args:     []interface{}{"Test2"},
+			DelayS:   1,
 		},
 	}
 

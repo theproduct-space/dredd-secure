@@ -154,7 +154,7 @@ func (im IBCModule) OnRecvPacket(
 		return channeltypes.NewErrorAcknowledgement(err)
 	}
 
-	// Request has been resolved 
+	// Request has been resolved
 	ctx.EventManager().EmitEvent(sdk.NewEvent(
 		types.EventTypeOracleResponsePacketDataPacket,
 		sdk.NewAttribute(types.AttributeKeyRequestID, fmt.Sprintf("%d", packet.RequestID)),

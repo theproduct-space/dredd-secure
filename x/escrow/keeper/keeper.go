@@ -118,24 +118,20 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 
 // StoreOracleResponsePacket is a function that receives an OracleResponsePacketData from BandChain.
 func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleResponsePacketData) error {
-    
-    // Find the oracleId from the clientID
-    oracleId := strings.Split(res.ClientID, "_")[0]
 
-    switch (oracleId) {
-		case constants.OracleCryptoCurrencyPriceScriptId: 
-			// Decode the result from the response packet.
-			result, err := bandtypes.DecodeResult(res.Result)
-			fmt.Println(result)
-			if err != nil {
-				return err
+	// Find the oracleId from the clientID
+	oracleId := strings.Split(res.ClientID, "_")[0]
 
-			}
+	switch oracleId {
+	case constants.OracleCryptoCurrencyPriceScriptId:
+		// Decode the result from the response packet.
+		result, err := bandtypes.DecodeResult(res.Result)
+		fmt.Println(result)
+		if err != nil {
+			return err
+
+		}
 	}
-
-	
-
-	
 
 	return nil
 }

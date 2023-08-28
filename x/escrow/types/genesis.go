@@ -12,10 +12,11 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		EscrowList: []Escrow{},
-		PortId: PortID,
+		EscrowList:      []Escrow{},
+		PortId:          PortID,
+		OraclePriceList: []OraclePrice{},
 		// this line is used by starport scaffolding # genesis/types/default
-		Params: DefaultParams(),
+		Params:         DefaultParams(),
 		PendingEscrows: []uint64{},
 	}
 }
@@ -38,6 +39,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("escrow id should be lower or equal than the last id")
 		}
 		escrowIDMap[elem.Id] = true
+	}
+	// Check for duplicated index in oraclePrice
+	oraclePriceIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.OraclePriceList {
+		index := string(OraclePriceKey(elem.Symbol))
+		if _, ok := oraclePriceIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for oraclePrice")
+		}
+		oraclePriceIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

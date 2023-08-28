@@ -2,8 +2,8 @@ package types
 
 // IBC events
 const (
-	EventTypeTimeout                       = "timeout"
-	EventTypeOracleRequestPacketDataPacket = "oracleRequestPacketData_packet"
+	EventTypeTimeout                        = "timeout"
+	EventTypeOracleRequestPacketDataPacket  = "oracleRequestPacketData_packet"
 	EventTypeOracleResponsePacketDataPacket = "oracleResponsePacketData_packet"
 	// this line is used by starport scaffolding # ibc/packet/event
 

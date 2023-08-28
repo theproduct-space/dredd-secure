@@ -24,6 +24,14 @@ func TestGenesis(t *testing.T) {
 			},
 		},
 		EscrowCount: 2,
+		OraclePriceList: []types.OraclePrice{
+			{
+				Symbol: "0",
+			},
+			{
+				Symbol: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -38,5 +46,6 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.EscrowList, got.EscrowList)
 	require.Equal(t, genesisState.EscrowCount, got.EscrowCount)
 	require.Equal(t, genesisState.PortId, got.PortId)
+	require.ElementsMatch(t, genesisState.OraclePriceList, got.OraclePriceList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

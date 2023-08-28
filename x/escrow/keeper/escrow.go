@@ -125,11 +125,11 @@ func (k Keeper) ValidateStartDate(ctx sdk.Context, escrow types.Escrow) bool {
 
 	startDateInt, errParseIntStartDate := strconv.ParseInt(escrow.StartDate, 10, 64)
 
-	if (errParseIntStartDate != nil) {
+	if errParseIntStartDate != nil {
 		panic(errParseIntStartDate.Error())
 	}
 
-	if (unixTimeNow < startDateInt) {
+	if unixTimeNow < startDateInt {
 		return false
 	}
 	return true
@@ -154,7 +154,7 @@ func (k Keeper) ValidateEndDate(ctx sdk.Context, escrow types.Escrow) bool {
 
 // ValidateApiConditions validates the ApiConditions by making the api calls and comparing the relevant fields with their expected values
 func (k Keeper) ValidateApiConditions(ctx sdk.Context, escrow types.Escrow) bool {
-	apiConditionsString := escrow.ApiConditions;
+	apiConditionsString := escrow.ApiConditions
 
 	var apiConditions []types.ApiCondition
 	err := json.Unmarshal([]byte(apiConditionsString), &apiConditions)
@@ -166,12 +166,12 @@ func (k Keeper) ValidateApiConditions(ctx sdk.Context, escrow types.Escrow) bool
 	for _, condition := range apiConditions {
 		apiRes, err := makeAPIRequest(condition.Name, strconv.Itoa(condition.TokenOfInterest.ID))
 
-		if (err != nil) {
+		if err != nil {
 			return false
 		}
 
 		for _, subCondition := range condition.SubConditions {
-			result := ValidateSubCondition(subCondition, apiRes);
+			result := ValidateSubCondition(subCondition, apiRes)
 			// If the result is false, return false immediately; otherwise, continue validating
 			if !result {
 				return false
@@ -183,13 +183,13 @@ func (k Keeper) ValidateApiConditions(ctx sdk.Context, escrow types.Escrow) bool
 }
 
 // Validates a SubCondition by comparing the subCondition value with the one fetched from the API
-func ValidateSubCondition(subCondition types.SubCondition, apiRes string) (bool) {
+func ValidateSubCondition(subCondition types.SubCondition, apiRes string) bool {
 	// access the data of interest (navigate apiRes using subcondition.path) in the appropriate type (using subCondition.dataType)
 	pathString := strings.Join(subCondition.Path, ".")
-	var dataToCompare interface{};
-	if (subCondition.DataType == "number") {
+	var dataToCompare interface{}
+	if subCondition.DataType == "number" {
 		dataToCompare = gjson.Get(apiRes, pathString).Float()
-	} else if (subCondition.DataType == "text") {
+	} else if subCondition.DataType == "text" {
 		dataToCompare = gjson.Get(apiRes, pathString).String()
 	} else {
 		fmt.Println("Invalid data type")
@@ -198,43 +198,43 @@ func ValidateSubCondition(subCondition types.SubCondition, apiRes string) (bool)
 
 	// Depending on the dataToCompare type,
 	switch value := dataToCompare.(type) {
-		case float64:
-			// retrieve the expected value as a float64
-			expectedValue := subCondition.Value.(float64);
-			// make the appropriate comparison as described in subCondition.ConditionType
-			switch (subCondition.ConditionType) {
-				case "eq":
-					return value == expectedValue
-				case "lt":
-					return value < expectedValue
-				case "gt":
-					return value > expectedValue
-				default: 
-					fmt.Println("Unknown data type")
-					return false
-			}
-		case string:
-			// retrieve the expected value as a string
-			expectedValue := subCondition.Value.(string);
-			// make a strict string comparison
-			return  value == expectedValue
+	case float64:
+		// retrieve the expected value as a float64
+		expectedValue := subCondition.Value.(float64)
+		// make the appropriate comparison as described in subCondition.ConditionType
+		switch subCondition.ConditionType {
+		case "eq":
+			return value == expectedValue
+		case "lt":
+			return value < expectedValue
+		case "gt":
+			return value > expectedValue
 		default:
 			fmt.Println("Unknown data type")
 			return false
+		}
+	case string:
+		// retrieve the expected value as a string
+		expectedValue := subCondition.Value.(string)
+		// make a strict string comparison
+		return value == expectedValue
+	default:
+		fmt.Println("Unknown data type")
+		return false
 	}
 }
 
 // Make an API Request to the configured endpoints. Uses the "name" identifier to know which endpoint to use.
 func makeAPIRequest(name string, tokenId string) (string, error) {
-	var url string;
-	var headers []types.Header;
+	var url string
+	var headers []types.Header
 
 	switch name {
-		case "coinmarketcap-token-info": 
-			url = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?id=" + tokenId; // TODO have a more flexible "additionalParams" instead of tokenId which is only for token api calls
-			headers = append(headers, types.Header{Key: "X-CMC_PRO_API_KEY", Value: "0c27f13f-c6fe-45f8-8829-2d82404d7ef9"}) // TODO do not hardcode the API KEY...
-		default:
-			return "", errors.Wrapf(types.ErrInvalidApiConditionName, "%v", name)
+	case "coinmarketcap-token-info":
+		url = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?id=" + tokenId                          // TODO have a more flexible "additionalParams" instead of tokenId which is only for token api calls
+		headers = append(headers, types.Header{Key: "X-CMC_PRO_API_KEY", Value: "0c27f13f-c6fe-45f8-8829-2d82404d7ef9"}) // TODO do not hardcode the API KEY...
+	default:
+		return "", errors.Wrapf(types.ErrInvalidApiConditionName, "%v", name)
 	}
 
 	// Create a new HTTP request
@@ -261,7 +261,7 @@ func makeAPIRequest(name string, tokenId string) (string, error) {
 		return "", err
 	}
 
-    return string(body), nil
+	return string(body), nil
 }
 
 // ReleaseAssets releases the escrowed assets to the respective parties. The Initiator receives the FulfillerCoins, vice-versa
@@ -331,14 +331,14 @@ func (k Keeper) GetAllPendingEscrows(ctx sdk.Context) (list []uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
 	byteKey := types.KeyPrefix(types.PendingEscrowKey)
 	bz := store.Get(byteKey)
-	if (len(bz) == 0) {
+	if len(bz) == 0 {
 		return
-	} 
+	}
 	err := json.Unmarshal(bz, &list)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
-	return 
+	return
 }
 
 // GetAllExpiringEscrows returns all expiring escrows ID
@@ -346,14 +346,14 @@ func (k Keeper) GetAllExpiringEscrows(ctx sdk.Context) (list []uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
 	byteKey := types.KeyPrefix(types.ExpiringEscrowKey)
 	bz := store.Get(byteKey)
-	if (len(bz) == 0) {
+	if len(bz) == 0 {
 		return
-	} 
+	}
 	err := json.Unmarshal(bz, &list)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
-	return 
+	return
 }
 
 // Fulfills escrows ordered in start date as ascending, removes fulfilled escrows from the array
@@ -362,28 +362,28 @@ func (k Keeper) FulfillPendingEscrows(ctx sdk.Context) {
 	var i int = -1
 	for index, v := range pendingEscrows {
 		escrow, found := k.GetEscrow(ctx, v)
-		if (found && k.ValidateConditions(ctx, escrow)) {
+		if found && k.ValidateConditions(ctx, escrow) {
 			k.ReleaseAssets(ctx, escrow)
 			escrow.Status = constants.StatusClosed
 			k.RemoveFromExpiringList(ctx, escrow)
 			k.SetEscrow(ctx, escrow)
 			i = index
-		} else if (found && !k.ValidateStartDate(ctx, escrow)) {
+		} else if found && !k.ValidateStartDate(ctx, escrow) {
 			break
 		}
 	}
 
-	if (len(pendingEscrows) > i + 1) {
-		pendingEscrows = pendingEscrows[i + 1:]
+	if len(pendingEscrows) > i+1 {
+		pendingEscrows = pendingEscrows[i+1:]
 	} else {
 		pendingEscrows = []uint64{}
 	}
-	
+
 	k.SetPendingEscrows(ctx, pendingEscrows)
 }
 
 func (k Keeper) RemoveFromPendingList(ctx sdk.Context, escrow types.Escrow) {
-	pendingEscrows := k.GetAllPendingEscrows(ctx) 
+	pendingEscrows := k.GetAllPendingEscrows(ctx)
 	index := sort.Search(len(pendingEscrows), func(i int) bool {
 		return escrow.GetId() == pendingEscrows[i]
 	})
@@ -401,7 +401,7 @@ func (k Keeper) RemoveFromPendingList(ctx sdk.Context, escrow types.Escrow) {
 }
 
 func (k Keeper) RemoveFromExpiringList(ctx sdk.Context, escrow types.Escrow) {
-	expiringEscrows := k.GetAllExpiringEscrows(ctx) 
+	expiringEscrows := k.GetAllExpiringEscrows(ctx)
 	index := sort.Search(len(expiringEscrows), func(i int) bool {
 		return escrow.GetId() == expiringEscrows[i]
 	})
@@ -421,7 +421,7 @@ func (k Keeper) RemoveFromExpiringList(ctx sdk.Context, escrow types.Escrow) {
 func (k Keeper) SetExpiringEscrows(ctx sdk.Context, expiringEscrows []uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
 	byteKey := types.KeyPrefix(types.ExpiringEscrowKey)
-	
+
 	jsonData, err := json.Marshal(expiringEscrows)
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -464,34 +464,34 @@ func (k Keeper) CancelExpiredEscrows(ctx sdk.Context) {
 	} else {
 		expiringEscrows = []uint64{}
 	}
-	
+
 	k.SetExpiringEscrows(ctx, expiringEscrows)
 }
 
 // Add escrow id to pending escrows id array in order
 func (k Keeper) AddPendingEscrow(ctx sdk.Context, escrow types.Escrow) {
-    pendingEscrows := k.GetAllPendingEscrows(ctx)
+	pendingEscrows := k.GetAllPendingEscrows(ctx)
 
 	// Either add in order or add to the list if its the first element
 	if len(pendingEscrows) > 0 {
 		_, f := sort.Find(len(pendingEscrows), func(i int) int {
 			if escrow.GetId() == pendingEscrows[i] {
 				return 0
-			} else if (escrow.GetId() > pendingEscrows[i]) {
+			} else if escrow.GetId() > pendingEscrows[i] {
 				return 1
-			} 
+			}
 			return -1
 		})
-	
+
 		// Escrow already in the list
 		if f {
 			return
 		}
 
-		i := sort.Search(len(pendingEscrows), func(i int) bool { 
+		i := sort.Search(len(pendingEscrows), func(i int) bool {
 			escr, found := k.GetEscrow(ctx, pendingEscrows[i])
-			if (found) {
-				return escr.GetStartDate() >= escrow.GetStartDate() 
+			if found {
+				return escr.GetStartDate() >= escrow.GetStartDate()
 			}
 			return false
 		})
@@ -514,9 +514,9 @@ func (k Keeper) AddExpiringEscrow(ctx sdk.Context, escrow types.Escrow) {
 		_, f := sort.Find(len(expiringEscrows), func(i int) int {
 			if escrow.GetId() == expiringEscrows[i] {
 				return 0
-			} else if (escrow.GetId() > expiringEscrows[i]) {
+			} else if escrow.GetId() > expiringEscrows[i] {
 				return 1
-			} 
+			}
 			return -1
 		})
 
@@ -546,19 +546,19 @@ func (k Keeper) AddExpiringEscrow(ctx sdk.Context, escrow types.Escrow) {
 func (k Keeper) SetStatus(ctx sdk.Context, escrow *types.Escrow, newStatus string) {
 	oldStatus := escrow.Status
 
-	if (newStatus == constants.StatusOpen) {
+	if newStatus == constants.StatusOpen {
 		k.AddExpiringEscrow(ctx, *escrow)
 	}
 
-	if (newStatus == constants.StatusClosed || newStatus == constants.StatusCancelled) {
+	if newStatus == constants.StatusClosed || newStatus == constants.StatusCancelled {
 		k.RemoveFromExpiringList(ctx, *escrow)
 	}
 
-	if (oldStatus == constants.StatusPending && newStatus != constants.StatusPending) {
+	if oldStatus == constants.StatusPending && newStatus != constants.StatusPending {
 		k.RemoveFromPendingList(ctx, *escrow)
 	}
 
-	if (newStatus == constants.StatusPending) {
+	if newStatus == constants.StatusPending {
 		k.AddPendingEscrow(ctx, *escrow)
 	}
 
@@ -566,12 +566,12 @@ func (k Keeper) SetStatus(ctx sdk.Context, escrow *types.Escrow, newStatus strin
 }
 
 // Getter for the last execs in the store
-func (k Keeper) GetLastExecs (ctx sdk.Context) map[string]string {
-	var lastExecs map[string] string
+func (k Keeper) GetLastExecs(ctx sdk.Context) map[string]string {
+	var lastExecs map[string]string
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.LastExecsKey))
 	byteKey := types.KeyPrefix(types.LastExecsKey)
 	bz := store.Get(byteKey)
-	if (len(bz) == 0) {
+	if len(bz) == 0 {
 		lastExecs = make(map[string]string)
 	} else {
 		err := json.Unmarshal(bz, &lastExecs)
@@ -583,7 +583,7 @@ func (k Keeper) GetLastExecs (ctx sdk.Context) map[string]string {
 }
 
 // Setter for the last execs in the store
-func (k Keeper) SetLastExecs (ctx sdk.Context, lastExecs map[string]string) {
+func (k Keeper) SetLastExecs(ctx sdk.Context, lastExecs map[string]string) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.LastExecsKey))
 	byteKey := types.KeyPrefix(types.LastExecsKey)
 	jsonData, err := json.Marshal(lastExecs)
@@ -596,7 +596,7 @@ func (k Keeper) SetLastExecs (ctx sdk.Context, lastExecs map[string]string) {
 
 // Utility function used for executing functions after a certain amount of time
 func (k Keeper) ExecuteAfterNSeconds(
-	ctx sdk.Context, 
+	ctx sdk.Context,
 	execs []Exec) []interface{} {
 	results := make([]interface{}, 0)
 
@@ -604,7 +604,7 @@ func (k Keeper) ExecuteAfterNSeconds(
 
 	currentTime := time.Now()
 	epoch := currentTime.Unix()
-	
+
 	for _, exec := range execs {
 		epochString, found := lastExecs[exec.ID]
 		if !found {
@@ -616,7 +616,7 @@ func (k Keeper) ExecuteAfterNSeconds(
 		if err != nil {
 			fmt.Println("Error converting epoch string to int:", err)
 		} else {
-			if (epochInt + exec.DelayS < epoch) {
+			if epochInt+exec.DelayS < epoch {
 				result := exec.Function(exec.Args...)
 				results = append(results, result)
 				lastExecs[exec.ID] = strconv.FormatInt(epoch, 10)

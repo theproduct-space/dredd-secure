@@ -3,10 +3,10 @@ package keeper_test
 import (
 	"context"
 	"dredd-secure/x/escrow"
+	"dredd-secure/x/escrow/constants"
 	"dredd-secure/x/escrow/keeper"
 	"dredd-secure/x/escrow/testutil"
 	"dredd-secure/x/escrow/types"
-	"dredd-secure/x/escrow/constants"
 	"errors"
 	"testing"
 	"time"
@@ -50,8 +50,8 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Denom:  "stake",
 			Amount: sdk.NewInt(9000),
 		}},
-		StartDate: strconv.FormatInt(now.Unix()+60, 10),
-		EndDate:   "2788148978",
+		StartDate:     strconv.FormatInt(now.Unix()+60, 10),
+		EndDate:       "2788148978",
 		ApiConditions: "[]",
 	})
 
@@ -91,8 +91,8 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Denom:  "stake",
 			Amount: sdk.NewInt(900),
 		}},
-		StartDate: "1588148578",
-		EndDate:   "2788148978",
+		StartDate:     "1588148578",
+		EndDate:       "2788148978",
 		ApiConditions: "[]",
 	})
 
@@ -106,7 +106,7 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Amount: sdk.NewInt(900),
 		},
 	})
-	
+
 	bankMock.ExpectRefund(context, testutil.Bob, []sdk.Coin{{
 		Denom:  "token",
 		Amount: sdk.NewInt(100),

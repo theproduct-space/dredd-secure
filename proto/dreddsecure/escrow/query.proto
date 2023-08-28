@@ -7,6 +7,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "dreddsecure/escrow/params.proto";
 import "dreddsecure/escrow/escrow.proto";
+import "dreddsecure/escrow/oracle_price.proto";
 
 option go_package = "dredd-secure/x/escrow/types";
 
@@ -34,9 +35,18 @@ service Query {
     option (google.api.http).get = "/dredd-secure/escrow/escrows_by_address/{address}";
   
   }
-
-  rpc PendingEscrows (QueryPendingEscrowsRequest) returns (QueryPendingEscrowsResponse) {
+  rpc PendingEscrows   (QueryPendingEscrowsRequest  ) returns (QueryPendingEscrowsResponse  ) {
     option (google.api.http).get = "/dredd-secure/escrow/pending_escrows";
+  
+  }
+  
+  // Queries a list of OraclePrice items.
+  rpc OraclePrice    (QueryGetOraclePriceRequest) returns (QueryGetOraclePriceResponse) {
+    option (google.api.http).get = "/dredd-secure/escrow/oracle_price/{symbol}";
+  
+  }
+  rpc OraclePriceAll (QueryAllOraclePriceRequest) returns (QueryAllOraclePriceResponse) {
+    option (google.api.http).get = "/dredd-secure/escrow/oracle_price";
   
   }
 }
@@ -68,17 +78,35 @@ message QueryAllEscrowResponse {
 }
 
 message QueryEscrowsByAddressRequest {
-  string address = 1;
+  string                                address    = 1;
   cosmos.base.query.v1beta1.PageRequest pagination = 2;
 }
 
 message QueryEscrowsByAddressResponse {
-  repeated Escrow                                 Escrow     = 1 [(gogoproto.nullable) = false]; 
+  repeated Escrow                                 Escrow     = 1 [(gogoproto.nullable) = false];
            cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 message QueryPendingEscrowsRequest {}
 
 message QueryPendingEscrowsResponse {
-  repeated uint64                                 ids     = 1 [(gogoproto.nullable) = false]; 
+  repeated uint64 ids = 1 [(gogoproto.nullable) = false];
 }
+
+message QueryGetOraclePriceRequest {
+  string symbol = 1;
+}
+
+message QueryGetOraclePriceResponse {
+  OraclePrice oraclePrice = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllOraclePriceRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllOraclePriceResponse {
+  repeated OraclePrice                            oraclePrice = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination  = 2;
+}
+

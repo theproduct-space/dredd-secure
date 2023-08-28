@@ -17,10 +17,10 @@ type TokenOfInterest struct {
 }
 
 type ApiCondition struct {
-	Label          string           `json:"label"`
-	Name           string           `json:"name"`
-	Type           string           `json:"type"`
-	SubConditions  []SubCondition   `json:"subConditions"`
+	Label           string          `json:"label"`
+	Name            string          `json:"name"`
+	Type            string          `json:"type"`
+	SubConditions   []SubCondition  `json:"subConditions"`
 	TokenOfInterest TokenOfInterest `json:"tokenOfInterest"`
 }
 

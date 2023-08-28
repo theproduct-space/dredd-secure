@@ -16,7 +16,6 @@ import (
 func (k msgServer) SendOracleRequestPacketData(goCtx context.Context, msg *types.MsgSendOracleRequestPacketData) (*types.MsgSendOracleRequestPacketDataResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-
 	// Generate a new UUID
 	uid := uuid.New()
 

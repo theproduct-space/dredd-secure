@@ -252,7 +252,7 @@ type App struct {
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 
 	ScopedEscrowKeeper capabilitykeeper.ScopedKeeper
-	EscrowKeeper escrowmodulekeeper.Keeper
+	EscrowKeeper       escrowmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager

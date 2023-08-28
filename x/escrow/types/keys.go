@@ -13,11 +13,11 @@ const (
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_escrow"
 
-    // Version defines the current version the IBC module supports
+	// Version defines the current version the IBC module supports
 	Version = "bandchain-1"
 
-    // PortID is the default port id that module binds to
-    PortID = "escrow"
+	// PortID is the default port id that module binds to
+	PortID = "escrow"
 )
 
 var (
@@ -30,9 +30,9 @@ func KeyPrefix(p string) []byte {
 }
 
 const (
-	EscrowKey      = "Escrow/value/"
-	EscrowCountKey = "Escrow/count/"
-	PendingEscrowKey = "Escrow/pending/"
+	EscrowKey         = "Escrow/value/"
+	EscrowCountKey    = "Escrow/count/"
+	PendingEscrowKey  = "Escrow/pending/"
 	ExpiringEscrowKey = "Escrow/expiring/"
-	LastExecsKey = "Escrow/lastExec/"
+	LastExecsKey      = "Escrow/lastExec/"
 )
