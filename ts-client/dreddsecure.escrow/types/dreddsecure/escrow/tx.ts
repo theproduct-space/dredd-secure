@@ -11,34 +11,41 @@ export interface MsgCreateEscrow {
   fulfillerCoins: Coin[];
   startDate: string;
   endDate: string;
-  apiConditions: string;
+  OracleConditions: string;
 }
 
-export interface MsgCreateEscrowResponse {
-}
+export interface MsgCreateEscrowResponse {}
 
 export interface MsgCancelEscrow {
   creator: string;
   id: number;
 }
 
-export interface MsgCancelEscrowResponse {
-}
+export interface MsgCancelEscrowResponse {}
 
 export interface MsgFulfillEscrow {
   creator: string;
   id: number;
 }
 
-export interface MsgFulfillEscrowResponse {
-}
+export interface MsgFulfillEscrowResponse {}
 
 function createBaseMsgCreateEscrow(): MsgCreateEscrow {
-  return { creator: "", initiatorCoins: [], fulfillerCoins: [], startDate: "", endDate: "", apiConditions: "" };
+  return {
+    creator: "",
+    initiatorCoins: [],
+    fulfillerCoins: [],
+    startDate: "",
+    endDate: "",
+    OracleConditions: "",
+  };
 }
 
 export const MsgCreateEscrow = {
-  encode(message: MsgCreateEscrow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: MsgCreateEscrow,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -54,8 +61,8 @@ export const MsgCreateEscrow = {
     if (message.endDate !== "") {
       writer.uint32(42).string(message.endDate);
     }
-    if (message.apiConditions !== "") {
-      writer.uint32(50).string(message.apiConditions);
+    if (message.OracleConditions !== "") {
+      writer.uint32(50).string(message.OracleConditions);
     }
     return writer;
   },
@@ -83,7 +90,7 @@ export const MsgCreateEscrow = {
           message.endDate = reader.string();
           break;
         case 6:
-          message.apiConditions = reader.string();
+          message.OracleConditions = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -104,7 +111,9 @@ export const MsgCreateEscrow = {
         : [],
       startDate: isSet(object.startDate) ? String(object.startDate) : "",
       endDate: isSet(object.endDate) ? String(object.endDate) : "",
-      apiConditions: isSet(object.apiConditions) ? String(object.apiConditions) : "",
+      OracleConditions: isSet(object.OracleConditions)
+        ? String(object.OracleConditions)
+        : "",
     };
   },
 
@@ -112,29 +121,38 @@ export const MsgCreateEscrow = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     if (message.initiatorCoins) {
-      obj.initiatorCoins = message.initiatorCoins.map((e) => e ? Coin.toJSON(e) : undefined);
+      obj.initiatorCoins = message.initiatorCoins.map((e) =>
+        e ? Coin.toJSON(e) : undefined
+      );
     } else {
       obj.initiatorCoins = [];
     }
     if (message.fulfillerCoins) {
-      obj.fulfillerCoins = message.fulfillerCoins.map((e) => e ? Coin.toJSON(e) : undefined);
+      obj.fulfillerCoins = message.fulfillerCoins.map((e) =>
+        e ? Coin.toJSON(e) : undefined
+      );
     } else {
       obj.fulfillerCoins = [];
     }
     message.startDate !== undefined && (obj.startDate = message.startDate);
     message.endDate !== undefined && (obj.endDate = message.endDate);
-    message.apiConditions !== undefined && (obj.apiConditions = message.apiConditions);
+    message.OracleConditions !== undefined &&
+      (obj.OracleConditions = message.OracleConditions);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<MsgCreateEscrow>, I>>(object: I): MsgCreateEscrow {
+  fromPartial<I extends Exact<DeepPartial<MsgCreateEscrow>, I>>(
+    object: I
+  ): MsgCreateEscrow {
     const message = createBaseMsgCreateEscrow();
     message.creator = object.creator ?? "";
-    message.initiatorCoins = object.initiatorCoins?.map((e) => Coin.fromPartial(e)) || [];
-    message.fulfillerCoins = object.fulfillerCoins?.map((e) => Coin.fromPartial(e)) || [];
+    message.initiatorCoins =
+      object.initiatorCoins?.map((e) => Coin.fromPartial(e)) || [];
+    message.fulfillerCoins =
+      object.fulfillerCoins?.map((e) => Coin.fromPartial(e)) || [];
     message.startDate = object.startDate ?? "";
     message.endDate = object.endDate ?? "";
-    message.apiConditions = object.apiConditions ?? "";
+    message.OracleConditions = object.OracleConditions ?? "";
     return message;
   },
 };
@@ -144,11 +162,17 @@ function createBaseMsgCreateEscrowResponse(): MsgCreateEscrowResponse {
 }
 
 export const MsgCreateEscrowResponse = {
-  encode(_: MsgCreateEscrowResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    _: MsgCreateEscrowResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateEscrowResponse {
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): MsgCreateEscrowResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateEscrowResponse();
@@ -172,7 +196,9 @@ export const MsgCreateEscrowResponse = {
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<MsgCreateEscrowResponse>, I>>(_: I): MsgCreateEscrowResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgCreateEscrowResponse>, I>>(
+    _: I
+  ): MsgCreateEscrowResponse {
     const message = createBaseMsgCreateEscrowResponse();
     return message;
   },
@@ -183,7 +209,10 @@ function createBaseMsgCancelEscrow(): MsgCancelEscrow {
 }
 
 export const MsgCancelEscrow = {
-  encode(message: MsgCancelEscrow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: MsgCancelEscrow,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -228,7 +257,9 @@ export const MsgCancelEscrow = {
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<MsgCancelEscrow>, I>>(object: I): MsgCancelEscrow {
+  fromPartial<I extends Exact<DeepPartial<MsgCancelEscrow>, I>>(
+    object: I
+  ): MsgCancelEscrow {
     const message = createBaseMsgCancelEscrow();
     message.creator = object.creator ?? "";
     message.id = object.id ?? 0;
@@ -241,11 +272,17 @@ function createBaseMsgCancelEscrowResponse(): MsgCancelEscrowResponse {
 }
 
 export const MsgCancelEscrowResponse = {
-  encode(_: MsgCancelEscrowResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    _: MsgCancelEscrowResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCancelEscrowResponse {
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): MsgCancelEscrowResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCancelEscrowResponse();
@@ -269,7 +306,9 @@ export const MsgCancelEscrowResponse = {
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<MsgCancelEscrowResponse>, I>>(_: I): MsgCancelEscrowResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgCancelEscrowResponse>, I>>(
+    _: I
+  ): MsgCancelEscrowResponse {
     const message = createBaseMsgCancelEscrowResponse();
     return message;
   },
@@ -280,7 +319,10 @@ function createBaseMsgFulfillEscrow(): MsgFulfillEscrow {
 }
 
 export const MsgFulfillEscrow = {
-  encode(message: MsgFulfillEscrow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: MsgFulfillEscrow,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -325,7 +367,9 @@ export const MsgFulfillEscrow = {
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<MsgFulfillEscrow>, I>>(object: I): MsgFulfillEscrow {
+  fromPartial<I extends Exact<DeepPartial<MsgFulfillEscrow>, I>>(
+    object: I
+  ): MsgFulfillEscrow {
     const message = createBaseMsgFulfillEscrow();
     message.creator = object.creator ?? "";
     message.id = object.id ?? 0;
@@ -338,11 +382,17 @@ function createBaseMsgFulfillEscrowResponse(): MsgFulfillEscrowResponse {
 }
 
 export const MsgFulfillEscrowResponse = {
-  encode(_: MsgFulfillEscrowResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    _: MsgFulfillEscrowResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgFulfillEscrowResponse {
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): MsgFulfillEscrowResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgFulfillEscrowResponse();
@@ -366,7 +416,9 @@ export const MsgFulfillEscrowResponse = {
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<MsgFulfillEscrowResponse>, I>>(_: I): MsgFulfillEscrowResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgFulfillEscrowResponse>, I>>(
+    _: I
+  ): MsgFulfillEscrowResponse {
     const message = createBaseMsgFulfillEscrowResponse();
     return message;
   },
@@ -389,25 +441,47 @@ export class MsgClientImpl implements Msg {
   }
   CreateEscrow(request: MsgCreateEscrow): Promise<MsgCreateEscrowResponse> {
     const data = MsgCreateEscrow.encode(request).finish();
-    const promise = this.rpc.request("dreddsecure.escrow.Msg", "CreateEscrow", data);
-    return promise.then((data) => MsgCreateEscrowResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(
+      "dreddsecure.escrow.Msg",
+      "CreateEscrow",
+      data
+    );
+    return promise.then((data) =>
+      MsgCreateEscrowResponse.decode(new _m0.Reader(data))
+    );
   }
 
   CancelEscrow(request: MsgCancelEscrow): Promise<MsgCancelEscrowResponse> {
     const data = MsgCancelEscrow.encode(request).finish();
-    const promise = this.rpc.request("dreddsecure.escrow.Msg", "CancelEscrow", data);
-    return promise.then((data) => MsgCancelEscrowResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(
+      "dreddsecure.escrow.Msg",
+      "CancelEscrow",
+      data
+    );
+    return promise.then((data) =>
+      MsgCancelEscrowResponse.decode(new _m0.Reader(data))
+    );
   }
 
   FulfillEscrow(request: MsgFulfillEscrow): Promise<MsgFulfillEscrowResponse> {
     const data = MsgFulfillEscrow.encode(request).finish();
-    const promise = this.rpc.request("dreddsecure.escrow.Msg", "FulfillEscrow", data);
-    return promise.then((data) => MsgFulfillEscrowResponse.decode(new _m0.Reader(data)));
+    const promise = this.rpc.request(
+      "dreddsecure.escrow.Msg",
+      "FulfillEscrow",
+      data
+    );
+    return promise.then((data) =>
+      MsgFulfillEscrowResponse.decode(new _m0.Reader(data))
+    );
   }
 }
 
 interface Rpc {
-  request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
+  request(
+    service: string,
+    method: string,
+    data: Uint8Array
+  ): Promise<Uint8Array>;
 }
 
 declare var self: any | undefined;
@@ -429,16 +503,31 @@ var globalThis: any = (() => {
   throw "Unable to locate global object";
 })();
 
-type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+type Builtin =
+  | Date
+  | Function
+  | Uint8Array
+  | string
+  | number
+  | boolean
+  | undefined;
 
-export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+export type DeepPartial<T> = T extends Builtin
+  ? T
+  : T extends Array<infer U>
+  ? Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U>
+  ? ReadonlyArray<DeepPartial<U>>
+  : T extends {}
+  ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin ? P
-  : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+export type Exact<P, I extends P> = P extends Builtin
+  ? P
+  : P & { [K in keyof P]: Exact<P[K], I[K]> } & {
+      [K in Exclude<keyof I, KeysOfUnion<P>>]: never;
+    };
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {

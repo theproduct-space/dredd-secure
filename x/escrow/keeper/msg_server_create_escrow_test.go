@@ -48,7 +48,7 @@ func TestCreateEscrow(t *testing.T) {
 		FulfillerCoins: []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
 		StartDate:      "1588148578",
 		EndDate:        "2788148978",
-		ApiConditions:  "",
+		OracleConditions:  "",
 	})
 
 	// Verify that the escrow was created successfully
@@ -63,7 +63,7 @@ func TestCreateEscrow(t *testing.T) {
 		FulfillerCoins: []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
 		StartDate:      "1588148578",
 		EndDate:        "2788148978",
-		ApiConditions:  "",
+		OracleConditions:  "",
 	}, escrow)
 
 	require.Nil(t, err)
@@ -88,7 +88,7 @@ func TestCreateEscrowInitiatorCannotPay(t *testing.T) {
 		FulfillerCoins: []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
 		StartDate:      "1588148578",
 		EndDate:        "2788148978",
-		ApiConditions:  "",
+		OracleConditions:  "",
 	})
 
 	// Verify that the expected error is returned

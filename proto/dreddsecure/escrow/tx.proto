@@ -21,7 +21,7 @@ message MsgCreateEscrow {
   repeated cosmos.base.v1beta1.Coin fulfillerCoins = 3 [(gogoproto.nullable) = false];
            string                   startDate      = 4;
            string                   endDate        = 5;
-           string                   apiConditions  = 6;
+           string                   OracleConditions  = 6;
 }
 
 message MsgCreateEscrowResponse {}

@@ -13,11 +13,12 @@ import (
 
 	keepertest "dredd-secure/testutil/keeper"
 
+	"strconv"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-	"strconv"
 )
 
 // setupMsgServerOptOutEscrow is a test helper function to setup the necessary dependencies for testing the OptOutEscrow message server function
@@ -52,7 +53,7 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 		}},
 		StartDate:     strconv.FormatInt(now.Unix()+60, 10),
 		EndDate:       "2788148978",
-		ApiConditions: "[]",
+		OracleConditions: "[]",
 	})
 
 	if err != nil {
@@ -93,7 +94,7 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 		}},
 		StartDate:     "1588148578",
 		EndDate:       "2788148978",
-		ApiConditions: "[]",
+		OracleConditions: "[]",
 	})
 
 	if err2 != nil {

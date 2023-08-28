@@ -13,14 +13,14 @@ const TypeMsgCreateEscrow = "create_escrow"
 
 var _ sdk.Msg = &MsgCreateEscrow{}
 
-func NewMsgCreateEscrow(creator string, initiatorCoins sdk.Coins, fulfillerCoins sdk.Coins, startDate string, endDate string, apiConditions string) *MsgCreateEscrow {
+func NewMsgCreateEscrow(creator string, initiatorCoins sdk.Coins, fulfillerCoins sdk.Coins, startDate string, endDate string, OracleConditions string) *MsgCreateEscrow {
 	return &MsgCreateEscrow{
 		Creator:        creator,
 		InitiatorCoins: initiatorCoins,
 		FulfillerCoins: fulfillerCoins,
 		StartDate:      startDate,
 		EndDate:        endDate,
-		ApiConditions:  apiConditions,
+		OracleConditions:  OracleConditions,
 	}
 }
 

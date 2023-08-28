@@ -34986,7 +34986,7 @@ paths:
                       type: string
                     endDate:
                       type: string
-                    ApiConditions:
+                    OracleConditions:
                       type: string
               pagination:
                 type: object
@@ -35153,7 +35153,7 @@ paths:
                     type: string
                   endDate:
                     type: string
-                  ApiConditions:
+                  OracleConditions:
                     type: string
         default:
           description: An unexpected error response.
@@ -35245,7 +35245,7 @@ paths:
                       type: string
                     endDate:
                       type: string
-                    ApiConditions:
+                    OracleConditions:
                       type: string
               pagination:
                 type: object
@@ -71247,7 +71247,7 @@ definitions:
         type: string
       endDate:
         type: string
-      ApiConditions:
+      OracleConditions:
         type: string
   dreddsecure.escrow.MsgCancelEscrowResponse:
     type: object
@@ -71326,7 +71326,7 @@ definitions:
               type: string
             endDate:
               type: string
-            ApiConditions:
+            OracleConditions:
               type: string
       pagination:
         type: object
@@ -71449,7 +71449,7 @@ definitions:
               type: string
             endDate:
               type: string
-            ApiConditions:
+            OracleConditions:
               type: string
       pagination:
         type: object
@@ -71530,7 +71530,7 @@ definitions:
             type: string
           endDate:
             type: string
-          ApiConditions:
+          OracleConditions:
             type: string
   dreddsecure.escrow.QueryGetOraclePriceResponse:
     type: object

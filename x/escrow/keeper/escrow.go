@@ -103,7 +103,7 @@ func (k Keeper) GetAllEscrow(ctx sdk.Context) (list []types.Escrow) {
 
 // ValidateConditions validates the escrow conditions
 func (k Keeper) ValidateConditions(ctx sdk.Context, escrow types.Escrow) bool {
-	// Validate the StartDate, EndDate and ApiConditions
+	// Validate the StartDate, EndDate and OracleConditions
 	if !k.ValidateStartDate(ctx, escrow) || !k.ValidateEndDate(ctx, escrow) || !k.ValidateOracleCondition(ctx, escrow) {
 		return false
 	}
@@ -147,17 +147,17 @@ func (k Keeper) ValidateEndDate(ctx sdk.Context, escrow types.Escrow) bool {
 
 // ValidateOracleCondition validates the OracleConditions by fetching the stored oracle data and comparing the relevant fields with their expected values
 func (k Keeper) ValidateOracleCondition(ctx sdk.Context, escrow types.Escrow) bool {
-	apiConditionsString := escrow.ApiConditions
+	OracleConditionsString := escrow.OracleConditions
 
-	if (apiConditionsString != "") {
-		var apiConditions []types.ApiCondition
-		err := json.Unmarshal([]byte(apiConditionsString), &apiConditions)
+	if (OracleConditionsString != "") {
+		var OracleConditions []types.ApiCondition
+		err := json.Unmarshal([]byte(OracleConditionsString), &OracleConditions)
 		if err != nil {
 			fmt.Println("Error:", err)
 			return false
 		}
 	
-		for _, condition := range apiConditions {
+		for _, condition := range OracleConditions {
 			switch condition.Name {
 				case "oracle-token-price": 
 					price, found := k.GetOraclePrice(ctx, condition.TokenOfInterest.Symbol)

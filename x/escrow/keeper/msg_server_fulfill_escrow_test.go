@@ -45,7 +45,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		Amount: sdk.NewInt(1000),
 	}})
 	// create an escrow that can be closed when the second party fulfills it.
-	// with an array of two apiConditions to validate, that will always be valid
+	// with an array of two OracleConditions to validate, that will always be valid
 	// ID : 0
 	_, errFirstCreate := server.CreateEscrow(context, &types.MsgCreateEscrow{
 		Creator: testutil.Alice,
@@ -63,7 +63,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		},
 		StartDate:     "1588148578",
 		EndDate:       "2788148978",
-		ApiConditions: `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","1","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":100},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
+		OracleConditions: `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","1","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":100},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
 	})
 	require.Nil(tb, errFirstCreate)
 
@@ -92,7 +92,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		},
 		StartDate:     "4588148578",
 		EndDate:       "4788148978",
-		ApiConditions: "",
+		OracleConditions: "",
 	})
 	require.Nil(tb, errSecondCreate)
 
@@ -114,7 +114,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		}},
 		StartDate:     "2588148578",
 		EndDate:       "2788148978",
-		ApiConditions: "",
+		OracleConditions: "",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -135,7 +135,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		}},
 		StartDate:     strconv.FormatInt(now.Unix()+5, 10),
 		EndDate:       "2788148978",
-		ApiConditions: "",
+		OracleConditions: "",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -156,7 +156,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		}},
 		StartDate:     strconv.FormatInt(now.Unix()+6, 10),
 		EndDate:       "2788148978",
-		ApiConditions: "",
+		OracleConditions: "",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -177,7 +177,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		}},
 		StartDate:     strconv.FormatInt(now.Unix()+7, 10),
 		EndDate:       "2788148978",
-		ApiConditions: "",
+		OracleConditions: "",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -198,7 +198,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		}},
 		StartDate:     strconv.FormatInt(now.Unix()+160, 10),
 		EndDate:       "2788148978",
-		ApiConditions: "",
+		OracleConditions: "",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -219,7 +219,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		}},
 		StartDate:     strconv.FormatInt(now.Unix()+180, 10),
 		EndDate:       "2788148978",
-		ApiConditions: "",
+		OracleConditions: "",
 	})
 
 	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
@@ -240,7 +240,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		}},
 		StartDate:     strconv.FormatInt(now.Unix()+200, 10),
 		EndDate:       "2788148978",
-		ApiConditions: "",
+		OracleConditions: "",
 	})
 
 	// The bank is expected to receive the CreatorCoins from the creator (to be escrowed)
@@ -248,7 +248,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		Denom:  "token",
 		Amount: sdk.NewInt(1000),
 	}})
-	// create another escrow that can never be fulfill because of invalid ApiConditions
+	// create another escrow that can never be fulfill because of invalid OracleConditions
 	// ID : 9
 	_, errNinthCreate := server.CreateEscrow(context, &types.MsgCreateEscrow{
 		Creator: testutil.Alice,
@@ -266,7 +266,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		},
 		StartDate:     "1588148578",
 		EndDate:       "2788148978",
-		ApiConditions: `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","1","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
+		OracleConditions: `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","1","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
 	})
 	require.Nil(tb, errNinthCreate)
 
@@ -275,7 +275,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		Denom:  "token",
 		Amount: sdk.NewInt(1000),
 	}})
-	// create another escrow that can never be fulfill because of invalid ApiConditions
+	// create another escrow that can never be fulfill because of invalid OracleConditions
 	// ID : 10
 	_, errTenthCreate := server.CreateEscrow(context, &types.MsgCreateEscrow{
 		Creator: testutil.Alice,
@@ -293,7 +293,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		},
 		StartDate:     "1588148578",
 		EndDate:       "2788148978",
-		ApiConditions: `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"eq","dataType":"text","name":"slug","path":["data","1","slug"],"label":"Token Name","value":"bitcoin"},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":10},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
+		OracleConditions: `[{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"eq","dataType":"text","name":"slug","path":["data","1","slug"],"label":"Token Name","value":"bitcoin"},{"conditionType":"lt","dataType":"number","name":"market_cap","path":["data","1","quote","USD","market_cap"],"label":"USD Market Cap","value":1e+22},{"conditionType":"gt","dataType":"number","name":"volume_24h","path":["data","1","quote","USD","volume_24h"],"label":"USD 24h Volume","value":10},{"conditionType":"gt","dataType":"number","name":"percent_change_24h","path":["data","1","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":-99999999}],"tokenOfInterest":{"id":1,"name":"Bitcoin","symbol":"BTC"}},{"label":"CoinMarketCap Token Info","name":"coinmarketcap-token-info","type":"apiCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","path":["data","2","quote","USD","price"],"label":"USD Price","value":1},{"conditionType":"gt","dataType":"number","name":"market_cap","path":["data","2","quote","USD","market_cap"],"label":"USD Market Cap","value":10},{"conditionType":"lt","dataType":"number","name":"volume_24h","path":["data","2","quote","USD","volume_24h"],"label":"USD 24h Volume","value":1e+26},{"conditionType":"lt","dataType":"number","name":"percent_change_24h","path":["data","2","quote","USD","percent_change_24h"],"label":"USD 24h Price Change","value":99999999999999}],"tokenOfInterest":{"id":2,"name":"Litecoin","symbol":"LTC"}}]`,
 	})
 	require.Nil(tb, errTenthCreate)
 
@@ -705,8 +705,8 @@ func TestFulfillEscrowFulfillerCannotPayModule(t *testing.T) {
 	require.EqualError(t, err, "Fulfiller cannot pay: oops")
 }
 
-// TestFulfillEscrow tests the fulfillment of an escrow that can never be closed due to invalid ApiConditions
-func TestFulfillEscrowInvalidApiConditions(t *testing.T) {
+// TestFulfillEscrow tests the fulfillment of an escrow that can never be closed due to invalid OracleConditions
+func TestFulfillEscrowInvalidOracleConditions(t *testing.T) {
 	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
@@ -727,7 +727,7 @@ func TestFulfillEscrowInvalidApiConditions(t *testing.T) {
 }
 
 // TestFulfillEscrow tests the fulfillment of an escrow WITH TEXT-TYPE APICONDITIONS that can be closed when the second party fulfills it.
-func TestFulfillEscrowTextApiConditions(t *testing.T) {
+func TestFulfillEscrowTextOracleConditions(t *testing.T) {
 	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
