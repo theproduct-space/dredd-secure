@@ -4,6 +4,7 @@ import (
 	"dredd-secure/x/escrow/constants"
 	"dredd-secure/x/escrow/types"
 	"fmt"
+	"time"
 
 	"github.com/cometbft/cometbft/libs/log"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -15,6 +16,7 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
 	"github.com/cosmos/ibc-go/v7/modules/core/exported"
+	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 
 	"strings"
 
@@ -131,6 +133,68 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res bandtypes.OracleR
 			return err
 
 		}
+	}
+
+	return nil
+}
+
+// RequestBandChainData is a function that sends an OracleRequestPacketData to BandChain via IBC.
+func (k Keeper) RequestBandChainData(
+	ctx sdk.Context,
+	sourceChannel string,
+	oracleRequestPacket bandtypes.OracleRequestPacketData,
+	timeoutHeight clienttypes.Height,
+	timeoutTimestamp uint64,
+) error {
+	portID := k.GetPort(ctx)
+	channel, found := k.channelKeeper.GetChannel(ctx, portID, sourceChannel)
+	if !found {
+		return sdkerrors.Wrapf(
+			channeltypes.ErrChannelNotFound,
+			"port ID (%s) channel ID (%s)",
+			portID,
+			sourceChannel,
+		)
+	}
+
+	destinationPort := channel.GetCounterparty().GetPortID()
+	destinationChannel := channel.GetCounterparty().GetChannelID()
+
+	// Get the capability associated with the given channel.
+	channelCap, ok := k.scopedKeeper.GetCapability(ctx, host.ChannelCapabilityPath(portID, sourceChannel))
+	if !ok {
+		return sdkerrors.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
+	}
+
+	// Get the next sequence number for the given channel and port.
+	sequence, found := k.channelKeeper.GetNextSequenceSend(
+		ctx, portID, sourceChannel,
+	)
+	if !found {
+		return sdkerrors.Wrapf(
+			sdkerrors.ErrUnknownRequest,
+			"unknown sequence number for channel %s port %s",
+			sourceChannel,
+			portID,
+		)
+	}
+
+	// Create a new packet with the oracle request packet data and the sequence number.
+	packet := channeltypes.NewPacket(
+		oracleRequestPacket.GetBytes(),
+		sequence,
+		portID,
+		sourceChannel,
+		destinationPort,
+		destinationChannel,
+		clienttypes.ZeroHeight(),
+		uint64(ctx.BlockTime().UnixNano()+int64(20*time.Minute)),
+	)
+
+	// Send the packet via the channel and capability associated with the given channel.
+	_, err := k.channelKeeper.SendPacket(ctx, channelCap, portID, sourceChannel, timeoutHeight, timeoutTimestamp, packet.Data)
+	if err != nil {
+		return err
 	}
 
 	return nil

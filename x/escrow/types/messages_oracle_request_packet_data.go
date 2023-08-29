@@ -11,6 +11,7 @@ var _ sdk.Msg = &MsgSendOracleRequestPacketData{}
 
 func NewMsgSendOracleRequestPacketData(
 	creator string,
+	clientID string,
 	port string,
 	channelID string,
 	timeoutTimestamp uint64,
@@ -24,16 +25,18 @@ func NewMsgSendOracleRequestPacketData(
 ) *MsgSendOracleRequestPacketData {
 	return &MsgSendOracleRequestPacketData{
 		Creator:          creator,
+		ClientID: 		  clientID,
 		Port:             port,
 		ChannelID:        channelID,
 		TimeoutTimestamp: timeoutTimestamp,
-		OracleScriptId:   oracleScriptId,
+		OracleScriptID:   oracleScriptId,
 		Calldata:         calldata,
 		AskCount:         askCount,
 		MinCount:         minCount,
 		FeeLimit:         feeLimit,
 		PrepareGas:       prepareGas,
 		ExecuteGas:       executeGas,
+
 	}
 }
 

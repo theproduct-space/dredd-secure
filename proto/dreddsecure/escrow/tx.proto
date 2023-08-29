@@ -49,8 +49,8 @@ message MsgOptOutEscrow {
 message MsgOptOutEscrowResponse {}
 
 message MsgSendOracleRequestPacketData {
-           string                   clientId         =  5;
-           uint64                   oracleScriptId   =  6;
+           string                   clientID         =  5;
+           uint64                   oracleScriptID   =  6;
            bytes                    calldata         =  7;
            uint64                   askCount         =  8;
            uint64                   minCount         =  9;

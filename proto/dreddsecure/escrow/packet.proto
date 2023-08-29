@@ -18,8 +18,8 @@ message NoData {}
 
 // OracleRequestPacketDataPacketData defines a struct for the packet payload
 message OracleRequestPacketDataPacketData {
-           string                   clientId       = 1;
-           uint64                   oracleScriptId = 2;
+           string                   clientID       = 1;
+           uint64                   oracleScriptID = 2;
            bytes                    calldata       = 3;
            uint64                   askCount       = 4;
            uint64                   minCount       = 5;

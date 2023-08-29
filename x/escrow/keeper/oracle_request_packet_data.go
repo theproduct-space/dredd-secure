@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"fmt"
 	"errors"
 
 	"dredd-secure/x/escrow/types"
@@ -10,6 +11,7 @@ import (
 	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
+	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
 )
 
 // TransmitOracleRequestPacketDataPacket transmits the packet over IBC with the specified source port and source channel
@@ -20,6 +22,7 @@ func (k Keeper) TransmitOracleRequestPacketDataPacket(
 	sourceChannel string,
 	timeoutHeight clienttypes.Height,
 	timeoutTimestamp uint64,
+	oracleRequestPacket bandtypes.OracleRequestPacketData,
 ) (uint64, error) {
 	channelCap, ok := k.scopedKeeper.GetCapability(ctx, host.ChannelCapabilityPath(sourcePort, sourceChannel))
 	if !ok {
@@ -30,6 +33,16 @@ func (k Keeper) TransmitOracleRequestPacketDataPacket(
 	if err != nil {
 		return 0, sdkerrors.Wrapf(sdkerrors.ErrJSONMarshal, "cannot marshal the packet: %w", err)
 	}
+
+	descriptor, _ := channelCap.Descriptor()
+	
+	fmt.Println("Channel Cap : ", channelCap)
+	fmt.Println("Channel Cap Descriptor : ", descriptor)
+	fmt.Println("Source Port : ", sourcePort)
+	fmt.Println("Source Channel : ", sourceChannel)
+	fmt.Println("Timeout Height : ", timeoutHeight)
+	fmt.Println("Timeout Timestamp : ", timeoutTimestamp)
+	fmt.Println("Packet bytes : ", packetBytes)
 
 	return k.channelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes)
 }

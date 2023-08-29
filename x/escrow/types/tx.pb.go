@@ -422,8 +422,8 @@ func (m *MsgOptOutEscrowResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_MsgOptOutEscrowResponse proto.InternalMessageInfo
 
 type MsgSendOracleRequestPacketData struct {
-	ClientId         string       `protobuf:"bytes,5,opt,name=clientId,proto3" json:"clientId,omitempty"`
-	OracleScriptId   uint64       `protobuf:"varint,6,opt,name=oracleScriptId,proto3" json:"oracleScriptId,omitempty"`
+	ClientID         string       `protobuf:"bytes,5,opt,name=clientID,proto3" json:"clientID,omitempty"`
+	OracleScriptID   uint64       `protobuf:"varint,6,opt,name=oracleScriptID,proto3" json:"oracleScriptID,omitempty"`
 	Calldata         []byte       `protobuf:"bytes,7,opt,name=calldata,proto3" json:"calldata,omitempty"`
 	AskCount         uint64       `protobuf:"varint,8,opt,name=askCount,proto3" json:"askCount,omitempty"`
 	MinCount         uint64       `protobuf:"varint,9,opt,name=minCount,proto3" json:"minCount,omitempty"`
@@ -469,16 +469,16 @@ func (m *MsgSendOracleRequestPacketData) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgSendOracleRequestPacketData proto.InternalMessageInfo
 
-func (m *MsgSendOracleRequestPacketData) GetClientId() string {
+func (m *MsgSendOracleRequestPacketData) GetClientID() string {
 	if m != nil {
-		return m.ClientId
+		return m.ClientID
 	}
 	return ""
 }
 
-func (m *MsgSendOracleRequestPacketData) GetOracleScriptId() uint64 {
+func (m *MsgSendOracleRequestPacketData) GetOracleScriptID() uint64 {
 	if m != nil {
-		return m.OracleScriptId
+		return m.OracleScriptID
 	}
 	return 0
 }
@@ -1227,15 +1227,15 @@ func (m *MsgSendOracleRequestPacketData) MarshalToSizedBuffer(dAtA []byte) (int,
 		i--
 		dAtA[i] = 0x3a
 	}
-	if m.OracleScriptId != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.OracleScriptId))
+	if m.OracleScriptID != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.OracleScriptID))
 		i--
 		dAtA[i] = 0x30
 	}
-	if len(m.ClientId) > 0 {
-		i -= len(m.ClientId)
-		copy(dAtA[i:], m.ClientId)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.ClientId)))
+	if len(m.ClientID) > 0 {
+		i -= len(m.ClientID)
+		copy(dAtA[i:], m.ClientID)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.ClientID)))
 		i--
 		dAtA[i] = 0x2a
 	}
@@ -1450,12 +1450,12 @@ func (m *MsgSendOracleRequestPacketData) Size() (n int) {
 	if m.TimeoutTimestamp != 0 {
 		n += 1 + sovTx(uint64(m.TimeoutTimestamp))
 	}
-	l = len(m.ClientId)
+	l = len(m.ClientID)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	if m.OracleScriptId != 0 {
-		n += 1 + sovTx(uint64(m.OracleScriptId))
+	if m.OracleScriptID != 0 {
+		n += 1 + sovTx(uint64(m.OracleScriptID))
 	}
 	l = len(m.Calldata)
 	if l > 0 {
@@ -2426,7 +2426,7 @@ func (m *MsgSendOracleRequestPacketData) Unmarshal(dAtA []byte) error {
 			}
 		case 5:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ClientId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ClientID", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -2454,13 +2454,13 @@ func (m *MsgSendOracleRequestPacketData) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.ClientId = string(dAtA[iNdEx:postIndex])
+			m.ClientID = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 6:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field OracleScriptId", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field OracleScriptID", wireType)
 			}
-			m.OracleScriptId = 0
+			m.OracleScriptID = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -2470,7 +2470,7 @@ func (m *MsgSendOracleRequestPacketData) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.OracleScriptId |= uint64(b&0x7F) << shift
+				m.OracleScriptID |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
