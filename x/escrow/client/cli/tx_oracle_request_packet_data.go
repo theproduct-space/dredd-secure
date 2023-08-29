@@ -2,8 +2,10 @@ package cli
 
 import (
 	"strconv"
+	"github.com/google/uuid"
 
 	"dredd-secure/x/escrow/types"
+	"encoding/json"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -12,6 +14,7 @@ import (
 	channelutils "github.com/cosmos/ibc-go/v7/modules/core/04-channel/client/utils"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
+	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
 )
 
 var _ = strconv.Itoa(0)
@@ -35,7 +38,12 @@ func CmdSendOracleRequestPacketData() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			argCalldata := []byte(args[3])
+
+			var stringSlice []string
+			json.Unmarshal([]byte(args[3]), &stringSlice)
+
+			argCalldataBytes, _ := bandtypes.EncodeCalldata(stringSlice, uint8(1))
+
 			argAskCount, err := cast.ToUint64E(args[4])
 			if err != nil {
 				return err
@@ -69,8 +77,12 @@ func CmdSendOracleRequestPacketData() *cobra.Command {
 			if timeoutTimestamp != 0 {
 				timeoutTimestamp = consensusState.GetTimestamp() + timeoutTimestamp
 			}
+			// Generate a new UUID
+			uid := uuid.New()
 
-			msg := types.NewMsgSendOracleRequestPacketData(creator, srcPort, srcChannel, timeoutTimestamp, argOracleScriptId, argCalldata, argAskCount, argMinCount, argFeeLimit, argPrepareGas, argExecuteGas)
+			// using the oracleScriptId in the clientId for data treater upon OracleResponsePacketData reception
+			clientID := args[2] + "_" + uid.String()
+			msg := types.NewMsgSendOracleRequestPacketData(creator, clientID, srcPort, srcChannel, timeoutTimestamp, argOracleScriptId, argCalldataBytes, argAskCount, argMinCount, argFeeLimit, argPrepareGas, argExecuteGas)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

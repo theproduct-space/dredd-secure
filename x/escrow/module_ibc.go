@@ -146,6 +146,7 @@ func (im IBCModule) OnRecvPacket(
 	modulePacket channeltypes.Packet,
 	relayer sdk.AccAddress,
 ) ibcexported.Acknowledgement {
+	fmt.Println("OnRecvPacket")
 	// var ack channeltypes.Acknowledgement
 	var packet bandtypes.OracleResponsePacketData
 
@@ -167,6 +168,10 @@ func (im IBCModule) OnRecvPacket(
 	if err := im.keeper.StoreOracleResponsePacket(ctx, packet); err != nil {
 		return channeltypes.NewErrorAcknowledgement(err)
 	}
+
+	fmt.Println("Result : ", packet.GetResult())
+	fmt.Println("Bytes : ", packet.GetBytes())
+	fmt.Println("ClientID : ", packet.GetClientID())
 
 	// TODO, store the OracleResponsePacket
 	// -> what is the data type used to store the response packet?
@@ -223,7 +228,8 @@ func (im IBCModule) OnAcknowledgementPacket(
 	acknowledgement []byte,
 	relayer sdk.AccAddress,
 ) error {
-	var ack channeltypes.Acknowledgement
+	fmt.Println("OnAcknowledgementPacket")
+	/*var ack channeltypes.Acknowledgement
 	if err := types.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
 	}
@@ -276,6 +282,39 @@ func (im IBCModule) OnAcknowledgementPacket(
 		)
 	}
 
+	return nil*/
+	var ack channeltypes.Acknowledgement
+	if err := types.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
+	}
+
+	// Check the type of response in the acknowledgement packet.
+	switch resp := ack.Response.(type) {
+	case *channeltypes.Acknowledgement_Result:
+		// If the response is of type Result, unmarshal the result into a
+		// bandtypes.OracleRequestPacketAcknowledgement object.
+		var oracleAck bandtypes.OracleRequestPacketAcknowledgement
+		if err := types.ModuleCdc.UnmarshalJSON(resp.Result, &oracleAck); err != nil {
+			return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
+		}
+
+		// Emit a new event with the EventTypeRequestPacket and AckSuccess with request id.
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypeOracleRequestPacketDataPacket,
+				sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%d", oracleAck.RequestID)),
+			),
+		)
+	case *channeltypes.Acknowledgement_Error:
+		// Emit a new event with the AttributeKeyAckError and AckError with error message.
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.AttributeKeyAckError,
+				sdk.NewAttribute(types.AttributeKeyAckError, resp.Error),
+			),
+		)
+	}
+
 	return nil
 }
 
@@ -285,7 +324,8 @@ func (im IBCModule) OnTimeoutPacket(
 	modulePacket channeltypes.Packet,
 	relayer sdk.AccAddress,
 ) error {
-	var modulePacketData types.EscrowPacketData
+	fmt.Println("OnTimeoutPacket")
+	/*var modulePacketData types.EscrowPacketData
 	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
 	}
@@ -303,5 +343,6 @@ func (im IBCModule) OnTimeoutPacket(
 		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
 	}
 
+	return nil*/
 	return nil
 }
