@@ -36,7 +36,7 @@ message OracleResponsePacketDataPacketData {
   string request_time = 4;
   string resolve_status = 5;
   string resolve_time = 6;
-  string result = 7;
+  bytes result = 7;
 }
 
 // OracleRequestPacketDataPacketAck defines a struct for the packet acknowledgment

@@ -13,10 +13,10 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
+	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
 	"github.com/cosmos/ibc-go/v7/modules/core/exported"
-	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 
 	"strings"
 
@@ -129,16 +129,16 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res types.OracleRespo
 	switch oracleId {
 	case constants.OracleCryptoCurrencyPriceScriptId:
 		// Decode the result from the response packet.
-		result, err := bandtypes.DecodeResult([]byte(res.Result))
+		result, err := bandtypes.DecodeResult(res.Result)
 		fmt.Println("RESULT_01 : ", result)
 		if err != nil {
 			fmt.Println("ERROR DECODE : ", err)
 			return err
 		}
 	default: 
-		fmt.Println("PACKET RESULT TO BYTES : ", []byte(res.Result))
+		fmt.Println("PACKET RESULT TO BYTES : ", res.Result)
 		// Decode the result from the response packet.
-		result, err := bandtypes.DecodeResult([]byte(res.Result))
+		result, err := bandtypes.DecodeResult(res.Result)
 		fmt.Println("RESULT_02 : ", result)
 		if err != nil {
 			fmt.Println("ERROR DECODE : ", err)
