@@ -18,6 +18,7 @@ import (
 	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
 	"github.com/cosmos/ibc-go/v7/modules/core/exported"
 
+	"strconv"
 	"strings"
 
 	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
@@ -124,26 +125,34 @@ func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res types.OracleRespo
 	// Find the oracleId from the clientID
 	oracleId := strings.Split(res.ClientId, "_")[0]
 
-	fmt.Println("PACKET RESULT : ", res.Result)
-
 	switch oracleId {
-	case constants.OracleCryptoCurrencyPriceScriptId:
-		// Decode the result from the response packet.
-		result, err := bandtypes.DecodeResult(res.Result)
-		fmt.Println("RESULT_01 : ", result)
-		if err != nil {
-			fmt.Println("ERROR DECODE : ", err)
-			return err
-		}
-	default: 
-		fmt.Println("PACKET RESULT TO BYTES : ", res.Result)
-		// Decode the result from the response packet.
-		result, err := bandtypes.DecodeResult(res.Result)
-		fmt.Println("RESULT_02 : ", result)
-		if err != nil {
-			fmt.Println("ERROR DECODE : ", err)
-			return err
-		}
+		case constants.OracleCryptoCurrencyPriceScriptId:
+			// Decode the result from the response packet.
+			result, err := bandtypes.DecodeResult(res.Result)
+			if err != nil {
+				return err
+			}
+
+			for _, r := range result {
+				oraclePrice := types.OraclePrice{
+					Symbol:      r.Symbol,
+					ResolveTime: res.RequestTime,
+					Price:       strconv.FormatUint(r.Rate, 10),
+				}
+				changed := k.UpdateOraclePrice(ctx, oraclePrice)
+				if changed {
+					ctx.EventManager().EmitEvent(
+						sdk.NewEvent(
+							types.EventTypePriceUpdate,
+							sdk.NewAttribute(types.AttributeKeySymbol, r.Symbol),
+							sdk.NewAttribute(types.AttributeKeyPrice, fmt.Sprintf("%d", r.Rate)),
+							sdk.NewAttribute(types.AttributeKeyTimestamp, res.ResolveStatus),
+						),
+					)
+				}
+			}
+		default: 
+			return types.ErrOracleScriptNotConfigured
 	}
 
 	return nil

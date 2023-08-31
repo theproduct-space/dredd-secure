@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"dredd-secure/x/escrow/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -60,4 +61,13 @@ func (k Keeper) GetAllOraclePrice(ctx sdk.Context) (list []types.OraclePrice) {
 	}
 
 	return
+}
+
+func (k Keeper) UpdateOraclePrice(ctx sdk.Context, price types.OraclePrice) bool {
+	old, found := k.GetOraclePrice(ctx, price.Symbol)
+	if !found || old.ResolveTime < price.ResolveTime {
+		k.SetOraclePrice(ctx, price)
+		return true
+	}
+	return false
 }
