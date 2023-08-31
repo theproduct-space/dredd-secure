@@ -147,31 +147,61 @@ func (im IBCModule) OnRecvPacket(
 	relayer sdk.AccAddress,
 ) ibcexported.Acknowledgement {
 	fmt.Println("OnRecvPacket")
-	// var ack channeltypes.Acknowledgement
-	var packet bandtypes.OracleResponsePacketData
+	fmt.Println("OnRecvPacket")
+	fmt.Println("OnRecvPacket")
+	fmt.Println("OnRecvPacket")
+	fmt.Println("OnRecvPacket")
+	fmt.Println("OnRecvPacket")
+	fmt.Println("OnRecvPacket")
+	fmt.Println("OnRecvPacket")
+	fmt.Println("OnRecvPacket")
+	fmt.Println("OnRecvPacket")
+	fmt.Println("OnRecvPacket")
+	fmt.Println("OnRecvPacket")
+	fmt.Println("OnRecvPacket")
+	fmt.Println("OnRecvPacket")
+	fmt.Println("OnRecvPacket")
+	fmt.Println("OnRecvPacket")
+	fmt.Println("OnRecvPacket")
+	var packet types.OracleResponsePacketDataPacketData
 
 	// Unmarshal the data from the module packet into the OracleResponsePacketData object.
 	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &packet); err != nil {
+		fmt.Println("ERROR : ", err)
+		fmt.Println("ERROR : ", modulePacket.Data)
 		return channeltypes.NewErrorAcknowledgement(err)
 	}
 
-	// Request has been resolved
+	// Request has been resolved and relayed to pricefeed module
 	ctx.EventManager().EmitEvent(sdk.NewEvent(
 		types.EventTypeOracleResponsePacketDataPacket,
-		sdk.NewAttribute(types.AttributeKeyRequestID, fmt.Sprintf("%d", packet.RequestID)),
+		sdk.NewAttribute(types.AttributeKeyRequestID, packet.RequestId),
 	))
 
-	if packet.ResolveStatus != bandtypes.RESOLVE_STATUS_SUCCESS {
+	if packet.GetResolveStatus() != bandtypes.RESOLVE_STATUS_SUCCESS.String() {
 		return channeltypes.NewErrorAcknowledgement(types.ErrOracleResolveStatusNotSuccess)
 	}
+
+	var ack channeltypes.Acknowledgement
+	packetAck, err := im.keeper.OnRecvOracleRequestPacketDataPacket(ctx, modulePacket, packet)
+	if err != nil {
+		ack = channeltypes.NewErrorAcknowledgement(err)
+	} else {
+		// Encode packet acknowledgment
+		packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
+		if err != nil {
+			return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error()))
+		}
+		ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
+	}
+
+	fmt.Println("ACK : ", ack)
 
 	if err := im.keeper.StoreOracleResponsePacket(ctx, packet); err != nil {
 		return channeltypes.NewErrorAcknowledgement(err)
 	}
 
-	fmt.Println("Result : ", packet.GetResult())
-	fmt.Println("Bytes : ", packet.GetBytes())
-	fmt.Println("ClientID : ", packet.GetClientID())
+	return channeltypes.NewResultAcknowledgement(nil)
 
 	// TODO, store the OracleResponsePacket
 	// -> what is the data type used to store the response packet?
@@ -218,7 +248,7 @@ func (im IBCModule) OnRecvPacket(
 	// END SCAFFOLDING FROM IGNITE THAT WE MIGHT NOT NEED
 
 	// NOTE: acknowledgement will be written synchronously during IBC handler execution.
-	return channeltypes.NewResultAcknowledgement(nil)
+	// return channeltypes.NewResultAcknowledgement(nil)
 }
 
 // OnAcknowledgementPacket implements the IBCModule interface

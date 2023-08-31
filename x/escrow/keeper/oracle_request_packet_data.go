@@ -48,11 +48,11 @@ func (k Keeper) TransmitOracleRequestPacketDataPacket(
 }
 
 // OnRecvOracleRequestPacketDataPacket processes packet reception
-func (k Keeper) OnRecvOracleRequestPacketDataPacket(ctx sdk.Context, packet channeltypes.Packet, data types.OracleRequestPacketDataPacketData) (packetAck types.OracleRequestPacketDataPacketAck, err error) {
+func (k Keeper) OnRecvOracleRequestPacketDataPacket(ctx sdk.Context, packet channeltypes.Packet, data types.OracleResponsePacketDataPacketData) (packetAck types.OracleRequestPacketDataPacketAck, err error) {
 	// validate packet data upon receiving
-	if err := data.ValidateBasic(); err != nil {
+	/*if err := data.ValidateBasic(); err != nil {
 		return packetAck, err
-	}
+	}*/
 
 	// TODO: packet reception logic, can be delete as we will never receive these types of packet..???
 

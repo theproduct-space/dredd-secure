@@ -28,6 +28,17 @@ message OracleRequestPacketDataPacketData {
            uint64                   executeGas     = 8;
 }
 
+// OracleResponsePacketDataPacketData defines a struct for the response from the oracle request
+message OracleResponsePacketDataPacketData {
+  uint64 ans_count = 1;
+  string client_id = 2;
+  string request_id = 3; 
+  string request_time = 4;
+  string resolve_status = 5;
+  string resolve_time = 6;
+  string result = 7;
+}
+
 // OracleRequestPacketDataPacketAck defines a struct for the packet acknowledgment
 message OracleRequestPacketDataPacketAck {
   uint64 requestId = 1;
