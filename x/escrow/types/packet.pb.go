@@ -246,6 +246,99 @@ func (m *OracleRequestPacketDataPacketData) GetExecuteGas() uint64 {
 	return 0
 }
 
+// OracleResponsePacketDataPacketData defines a struct for the response from the oracle request
+type OracleResponsePacketDataPacketData struct {
+	AnsCount      uint64 `protobuf:"varint,1,opt,name=ans_count,json=ansCount,proto3" json:"ans_count,omitempty"`
+	ClientId      string `protobuf:"bytes,2,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
+	RequestId     string `protobuf:"bytes,3,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	RequestTime   string `protobuf:"bytes,4,opt,name=request_time,json=requestTime,proto3" json:"request_time,omitempty"`
+	ResolveStatus string `protobuf:"bytes,5,opt,name=resolve_status,json=resolveStatus,proto3" json:"resolve_status,omitempty"`
+	ResolveTime   string `protobuf:"bytes,6,opt,name=resolve_time,json=resolveTime,proto3" json:"resolve_time,omitempty"`
+	Result        string `protobuf:"bytes,7,opt,name=result,proto3" json:"result,omitempty"`
+}
+
+func (m *OracleResponsePacketDataPacketData) Reset()         { *m = OracleResponsePacketDataPacketData{} }
+func (m *OracleResponsePacketDataPacketData) String() string { return proto.CompactTextString(m) }
+func (*OracleResponsePacketDataPacketData) ProtoMessage()    {}
+func (*OracleResponsePacketDataPacketData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_25509c70adc450aa, []int{3}
+}
+func (m *OracleResponsePacketDataPacketData) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *OracleResponsePacketDataPacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_OracleResponsePacketDataPacketData.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *OracleResponsePacketDataPacketData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_OracleResponsePacketDataPacketData.Merge(m, src)
+}
+func (m *OracleResponsePacketDataPacketData) XXX_Size() int {
+	return m.Size()
+}
+func (m *OracleResponsePacketDataPacketData) XXX_DiscardUnknown() {
+	xxx_messageInfo_OracleResponsePacketDataPacketData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_OracleResponsePacketDataPacketData proto.InternalMessageInfo
+
+func (m *OracleResponsePacketDataPacketData) GetAnsCount() uint64 {
+	if m != nil {
+		return m.AnsCount
+	}
+	return 0
+}
+
+func (m *OracleResponsePacketDataPacketData) GetClientId() string {
+	if m != nil {
+		return m.ClientId
+	}
+	return ""
+}
+
+func (m *OracleResponsePacketDataPacketData) GetRequestId() string {
+	if m != nil {
+		return m.RequestId
+	}
+	return ""
+}
+
+func (m *OracleResponsePacketDataPacketData) GetRequestTime() string {
+	if m != nil {
+		return m.RequestTime
+	}
+	return ""
+}
+
+func (m *OracleResponsePacketDataPacketData) GetResolveStatus() string {
+	if m != nil {
+		return m.ResolveStatus
+	}
+	return ""
+}
+
+func (m *OracleResponsePacketDataPacketData) GetResolveTime() string {
+	if m != nil {
+		return m.ResolveTime
+	}
+	return ""
+}
+
+func (m *OracleResponsePacketDataPacketData) GetResult() string {
+	if m != nil {
+		return m.Result
+	}
+	return ""
+}
+
 // OracleRequestPacketDataPacketAck defines a struct for the packet acknowledgment
 type OracleRequestPacketDataPacketAck struct {
 	RequestId uint64 `protobuf:"varint,1,opt,name=requestId,proto3" json:"requestId,omitempty"`
@@ -255,7 +348,7 @@ func (m *OracleRequestPacketDataPacketAck) Reset()         { *m = OracleRequestP
 func (m *OracleRequestPacketDataPacketAck) String() string { return proto.CompactTextString(m) }
 func (*OracleRequestPacketDataPacketAck) ProtoMessage()    {}
 func (*OracleRequestPacketDataPacketAck) Descriptor() ([]byte, []int) {
-	return fileDescriptor_25509c70adc450aa, []int{3}
+	return fileDescriptor_25509c70adc450aa, []int{4}
 }
 func (m *OracleRequestPacketDataPacketAck) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -295,40 +388,48 @@ func init() {
 	proto.RegisterType((*EscrowPacketData)(nil), "dreddsecure.escrow.EscrowPacketData")
 	proto.RegisterType((*NoData)(nil), "dreddsecure.escrow.NoData")
 	proto.RegisterType((*OracleRequestPacketDataPacketData)(nil), "dreddsecure.escrow.OracleRequestPacketDataPacketData")
+	proto.RegisterType((*OracleResponsePacketDataPacketData)(nil), "dreddsecure.escrow.OracleResponsePacketDataPacketData")
 	proto.RegisterType((*OracleRequestPacketDataPacketAck)(nil), "dreddsecure.escrow.OracleRequestPacketDataPacketAck")
 }
 
 func init() { proto.RegisterFile("dreddsecure/escrow/packet.proto", fileDescriptor_25509c70adc450aa) }
 
 var fileDescriptor_25509c70adc450aa = []byte{
-	// 424 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x92, 0xc1, 0x6e, 0xd4, 0x30,
-	0x10, 0x86, 0x93, 0x36, 0x84, 0xd4, 0x45, 0x08, 0x59, 0x1c, 0x42, 0x00, 0x37, 0xe4, 0x80, 0xf6,
-	0x82, 0xa3, 0x16, 0x7a, 0xe2, 0x02, 0xdb, 0x22, 0xa8, 0x84, 0x00, 0x85, 0x1b, 0x37, 0xaf, 0x33,
-	0x54, 0xd1, 0x66, 0xe3, 0x60, 0x3b, 0x50, 0x0e, 0xbc, 0x03, 0x8f, 0xc3, 0x23, 0xf4, 0xb8, 0xdc,
-	0x38, 0x21, 0xb4, 0xfb, 0x22, 0xc8, 0x76, 0x36, 0xbb, 0x02, 0xb4, 0xdc, 0x3c, 0xf3, 0xfd, 0xf3,
-	0x4f, 0x32, 0x33, 0xe8, 0xa0, 0x94, 0x50, 0x96, 0x0a, 0x78, 0x27, 0x21, 0x07, 0xc5, 0xa5, 0xf8,
-	0x94, 0xb7, 0x8c, 0x4f, 0x41, 0xd3, 0x56, 0x0a, 0x2d, 0x30, 0xde, 0x10, 0x50, 0x27, 0x48, 0x6e,
-	0x9e, 0x8b, 0x73, 0x61, 0x71, 0x6e, 0x5e, 0x4e, 0x99, 0x10, 0x2e, 0xd4, 0x4c, 0xa8, 0x7c, 0xc2,
-	0x14, 0xe4, 0x1f, 0x0f, 0x27, 0xa0, 0xd9, 0x61, 0xce, 0x45, 0xd5, 0x38, 0x9e, 0x7d, 0xf7, 0xd1,
-	0x8d, 0x67, 0xd6, 0xe0, 0x8d, 0x6d, 0x70, 0xca, 0x34, 0xc3, 0x8f, 0x50, 0xd8, 0x08, 0xf3, 0x8a,
-	0xfd, 0xd4, 0x1f, 0xed, 0x1f, 0x25, 0xf4, 0xef, 0x7e, 0xf4, 0x95, 0x55, 0xbc, 0xf0, 0x8a, 0x5e,
-	0x8b, 0xbf, 0xa0, 0xbb, 0x42, 0x32, 0x5e, 0x43, 0x01, 0x1f, 0x3a, 0x50, 0x7a, 0x6d, 0xe8, 0x5e,
-	0xf1, 0x8e, 0x35, 0x3b, 0xfe, 0x97, 0xd9, 0xeb, 0x6d, 0x85, 0x7d, 0x9f, 0xed, 0xee, 0xe3, 0x08,
-	0x85, 0x6e, 0x46, 0x59, 0x84, 0x42, 0xf7, 0x71, 0xd9, 0xb7, 0x1d, 0x74, 0xef, 0xbf, 0xd6, 0x38,
-	0x41, 0x11, 0xaf, 0x2b, 0x68, 0xf4, 0xd9, 0xa9, 0xfd, 0xe1, 0xbd, 0x62, 0x88, 0xf1, 0x7d, 0x74,
-	0xdd, 0xb5, 0x7d, 0xcb, 0x65, 0xd5, 0x1a, 0x85, 0xf9, 0x8b, 0xa0, 0xf8, 0x23, 0x6b, 0x3d, 0x58,
-	0x5d, 0x97, 0x66, 0x68, 0xbb, 0xa9, 0x3f, 0xba, 0x56, 0x0c, 0xb1, 0x61, 0x4c, 0x4d, 0x4f, 0x44,
-	0xd7, 0xe8, 0x38, 0xb0, 0xd5, 0x43, 0x6c, 0xd8, 0xac, 0x6a, 0x1c, 0xbb, 0xe2, 0xd8, 0x2a, 0xc6,
-	0x8f, 0x51, 0xf4, 0x1e, 0xe0, 0x65, 0x35, 0xab, 0x74, 0x1c, 0xa6, 0xbb, 0xa3, 0xfd, 0xa3, 0x5b,
-	0xd4, 0xad, 0x93, 0x9a, 0x75, 0xd2, 0x7e, 0x9d, 0xf4, 0x44, 0x54, 0xcd, 0x38, 0xb8, 0xfc, 0x79,
-	0xe0, 0x15, 0x43, 0x01, 0x26, 0x08, 0xb5, 0x12, 0x5a, 0x26, 0xe1, 0x39, 0x53, 0xf1, 0x55, 0x6b,
-	0xbd, 0x91, 0x31, 0x1c, 0x2e, 0x80, 0x77, 0xda, 0xf2, 0xc8, 0xf1, 0x75, 0x26, 0x7b, 0x82, 0xd2,
-	0xad, 0x93, 0x7b, 0xca, 0xa7, 0xf8, 0x0e, 0xda, 0x93, 0x8e, 0x9e, 0x95, 0x76, 0x72, 0x41, 0xb1,
-	0x4e, 0x8c, 0x8f, 0x2f, 0x17, 0xc4, 0x9f, 0x2f, 0x88, 0xff, 0x6b, 0x41, 0xfc, 0xaf, 0x4b, 0xe2,
-	0xcd, 0x97, 0xc4, 0xfb, 0xb1, 0x24, 0xde, 0xbb, 0xdb, 0xf6, 0x02, 0x1e, 0xf4, 0x07, 0x7e, 0xb1,
-	0x3a, 0x71, 0xfd, 0xb9, 0x05, 0x35, 0x09, 0xed, 0x61, 0x3e, 0xfc, 0x1d, 0x00, 0x00, 0xff, 0xff,
-	0x72, 0xcd, 0x09, 0x49, 0x05, 0x03, 0x00, 0x00,
+	// 536 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x53, 0xc1, 0x6e, 0xd3, 0x40,
+	0x10, 0x8d, 0x93, 0x60, 0xe2, 0x49, 0xa9, 0xd0, 0x0a, 0xa1, 0x90, 0x50, 0x37, 0xb5, 0x04, 0xca,
+	0x05, 0x5b, 0x2d, 0xf4, 0xc4, 0x05, 0xd2, 0x22, 0xa8, 0x84, 0x00, 0xb9, 0x9c, 0xb8, 0x44, 0x1b,
+	0x7b, 0xa8, 0xac, 0x38, 0x5e, 0xb3, 0xbb, 0x2e, 0xe5, 0xc0, 0x85, 0x2f, 0xe0, 0x73, 0xf8, 0x84,
+	0x1e, 0xcb, 0x8d, 0x13, 0x42, 0xc9, 0x8f, 0x20, 0xcf, 0x3a, 0x49, 0x05, 0x55, 0x7a, 0xdb, 0x79,
+	0xef, 0xed, 0x5b, 0xcf, 0x1b, 0x0f, 0x6c, 0xc7, 0x12, 0xe3, 0x58, 0x61, 0x54, 0x48, 0x0c, 0x50,
+	0x45, 0x52, 0x7c, 0x0e, 0x72, 0x1e, 0x4d, 0x50, 0xfb, 0xb9, 0x14, 0x5a, 0x30, 0x76, 0x49, 0xe0,
+	0x1b, 0x41, 0xf7, 0xce, 0x89, 0x38, 0x11, 0x44, 0x07, 0xe5, 0xc9, 0x28, 0xbb, 0x6e, 0x24, 0xd4,
+	0x54, 0xa8, 0x60, 0xcc, 0x15, 0x06, 0xa7, 0xbb, 0x63, 0xd4, 0x7c, 0x37, 0x88, 0x44, 0x92, 0x19,
+	0xde, 0xfb, 0x69, 0xc1, 0xed, 0x17, 0x64, 0xf0, 0x8e, 0x1e, 0x38, 0xe4, 0x9a, 0xb3, 0x27, 0x60,
+	0x67, 0xa2, 0x3c, 0x75, 0xac, 0xbe, 0x35, 0x68, 0xef, 0x75, 0xfd, 0xff, 0xdf, 0xf3, 0xdf, 0x90,
+	0xe2, 0x55, 0x2d, 0xac, 0xb4, 0xec, 0x2b, 0x6c, 0x09, 0xc9, 0xa3, 0x14, 0x43, 0xfc, 0x54, 0xa0,
+	0xd2, 0x2b, 0x43, 0x73, 0xea, 0xd4, 0xc9, 0x6c, 0xff, 0x2a, 0xb3, 0xb7, 0xeb, 0x2e, 0x56, 0xef,
+	0xac, 0x77, 0x1f, 0xb6, 0xc0, 0x36, 0x19, 0x79, 0x2d, 0xb0, 0xcd, 0xc7, 0x79, 0x3f, 0xea, 0xb0,
+	0x73, 0xad, 0x35, 0xeb, 0x42, 0x2b, 0x4a, 0x13, 0xcc, 0xf4, 0xd1, 0x21, 0x35, 0xec, 0x84, 0xcb,
+	0x9a, 0x3d, 0x84, 0x4d, 0xf3, 0xec, 0x71, 0x24, 0x93, 0xbc, 0x54, 0x94, 0x5d, 0x34, 0xc3, 0x7f,
+	0x50, 0xf2, 0xe0, 0x69, 0x1a, 0x97, 0xa1, 0x35, 0xfa, 0xd6, 0x60, 0x23, 0x5c, 0xd6, 0x25, 0xc7,
+	0xd5, 0xe4, 0x40, 0x14, 0x99, 0xee, 0x34, 0xe9, 0xf6, 0xb2, 0x2e, 0xb9, 0x69, 0x92, 0x19, 0xee,
+	0x86, 0xe1, 0x16, 0x35, 0x7b, 0x0a, 0xad, 0x8f, 0x88, 0xaf, 0x93, 0x69, 0xa2, 0x3b, 0x76, 0xbf,
+	0x31, 0x68, 0xef, 0xdd, 0xf3, 0xcd, 0x38, 0xfd, 0x72, 0x9c, 0x7e, 0x35, 0x4e, 0xff, 0x40, 0x24,
+	0xd9, 0xb0, 0x79, 0xfe, 0x7b, 0xbb, 0x16, 0x2e, 0x2f, 0x30, 0x17, 0x20, 0x97, 0x98, 0x73, 0x89,
+	0x2f, 0xb9, 0xea, 0xdc, 0x24, 0xeb, 0x4b, 0x48, 0xc9, 0xe3, 0x19, 0x46, 0x85, 0x26, 0xbe, 0x65,
+	0xf8, 0x15, 0xe2, 0x7d, 0xab, 0x83, 0xb7, 0x88, 0x4e, 0xe5, 0x22, 0x53, 0x78, 0x65, 0x76, 0x3d,
+	0x70, 0x78, 0xa6, 0x46, 0x11, 0x35, 0x60, 0x55, 0xcd, 0x65, 0xca, 0x34, 0xd0, 0x03, 0xc7, 0x04,
+	0x39, 0x4a, 0x62, 0xca, 0x6d, 0x95, 0x6c, 0xcc, 0xb6, 0x00, 0xa4, 0x19, 0x4a, 0xc9, 0x36, 0x88,
+	0x75, 0x2a, 0xe4, 0x28, 0x66, 0x3b, 0xb0, 0xb1, 0xa0, 0x75, 0x32, 0x45, 0x0a, 0xce, 0x09, 0xdb,
+	0x15, 0xf6, 0x3e, 0x99, 0x22, 0x7b, 0x00, 0x9b, 0x12, 0x95, 0x48, 0x4f, 0x71, 0xa4, 0x34, 0xd7,
+	0x85, 0xa2, 0x04, 0x9d, 0xf0, 0x56, 0x85, 0x1e, 0x13, 0x68, 0x9c, 0x8c, 0x8c, 0x9c, 0xec, 0x85,
+	0x13, 0x61, 0xe4, 0x74, 0x17, 0x6c, 0x89, 0xaa, 0x48, 0x35, 0x05, 0xe5, 0x84, 0x55, 0xe5, 0x3d,
+	0x83, 0xfe, 0xda, 0xdf, 0xe7, 0x79, 0x34, 0x61, 0xf7, 0x61, 0xf5, 0xd5, 0x55, 0x02, 0x2b, 0x60,
+	0xb8, 0x7f, 0x3e, 0x73, 0xad, 0x8b, 0x99, 0x6b, 0xfd, 0x99, 0xb9, 0xd6, 0xf7, 0xb9, 0x5b, 0xbb,
+	0x98, 0xbb, 0xb5, 0x5f, 0x73, 0xb7, 0xf6, 0xa1, 0x47, 0x6b, 0xf0, 0xa8, 0xda, 0xf2, 0xb3, 0xc5,
+	0x9e, 0xeb, 0x2f, 0x39, 0xaa, 0xb1, 0x4d, 0xdb, 0xf9, 0xf8, 0x6f, 0x00, 0x00, 0x00, 0xff, 0xff,
+	0x66, 0xed, 0x6f, 0xb6, 0x0a, 0x04, 0x00, 0x00,
 }
 
 func (m *EscrowPacketData) Marshal() (dAtA []byte, err error) {
@@ -504,6 +605,76 @@ func (m *OracleRequestPacketDataPacketData) MarshalToSizedBuffer(dAtA []byte) (i
 	return len(dAtA) - i, nil
 }
 
+func (m *OracleResponsePacketDataPacketData) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *OracleResponsePacketDataPacketData) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *OracleResponsePacketDataPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Result) > 0 {
+		i -= len(m.Result)
+		copy(dAtA[i:], m.Result)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.Result)))
+		i--
+		dAtA[i] = 0x3a
+	}
+	if len(m.ResolveTime) > 0 {
+		i -= len(m.ResolveTime)
+		copy(dAtA[i:], m.ResolveTime)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.ResolveTime)))
+		i--
+		dAtA[i] = 0x32
+	}
+	if len(m.ResolveStatus) > 0 {
+		i -= len(m.ResolveStatus)
+		copy(dAtA[i:], m.ResolveStatus)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.ResolveStatus)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if len(m.RequestTime) > 0 {
+		i -= len(m.RequestTime)
+		copy(dAtA[i:], m.RequestTime)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.RequestTime)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RequestId) > 0 {
+		i -= len(m.RequestId)
+		copy(dAtA[i:], m.RequestId)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.RequestId)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.ClientId) > 0 {
+		i -= len(m.ClientId)
+		copy(dAtA[i:], m.ClientId)
+		i = encodeVarintPacket(dAtA, i, uint64(len(m.ClientId)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.AnsCount != 0 {
+		i = encodeVarintPacket(dAtA, i, uint64(m.AnsCount))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *OracleRequestPacketDataPacketAck) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -622,6 +793,42 @@ func (m *OracleRequestPacketDataPacketData) Size() (n int) {
 	}
 	if m.ExecuteGas != 0 {
 		n += 1 + sovPacket(uint64(m.ExecuteGas))
+	}
+	return n
+}
+
+func (m *OracleResponsePacketDataPacketData) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.AnsCount != 0 {
+		n += 1 + sovPacket(uint64(m.AnsCount))
+	}
+	l = len(m.ClientId)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.RequestId)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.RequestTime)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.ResolveStatus)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.ResolveTime)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
+	}
+	l = len(m.Result)
+	if l > 0 {
+		n += 1 + l + sovPacket(uint64(l))
 	}
 	return n
 }
@@ -1038,6 +1245,267 @@ func (m *OracleRequestPacketDataPacketData) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipPacket(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *OracleResponsePacketDataPacketData) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowPacket
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: OracleResponsePacketDataPacketData: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: OracleResponsePacketDataPacketData: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AnsCount", wireType)
+			}
+			m.AnsCount = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.AnsCount |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ClientId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ClientId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RequestId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.RequestId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RequestTime", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.RequestTime = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ResolveStatus", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ResolveStatus = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ResolveTime", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ResolveTime = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Result", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowPacket
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthPacket
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthPacket
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Result = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipPacket(dAtA[iNdEx:])
