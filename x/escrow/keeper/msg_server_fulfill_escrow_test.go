@@ -317,6 +317,92 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 	return server, *k, context, ctrl, bankMock
 }
 
+func setupMsgServerFulfillEscrow02(tb testing.TB) (types.MsgServer, keeper.Keeper, context.Context, *gomock.Controller, *testutil.MockBankKeeper) {
+	tb.Helper()
+
+	// Setup the necessary dependencies
+	ctrl := gomock.NewController(tb)
+	bankMock := testutil.NewMockBankKeeper(ctrl)
+	k, ctx := keepertest.EscrowKeeperWithMocks(tb, bankMock)
+	escrow.InitGenesis(ctx, *k, *types.DefaultGenesis())
+	server := keeper.NewMsgServerImpl(*k)
+	context := sdk.WrapSDKContext(ctx)
+	now := time.Now()
+
+	k.SetOraclePrice(ctx, types.OraclePrice{
+		Symbol: "BTC",
+		ResolveTime: "120",
+		Price: "25983000000000", // $25983 
+	})
+	k.SetOraclePrice(ctx, types.OraclePrice{
+		Symbol: "ATOM",
+		ResolveTime: "140",
+		Price: "7000000000", // $7
+	})
+
+	// Expect the bank to receive payment from the creator
+	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{{
+		Denom:  "token",
+		Amount: sdk.NewInt(1000),
+	}})
+	// create an escrow that can be closed when the second party fulfills it.
+	// with an array of two OracleConditions to validate, that will always be valid
+	// ID : 0
+	_, errFirstCreate := server.CreateEscrow(context, &types.MsgCreateEscrow{
+		Creator: testutil.Alice,
+		InitiatorCoins: []sdk.Coin{
+			{
+				Denom:  "token",
+				Amount: sdk.NewInt(1000),
+			},
+		},
+		FulfillerCoins: []sdk.Coin{
+			{
+				Denom:  "stake",
+				Amount: sdk.NewInt(9000),
+			},
+		},
+		Tips: nil,
+		StartDate: strconv.FormatInt(now.Unix()+200, 10),
+		EndDate: "2788148978",
+		OracleConditions: `[{"label":"Oracle Token Price","name":"oracle-token-price","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"BTC"}},{"label":"Oracle Token Price","name":"oracle-token-price","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"ATOM"}}]`,
+	})
+	require.Nil(tb, errFirstCreate)
+
+	// Expect the bank to receive payment from the creator
+	bankMock.ExpectPay(context, testutil.Alice, []sdk.Coin{
+		{
+			Denom:  "token",
+			Amount: sdk.NewInt(99),
+		},
+	})
+	// Create an escrow that can only be closed in the future
+	// ID : 1
+	_, errSecondCreate := server.CreateEscrow(context, &types.MsgCreateEscrow{
+		Creator: testutil.Alice,
+		InitiatorCoins: []sdk.Coin{
+			{
+				Denom:  "token",
+				Amount: sdk.NewInt(99),
+			},
+		},
+		FulfillerCoins: []sdk.Coin{
+			{
+				Denom:  "stake",
+				Amount: sdk.NewInt(1111),
+			},
+		},
+		Tips: nil,
+		StartDate: strconv.FormatInt(now.Unix()+200, 10),
+		EndDate: "2788148978",
+		OracleConditions: "",
+	})
+	require.Nil(tb, errSecondCreate)
+
+	// Return the necessary components for testing
+	return server, *k, context, ctrl, bankMock
+}
+
 // TestFulfillEscrow tests the fulfillment of an escrow that can be closed when the second party fulfills it.
 func TestFulfillEscrow(t *testing.T) {
 	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
@@ -503,6 +589,84 @@ func TestFulfillEscrowsNearFuture(t *testing.T) {
 	require.EqualValues(t, pendingEscrowsIdListAfter, controlPendingEscrowsIdListAfter)
 
 	require.Nil(t, err)
+}
+
+// Testing the pending list tracking
+func TestFulfillEscrowsPendingList(t *testing.T) {
+	msgServer, k, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	defer ctrl.Finish()
+
+	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
+	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{{
+		Denom:  "stake",
+		Amount: sdk.NewInt(88),
+	}})
+	_, err1 := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
+		Creator: testutil.Bob,
+		Id:      6,
+	})
+	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
+	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{{
+		Denom:  "stake",
+		Amount: sdk.NewInt(77),
+	}})
+	_, err2 := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
+		Creator: testutil.Bob,
+		Id:      7,
+	})
+	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
+	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{{
+		Denom:  "stake",
+		Amount: sdk.NewInt(66),
+	}})
+	_, err3 := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
+		Creator: testutil.Bob,
+		Id:      8,
+	})
+
+	// Pending escrows list needs to be in order of start date
+	// They have been added in the order 6, 7, 8 and should be ordered as 6, 7, 8
+	pendingEscrowsIdList := k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context))
+	controlPendingEscrowsIdList := []uint64{6, 7, 8}
+
+	require.EqualValues(t, pendingEscrowsIdList, controlPendingEscrowsIdList)
+	require.Nil(t, err1)
+	require.Nil(t, err2)
+	require.Nil(t, err3)
+}
+
+// Testing the pending list tracking
+func TestFulfillEscrowsPendingList02(t *testing.T) {
+	msgServer, k, context, ctrl, bankMock := setupMsgServerFulfillEscrow02(t)
+	defer ctrl.Finish()
+
+	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
+	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{{
+		Denom:  "stake",
+		Amount: sdk.NewInt(9000),
+	}})
+	_, err1 := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
+		Creator: testutil.Bob,
+		Id:      0,
+	})
+	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
+	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{{
+		Denom:  "stake",
+		Amount: sdk.NewInt(1111),
+	}})
+	_, err2 := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
+		Creator: testutil.Bob,
+		Id:      1,
+	})
+
+	// Pending escrows list needs to be in order of start date
+	// They have been added in the order 0, 1 and should be ordered as 0, 1
+	pendingEscrowsIdList := k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context))
+	controlPendingEscrowsIdList := []uint64{1, 0}
+
+	require.EqualValues(t, pendingEscrowsIdList, controlPendingEscrowsIdList)
+	require.Nil(t, err1)
+	require.Nil(t, err2)
 }
 
 func test1Function(args ...interface{}) interface{} {

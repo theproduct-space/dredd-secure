@@ -428,9 +428,10 @@ func (k Keeper) AddPendingEscrow(ctx sdk.Context, escrow types.Escrow) {
 	// Either add in order or add to the list if its the first element
 	if len(pendingEscrows) > 0 {
 		_, f := sort.Find(len(pendingEscrows), func(i int) int {
+			esc, found := k.GetEscrow(ctx, pendingEscrows[i])
 			if escrow.GetId() == pendingEscrows[i] {
 				return 0
-			} else if escrow.GetId() > pendingEscrows[i] {
+			} else if found && escrow.GetStartDate() > esc.GetStartDate() && escrow.GetId() != pendingEscrows[i] {
 				return 1
 			}
 			return -1
@@ -511,7 +512,7 @@ func (k Keeper) SetStatus(ctx sdk.Context, escrow *types.Escrow, newStatus strin
 		k.RemoveFromPendingList(ctx, *escrow)
 	}
 
-	if newStatus == constants.StatusPending {
+	if oldStatus != constants.StatusPending && newStatus == constants.StatusPending {
 		k.AddPendingEscrow(ctx, *escrow)
 	}
 
