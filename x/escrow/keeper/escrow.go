@@ -10,9 +10,11 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/google/uuid"
+
+	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
 	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 )
 
@@ -622,9 +624,17 @@ func (k Keeper) SyncOracleData(ctx sdk.Context) {
 
 		coins, _ := sdk.ParseCoinsNormalized("1000uband")
 	
+		uid := uuid.New()
+		oracleScriptIdString := constants.OracleCryptoCurrencyPriceScriptId
+		oracleScriptId, errParseInt := strconv.ParseUint(oracleScriptIdString, 10, 64)
+		if errParseInt != nil {
+			fmt.Println("Error:", errParseInt)
+			return
+		}
+	
 		oracleRequestPacket := bandtypes.NewOracleRequestPacketData(
-			types.ModuleName,
-			401,
+			oracleScriptIdString + "_" + uid.String(),
+			oracleScriptId,
 			calldataBytes,
 			16,
 			10,
@@ -637,7 +647,7 @@ func (k Keeper) SyncOracleData(ctx sdk.Context) {
 	
 		fmt.Println("SENDING PACKET WITH CALLDATA : ", sliceSymbols)
 	
-		err := k.RequestBandChainData(ctx, "channel-9", oracleRequestPacket, clienttypes.ZeroHeight(), timeoutTimestamp)
+		err := k.RequestBandChainData(ctx, "channel-0", oracleRequestPacket, clienttypes.ZeroHeight(), timeoutTimestamp)
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
