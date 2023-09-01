@@ -466,9 +466,10 @@ func (k Keeper) AddExpiringEscrow(ctx sdk.Context, escrow types.Escrow) {
 	// Either add in order or add to the list if its the first element
 	if len(expiringEscrows) > 0 {
 		_, f := sort.Find(len(expiringEscrows), func(i int) int {
+			esc, found := k.GetEscrow(ctx, expiringEscrows[i])
 			if escrow.GetId() == expiringEscrows[i] {
 				return 0
-			} else if escrow.GetId() > expiringEscrows[i] {
+			} else if found && escrow.GetEndDate() > esc.GetEndDate() && escrow.GetId() != expiringEscrows[i] {
 				return 1
 			}
 			return -1
