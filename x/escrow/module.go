@@ -155,13 +155,22 @@ func (am AppModule) EndBlock(ctx sdk.Context, a abci.RequestEndBlock) []abci.Val
 	// am.keeper.FulfillPendingEscrows(ctx)
 	execs := []keeper.Exec{
 		{
-			ID: "fetchAPI15mins",
+			ID: "fulfillEscrows15mins",
 			Function: func(args ...interface{}) interface{} {
 				am.keeper.FulfillPendingEscrows(args[0].(sdk.Context))
 				return nil
 			},
 			Args:   []interface{}{ctx},
 			DelayS: 15 * 60,
+		},
+		{
+			ID: "syncOracleData15mins",
+			Function: func (args ...interface{}) interface{} {
+				am.keeper.SyncOracleData(args[0].(sdk.Context))
+				return nil
+			},
+			Args: []interface{}{ctx},
+			DelayS: 5 * 60,
 		},
 	}
 	am.keeper.ExecuteAfterNSeconds(ctx, execs)

@@ -12,6 +12,8 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
+	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 )
 
 // GetEscrowCount get the total number of escrow
@@ -575,4 +577,70 @@ func (k Keeper) ExecuteAfterNSeconds(
 	k.SetLastExecs(ctx, lastExecs)
 
 	return results
+}
+
+func (k Keeper) SyncOracleData(ctx sdk.Context) {
+	fmt.Println("SyncOracleData")
+	fmt.Println("SyncOracleData")
+	fmt.Println("SyncOracleData")
+	pendingEscrows := k.GetAllPendingEscrows(ctx)
+
+	mapSymbols := make(map[string]string, 0)
+
+	for _, pendingEscrow := range pendingEscrows {
+		escrow, found := k.GetEscrow(ctx, pendingEscrow)
+		if found {
+			oracleConditionsString := escrow.OracleConditions
+			var oracleConditions []types.OracleCondition
+			err := json.Unmarshal([]byte(oracleConditionsString), &oracleConditions)
+			if err != nil {
+				fmt.Println("Error:", err)
+				continue
+			}
+
+			for _, condition := range oracleConditions {
+				switch condition.Name {
+					case "oracle-token-price": 
+					if _, ok := mapSymbols[condition.TokenOfInterest.Symbol]; !ok {
+						mapSymbols[condition.TokenOfInterest.Symbol] = condition.TokenOfInterest.Symbol
+					}
+				default:
+					continue
+				}
+			}
+		}
+	}
+	
+	sliceSymbols := make([]string, 0, len(mapSymbols))
+
+	for  _, value := range mapSymbols {
+		sliceSymbols = append(sliceSymbols, value)
+	}
+
+	if len(sliceSymbols) > 0 {
+		calldataBytes, _ := bandtypes.EncodeCalldata(sliceSymbols, uint8(1))
+
+		coins, _ := sdk.ParseCoinsNormalized("1000uband")
+	
+		oracleRequestPacket := bandtypes.NewOracleRequestPacketData(
+			types.ModuleName,
+			401,
+			calldataBytes,
+			16,
+			10,
+			coins,
+			10920,
+			178750,
+		)
+	
+		timeoutTimestamp := uint64(ctx.BlockTime().UnixNano()+int64(20*time.Minute))
+	
+		fmt.Println("SENDING PACKET WITH CALLDATA : ", sliceSymbols)
+	
+		err := k.RequestBandChainData(ctx, "channel-9", oracleRequestPacket, clienttypes.ZeroHeight(), timeoutTimestamp)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+	}
 }
