@@ -2,6 +2,8 @@ package types
 
 import (
 	"fmt"
+
+	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
 )
 
 // DefaultIndex is the default global index
@@ -10,9 +12,11 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		EscrowList: []Escrow{},
+		EscrowList:      []Escrow{},
+		PortId:          PortID,
+		OraclePriceList: []OraclePrice{},
 		// this line is used by starport scaffolding # genesis/types/default
-		Params: DefaultParams(),
+		Params:         DefaultParams(),
 		PendingEscrows: []uint64{},
 	}
 }
@@ -20,6 +24,10 @@ func DefaultGenesis() *GenesisState {
 // Validate performs basic genesis state validation returning an error upon any
 // failure.
 func (gs GenesisState) Validate() error {
+	if err := host.PortIdentifierValidator(gs.PortId); err != nil {
+		return err
+	}
+
 	// Check for duplicated ID in escrow
 	escrowIDMap := make(map[uint64]bool)
 	escrowCount := gs.GetEscrowCount()
@@ -31,6 +39,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("escrow id should be lower or equal than the last id")
 		}
 		escrowIDMap[elem.Id] = true
+	}
+	// Check for duplicated index in oraclePrice
+	oraclePriceIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.OraclePriceList {
+		index := string(OraclePriceKey(elem.Symbol))
+		if _, ok := oraclePriceIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for oraclePrice")
+		}
+		oraclePriceIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

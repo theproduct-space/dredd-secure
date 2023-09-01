@@ -3,21 +3,22 @@ package keeper_test
 import (
 	"context"
 	"dredd-secure/x/escrow"
+	"dredd-secure/x/escrow/constants"
 	"dredd-secure/x/escrow/keeper"
 	"dredd-secure/x/escrow/testutil"
 	"dredd-secure/x/escrow/types"
-	"dredd-secure/x/escrow/constants"
 	"errors"
 	"testing"
 	"time"
 
 	keepertest "dredd-secure/testutil/keeper"
 
+	"strconv"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-	"strconv"
 )
 
 // setupMsgServerOptOutEscrow is a test helper function to setup the necessary dependencies for testing the OptOutEscrow message server function
@@ -53,7 +54,7 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 		Tips: nil,
 		StartDate: strconv.FormatInt(now.Unix()+60, 10),
 		EndDate:   "2788148978",
-		ApiConditions: "[]",
+		OracleConditions: "",
 	})
 
 	if err != nil {
@@ -95,7 +96,7 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 		Tips: nil,
 		StartDate: "1588148578",
 		EndDate:   "2788148978",
-		ApiConditions: "[]",
+		OracleConditions: "",
 	})
 
 	if err2 != nil {
@@ -108,7 +109,7 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Amount: sdk.NewInt(900),
 		},
 	})
-	
+
 	bankMock.ExpectRefund(context, testutil.Bob, []sdk.Coin{{
 		Denom:  "token",
 		Amount: sdk.NewInt(100),

@@ -251,7 +251,8 @@ type App struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 
-	EscrowKeeper escrowmodulekeeper.Keeper
+	ScopedEscrowKeeper capabilitykeeper.ScopedKeeper
+	EscrowKeeper       escrowmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -521,15 +522,20 @@ func New(
 		),
 	)
 
+	scopedEscrowKeeper := app.CapabilityKeeper.ScopeToModule(escrowmoduletypes.ModuleName)
+	app.ScopedEscrowKeeper = scopedEscrowKeeper
 	app.EscrowKeeper = *escrowmodulekeeper.NewKeeper(
 		app.BankKeeper,
 		appCodec,
 		keys[escrowmoduletypes.StoreKey],
 		keys[escrowmoduletypes.MemStoreKey],
 		app.GetSubspace(escrowmoduletypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedEscrowKeeper,
 	)
 	escrowModule := escrowmodule.NewAppModule(appCodec, app.EscrowKeeper, app.AccountKeeper, app.BankKeeper)
-
+	escrowIBCModule := escrowmodule.NewIBCModule(app.EscrowKeeper)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	/**** IBC Routing ****/
@@ -541,6 +547,7 @@ func New(
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
 		AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
+	ibcRouter.AddRoute(escrowmoduletypes.ModuleName, escrowIBCModule)
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
 

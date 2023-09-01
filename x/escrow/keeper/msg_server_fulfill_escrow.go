@@ -23,7 +23,7 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 	}
 
 	// Make sure the fulfill request is not from the initiator of the escrow contract
-	
+
 	if escrow.Initiator == msg.Creator {
 		return nil, errors.Wrap(sdkerrors.ErrUnauthorized, "Initator of the escrow can not fulfill it")
 	}

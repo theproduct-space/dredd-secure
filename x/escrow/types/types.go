@@ -11,16 +11,15 @@ type SubCondition struct {
 }
 
 type TokenOfInterest struct {
-	ID     int    `json:"id"`
 	Name   string `json:"name"`
 	Symbol string `json:"symbol"`
 }
 
-type ApiCondition struct {
-	Label          string           `json:"label"`
-	Name           string           `json:"name"`
-	Type           string           `json:"type"`
-	SubConditions  []SubCondition   `json:"subConditions"`
+type OracleCondition struct {
+	Label           string          `json:"label"`
+	Name            string          `json:"name"`
+	Type            string          `json:"type"`
+	SubConditions   []SubCondition  `json:"subConditions"`
 	TokenOfInterest TokenOfInterest `json:"tokenOfInterest"`
 }
 

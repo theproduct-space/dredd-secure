@@ -15,5 +15,5 @@ message Escrow {
   repeated cosmos.base.v1beta1.Coin tips = 7 [(gogoproto.nullable) = false]; 
   string startDate = 8; 
   string endDate = 9; 
-  string ApiConditions = 10; 
+  string OracleConditions = 10; 
 }

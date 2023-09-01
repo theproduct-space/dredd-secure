@@ -11,6 +11,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateEscrow{}, "escrow/CreateEscrow", nil)
 	cdc.RegisterConcrete(&MsgCancelEscrow{}, "escrow/CancelEscrow", nil)
 	cdc.RegisterConcrete(&MsgFulfillEscrow{}, "escrow/FulfillEscrow", nil)
+	cdc.RegisterConcrete(&MsgSendOracleRequestPacketData{}, "escrow/SendOracleRequestPacketData", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -23,6 +24,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgFulfillEscrow{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgSendOracleRequestPacketData{},
 	)
 	// this line is used by starport scaffolding # 3
 

@@ -1,0 +1,12 @@
+syntax = "proto3";
+package dreddsecure.escrow;
+
+option go_package = "dredd-secure/x/escrow/types";
+
+message OraclePrice {
+  string symbol = 1; 
+  string resolveTime = 2; 
+  string price = 3; 
+  
+}
+
