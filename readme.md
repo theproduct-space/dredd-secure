@@ -42,7 +42,7 @@ You should see the following output:
 
 5. Configure the Hermes Relayer
 
-   1. Create a config.toml file in the .hermes directory and then paste the following configuration inside of it to create a connection with the Bandchain's Laozi testnet:
+   1. Create a `config.toml` file in the .hermes directory and then paste the following configuration inside of it to create a connection with the Bandchain's Laozi testnet:
 
    ```
    nano ~/.hermes/config.toml
