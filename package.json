@@ -1,7 +1,7 @@
 {
   "name": "dredd-secure",
   "version": "1.0.0",
-  "description": "**dreddsecure** is a blockchain built using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).",
+  "description": "Escrow Module based on the Cosmos SDK, which serves as the backend for the DreddSecure application, providing secure escrow services within the Cosmos ecosystem",
   "main": "index.js",
   "directories": {
     "doc": "docs"
@@ -9,8 +9,7 @@
   "scripts": {
     "build": "docker build -f Dockerfile . -t dredd-secure_i && docker create --name dredd-secure -i -v $(pwd):/dredd-secure -w /dredd-secure -p 1317:1317 -p 3000:3000 -p 4500:4500 -p 5000:5000 -p 26657:26657 dredd-secure_i",
     "build-windows": "docker build -f Dockerfile . -t dredd-secure_i && docker create --name dredd-secure -i -v %cd%:/dredd-secure -w /dredd-secure -p 1317:1317 -p 3000:3000 -p 4500:4500 -p 5000:5000 -p 26657:26657 dredd-secure_i",
-    "start": "docker start dredd-secure && docker exec -it dredd-secure ignite chain serve",
-    "start-fe": "cd react && npm run dev"
+    "start": "docker start dredd-secure && docker exec -it dredd-secure ignite chain serve"
   },
   "author": "",
   "license": "ISC"
