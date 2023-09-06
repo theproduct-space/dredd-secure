@@ -14,6 +14,7 @@ service Msg {
   rpc FulfillEscrow               (MsgFulfillEscrow              ) returns (MsgFulfillEscrowResponse              );
   rpc OptOutEscrow                (MsgOptOutEscrow               ) returns (MsgOptOutEscrowResponse               );
   rpc SendOracleRequestPacketData (MsgSendOracleRequestPacketData) returns (MsgSendOracleRequestPacketDataResponse);
+  rpc SetSourceChannel            (MsgSetSourceChannel           ) returns (MsgSetSourceChannelResponse           );
 }
 message MsgCreateEscrow {
            string                   creator        = 1;
@@ -65,3 +66,9 @@ message MsgSendOracleRequestPacketData {
 
 message MsgSendOracleRequestPacketDataResponse {}
 
+message MsgSetSourceChannel {
+  string creator = 1;
+  string channel = 2;
+}
+
+message MsgSetSourceChannelResponse {}

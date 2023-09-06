@@ -146,29 +146,10 @@ func (im IBCModule) OnRecvPacket(
 	modulePacket channeltypes.Packet,
 	relayer sdk.AccAddress,
 ) ibcexported.Acknowledgement {
-	fmt.Println("OnRecvPacket")
-	fmt.Println("OnRecvPacket")
-	fmt.Println("OnRecvPacket")
-	fmt.Println("OnRecvPacket")
-	fmt.Println("OnRecvPacket")
-	fmt.Println("OnRecvPacket")
-	fmt.Println("OnRecvPacket")
-	fmt.Println("OnRecvPacket")
-	fmt.Println("OnRecvPacket")
-	fmt.Println("OnRecvPacket")
-	fmt.Println("OnRecvPacket")
-	fmt.Println("OnRecvPacket")
-	fmt.Println("OnRecvPacket")
-	fmt.Println("OnRecvPacket")
-	fmt.Println("OnRecvPacket")
-	fmt.Println("OnRecvPacket")
-	fmt.Println("OnRecvPacket")
 	var packet types.OracleResponsePacketDataPacketData
 
 	// Unmarshal the data from the module packet into the OracleResponsePacketData object.
 	if err := types.ModuleCdc.UnmarshalJSON(modulePacket.GetData(), &packet); err != nil {
-		fmt.Println("ERROR : ", err)
-		fmt.Println("ERROR : ", modulePacket.Data)
 		return channeltypes.NewErrorAcknowledgement(err)
 	}
 
@@ -195,60 +176,11 @@ func (im IBCModule) OnRecvPacket(
 		ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
 	}
 
-	fmt.Println("ACK : ", ack)
-
 	if err := im.keeper.StoreOracleResponsePacket(ctx, packet); err != nil {
 		return channeltypes.NewErrorAcknowledgement(err)
 	}
 
-	return channeltypes.NewResultAcknowledgement(nil)
-
-	// TODO, store the OracleResponsePacket
-	// -> what is the data type used to store the response packet?
-	// -> needs to be general in order to match multiple oracle scripts data types response
-
-	// if err := im.keeper.StoreOracleResponsePacket(ctx, packet); err != nil {
-	// 	return channeltypes.NewErrorAcknowledgement(err)
-	// }
-	// this line is used by starport scaffolding # oracle/packet/module/recv
-
-	// BEGIN SCAFFOLDING FROM IGNITE THAT WE MIGHT NOT NEED
-	// var modulePacketData types.EscrowPacketData
-	// if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
-	// 	return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error()))
-	// }
-
-	// // Dispatch packet
-	// switch packet := modulePacketData.Packet.(type) {
-	// case *types.EscrowPacketData_OracleRequestPacketDataPacket:
-	// 	packetAck, err := im.keeper.OnRecvOracleRequestPacketDataPacket(ctx, modulePacket, *packet.OracleRequestPacketDataPacket)
-	// 	if err != nil {
-	// 		ack = channeltypes.NewErrorAcknowledgement(err)
-	// 	} else {
-	// 		// Encode packet acknowledgment
-	// 		packetAckBytes, err := types.ModuleCdc.MarshalJSON(&packetAck)
-	// 		if err != nil {
-	// 			return channeltypes.NewErrorAcknowledgement(sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error()))
-	// 		}
-	// 		ack = channeltypes.NewResultAcknowledgement(sdk.MustSortJSON(packetAckBytes))
-	// 	}
-	// 	ctx.EventManager().EmitEvent(
-	// 		sdk.NewEvent(
-	// 			types.EventTypeOracleRequestPacketDataPacket,
-	// 			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-	// 			sdk.NewAttribute(types.AttributeKeyAckSuccess, fmt.Sprintf("%t", err != nil)),
-	// 		),
-	// 	)
-	// 	// this line is used by starport scaffolding # ibc/packet/module/recv
-	// default:
-	// 	err := fmt.Errorf("unrecognized %s packet type: %T", types.ModuleName, packet)
-	// 	return channeltypes.NewErrorAcknowledgement(err)
-	// }
-
-	// END SCAFFOLDING FROM IGNITE THAT WE MIGHT NOT NEED
-
-	// NOTE: acknowledgement will be written synchronously during IBC handler execution.
-	// return channeltypes.NewResultAcknowledgement(nil)
+	return ack
 }
 
 // OnAcknowledgementPacket implements the IBCModule interface
@@ -258,61 +190,6 @@ func (im IBCModule) OnAcknowledgementPacket(
 	acknowledgement []byte,
 	relayer sdk.AccAddress,
 ) error {
-	fmt.Println("OnAcknowledgementPacket")
-	/*var ack channeltypes.Acknowledgement
-	if err := types.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
-	}
-
-	// this line is used by starport scaffolding # oracle/packet/module/ack
-
-	var modulePacketData types.EscrowPacketData
-	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
-		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
-	}
-
-	var eventType string
-
-	// Dispatch packet
-	switch packet := modulePacketData.Packet.(type) {
-	case *types.EscrowPacketData_OracleRequestPacketDataPacket:
-		err := im.keeper.OnAcknowledgementOracleRequestPacketDataPacket(ctx, modulePacket, *packet.OracleRequestPacketDataPacket, ack)
-		if err != nil {
-			return err
-		}
-		eventType = types.EventTypeOracleRequestPacketDataPacket
-		// this line is used by starport scaffolding # ibc/packet/module/ack
-	default:
-		errMsg := fmt.Sprintf("unrecognized %s packet type: %T", types.ModuleName, packet)
-		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
-	}
-
-	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(
-			eventType,
-			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-			sdk.NewAttribute(types.AttributeKeyAck, fmt.Sprintf("%v", ack)),
-		),
-	)
-
-	switch resp := ack.Response.(type) {
-	case *channeltypes.Acknowledgement_Result:
-		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(
-				eventType,
-				sdk.NewAttribute(types.AttributeKeyAckSuccess, string(resp.Result)),
-			),
-		)
-	case *channeltypes.Acknowledgement_Error:
-		ctx.EventManager().EmitEvent(
-			sdk.NewEvent(
-				eventType,
-				sdk.NewAttribute(types.AttributeKeyAckError, resp.Error),
-			),
-		)
-	}
-
-	return nil*/
 	var ack channeltypes.Acknowledgement
 	if err := types.ModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet acknowledgement: %v", err)
@@ -354,7 +231,6 @@ func (im IBCModule) OnTimeoutPacket(
 	modulePacket channeltypes.Packet,
 	relayer sdk.AccAddress,
 ) error {
-	fmt.Println("OnTimeoutPacket")
 	/*var modulePacketData types.EscrowPacketData
 	if err := modulePacketData.Unmarshal(modulePacket.GetData()); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal packet data: %s", err.Error())
