@@ -24,7 +24,7 @@ func (k msgServer) CreateEscrow(goCtx context.Context, msg *types.MsgCreateEscro
 		Tips:			msg.Tips,
 		StartDate:      msg.StartDate,
 		EndDate:        msg.EndDate,
-		ApiConditions:  msg.ApiConditions,
+		OracleConditions:  msg.OracleConditions,
 	}
 
 	initiator, err := sdk.AccAddressFromBech32(msg.Creator)

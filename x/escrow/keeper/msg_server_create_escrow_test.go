@@ -51,7 +51,7 @@ func TestCreateEscrowTips(t *testing.T) {
 		Tips: 			 []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1)}},
 		StartDate:       "1588148578",
 		EndDate:         "2788148978",
-		ApiConditions:         "",
+		OracleConditions:         "",
 	})
 
 	// Verify that the escrow was created successfully
@@ -67,7 +67,7 @@ func TestCreateEscrowTips(t *testing.T) {
 		Tips: 			 []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1)}},
 		StartDate:       "1588148578",
 		EndDate:         "2788148978",
-		ApiConditions:         "",
+		OracleConditions:         "",
 	}, escrow)
 
 	require.Nil(t, err)
@@ -91,7 +91,7 @@ func TestCreateEscrow(t *testing.T) {
 		Tips: nil,
 		StartDate:       "1588148578",
 		EndDate:         "2788148978",
-		ApiConditions:         "",
+		OracleConditions:         "",
 	})
 
 	// Verify that the escrow was created successfully
@@ -107,7 +107,7 @@ func TestCreateEscrow(t *testing.T) {
 		Tips: nil,
 		StartDate:       "1588148578",
 		EndDate:         "2788148978",
-		ApiConditions:         "",
+		OracleConditions:         "",
 	}, escrow)
 
 	require.Nil(t, err)
@@ -133,7 +133,7 @@ func TestCreateEscrowInitiatorCannotPay(t *testing.T) {
 		Tips: nil,
 		StartDate:       "1588148578",
 		EndDate:         "2788148978",
-		ApiConditions:         "",
+		OracleConditions:         "",
 	})
 
 	// Verify that the expected error is returned
@@ -161,7 +161,7 @@ func TestCreateEscrowInitiatorCannotPayTips(t *testing.T) {
 		Tips:			 []sdk.Coin{{Denom: "uax", Amount: sdk.NewInt(9)}},
 		StartDate:       "1588148578",
 		EndDate:         "2788148978",
-		ApiConditions:         "",
+		OracleConditions:         "",
 	})
 
 	// Verify that the expected error is returned
