@@ -69,7 +69,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		Tips: nil,
 		StartDate: "1588148578",
 		EndDate: "2788148978",
-		OracleConditions: `[{"label":"Oracle Token Price","name":"oracle-token-price","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"BTC"}},{"label":"Oracle Token Price","name":"oracle-token-price","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"ATOM"}}]`,
+		OracleConditions: `[{"label":"Oracle Token Price","name":"oracle-token-price","type":"oracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"BTC"}},{"label":"Oracle Token Price","name":"oracle-token-price","type":"oracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"ATOM"}}]`,
 	})
 	require.Nil(tb, errFirstCreate)
 
@@ -281,7 +281,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		Tips: nil,
 		StartDate: "1588148578",
 		EndDate: "2788148978",
-		OracleConditions: `[{"label":"Oracle Token Price","name":"oracle-token-price","type":"OracleCondition","subConditions":[{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":0},{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"BTC"}},{"label":"Oracle Token Price","name":"oracle-token-price","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"ATOM"}}]`,
+		OracleConditions: `[{"label":"Oracle Token Price","name":"oracle-token-price","type":"oracleCondition","subConditions":[{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":0},{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"BTC"}},{"label":"Oracle Token Price","name":"oracle-token-price","type":"oracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"ATOM"}}]`,
 	})
 	require.Nil(tb, errNinthCreate)
 
@@ -309,7 +309,7 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 		Tips: nil,
 		StartDate: "1588148578",
 		EndDate: "2788148978",
-		OracleConditions: `[{"label":"Oracle Token Price","name":"oracle-token-price","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"BTC"}},{"label":"Oracle Token Price","name":"oracle-token-price","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"ATOM"}}]`,
+		OracleConditions: `[{"label":"Oracle Token Price","name":"oracle-token-price","type":"oracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"BTC"}},{"label":"Oracle Token Price","name":"oracle-token-price","type":"oracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"ATOM"}}]`,
 	})
 	require.Nil(tb, errTenthCreate)
 
@@ -365,7 +365,7 @@ func setupMsgServerFulfillEscrow02(tb testing.TB) (types.MsgServer, keeper.Keepe
 		Tips: nil,
 		StartDate: strconv.FormatInt(now.Unix()+200, 10),
 		EndDate: "2788148978",
-		OracleConditions: `[{"label":"Oracle Token Price","name":"oracle-token-price","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"BTC"}},{"label":"Oracle Token Price","name":"oracle-token-price","type":"OracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"ATOM"}}]`,
+		OracleConditions: `[{"label":"Oracle Token Price","name":"oracle-token-price","type":"oracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"BTC"}},{"label":"Oracle Token Price","name":"oracle-token-price","type":"oracleCondition","subConditions":[{"conditionType":"gt","dataType":"number","name":"price","label":"USD Price","value":1},{"conditionType":"lt","dataType":"number","name":"price","label":"USD Price","value":9999999999999}],"tokenOfInterest":{"symbol":"ATOM"}}]`,
 	})
 	require.Nil(tb, errFirstCreate)
 

@@ -22,7 +22,7 @@ message MsgCreateEscrow {
   repeated cosmos.base.v1beta1.Coin tips = 4 [(gogoproto.nullable) = false];
            string                   startDate      = 5;
            string                   endDate        = 6;
-           string                   OracleConditions  = 7;
+           string                   oracleConditions  = 7;
 }
 
 message MsgCreateEscrowResponse {}
