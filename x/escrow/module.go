@@ -161,7 +161,7 @@ func (am AppModule) EndBlock(ctx sdk.Context, a abci.RequestEndBlock) []abci.Val
 				return nil
 			},
 			Args:   []interface{}{ctx},
-			DelayS: 60,
+			DelayS: 15 * 60,
 		},
 		{
 			ID: "syncOracleData15mins",
@@ -170,7 +170,7 @@ func (am AppModule) EndBlock(ctx sdk.Context, a abci.RequestEndBlock) []abci.Val
 				return nil
 			},
 			Args: []interface{}{ctx},
-			DelayS: 3 * 60,
+			DelayS: 15 * 60,
 		},
 	}
 	am.keeper.ExecuteAfterNSeconds(ctx, execs)
