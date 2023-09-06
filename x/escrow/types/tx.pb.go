@@ -591,6 +591,94 @@ func (m *MsgSendOracleRequestPacketDataResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgSendOracleRequestPacketDataResponse proto.InternalMessageInfo
 
+type MsgSetSourceChannel struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Channel string `protobuf:"bytes,2,opt,name=channel,proto3" json:"channel,omitempty"`
+}
+
+func (m *MsgSetSourceChannel) Reset()         { *m = MsgSetSourceChannel{} }
+func (m *MsgSetSourceChannel) String() string { return proto.CompactTextString(m) }
+func (*MsgSetSourceChannel) ProtoMessage()    {}
+func (*MsgSetSourceChannel) Descriptor() ([]byte, []int) {
+	return fileDescriptor_92b765ed5c8100e9, []int{10}
+}
+func (m *MsgSetSourceChannel) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgSetSourceChannel) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgSetSourceChannel.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgSetSourceChannel) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSetSourceChannel.Merge(m, src)
+}
+func (m *MsgSetSourceChannel) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgSetSourceChannel) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSetSourceChannel.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgSetSourceChannel proto.InternalMessageInfo
+
+func (m *MsgSetSourceChannel) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgSetSourceChannel) GetChannel() string {
+	if m != nil {
+		return m.Channel
+	}
+	return ""
+}
+
+type MsgSetSourceChannelResponse struct {
+}
+
+func (m *MsgSetSourceChannelResponse) Reset()         { *m = MsgSetSourceChannelResponse{} }
+func (m *MsgSetSourceChannelResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgSetSourceChannelResponse) ProtoMessage()    {}
+func (*MsgSetSourceChannelResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_92b765ed5c8100e9, []int{11}
+}
+func (m *MsgSetSourceChannelResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgSetSourceChannelResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgSetSourceChannelResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgSetSourceChannelResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSetSourceChannelResponse.Merge(m, src)
+}
+func (m *MsgSetSourceChannelResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgSetSourceChannelResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSetSourceChannelResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgSetSourceChannelResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgCreateEscrow)(nil), "dreddsecure.escrow.MsgCreateEscrow")
 	proto.RegisterType((*MsgCreateEscrowResponse)(nil), "dreddsecure.escrow.MsgCreateEscrowResponse")
@@ -602,6 +690,8 @@ func init() {
 	proto.RegisterType((*MsgOptOutEscrowResponse)(nil), "dreddsecure.escrow.MsgOptOutEscrowResponse")
 	proto.RegisterType((*MsgSendOracleRequestPacketData)(nil), "dreddsecure.escrow.MsgSendOracleRequestPacketData")
 	proto.RegisterType((*MsgSendOracleRequestPacketDataResponse)(nil), "dreddsecure.escrow.MsgSendOracleRequestPacketDataResponse")
+	proto.RegisterType((*MsgSetSourceChannel)(nil), "dreddsecure.escrow.MsgSetSourceChannel")
+	proto.RegisterType((*MsgSetSourceChannelResponse)(nil), "dreddsecure.escrow.MsgSetSourceChannelResponse")
 }
 
 func init() { proto.RegisterFile("dreddsecure/escrow/tx.proto", fileDescriptor_92b765ed5c8100e9) }
@@ -669,6 +759,7 @@ type MsgClient interface {
 	FulfillEscrow(ctx context.Context, in *MsgFulfillEscrow, opts ...grpc.CallOption) (*MsgFulfillEscrowResponse, error)
 	OptOutEscrow(ctx context.Context, in *MsgOptOutEscrow, opts ...grpc.CallOption) (*MsgOptOutEscrowResponse, error)
 	SendOracleRequestPacketData(ctx context.Context, in *MsgSendOracleRequestPacketData, opts ...grpc.CallOption) (*MsgSendOracleRequestPacketDataResponse, error)
+	SetSourceChannel(ctx context.Context, in *MsgSetSourceChannel, opts ...grpc.CallOption) (*MsgSetSourceChannelResponse, error)
 }
 
 type msgClient struct {
@@ -724,6 +815,15 @@ func (c *msgClient) SendOracleRequestPacketData(ctx context.Context, in *MsgSend
 	return out, nil
 }
 
+func (c *msgClient) SetSourceChannel(ctx context.Context, in *MsgSetSourceChannel, opts ...grpc.CallOption) (*MsgSetSourceChannelResponse, error) {
+	out := new(MsgSetSourceChannelResponse)
+	err := c.cc.Invoke(ctx, "/dreddsecure.escrow.Msg/SetSourceChannel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	CreateEscrow(context.Context, *MsgCreateEscrow) (*MsgCreateEscrowResponse, error)
@@ -731,6 +831,7 @@ type MsgServer interface {
 	FulfillEscrow(context.Context, *MsgFulfillEscrow) (*MsgFulfillEscrowResponse, error)
 	OptOutEscrow(context.Context, *MsgOptOutEscrow) (*MsgOptOutEscrowResponse, error)
 	SendOracleRequestPacketData(context.Context, *MsgSendOracleRequestPacketData) (*MsgSendOracleRequestPacketDataResponse, error)
+	SetSourceChannel(context.Context, *MsgSetSourceChannel) (*MsgSetSourceChannelResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -751,6 +852,9 @@ func (*UnimplementedMsgServer) OptOutEscrow(ctx context.Context, req *MsgOptOutE
 }
 func (*UnimplementedMsgServer) SendOracleRequestPacketData(ctx context.Context, req *MsgSendOracleRequestPacketData) (*MsgSendOracleRequestPacketDataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendOracleRequestPacketData not implemented")
+}
+func (*UnimplementedMsgServer) SetSourceChannel(ctx context.Context, req *MsgSetSourceChannel) (*MsgSetSourceChannelResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetSourceChannel not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -847,6 +951,24 @@ func _Msg_SendOracleRequestPacketData_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_SetSourceChannel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSetSourceChannel)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).SetSourceChannel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/dreddsecure.escrow.Msg/SetSourceChannel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).SetSourceChannel(ctx, req.(*MsgSetSourceChannel))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "dreddsecure.escrow.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -870,6 +992,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendOracleRequestPacketData",
 			Handler:    _Msg_SendOracleRequestPacketData_Handler,
+		},
+		{
+			MethodName: "SetSourceChannel",
+			Handler:    _Msg_SetSourceChannel_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1291,6 +1417,66 @@ func (m *MsgSendOracleRequestPacketDataResponse) MarshalToSizedBuffer(dAtA []byt
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgSetSourceChannel) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgSetSourceChannel) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgSetSourceChannel) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Channel) > 0 {
+		i -= len(m.Channel)
+		copy(dAtA[i:], m.Channel)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Channel)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgSetSourceChannelResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgSetSourceChannelResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgSetSourceChannelResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -1483,6 +1669,32 @@ func (m *MsgSendOracleRequestPacketData) Size() (n int) {
 }
 
 func (m *MsgSendOracleRequestPacketDataResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgSetSourceChannel) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Channel)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgSetSourceChannelResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2667,6 +2879,170 @@ func (m *MsgSendOracleRequestPacketDataResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgSendOracleRequestPacketDataResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgSetSourceChannel) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgSetSourceChannel: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgSetSourceChannel: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Channel", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Channel = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgSetSourceChannelResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgSetSourceChannelResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgSetSourceChannelResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

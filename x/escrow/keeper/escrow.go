@@ -584,9 +584,13 @@ func (k Keeper) ExecuteAfterNSeconds(
 }
 
 func (k Keeper) SyncOracleData(ctx sdk.Context) {
-	fmt.Println("SyncOracleData")
-	fmt.Println("SyncOracleData")
-	fmt.Println("SyncOracleData")
+	params := k.GetParams(ctx)
+
+	// Verify that SourceChannel params is set by open params proposal already
+	if params.SourceChannel == types.NotSet {
+		return
+	}
+
 	pendingEscrows := k.GetAllPendingEscrows(ctx)
 
 	mapSymbols := make(map[string]string, 0)
@@ -622,9 +626,7 @@ func (k Keeper) SyncOracleData(ctx sdk.Context) {
 	}
 
 	if len(sliceSymbols) > 0 {
-		calldataBytes, _ := bandtypes.EncodeCalldata(sliceSymbols, uint8(1))
-
-		coins, _ := sdk.ParseCoinsNormalized("1000uband")
+		calldataBytes, _ := bandtypes.EncodeCalldata(sliceSymbols, uint8(params.MinDsCount))
 	
 		uid := uuid.New()
 		oracleScriptIdString := constants.OracleCryptoCurrencyPriceScriptId
@@ -633,21 +635,22 @@ func (k Keeper) SyncOracleData(ctx sdk.Context) {
 			fmt.Println("Error:", errParseInt)
 			return
 		}
+
+		prepareGas := params.PrepareGasBase + params.PrepareGasEach * uint64(len(sliceSymbols))
+		executeGas := params.ExecuteGasBase + params.ExecuteGasEach * uint64(len(sliceSymbols))
 	
 		oracleRequestPacket := bandtypes.NewOracleRequestPacketData(
 			oracleScriptIdString + "_" + uid.String(),
 			oracleScriptId,
 			calldataBytes,
-			16,
-			10,
-			coins,
-			10920,
-			178750,
+			params.AskCount,
+			params.MinCount,
+			params.FeeLimit,
+			prepareGas,
+			executeGas,
 		)
 	
 		timeoutTimestamp := uint64(ctx.BlockTime().UnixNano()+int64(20*time.Minute))
-	
-		fmt.Println("SENDING PACKET WITH CALLDATA : ", sliceSymbols)
 	
 		err := k.RequestBandChainData(ctx, "channel-0", oracleRequestPacket, clienttypes.ZeroHeight(), timeoutTimestamp)
 		if err != nil {
