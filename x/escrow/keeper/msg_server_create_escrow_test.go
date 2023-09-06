@@ -31,6 +31,7 @@ func setupMsgServerCreateEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 	// Return the necessary components for testing
 	return server, *k, context, ctrl, bankMock
 }
+
 // TestCreateEscrow tests the CreateEscrow function of the message server.
 func TestCreateEscrowTips(t *testing.T) {
 	msgServer, keeper, context, ctrl, bankMock := setupMsgServerCreateEscrow(t)
@@ -40,39 +41,37 @@ func TestCreateEscrowTips(t *testing.T) {
 	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{
 		{Denom: "token", Amount: sdk.NewInt(999)},
 	})
-	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{
-		{Denom: "token", Amount: sdk.NewInt(1)},
-	})
+
+	bankMock.ExpectSend(context, testutil.Bob, testutil.Alice, []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1)}})
 
 	_, err := msgServer.CreateEscrow(context, &types.MsgCreateEscrow{
-		Creator:         testutil.Bob,
-		InitiatorCoins:  []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(999)}},
-		FulfillerCoins:  []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
-		Tips: 			 []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1)}},
-		StartDate:       "1588148578",
-		EndDate:         "2788148978",
-		OracleConditions:         "",
+		Creator:          testutil.Bob,
+		InitiatorCoins:   []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(999)}},
+		FulfillerCoins:   []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
+		Tips:             []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1)}},
+		StartDate:        "1588148578",
+		EndDate:          "2788148978",
+		OracleConditions: "",
 	})
 
 	// Verify that the escrow was created successfully
 	escrow, found := keeper.GetEscrow(sdk.UnwrapSDKContext(context), 0)
 	require.True(t, found)
 	require.EqualValues(t, types.Escrow{
-		Id:              0,
-		Status:          constants.StatusOpen,
-		Initiator:       testutil.Bob,
-		Fulfiller:       "",
-		InitiatorCoins:  []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(999)}},
-		FulfillerCoins:  []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
-		Tips: 			 []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1)}},
-		StartDate:       "1588148578",
-		EndDate:         "2788148978",
-		OracleConditions:         "",
+		Id:               0,
+		Status:           constants.StatusOpen,
+		Initiator:        testutil.Bob,
+		Fulfiller:        "",
+		InitiatorCoins:   []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(999)}},
+		FulfillerCoins:   []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
+		Tips:             []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1)}},
+		StartDate:        "1588148578",
+		EndDate:          "2788148978",
+		OracleConditions: "",
 	}, escrow)
 
 	require.Nil(t, err)
 }
-
 
 // TestCreateEscrow tests the CreateEscrow function of the message server.
 func TestCreateEscrow(t *testing.T) {
@@ -85,29 +84,29 @@ func TestCreateEscrow(t *testing.T) {
 	})
 
 	_, err := msgServer.CreateEscrow(context, &types.MsgCreateEscrow{
-		Creator:         testutil.Bob,
-		InitiatorCoins:  []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1000)}},
-		FulfillerCoins:  []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
-		Tips: nil,
-		StartDate:       "1588148578",
-		EndDate:         "2788148978",
-		OracleConditions:         "",
+		Creator:          testutil.Bob,
+		InitiatorCoins:   []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1000)}},
+		FulfillerCoins:   []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
+		Tips:             nil,
+		StartDate:        "1588148578",
+		EndDate:          "2788148978",
+		OracleConditions: "",
 	})
 
 	// Verify that the escrow was created successfully
 	escrow, found := keeper.GetEscrow(sdk.UnwrapSDKContext(context), 0)
 	require.True(t, found)
 	require.EqualValues(t, types.Escrow{
-		Id:              0,
-		Status:          constants.StatusOpen,
-		Initiator:       testutil.Bob,
-		Fulfiller:       "",
-		InitiatorCoins:  []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1000)}},
-		FulfillerCoins:  []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
-		Tips: nil,
-		StartDate:       "1588148578",
-		EndDate:         "2788148978",
-		OracleConditions:         "",
+		Id:               0,
+		Status:           constants.StatusOpen,
+		Initiator:        testutil.Bob,
+		Fulfiller:        "",
+		InitiatorCoins:   []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1000)}},
+		FulfillerCoins:   []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
+		Tips:             nil,
+		StartDate:        "1588148578",
+		EndDate:          "2788148978",
+		OracleConditions: "",
 	}, escrow)
 
 	require.Nil(t, err)
@@ -127,13 +126,13 @@ func TestCreateEscrowInitiatorCannotPay(t *testing.T) {
 		Return(errors.New("oops"))
 
 	_, err := msgServer.CreateEscrow(context, &types.MsgCreateEscrow{
-		Creator:         testutil.Alice,
-		InitiatorCoins:  []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1000)}},
-		FulfillerCoins:  []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
-		Tips: nil,
-		StartDate:       "1588148578",
-		EndDate:         "2788148978",
-		OracleConditions:         "",
+		Creator:          testutil.Alice,
+		InitiatorCoins:   []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1000)}},
+		FulfillerCoins:   []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
+		Tips:             nil,
+		StartDate:        "1588148578",
+		EndDate:          "2788148978",
+		OracleConditions: "",
 	})
 
 	// Verify that the expected error is returned
@@ -155,13 +154,13 @@ func TestCreateEscrowInitiatorCannotPayTips(t *testing.T) {
 		Return(errors.New("oops"))
 
 	_, err := msgServer.CreateEscrow(context, &types.MsgCreateEscrow{
-		Creator:         testutil.Alice,
-		InitiatorCoins:  []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1000)}},
-		FulfillerCoins:  []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
-		Tips:			 []sdk.Coin{{Denom: "uax", Amount: sdk.NewInt(9)}},
-		StartDate:       "1588148578",
-		EndDate:         "2788148978",
-		OracleConditions:         "",
+		Creator:          testutil.Alice,
+		InitiatorCoins:   []sdk.Coin{{Denom: "token", Amount: sdk.NewInt(1000)}},
+		FulfillerCoins:   []sdk.Coin{{Denom: "stake", Amount: sdk.NewInt(9000)}},
+		Tips:             []sdk.Coin{{Denom: "uax", Amount: sdk.NewInt(9)}},
+		StartDate:        "1588148578",
+		EndDate:          "2788148978",
+		OracleConditions: "",
 	})
 
 	// Verify that the expected error is returned

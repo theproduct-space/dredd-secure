@@ -12,19 +12,21 @@ import (
 
 // CreateEscrow creates a new escrow with with the provided msg details
 func (k msgServer) CreateEscrow(goCtx context.Context, msg *types.MsgCreateEscrow) (*types.MsgCreateEscrowResponse, error) {
+	tipAddress, err := sdk.AccAddressFromBech32(constants.Tips)
+
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Create a new escrow object with the provided details
 	escrow := types.Escrow{
-		Status:         constants.StatusOpen,
-		Initiator:      msg.Creator,
-		Fulfiller:      "",
-		InitiatorCoins: msg.InitiatorCoins,
-		FulfillerCoins: msg.FulfillerCoins,
-		Tips:			msg.Tips,
-		StartDate:      msg.StartDate,
-		EndDate:        msg.EndDate,
-		OracleConditions:  msg.OracleConditions,
+		Status:           constants.StatusOpen,
+		Initiator:        msg.Creator,
+		Fulfiller:        "",
+		InitiatorCoins:   msg.InitiatorCoins,
+		FulfillerCoins:   msg.FulfillerCoins,
+		Tips:             msg.Tips,
+		StartDate:        msg.StartDate,
+		EndDate:          msg.EndDate,
+		OracleConditions: msg.OracleConditions,
 	}
 
 	initiator, err := sdk.AccAddressFromBech32(msg.Creator)
@@ -39,7 +41,7 @@ func (k msgServer) CreateEscrow(goCtx context.Context, msg *types.MsgCreateEscro
 	}
 
 	if escrow.Tips != nil {
-		errSendCoinsTips := k.bank.SendCoinsFromAccountToModule(ctx, initiator, types.ModuleName, escrow.Tips)
+		errSendCoinsTips := k.bank.SendCoins(ctx, initiator, tipAddress, escrow.Tips)
 		if errSendCoins != nil {
 			return nil, errors.Wrapf(errSendCoinsTips, types.ErrInitiatorCannotPay.Error())
 		}
