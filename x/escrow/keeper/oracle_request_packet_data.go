@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"fmt"
 	"errors"
 
 	"dredd-secure/x/escrow/types"
@@ -33,16 +32,6 @@ func (k Keeper) TransmitOracleRequestPacketDataPacket(
 	if err != nil {
 		return 0, sdkerrors.Wrapf(sdkerrors.ErrJSONMarshal, "cannot marshal the packet: %w", err)
 	}
-
-	descriptor, _ := channelCap.Descriptor()
-	
-	fmt.Println("Channel Cap : ", channelCap)
-	fmt.Println("Channel Cap Descriptor : ", descriptor)
-	fmt.Println("Source Port : ", sourcePort)
-	fmt.Println("Source Channel : ", sourceChannel)
-	fmt.Println("Timeout Height : ", timeoutHeight)
-	fmt.Println("Timeout Timestamp : ", timeoutTimestamp)
-	fmt.Println("Packet bytes : ", packetBytes)
 
 	return k.channelKeeper.SendPacket(ctx, channelCap, sourcePort, sourceChannel, timeoutHeight, timeoutTimestamp, packetBytes)
 }

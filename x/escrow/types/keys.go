@@ -18,6 +18,9 @@ const (
 
 	// PortID is the default port id that module binds to
 	PortID = "escrow"
+
+	// Not set constant
+	NotSet = "[not_set]"
 )
 
 var (
