@@ -10,9 +10,7 @@ import (
 func (k msgServer) SetSourceChannel(goCtx context.Context, msg *types.MsgSetSourceChannel) (*types.MsgSetSourceChannelResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	params := k.GetParams(ctx)
-	params.SourceChannel = msg.Channel
-	k.SetParams(ctx, params)
+	k.SetSrcChannel(ctx, msg.Channel)
 
 	return &types.MsgSetSourceChannelResponse{}, nil
 }

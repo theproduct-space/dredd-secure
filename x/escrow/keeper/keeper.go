@@ -17,6 +17,7 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
 	"github.com/cosmos/ibc-go/v7/modules/core/exported"
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 
 	"strconv"
 	"strings"
@@ -218,4 +219,71 @@ func (k Keeper) RequestBandChainData(
 	}
 
 	return nil
+}
+
+func (k Keeper) GetSrcChannel (ctx sdk.Context) string {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.SourceChannelKey))
+	b := store.Get(types.KeyPrefix(types.SourceChannelKey))
+	if b == nil {
+		return types.NotSet
+	}
+	fmt.Println(":DDDDDD")
+	fmt.Println(":DDDDDD")
+	fmt.Println(":DDDDDD")
+	fmt.Println(b)
+	fmt.Println(b)
+	fmt.Println(b)
+	return string(b)
+}
+
+func (k Keeper) SetSrcChannel (ctx sdk.Context, channel string) {
+	fmt.Println(ctx.ChainID())
+	fmt.Println(ctx.ChainID())
+	fmt.Println(ctx.ChainID())
+
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.SourceChannelKey))
+	b := []byte(channel)
+	if b == nil {
+		fmt.Println(b)
+		return
+	}
+
+	fmt.Println(b)
+	fmt.Println(b)
+	fmt.Println(b)
+
+	store.Set(types.KeyPrefix(types.SourceChannelKey), b)
+
+	/*params := k.GetParams(ctx)
+	params.SourceChannel = channel
+	k.SetParams(ctx, params)*/
+}
+
+func (k Keeper) HandleChannelRequest(ctx sdk.Context, channel string) {
+	fmt.Println("AAAAAAAAAAAAAAHHHHHHH")
+	fmt.Println("AAAAAAAAAAAAAAHHHHHHH")
+	fmt.Println("AAAAAAAAAAAAAAHHHHHHH")
+	fmt.Println("AAAAAAAAAAAAAAHHHHHHH")
+	fmt.Println("AAAAAAAAAAAAAAHHHHHHH")
+	fmt.Println("AAAAAAAAAAAAAAHHHHHHH")
+	fmt.Println("AAAAAAAAAAAAAAHHHHHHH")
+	fmt.Println("AAAAAAAAAAAAAAHHHHHHH")
+	fmt.Println("AAAAAAAAAAAAAAHHHHHHH")
+	fmt.Println("AAAAAAAAAAAAAAHHHHHHH")
+	fmt.Println(channel)
+	fmt.Println(channel)
+	fmt.Println(channel)
+	fmt.Println(channel)
+	fmt.Println(channel)
+	fmt.Println(channel)
+	/*store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.SourceChannelKey))
+	b := []byte(channel)
+	if b == nil {
+		return
+	}
+	store.Set(types.KeyPrefix(types.SourceChannelKey), b)*/
+
+	k.SetSrcChannel(ctx, channel)
+
+	fmt.Println("Did it work?")
 }

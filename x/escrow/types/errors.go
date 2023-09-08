@@ -19,4 +19,5 @@ var (
 	ErrInvalidVersion                = errors.Register(ModuleName, 1501, "invalid version")
 	ErrOracleResolveStatusNotSuccess = errors.Register(ModuleName, 2000, "request is not resolved successfully")
 	ErrOracleScriptNotConfigured     = errors.Register(ModuleName, 2001, "this oracle script is not configured")
+	ErrEmptyChannelRequest     		 = errors.Register(ModuleName, 2100, "submitted channel request is empty")
 )

@@ -111,6 +111,7 @@ import (
 	"github.com/spf13/cast"
 
 	escrowmodule "dredd-secure/x/escrow"
+	escrowclient "dredd-secure/x/escrow/client"
 	escrowmodulekeeper "dredd-secure/x/escrow/keeper"
 	escrowmoduletypes "dredd-secure/x/escrow/types"
 
@@ -137,6 +138,7 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 		upgradeclient.LegacyCancelProposalHandler,
 		ibcclientclient.UpdateClientProposalHandler,
 		ibcclientclient.UpgradeProposalHandler,
+		escrowclient.ProposalHandler,
 		// this line is used by starport scaffolding # stargate/app/govProposalHandler
 	)
 
@@ -513,7 +515,8 @@ func New(
 		AddRoute(govtypes.RouterKey, govv1beta1.ProposalHandler).
 		AddRoute(paramproposal.RouterKey, params.NewParamChangeProposalHandler(app.ParamsKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
-		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper))
+		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
+		AddRoute(escrowmoduletypes.RouterKey, escrowmodule.NewUpdateChannelRequestProposalHandler(app.EscrowKeeper))
 	govKeeper.SetLegacyRouter(govRouter)
 
 	app.GovKeeper = *govKeeper.SetHooks(

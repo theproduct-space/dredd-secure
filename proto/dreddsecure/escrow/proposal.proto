@@ -1,0 +1,14 @@
+syntax = "proto3";
+package dreddsecure.escrow;
+
+option go_package = "dredd-secure/x/escrow/types";
+import "gogoproto/gogo.proto"; 
+import "cosmos/base/v1beta1/coin.proto"; 
+
+message UpdateChannelRequestProposal {
+  option (gogoproto.goproto_getters) = false;
+
+  string title = 1;
+  string description = 2;
+  string channel_request = 3;
+}

@@ -14,6 +14,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		k.SetEscrow(ctx, elem)
 	}
 
+	k.SetSrcChannel(ctx, genState.SourceChannel)
 	k.SetPendingEscrows(ctx, genState.PendingEscrows)
 	k.SetExpiringEscrows(ctx, genState.ExpiringEscrows)
 	k.SetLastExecs(ctx, genState.LastExecs)
@@ -46,6 +47,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.EscrowList = k.GetAllEscrow(ctx)
 	genesis.EscrowCount = k.GetEscrowCount(ctx)
+	genesis.SourceChannel = k.GetSrcChannel(ctx)
 	genesis.PendingEscrows = k.GetAllPendingEscrows(ctx)
 	genesis.ExpiringEscrows = k.GetAllExpiringEscrows(ctx)
 	genesis.LastExecs = k.GetLastExecs(ctx)

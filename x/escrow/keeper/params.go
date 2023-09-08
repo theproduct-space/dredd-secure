@@ -16,7 +16,6 @@ func (k Keeper) GetParams(ctx sdk.Context) types.Params {
 		k.PrepareGasEach(ctx),
 		k.ExecuteGasBase(ctx),
 		k.ExecuteGasEach(ctx),
-		k.SourceChannel(ctx),
 		k.FeeLimit(ctx),
 	)
 }
@@ -58,11 +57,6 @@ func (k Keeper) ExecuteGasBase(ctx sdk.Context) (res uint64) {
 
 func (k Keeper) ExecuteGasEach(ctx sdk.Context) (res uint64) {
 	k.paramstore.Get(ctx, types.KeyExecuteGasEach, &res)
-	return
-}
-
-func (k Keeper) SourceChannel(ctx sdk.Context) (res string) {
-	k.paramstore.Get(ctx, types.KeySourceChannel, &res)
 	return
 }
 

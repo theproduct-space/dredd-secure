@@ -19,5 +19,6 @@ message GenesisState {
   repeated uint64              expiringEscrows = 5 [(gogoproto.nullable) = false];
            map <string,string> lastExecs       = 6 [(gogoproto.nullable) = false];
   repeated OraclePrice         oraclePriceList = 8 [(gogoproto.nullable) = false];
+           string              sourceChannel   = 9;
 }
 
