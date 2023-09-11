@@ -2,7 +2,6 @@ package types
 
 // ValidateBasic is used for validating the packet
 func (p OracleRequestPacketDataPacketData) ValidateBasic() error {
-
 	// TODO: Validate the packet data
 
 	return nil

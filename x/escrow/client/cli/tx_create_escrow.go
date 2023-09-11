@@ -34,7 +34,6 @@ func CmdCreateEscrow() *cobra.Command {
 			argStartDate := args[3]
 			argEndDate := args[4]
 			argOracleConditions := args[5]
-			
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {

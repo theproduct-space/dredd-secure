@@ -15,7 +15,7 @@ func NewMsgSendOracleRequestPacketData(
 	port string,
 	channelID string,
 	timeoutTimestamp uint64,
-	oracleScriptId uint64,
+	oracleScriptID uint64,
 	calldata []byte,
 	askCount uint64,
 	minCount uint64,
@@ -25,18 +25,17 @@ func NewMsgSendOracleRequestPacketData(
 ) *MsgSendOracleRequestPacketData {
 	return &MsgSendOracleRequestPacketData{
 		Creator:          creator,
-		ClientID: 		  clientID,
+		ClientID:         clientID,
 		Port:             port,
 		ChannelID:        channelID,
 		TimeoutTimestamp: timeoutTimestamp,
-		OracleScriptID:   oracleScriptId,
+		OracleScriptID:   oracleScriptID,
 		Calldata:         calldata,
 		AskCount:         askCount,
 		MinCount:         minCount,
 		FeeLimit:         feeLimit,
 		PrepareGas:       prepareGas,
 		ExecuteGas:       executeGas,
-
 	}
 }
 

@@ -1,6 +1,7 @@
 package app
 
 import (
+	"dredd-secure/docs"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -117,7 +118,6 @@ import (
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	appparams "dredd-secure/app/params"
-	"dredd-secure/docs"
 )
 
 const (
@@ -909,7 +909,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(minttypes.ModuleName)
 	paramsKeeper.Subspace(distrtypes.ModuleName)
 	paramsKeeper.Subspace(slashingtypes.ModuleName)
-	paramsKeeper.Subspace(govtypes.ModuleName).WithKeyTable(govv1.ParamKeyTable()) //nolint:staticcheck
+	paramsKeeper.Subspace(govtypes.ModuleName).WithKeyTable(govv1.ParamKeyTable())
 	paramsKeeper.Subspace(crisistypes.ModuleName)
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibcexported.ModuleName)

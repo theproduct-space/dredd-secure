@@ -20,7 +20,6 @@ func (k Keeper) SetOraclePrice(ctx sdk.Context, oraclePrice types.OraclePrice) {
 func (k Keeper) GetOraclePrice(
 	ctx sdk.Context,
 	symbol string,
-
 ) (val types.OraclePrice, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.OraclePriceKeyPrefix))
 
@@ -39,7 +38,6 @@ func (k Keeper) GetOraclePrice(
 func (k Keeper) RemoveOraclePrice(
 	ctx sdk.Context,
 	symbol string,
-
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.OraclePriceKeyPrefix))
 	store.Delete(types.OraclePriceKey(

@@ -110,10 +110,9 @@ func NewAppModule(
 	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
 	ibcTransferKeeper types.TransferKeeper,
-	
 ) AppModule {
 	return AppModule{
-		AppModuleBasic: NewAppModuleBasic(cdc),
+		AppModuleBasic:    NewAppModuleBasic(cdc),
 		keeper:            keeper,
 		accountKeeper:     accountKeeper,
 		bankKeeper:        bankKeeper,
@@ -169,11 +168,11 @@ func (am AppModule) EndBlock(ctx sdk.Context, a abci.RequestEndBlock) []abci.Val
 		},
 		{
 			ID: "syncOracleData15mins",
-			Function: func (args ...interface{}) interface{} {
+			Function: func(args ...interface{}) interface{} {
 				am.keeper.SyncOracleData(args[0].(sdk.Context))
 				return nil
 			},
-			Args: []interface{}{ctx},
+			Args:   []interface{}{ctx},
 			DelayS: 15 * 60,
 		},
 	}

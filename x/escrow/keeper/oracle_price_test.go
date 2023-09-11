@@ -1,13 +1,14 @@
 package keeper_test
 
 import (
+	"dredd-secure/testutil/nullify"
+	"dredd-secure/x/escrow/keeper"
+	"dredd-secure/x/escrow/types"
 	"strconv"
 	"testing"
 
 	keepertest "dredd-secure/testutil/keeper"
-	"dredd-secure/testutil/nullify"
-	"dredd-secure/x/escrow/keeper"
-	"dredd-secure/x/escrow/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )
@@ -39,6 +40,7 @@ func TestOraclePriceGet(t *testing.T) {
 		)
 	}
 }
+
 func TestOraclePriceRemove(t *testing.T) {
 	keeper, ctx := keepertest.EscrowKeeper(t)
 	items := createNOraclePrice(keeper, ctx, 10)

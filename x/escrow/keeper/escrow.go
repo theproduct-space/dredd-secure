@@ -153,30 +153,30 @@ func (k Keeper) ValidateEndDate(ctx sdk.Context, escrow types.Escrow) bool {
 func (k Keeper) ValidateOracleCondition(ctx sdk.Context, escrow types.Escrow) bool {
 	OracleConditionsString := escrow.OracleConditions
 
-	if (OracleConditionsString != "") {
+	if OracleConditionsString != "" {
 		var OracleConditions []types.OracleCondition
 		err := json.Unmarshal([]byte(OracleConditionsString), &OracleConditions)
 		if err != nil {
 			fmt.Println("Error:", err)
 			return false
 		}
-	
+
 		for _, condition := range OracleConditions {
 			switch condition.Name {
-				case "oracle-token-price": 
-					price, found := k.GetOraclePrice(ctx, condition.TokenOfInterest.Symbol)
-					if (!found) {
-						fmt.Println("Error: Oracle price not found for ", condition.TokenOfInterest.Symbol)
+			case "oracle-token-price":
+				price, found := k.GetOraclePrice(ctx, condition.TokenOfInterest.Symbol)
+				if !found {
+					fmt.Println("Error: Oracle price not found for ", condition.TokenOfInterest.Symbol)
+					return false
+				}
+
+				for _, subCondition := range condition.SubConditions {
+					result := CompareTokenPrice(subCondition, price)
+					// If the result is false, return false immediately; otherwise, continue validating
+					if !result {
 						return false
 					}
-
-					for _, subCondition := range condition.SubConditions {
-						result := CompareTokenPrice(subCondition, price)
-						// If the result is false, return false immediately; otherwise, continue validating
-						if !result {
-							return false
-						}
-					}
+				}
 				// TODO, configure new oracle condition options !
 			default:
 				fmt.Println("Error, this condition is not configured on the module.")
@@ -198,9 +198,9 @@ func CompareTokenPrice(subCondition types.SubCondition, oraclePrice types.Oracle
 	oracleValue, err := strconv.ParseFloat(oraclePrice.Price, 64)
 	if err != nil {
 		fmt.Println("Error:", err)
-		return  false
+		return false
 	}
-	oracleValueFormatted :=  oracleValue / 1e9;
+	oracleValueFormatted := oracleValue / 1e9
 
 	// make the appropriate comparison as described in subCondition.ConditionType
 	switch subCondition.ConditionType {
@@ -215,7 +215,6 @@ func CompareTokenPrice(subCondition types.SubCondition, oraclePrice types.Oracle
 		return false
 	}
 }
-
 
 // ReleaseAssets releases the escrowed assets to the respective parties. The Initiator receives the FulfillerCoins, vice-versa
 func (k Keeper) ReleaseAssets(ctx sdk.Context, escrow types.Escrow) {
@@ -521,7 +520,7 @@ func (k Keeper) SetStatus(ctx sdk.Context, escrow *types.Escrow, newStatus strin
 }
 
 // Getter for the last execs in the store
-func (k Keeper) GetLastExecs (ctx sdk.Context) map[string]string {
+func (k Keeper) GetLastExecs(ctx sdk.Context) map[string]string {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.LastExecsKey))
 	byteKey := types.KeyPrefix(types.LastExecsKey)
 	bz := store.Get(byteKey)
@@ -551,7 +550,8 @@ func (k Keeper) SetLastExecs(ctx sdk.Context, lastExecs map[string]string) {
 // Utility function used for executing functions after a certain amount of time
 func (k Keeper) ExecuteAfterNSeconds(
 	ctx sdk.Context,
-	execs []Exec) []interface{} {
+	execs []Exec,
+) []interface{} {
 	results := make([]interface{}, 0)
 
 	lastExecs := k.GetLastExecs(ctx)
@@ -610,7 +610,7 @@ func (k Keeper) SyncOracleData(ctx sdk.Context) {
 
 			for _, condition := range oracleConditions {
 				switch condition.Name {
-					case "oracle-token-price": 
+				case "oracle-token-price":
 					if _, ok := mapSymbols[condition.TokenOfInterest.Symbol]; !ok {
 						mapSymbols[condition.TokenOfInterest.Symbol] = condition.TokenOfInterest.Symbol
 					}
@@ -620,29 +620,29 @@ func (k Keeper) SyncOracleData(ctx sdk.Context) {
 			}
 		}
 	}
-	
+
 	sliceSymbols := make([]string, 0, len(mapSymbols))
 
-	for  _, value := range mapSymbols {
+	for _, value := range mapSymbols {
 		sliceSymbols = append(sliceSymbols, value)
 	}
 
 	if len(sliceSymbols) > 0 {
 		calldataBytes, _ := bandtypes.EncodeCalldata(sliceSymbols, uint8(params.MinDsCount))
-	
+
 		uid := uuid.New()
-		oracleScriptIdString := constants.OracleCryptoCurrencyPriceScriptId
+		oracleScriptIdString := constants.OracleCryptoCurrencyPriceScriptID
 		oracleScriptId, errParseInt := strconv.ParseUint(oracleScriptIdString, 10, 64)
 		if errParseInt != nil {
 			fmt.Println("Error:", errParseInt)
 			return
 		}
 
-		prepareGas := params.PrepareGasBase + params.PrepareGasEach * uint64(len(sliceSymbols))
-		executeGas := params.ExecuteGasBase + params.ExecuteGasEach * uint64(len(sliceSymbols))
-	
+		prepareGas := params.PrepareGasBase + params.PrepareGasEach*uint64(len(sliceSymbols))
+		executeGas := params.ExecuteGasBase + params.ExecuteGasEach*uint64(len(sliceSymbols))
+
 		oracleRequestPacket := bandtypes.NewOracleRequestPacketData(
-			oracleScriptIdString + "_" + uid.String(),
+			oracleScriptIdString+"_"+uid.String(),
 			oracleScriptId,
 			calldataBytes,
 			params.AskCount,
@@ -651,9 +651,9 @@ func (k Keeper) SyncOracleData(ctx sdk.Context) {
 			prepareGas,
 			executeGas,
 		)
-	
-		timeoutTimestamp := uint64(ctx.BlockTime().UnixNano()+int64(20*time.Minute))
-	
+
+		timeoutTimestamp := uint64(ctx.BlockTime().UnixNano() + int64(20*time.Minute))
+
 		err := k.RequestBandChainData(ctx, sourceChannel, oracleRequestPacket, clienttypes.ZeroHeight(), timeoutTimestamp)
 		if err != nil {
 			fmt.Println("Error:", err)

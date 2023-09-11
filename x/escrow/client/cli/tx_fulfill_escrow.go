@@ -2,11 +2,9 @@ package cli
 
 import (
 	"dredd-secure/x/escrow/types"
-	"strconv"
-
-	"strings"
-
 	"fmt"
+	"strconv"
+	"strings"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -19,7 +17,7 @@ var _ = strconv.Itoa(0)
 
 func CmdFulfillEscrow() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "fulfill-escrow [id] [denom-mapping]",
+		Use: "fulfill-escrow [id] [denom-mapping]",
 		// ex: fulfill-escrow 1 'base_denom1=ibcHash1,base_denom2=ibcHash2'
 		Short: "Broadcast message fulfill_escrow",
 		Args:  cobra.ExactArgs(2), // Expect exactly 2 arguments

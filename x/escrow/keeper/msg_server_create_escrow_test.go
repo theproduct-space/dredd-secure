@@ -19,7 +19,6 @@ import (
 
 // setupMsgServerCreateEscrow is a test helper function to setup the necessary dependencies for testing the CreateEscrow message server function
 func setupMsgServerCreateEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, context.Context, *gomock.Controller, *testutil.MockBankKeeper) {
-
 	// Setup the necessary dependencies
 	ctrl := gomock.NewController(tb)
 	bankMock := testutil.NewMockBankKeeper(ctrl)

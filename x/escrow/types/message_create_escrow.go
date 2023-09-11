@@ -15,13 +15,13 @@ var _ sdk.Msg = &MsgCreateEscrow{}
 
 func NewMsgCreateEscrow(creator string, initiatorCoins sdk.Coins, fulfillerCoins sdk.Coins, tips sdk.Coins, startDate string, endDate string, oracleConditions string) *MsgCreateEscrow {
 	return &MsgCreateEscrow{
-		Creator:        creator,
-		InitiatorCoins: initiatorCoins,
-		FulfillerCoins: fulfillerCoins,
-		Tips:			tips,
-		StartDate:      startDate,
-		EndDate:        endDate,
-		OracleConditions:  oracleConditions,
+		Creator:          creator,
+		InitiatorCoins:   initiatorCoins,
+		FulfillerCoins:   fulfillerCoins,
+		Tips:             tips,
+		StartDate:        startDate,
+		EndDate:          endDate,
+		OracleConditions: oracleConditions,
 	}
 }
 

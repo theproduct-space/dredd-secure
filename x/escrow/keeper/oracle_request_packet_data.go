@@ -1,16 +1,15 @@
 package keeper
 
 import (
+	"dredd-secure/x/escrow/types"
 	"errors"
 
-	"dredd-secure/x/escrow/types"
-
+	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
-	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
 )
 
 // TransmitOracleRequestPacketDataPacket transmits the packet over IBC with the specified source port and source channel
@@ -78,7 +77,6 @@ func (k Keeper) OnAcknowledgementOracleRequestPacketDataPacket(ctx sdk.Context, 
 
 // OnTimeoutOracleRequestPacketDataPacket responds to the case where a packet has not been transmitted because of a timeout
 func (k Keeper) OnTimeoutOracleRequestPacketDataPacket(ctx sdk.Context, packet channeltypes.Packet, data types.OracleRequestPacketDataPacketData) error {
-
 	// TODO: packet timeout logic
 
 	return nil

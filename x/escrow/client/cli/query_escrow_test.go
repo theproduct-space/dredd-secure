@@ -1,6 +1,10 @@
 package cli_test
 
 import (
+	"dredd-secure/testutil/network"
+	"dredd-secure/testutil/nullify"
+	"dredd-secure/x/escrow/client/cli"
+	"dredd-secure/x/escrow/types"
 	"fmt"
 	"testing"
 
@@ -10,11 +14,6 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-
-	"dredd-secure/testutil/network"
-	"dredd-secure/testutil/nullify"
-	"dredd-secure/x/escrow/client/cli"
-	"dredd-secure/x/escrow/types"
 )
 
 func networkWithEscrowObjects(t *testing.T, n int) (*network.Network, []types.Escrow) {

@@ -1,4 +1,4 @@
-// nolint
+//nolint
 // PSTODO: lint this file when simulations are implemented
 package escrow
 

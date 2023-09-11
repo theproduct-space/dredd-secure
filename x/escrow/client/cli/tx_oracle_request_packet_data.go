@@ -1,12 +1,13 @@
 package cli
 
 import (
-	"strconv"
-	"github.com/google/uuid"
-
 	"dredd-secure/x/escrow/types"
 	"encoding/json"
+	"strconv"
 
+	"github.com/google/uuid"
+
+	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
@@ -14,7 +15,6 @@ import (
 	channelutils "github.com/cosmos/ibc-go/v7/modules/core/04-channel/client/utils"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
-	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
 )
 
 var _ = strconv.Itoa(0)
@@ -34,13 +34,16 @@ func CmdSendOracleRequestPacketData() *cobra.Command {
 			srcPort := args[0]
 			srcChannel := args[1]
 
-			argOracleScriptId, err := cast.ToUint64E(args[2])
+			argOracleScriptID, err := cast.ToUint64E(args[2])
 			if err != nil {
 				return err
 			}
 
 			var stringSlice []string
-			json.Unmarshal([]byte(args[3]), &stringSlice)
+
+			if errJSONUnmarshal := json.Unmarshal([]byte(args[3]), &stringSlice); errJSONUnmarshal != nil {
+				return errJSONUnmarshal
+			}
 
 			argCalldataBytes, _ := bandtypes.EncodeCalldata(stringSlice, uint8(1))
 
@@ -82,7 +85,7 @@ func CmdSendOracleRequestPacketData() *cobra.Command {
 
 			// using the oracleScriptId in the clientId for data treater upon OracleResponsePacketData reception
 			clientID := args[2] + "_" + uid.String()
-			msg := types.NewMsgSendOracleRequestPacketData(creator, clientID, srcPort, srcChannel, timeoutTimestamp, argOracleScriptId, argCalldataBytes, argAskCount, argMinCount, argFeeLimit, argPrepareGas, argExecuteGas)
+			msg := types.NewMsgSendOracleRequestPacketData(creator, clientID, srcPort, srcChannel, timeoutTimestamp, argOracleScriptID, argCalldataBytes, argAskCount, argMinCount, argFeeLimit, argPrepareGas, argExecuteGas)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

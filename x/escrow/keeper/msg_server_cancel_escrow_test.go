@@ -7,12 +7,11 @@ import (
 	"dredd-secure/x/escrow/testutil"
 	"dredd-secure/x/escrow/types"
 	"errors"
+	"strconv"
 	"testing"
 	"time"
 
 	keepertest "dredd-secure/testutil/keeper"
-
-	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -51,11 +50,10 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Denom:  "stake",
 			Amount: sdk.NewInt(9000),
 		}},
-		Tips: nil,
+		Tips:      nil,
 		StartDate: "1588148578",
 		EndDate:   "2788148978",
 	})
-
 	if err != nil {
 		tb.Fatalf("Failed to create escrow: %s", err)
 	}
@@ -76,7 +74,7 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Denom:  "stake",
 			Amount: sdk.NewInt(900),
 		}},
-		Tips: nil,
+		Tips:      nil,
 		StartDate: "1288148578",
 		EndDate:   strconv.FormatInt(now.Unix()-2, 10),
 	})
@@ -100,7 +98,7 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Denom:  "stake",
 			Amount: sdk.NewInt(900),
 		}},
-		Tips: nil,
+		Tips:      nil,
 		StartDate: "1288148578",
 		EndDate:   strconv.FormatInt(now.Unix()-3, 10),
 	})
@@ -125,7 +123,7 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Denom:  "stake",
 			Amount: sdk.NewInt(900),
 		}},
-		Tips: nil,
+		Tips:      nil,
 		StartDate: "1288148578",
 		EndDate:   strconv.FormatInt(now.Unix()-1, 10),
 	})
@@ -266,7 +264,6 @@ func TestCancelEscrowModuleCannotPay(t *testing.T) {
 		Creator: testutil.Alice,
 		Id:      0,
 	})
-
 	if err != nil {
 		require.Equal(t, "Module cannot release Initiator assets%!(EXTRA string=oops)", err.Error())
 	}

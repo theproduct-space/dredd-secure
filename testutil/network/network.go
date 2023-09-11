@@ -1,6 +1,7 @@
 package network
 
 import (
+	"dredd-secure/app"
 	"fmt"
 	"testing"
 	"time"
@@ -17,8 +18,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/stretchr/testify/require"
-
-	"dredd-secure/app"
 )
 
 type (

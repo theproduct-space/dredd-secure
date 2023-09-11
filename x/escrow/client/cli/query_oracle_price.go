@@ -1,11 +1,11 @@
 package cli
 
 import (
+	"dredd-secure/x/escrow/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
-
-	"dredd-secure/x/escrow/types"
 )
 
 func CmdListOraclePrice() *cobra.Command {

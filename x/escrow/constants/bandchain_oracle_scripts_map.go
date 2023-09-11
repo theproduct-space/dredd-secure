@@ -1,5 +1,5 @@
 package constants
 
 const (
-	OracleCryptoCurrencyPriceScriptId      = "401"
+	OracleCryptoCurrencyPriceScriptID = "401"
 )
