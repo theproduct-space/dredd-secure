@@ -35613,8 +35613,6 @@ paths:
                   execute_gas_each:
                     type: string
                     format: uint64
-                  source_channel:
-                    type: string
                   fee_limit:
                     type: array
                     items:
@@ -71433,8 +71431,6 @@ definitions:
       execute_gas_each:
         type: string
         format: uint64
-      source_channel:
-        type: string
       fee_limit:
         type: array
         items:
@@ -71802,8 +71798,6 @@ definitions:
           execute_gas_each:
             type: string
             format: uint64
-          source_channel:
-            type: string
           fee_limit:
             type: array
             items:

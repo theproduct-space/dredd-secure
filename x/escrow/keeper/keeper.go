@@ -17,6 +17,8 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
 	"github.com/cosmos/ibc-go/v7/modules/core/exported"
+	"github.com/cosmos/cosmos-sdk/store/prefix"
+	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
 
 	"strconv"
 	"strings"
@@ -34,6 +36,7 @@ type (
 		channelKeeper types.ChannelKeeper
 		portKeeper    types.PortKeeper
 		scopedKeeper  exported.ScopedKeeper
+		govKeeper	  *govkeeper.Keeper
 	}
 )
 
@@ -46,6 +49,7 @@ func NewKeeper(
 	channelKeeper types.ChannelKeeper,
 	portKeeper types.PortKeeper,
 	scopedKeeper exported.ScopedKeeper,
+	govKeeper *govkeeper.Keeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -62,6 +66,7 @@ func NewKeeper(
 		channelKeeper: channelKeeper,
 		portKeeper:    portKeeper,
 		scopedKeeper:  scopedKeeper,
+		govKeeper: 	   govKeeper,
 	}
 }
 
@@ -218,4 +223,31 @@ func (k Keeper) RequestBandChainData(
 	}
 
 	return nil
+}
+
+func (k Keeper) GetSrcChannel (ctx sdk.Context) string {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.SourceChannelKey))
+	b := store.Get(types.KeyPrefix(types.SourceChannelKey))
+	if b == nil {
+		return types.NotSet
+	}
+
+	srcChannel := string(b)
+
+	if len(srcChannel) == 0 {
+		return types.NotSet
+	}
+
+	return srcChannel
+}
+
+func (k Keeper) SetSrcChannel (ctx sdk.Context, channel string) {
+
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.SourceChannelKey))
+	b := []byte(channel)
+	if b == nil {
+		fmt.Println(b)
+		return
+	}
+	store.Set(types.KeyPrefix(types.SourceChannelKey), b)
 }

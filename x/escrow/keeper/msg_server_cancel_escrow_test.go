@@ -26,7 +26,7 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 	// Setup the necessary dependencies
 	ctrl := gomock.NewController(tb)
 	bankMock := testutil.NewMockBankKeeper(ctrl)
-	k, ctx := keepertest.EscrowKeeperWithMocks(tb, bankMock)
+	k, ctx := keepertest.EscrowKeeperWithMocks(tb, bankMock, govMock)
 	escrow.InitGenesis(ctx, *k, *types.DefaultGenesis())
 	server := keeper.NewMsgServerImpl(*k)
 	context := sdk.WrapSDKContext(ctx)

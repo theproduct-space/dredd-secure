@@ -16,7 +16,7 @@ func (k Keeper) GetSourceChannel(goCtx context.Context, req *types.QuerySourceCh
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	params := k.GetParams(ctx)
+	sourceChannel := k.GetSrcChannel(ctx)
 
-	return &types.QuerySourceChannelResponse{Channel: params.GetSourceChannel()}, nil
+	return &types.QuerySourceChannelResponse{Channel: sourceChannel}, nil
 }

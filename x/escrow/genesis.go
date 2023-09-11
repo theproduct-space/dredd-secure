@@ -17,6 +17,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	k.SetPendingEscrows(ctx, genState.PendingEscrows)
 	k.SetExpiringEscrows(ctx, genState.ExpiringEscrows)
 	k.SetLastExecs(ctx, genState.LastExecs)
+	k.SetSrcChannel(ctx, genState.SourceChannel)
 
 	// Set escrow count
 	k.SetEscrowCount(ctx, genState.EscrowCount)
@@ -49,6 +50,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.PendingEscrows = k.GetAllPendingEscrows(ctx)
 	genesis.ExpiringEscrows = k.GetAllExpiringEscrows(ctx)
 	genesis.LastExecs = k.GetLastExecs(ctx)
+	genesis.SourceChannel = k.GetSrcChannel(ctx)
 	genesis.PortId = k.GetPort(ctx)
 	genesis.OraclePriceList = k.GetAllOraclePrice(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
