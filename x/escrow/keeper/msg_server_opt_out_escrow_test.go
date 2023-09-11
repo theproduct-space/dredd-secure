@@ -74,8 +74,11 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 	_, errFulfill := server.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      0,
-		DenomMap: map[string]string{
-			"stake": "stake", 
+		DenomMap: []*types.KeyVal{
+			{
+				Key:   "stake",
+				Value: "stake",
+			},
 		},
 	})
 	require.Nil(tb, errFulfill)
@@ -123,8 +126,11 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 	_, errFulfill2 := server.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      1,
-		DenomMap: map[string]string{
-			"stake": "stake", 
+		DenomMap: []*types.KeyVal{
+			{
+				Key:   "stake",
+				Value: "stake",
+			},
 		},
 	})
 	require.Nil(tb, errFulfill2)

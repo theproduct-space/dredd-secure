@@ -25,6 +25,6 @@ type BankKeeper interface {
 // BankKeeper defines the expected interface needed to retrieve account balances.
 type TransferKeeper interface {
 	GetDenomTrace(ctx sdk.Context, denomTraceHash tmbytes.HexBytes) (transferTypes.DenomTrace, bool)
-	// Methods imported from bank should be defined here
+	// Methods imported from ibc transfer should be defined here
 }
 

@@ -4,7 +4,7 @@ import (
 	"dredd-secure/x/escrow/types"
 	"strconv"
 
-	"encoding/json"
+	"strings"
 
 	"fmt"
 
@@ -24,33 +24,29 @@ func CmdFulfillEscrow() *cobra.Command {
 		Short: "Broadcast message fulfill_escrow",
 		Args:  cobra.ExactArgs(2), // Expect exactly 2 arguments
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			fmt.Println("FULFILL ESCROW CLI")
-			fmt.Println("FULFILL ESCROW CLI")
-			fmt.Println("FULFILL ESCROW CLI")
-			fmt.Println("FULFILL ESCROW CLI")
 			argID, err := cast.ToUint64E(args[0])
 			if err != nil {
 				return err
 			}
 
-			// Parse the JSON or comma-separated list of key-value pairs from the argument
-			denomMappingsJSON := args[1]
+			// Parse the key-value pairs from the argument
+			denomMappingsStr := args[1]
+			denomMappings := strings.Split(denomMappingsStr, ",")
 
-			var denomMapping map[string]string
-			err = json.Unmarshal([]byte(denomMappingsJSON), &denomMapping)
-			if err != nil {
-				return err
+			var denomMapping []*types.KeyVal
+			for _, kvStr := range denomMappings {
+				kv := strings.Split(kvStr, "=")
+				if len(kv) != 2 {
+					return fmt.Errorf("invalid key-value pair: %s", kvStr)
+				}
+				kvPair := &types.KeyVal{Key: kv[0], Value: kv[1]}
+				denomMapping = append(denomMapping, kvPair)
 			}
-
-			
-			fmt.Println("denomMapping in CLI", denomMapping)
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
-
-			fmt.Println("clientCtx", clientCtx)
 
 			// Create the MsgFulfillEscrow message with the map
 			msg := types.NewMsgFulfillEscrow(
@@ -59,13 +55,10 @@ func CmdFulfillEscrow() *cobra.Command {
 				denomMapping, // Pass the map here
 			)
 
-			fmt.Println("msg", msg)
 			if err := msg.ValidateBasic(); err != nil {
-				fmt.Println("err ValidateBasic", err)
 				return err
 			}
 
-			fmt.Println("validated basic !")
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
 	}

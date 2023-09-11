@@ -1,10 +1,4 @@
 version: 1
-build:
-  proto:
-    path: proto
-    third_party_paths:
-      - third_party/proto
-      - proto_vendor
 accounts:
   - name: alice
     coins:
@@ -28,9 +22,8 @@ accounts:
 faucet:
   name: bob
   coins:
-    - 5token
-    - 100000stake
-  host: 0.0.0.0:4500
+    - 4000token
+    - 400000000stake
 client:
   typescript:
     path: ts-client
@@ -38,9 +31,6 @@ client:
     path: react/src/hooks
   openapi:
     path: docs/static/openapi.yml
-genesis:
-  chain_id: earth
 validators:
   - name: alice
     bonded: 100000000stake
-    home: $HOME/.earth

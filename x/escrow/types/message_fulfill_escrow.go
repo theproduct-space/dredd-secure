@@ -11,7 +11,7 @@ const TypeMsgFulfillEscrow = "fulfill_escrow"
 
 var _ sdk.Msg = &MsgFulfillEscrow{}
 
-func NewMsgFulfillEscrow(creator string, id uint64, denomMap map[string]string) *MsgFulfillEscrow {
+func NewMsgFulfillEscrow(creator string, id uint64, denomMap []*KeyVal) *MsgFulfillEscrow {
 	return &MsgFulfillEscrow{
 		Creator:  creator,
 		Id:       id,
