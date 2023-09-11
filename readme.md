@@ -288,6 +288,42 @@ docker exec -it dredd-secure /bin/bash
 
 3. In the bash terminal, follow the steps above to Configure the Hermes relayer (in the [local setup section](#option-1-local-setup)).
 
+## Open and Vote the source channel param change proposal
+
+The current default value for the source channel is `[not_set]`. If you wish to obtain BandChain data through IBC, you will need to open the proposal to change the source channel param to your own source channel. An example of how to open parameter change proposal is provided below.
+
+#### Create proposal.json
+
+> Note: this example has been provided in `exemple_proposal_source_channel.json`
+
+```json
+{
+  "messages": [
+    {
+      "@type": "/dreddsecure.escrow.MsgSetSourceChannel",
+      "creator": "cosmos10d07y265gmmuvt4z0w9aw880jnsr700j6zn9kn",
+      "channel": "channel-0"
+    }
+  ],
+  "metadata": "AQ==",
+  "deposit": "10000000stake",
+  "title": "Proposal Title",
+  "summary": "Proposal Summary"
+}
+```
+
+#### Submit proposal
+
+```
+dredd-secured tx gov submit-proposal source-channel-params-change.json --from alice
+```
+
+#### Vote the proposal
+
+```
+dredd-secured tx gov vote 1 yes --from alice
+```
+
 ## Running Tests
 
 To run tests for the Escrow Module, use the following Makefile command:
