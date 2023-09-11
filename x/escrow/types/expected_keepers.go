@@ -1,8 +1,10 @@
 package types
 
 import (
+	tmbytes "github.com/cometbft/cometbft/libs/bytes"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
+	transferTypes "github.com/cosmos/ibc-go/v7/modules/apps/transfer/types"
 )
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)
@@ -19,3 +21,10 @@ type BankKeeper interface {
 	SendCoinsFromModuleToAccount(ctx sdk.Context, senderModule string, recipientAddr sdk.AccAddress, amt sdk.Coins) error
 	// Methods imported from bank should be defined here
 }
+
+// BankKeeper defines the expected interface needed to retrieve account balances.
+type TransferKeeper interface {
+	GetDenomTrace(ctx sdk.Context, denomTraceHash tmbytes.HexBytes) (transferTypes.DenomTrace, bool)
+	// Methods imported from ibc transfer should be defined here
+}
+

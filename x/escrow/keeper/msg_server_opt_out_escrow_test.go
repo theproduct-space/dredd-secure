@@ -28,7 +28,8 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 	// Setup the necessary dependencies
 	ctrl := gomock.NewController(tb)
 	bankMock := testutil.NewMockBankKeeper(ctrl)
-	k, ctx := keepertest.EscrowKeeperWithMocks(tb, bankMock)
+	ibcTransferMock := testutil.NewMockTransferKeeper(ctrl)
+	k, ctx := keepertest.EscrowKeeperWithMocks(tb, bankMock, ibcTransferMock)
 	escrow.InitGenesis(ctx, *k, *types.DefaultGenesis())
 	server := keeper.NewMsgServerImpl(*k)
 	context := sdk.WrapSDKContext(ctx)
@@ -73,6 +74,12 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 	_, errFulfill := server.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      0,
+		DenomMap: []*types.KeyVal{
+			{
+				Key:   "stake",
+				Value: "stake",
+			},
+		},
 	})
 	require.Nil(tb, errFulfill)
 
@@ -119,6 +126,12 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 	_, errFulfill2 := server.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      1,
+		DenomMap: []*types.KeyVal{
+			{
+				Key:   "stake",
+				Value: "stake",
+			},
+		},
 	})
 	require.Nil(tb, errFulfill2)
 

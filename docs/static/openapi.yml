@@ -71386,6 +71386,13 @@ definitions:
         type: string
       oracleConditions:
         type: string
+  dreddsecure.escrow.KeyVal:
+    type: object
+    properties:
+      key:
+        type: string
+      value:
+        type: string
   dreddsecure.escrow.MsgCancelEscrowResponse:
     type: object
   dreddsecure.escrow.MsgCreateEscrowResponse:
