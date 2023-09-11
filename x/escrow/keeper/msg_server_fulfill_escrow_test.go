@@ -21,13 +21,14 @@ import (
 )
 
 // setupMsgServerFulfillEscrow is a test helper function to setup the necessary dependencies for testing the FullfillEscrow message server function
-func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, context.Context, *gomock.Controller, *testutil.MockBankKeeper) {
+func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, context.Context, *gomock.Controller, *testutil.MockBankKeeper, *testutil.MockTransferKeeper) {
 	tb.Helper()
 
 	// Setup the necessary dependencies
 	ctrl := gomock.NewController(tb)
 	bankMock := testutil.NewMockBankKeeper(ctrl)
-	k, ctx := keepertest.EscrowKeeperWithMocks(tb, bankMock)
+	ibcTransferMock := testutil.NewMockTransferKeeper(ctrl)
+	k, ctx := keepertest.EscrowKeeperWithMocks(tb, bankMock, ibcTransferMock)
 	escrow.InitGenesis(ctx, *k, *types.DefaultGenesis())
 	server := keeper.NewMsgServerImpl(*k)
 	context := sdk.WrapSDKContext(ctx)
@@ -314,16 +315,17 @@ func setupMsgServerFulfillEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper,
 	require.Nil(tb, errTenthCreate)
 
 	// Return the necessary components for testing
-	return server, *k, context, ctrl, bankMock
+	return server, *k, context, ctrl, bankMock, ibcTransferMock
 }
 
-func setupMsgServerFulfillEscrow02(tb testing.TB) (types.MsgServer, keeper.Keeper, context.Context, *gomock.Controller, *testutil.MockBankKeeper) {
+func setupMsgServerFulfillEscrow02(tb testing.TB) (types.MsgServer, keeper.Keeper, context.Context, *gomock.Controller, *testutil.MockBankKeeper, *testutil.MockTransferKeeper) {
 	tb.Helper()
 
 	// Setup the necessary dependencies
 	ctrl := gomock.NewController(tb)
 	bankMock := testutil.NewMockBankKeeper(ctrl)
-	k, ctx := keepertest.EscrowKeeperWithMocks(tb, bankMock)
+	ibcTransferMock := testutil.NewMockTransferKeeper(ctrl)
+	k, ctx := keepertest.EscrowKeeperWithMocks(tb, bankMock, ibcTransferMock)
 	escrow.InitGenesis(ctx, *k, *types.DefaultGenesis())
 	server := keeper.NewMsgServerImpl(*k)
 	context := sdk.WrapSDKContext(ctx)
@@ -430,12 +432,12 @@ func setupMsgServerFulfillEscrow02(tb testing.TB) (types.MsgServer, keeper.Keepe
 	require.Nil(tb, errThirdCreate)
 
 	// Return the necessary components for testing
-	return server, *k, context, ctrl, bankMock
+	return server, *k, context, ctrl, bankMock, ibcTransferMock
 }
 
 // TestFulfillEscrow tests the fulfillment of an escrow that can be closed when the second party fulfills it.
 func TestFulfillEscrow(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	msgServer, _, context, ctrl, bankMock, _ := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	// The bank is expected to "refund" the fulfiller (send escrowed InitiatorCoins to the fulfiller)
@@ -454,9 +456,19 @@ func TestFulfillEscrow(t *testing.T) {
 		},
 	})
 
+
+	// ibcTransferMock.ExpectGetDenomTrace(context, bytes.HexBytes("240E59485022F57916B18D4711CD0126215903EA84A0798DD619AB23A5F9345F"))
+
+	// Define the denom map for the test
+	denomMap := map[string]string{
+		"stake": "stake", // TODO find the ibc denom hash of stake token, transfered via channel-0
+		// ex: "stake": "ibc/240E59485022F57916B18D4711CD0126215903EA84A0798DD619AB23A5F9345F"
+	}
+
 	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      0,
+		DenomMap:   denomMap,
 	})
 
 	require.Nil(t, err)
@@ -464,7 +476,7 @@ func TestFulfillEscrow(t *testing.T) {
 
 // TestFulfillEscrowFuture tests the fulfillment of an escrow that can only be closed in the future.
 func TestFulfillEscrowFuture(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	msgServer, _, context, ctrl, bankMock, _ := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	// The bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
@@ -476,8 +488,11 @@ func TestFulfillEscrowFuture(t *testing.T) {
 	})
 
 	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
-		Creator: testutil.Bob,
-		Id:      1,
+		Creator:  testutil.Bob,
+		Id:       1,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 
 	require.Nil(t, err)
@@ -485,7 +500,7 @@ func TestFulfillEscrowFuture(t *testing.T) {
 
 // Testing to fulfill multiple escrows that can only be closed in the future
 func TestFulfillEscrowsFuture(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	msgServer, _, context, ctrl, bankMock, _ := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
@@ -496,6 +511,9 @@ func TestFulfillEscrowsFuture(t *testing.T) {
 	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      1,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 
 	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{{
@@ -505,6 +523,9 @@ func TestFulfillEscrowsFuture(t *testing.T) {
 	_, err2 := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      2,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 
 	require.Nil(t, err)
@@ -513,7 +534,7 @@ func TestFulfillEscrowsFuture(t *testing.T) {
 
 // Testing to fulfill multiple escrows that can only be closed in the future
 func TestFulfillEscrowsNearFuture(t *testing.T) {
-	msgServer, k, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	msgServer, k, context, ctrl, bankMock, _ := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 	// We fulfill the escrows in random order
 
@@ -525,6 +546,9 @@ func TestFulfillEscrowsNearFuture(t *testing.T) {
 	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      3,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
 	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{{
@@ -534,6 +558,9 @@ func TestFulfillEscrowsNearFuture(t *testing.T) {
 	msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      5,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
 	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{{
@@ -543,6 +570,9 @@ func TestFulfillEscrowsNearFuture(t *testing.T) {
 	msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      8,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
 	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{{
@@ -552,6 +582,9 @@ func TestFulfillEscrowsNearFuture(t *testing.T) {
 	msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      4,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
 	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{{
@@ -561,6 +594,9 @@ func TestFulfillEscrowsNearFuture(t *testing.T) {
 	msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      7,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
 	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{{
@@ -570,6 +606,9 @@ func TestFulfillEscrowsNearFuture(t *testing.T) {
 	msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      6,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 
 	// Pending escrows list needs to be in order of start date
@@ -623,7 +662,7 @@ func TestFulfillEscrowsNearFuture(t *testing.T) {
 
 // Testing the pending list tracking
 func TestFulfillEscrowsPendingList(t *testing.T) {
-	msgServer, k, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	msgServer, k, context, ctrl, bankMock, _ := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
@@ -634,6 +673,9 @@ func TestFulfillEscrowsPendingList(t *testing.T) {
 	_, err1 := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      6,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
 	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{{
@@ -643,6 +685,9 @@ func TestFulfillEscrowsPendingList(t *testing.T) {
 	_, err2 := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      7,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
 	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{{
@@ -652,6 +697,9 @@ func TestFulfillEscrowsPendingList(t *testing.T) {
 	_, err3 := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      8,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 
 	// Pending escrows list needs to be in order of start date
@@ -667,7 +715,7 @@ func TestFulfillEscrowsPendingList(t *testing.T) {
 
 // Testing the pending list tracking
 func TestFulfillEscrowsPendingList02(t *testing.T) {
-	msgServer, k, context, ctrl, bankMock := setupMsgServerFulfillEscrow02(t)
+	msgServer, k, context, ctrl, bankMock, _ := setupMsgServerFulfillEscrow02(t)
 	defer ctrl.Finish()
 
 	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
@@ -678,6 +726,9 @@ func TestFulfillEscrowsPendingList02(t *testing.T) {
 	_, err1 := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      0,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
 	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{{
@@ -687,6 +738,9 @@ func TestFulfillEscrowsPendingList02(t *testing.T) {
 	_, err2 := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      1,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 
 	// Pending escrows list needs to be in order of start date
@@ -701,7 +755,7 @@ func TestFulfillEscrowsPendingList02(t *testing.T) {
 
 // Testing the pending list tracking
 func TestFulfillEscrowsPendingList03(t *testing.T) {
-	msgServer, k, context, ctrl, bankMock := setupMsgServerFulfillEscrow02(t)
+	msgServer, k, context, ctrl, bankMock, _ := setupMsgServerFulfillEscrow02(t)
 	defer ctrl.Finish()
 
 	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
@@ -712,6 +766,9 @@ func TestFulfillEscrowsPendingList03(t *testing.T) {
 	_, err2 := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      1,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
 	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{{
@@ -721,6 +778,9 @@ func TestFulfillEscrowsPendingList03(t *testing.T) {
 	_, err1 := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      0,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 
 	// Pending escrows list needs to be in order of start date
@@ -735,7 +795,7 @@ func TestFulfillEscrowsPendingList03(t *testing.T) {
 
 // Testing the expiring list tracking
 func TestFulfillEscrowsExpiringList02(t *testing.T) {
-	_, k, context, ctrl, _ := setupMsgServerFulfillEscrow02(t)
+	_, k, context, ctrl, _, _ := setupMsgServerFulfillEscrow02(t)
 	defer ctrl.Finish()
 
 	// Expiring escrows list needs to be in order of end date
@@ -759,7 +819,7 @@ func test2Function(args ...interface{}) interface{} {
 
 // Tests if the function used to execute a function every X seconds works correctly
 func TestExecTimerUtilFunc(t *testing.T) {
-	_, k, context, _, _ := setupMsgServerFulfillEscrow(t)
+	_, k, context, _, _, _ := setupMsgServerFulfillEscrow(t)
 
 	execs := []keeper.Exec{
 		{
@@ -802,13 +862,16 @@ func TestExecTimerUtilFunc(t *testing.T) {
 
 // TestFulfillEscrowAsInitiator tests the case where the initiator tries to fulfill the escrow.
 func TestFulfillEscrowAsInitiator(t *testing.T) {
-	msgServer, _, context, ctrl, _ := setupMsgServerFulfillEscrow(t)
+	msgServer, _, context, ctrl, _, _ := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	// Attempt to fulfill the escrow as the initiator
 	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Alice,
 		Id:      0,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 
 	// Ensure an error is returned and it matches the expected ErrUnauthorized error.
@@ -818,13 +881,16 @@ func TestFulfillEscrowAsInitiator(t *testing.T) {
 
 // TestFulfillEscrowDoesNotExist tests the case where the escrow to be fulfilled does not exist.
 func TestFulfillEscrowDoesNotExist(t *testing.T) {
-	msgServer, _, context, ctrl, _ := setupMsgServerFulfillEscrow(t)
+	msgServer, _, context, ctrl, _, _ := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	// Attempt to fulfill a non-existent escrow
 	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Alice,
 		Id:      55,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 
 	// Ensure an error is returned and it matches the expected ErrKeyNotFound error.
@@ -835,7 +901,7 @@ func TestFulfillEscrowDoesNotExist(t *testing.T) {
 // TestFulfillEscrowWrongStatus tests the case where the escrow has already been fulfilled.
 // to accomplish this, we try fulfilling the escrow two times.
 func TestFulfillEscrowWrongStatus(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	msgServer, _, context, ctrl, bankMock, _ := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	// The bank is expected to "refund" the fulfiller (send escrowed InitiatorCoins to the fulfiller)
@@ -856,6 +922,9 @@ func TestFulfillEscrowWrongStatus(t *testing.T) {
 	_, errFirstFulfill := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      0,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 	require.Nil(t, errFirstFulfill)
 
@@ -863,6 +932,9 @@ func TestFulfillEscrowWrongStatus(t *testing.T) {
 	_, errSecondFulfill := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      0,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 
 	// Ensure an error is returned and it matches the expected ErrWrongEscrowStatus error.
@@ -872,7 +944,7 @@ func TestFulfillEscrowWrongStatus(t *testing.T) {
 
 // TestFulfillEscrowModuleCannotPay tests the case where the module cannot refund the initiator's assets.
 func TestFulfillEscrowModuleCannotPay(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	msgServer, _, context, ctrl, bankMock, _ := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	fulfiller, _ := sdk.AccAddressFromBech32(testutil.Bob)
@@ -900,6 +972,9 @@ func TestFulfillEscrowModuleCannotPay(t *testing.T) {
 	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      0,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 
 	if err != nil {
@@ -909,7 +984,7 @@ func TestFulfillEscrowModuleCannotPay(t *testing.T) {
 
 // TestFulfillEscrowFulfillerCannotPay tests the case where the fulfiller cannot pay the initiator.
 func TestFulfillEscrowFulfillerCannotPay(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	msgServer, _, context, ctrl, bankMock, _ := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	initiator, _ := sdk.AccAddressFromBech32(testutil.Alice)
@@ -928,6 +1003,9 @@ func TestFulfillEscrowFulfillerCannotPay(t *testing.T) {
 	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      0,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 
 	// Ensure an error is returned and it matches the expected error.
@@ -937,7 +1015,7 @@ func TestFulfillEscrowFulfillerCannotPay(t *testing.T) {
 
 // TestFulfillEscrowFulfillerCannotPayModule tests the case where the fulfiller cannot pay the module.
 func TestFulfillEscrowFulfillerCannotPayModule(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	msgServer, _, context, ctrl, bankMock, _ := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	fulfiller, _ := sdk.AccAddressFromBech32(testutil.Bob)
@@ -955,6 +1033,9 @@ func TestFulfillEscrowFulfillerCannotPayModule(t *testing.T) {
 	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      1,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 
 	// Ensure an error is returned and it matches the expected error.
@@ -964,7 +1045,7 @@ func TestFulfillEscrowFulfillerCannotPayModule(t *testing.T) {
 
 // TestFulfillEscrow tests the fulfillment of an escrow that can never be closed due to invalid OracleConditions
 func TestFulfillEscrowInvalidOracleConditions(t *testing.T) {
-	msgServer, _, context, ctrl, bankMock := setupMsgServerFulfillEscrow(t)
+	msgServer, _, context, ctrl, bankMock, _ := setupMsgServerFulfillEscrow(t)
 	defer ctrl.Finish()
 
 	// The bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
@@ -978,6 +1059,9 @@ func TestFulfillEscrowInvalidOracleConditions(t *testing.T) {
 	_, err := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      9,
+		DenomMap: map[string]string{
+			"stake": "stake", 
+		},
 	})
 
 	require.Nil(t, err)

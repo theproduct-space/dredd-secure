@@ -7,8 +7,10 @@ package testutil
 import (
 	reflect "reflect"
 
+	bytes "github.com/cometbft/cometbft/libs/bytes"
 	types "github.com/cosmos/cosmos-sdk/types"
 	types0 "github.com/cosmos/cosmos-sdk/x/auth/types"
+	types1 "github.com/cosmos/ibc-go/v7/modules/apps/transfer/types"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -126,4 +128,42 @@ func (m *MockBankKeeper) SpendableCoins(ctx types.Context, addr types.AccAddress
 func (mr *MockBankKeeperMockRecorder) SpendableCoins(ctx, addr interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SpendableCoins", reflect.TypeOf((*MockBankKeeper)(nil).SpendableCoins), ctx, addr)
+}
+
+// MockTransferKeeper is a mock of TransferKeeper interface.
+type MockTransferKeeper struct {
+	ctrl     *gomock.Controller
+	recorder *MockTransferKeeperMockRecorder
+}
+
+// MockTransferKeeperMockRecorder is the mock recorder for MockTransferKeeper.
+type MockTransferKeeperMockRecorder struct {
+	mock *MockTransferKeeper
+}
+
+// NewMockTransferKeeper creates a new mock instance.
+func NewMockTransferKeeper(ctrl *gomock.Controller) *MockTransferKeeper {
+	mock := &MockTransferKeeper{ctrl: ctrl}
+	mock.recorder = &MockTransferKeeperMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockTransferKeeper) EXPECT() *MockTransferKeeperMockRecorder {
+	return m.recorder
+}
+
+// GetDenomTrace mocks base method.
+func (m *MockTransferKeeper) GetDenomTrace(ctx types.Context, denomTraceHash bytes.HexBytes) (types1.DenomTrace, bool) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDenomTrace", ctx, denomTraceHash)
+	ret0, _ := ret[0].(types1.DenomTrace)
+	ret1, _ := ret[1].(bool)
+	return ret0, ret1
+}
+
+// GetDenomTrace indicates an expected call of GetDenomTrace.
+func (mr *MockTransferKeeperMockRecorder) GetDenomTrace(ctx, denomTraceHash interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDenomTrace", reflect.TypeOf((*MockTransferKeeper)(nil).GetDenomTrace), ctx, denomTraceHash)
 }

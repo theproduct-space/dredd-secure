@@ -58,10 +58,10 @@ func (escrowPortKeeper) BindPort(ctx sdk.Context, portID string) *capabilitytype
 
 func EscrowKeeper(tb testing.TB) (*keeper.Keeper, sdk.Context) {
 	tb.Helper()
-	return EscrowKeeperWithMocks(tb, nil)
+	return EscrowKeeperWithMocks(tb, nil, nil)
 }
 
-func EscrowKeeperWithMocks(tb testing.TB, bank *testutil.MockBankKeeper) (*keeper.Keeper, sdk.Context) {
+func EscrowKeeperWithMocks(tb testing.TB, bank *testutil.MockBankKeeper, ibcTransfer *testutil.MockTransferKeeper) (*keeper.Keeper, sdk.Context) {
 	tb.Helper()
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
@@ -84,6 +84,7 @@ func EscrowKeeperWithMocks(tb testing.TB, bank *testutil.MockBankKeeper) (*keepe
 	)
 	k := keeper.NewKeeper(
 		bank,
+		ibcTransfer,
 		cdc,
 		storeKey,
 		memStoreKey,

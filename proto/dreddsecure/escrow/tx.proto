@@ -36,8 +36,9 @@ message MsgCancelEscrow {
 message MsgCancelEscrowResponse {}
 
 message MsgFulfillEscrow {
-  string creator = 1;
-  uint64 id      = 2;
+  string creator               = 1;
+  uint64 id                    = 2;
+  map<string, string> denomMap = 3;
 }
 
 message MsgFulfillEscrowResponse {}

@@ -526,6 +526,7 @@ func New(
 	app.ScopedEscrowKeeper = scopedEscrowKeeper
 	app.EscrowKeeper = *escrowmodulekeeper.NewKeeper(
 		app.BankKeeper,
+		app.TransferKeeper,
 		appCodec,
 		keys[escrowmoduletypes.StoreKey],
 		keys[escrowmoduletypes.MemStoreKey],
@@ -534,7 +535,7 @@ func New(
 		&app.IBCKeeper.PortKeeper,
 		scopedEscrowKeeper,
 	)
-	escrowModule := escrowmodule.NewAppModule(appCodec, app.EscrowKeeper, app.AccountKeeper, app.BankKeeper)
+	escrowModule := escrowmodule.NewAppModule(appCodec, app.EscrowKeeper, app.AccountKeeper, app.BankKeeper, app.TransferKeeper)
 	escrowIBCModule := escrowmodule.NewIBCModule(app.EscrowKeeper)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 

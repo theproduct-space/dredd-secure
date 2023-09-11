@@ -9,6 +9,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/spf13/cobra"
+
+	"fmt"
 )
 
 var _ = strconv.Itoa(0)
@@ -19,6 +21,10 @@ func CmdCreateEscrow() *cobra.Command {
 		Short: "Broadcast message create-escrow",
 		Args:  cobra.ExactArgs(6),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			fmt.Println("FULFILL ESCROW CLI")
+			fmt.Println("FULFILL ESCROW CLI")
+			fmt.Println("FULFILL ESCROW CLI")
+			fmt.Println("FULFILL ESCROW CLI")
 			argInitiatorCoins, err := sdk.ParseCoinsNormalized(args[0])
 			if err != nil {
 				return err
