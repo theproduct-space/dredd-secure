@@ -40,7 +40,7 @@ func (k msgServer) CreateEscrow(goCtx context.Context, msg *types.MsgCreateEscro
 		return nil, errors.Wrapf(errSendCoins, types.ErrInitiatorCannotPay.Error())
 	}
 
-	if escrow.Tips != nil {
+	if escrow.Tips != nil && len(escrow.Tips) != 0 {
 		errSendCoinsTips := k.bank.SendCoins(ctx, initiator, tipAddress, escrow.Tips)
 		if errSendCoins != nil {
 			return nil, errors.Wrapf(errSendCoinsTips, types.ErrInitiatorCannotPay.Error())

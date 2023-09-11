@@ -166,7 +166,7 @@ func (k Keeper) ValidateOracleCondition(ctx sdk.Context, escrow types.Escrow) bo
 				case "oracle-token-price": 
 					price, found := k.GetOraclePrice(ctx, condition.TokenOfInterest.Symbol)
 					if (!found) {
-						fmt.Println("Error: Oracle price not found")
+						fmt.Println("Error: Oracle price not found for ", condition.TokenOfInterest.Symbol)
 						return false
 					}
 
