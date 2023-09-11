@@ -38,4 +38,5 @@ const (
 	PendingEscrowKey  = "Escrow/pending/"
 	ExpiringEscrowKey = "Escrow/expiring/"
 	LastExecsKey      = "Escrow/lastExec/"
+	SourceChannelKey  = "Escrow/SourceChannel/"
 )

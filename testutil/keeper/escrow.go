@@ -91,6 +91,7 @@ func EscrowKeeperWithMocks(tb testing.TB, bank *testutil.MockBankKeeper) (*keepe
 		escrowChannelKeeper{},
 		escrowPortKeeper{},
 		capabilityKeeper.ScopeToModule("EscrowScopedKeeper"),
+		nil,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())

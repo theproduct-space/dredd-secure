@@ -586,8 +586,10 @@ func (k Keeper) ExecuteAfterNSeconds(
 func (k Keeper) SyncOracleData(ctx sdk.Context) {
 	params := k.GetParams(ctx)
 
+	sourceChannel := k.GetSrcChannel(ctx)
+
 	// Verify that SourceChannel params is set by open params proposal already
-	if params.SourceChannel == types.NotSet {
+	if sourceChannel == types.NotSet {
 		return
 	}
 
@@ -652,7 +654,7 @@ func (k Keeper) SyncOracleData(ctx sdk.Context) {
 	
 		timeoutTimestamp := uint64(ctx.BlockTime().UnixNano()+int64(20*time.Minute))
 	
-		err := k.RequestBandChainData(ctx, "channel-0", oracleRequestPacket, clienttypes.ZeroHeight(), timeoutTimestamp)
+		err := k.RequestBandChainData(ctx, sourceChannel, oracleRequestPacket, clienttypes.ZeroHeight(), timeoutTimestamp)
 		if err != nil {
 			fmt.Println("Error:", err)
 			return

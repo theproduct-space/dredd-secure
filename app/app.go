@@ -533,6 +533,7 @@ func New(
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
 		scopedEscrowKeeper,
+		&app.GovKeeper,
 	)
 	escrowModule := escrowmodule.NewAppModule(appCodec, app.EscrowKeeper, app.AccountKeeper, app.BankKeeper)
 	escrowIBCModule := escrowmodule.NewIBCModule(app.EscrowKeeper)

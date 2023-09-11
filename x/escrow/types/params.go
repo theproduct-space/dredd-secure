@@ -17,7 +17,6 @@ const (
 	DefaultPrepareGasEach = uint64(600)
 	DefaultExecuteGasBase = uint64(70000)
 	DefaultExecuteGasEach = uint64(7500)
-	DefaultSourceChannel  = NotSet
 )
 
 var (
@@ -32,7 +31,6 @@ var (
 	KeyPrepareGasEach = []byte("PrepareGasEach")
 	KeyExecuteGasBase = []byte("ExecuteGasBase")
 	KeyExecuteGasEach = []byte("ExecuteGasEach")
-	KeySourceChannel  = []byte("SourceChannel")
 	KeyFeeLimit       = []byte("FeeLimit")
 )
 
@@ -46,7 +44,6 @@ func ParamKeyTable() paramtypes.KeyTable {
 // NewParams creates a new Params instance
 func NewParams(
 	askCount, minCount, minDsCount, prepareGasBase, prepareGasEach, executeGasBase, executeGasEach uint64,
-	sourceChannel string,
 	feeLimit sdk.Coins,
 ) Params {
 	return Params{
@@ -57,7 +54,6 @@ func NewParams(
 		PrepareGasEach: prepareGasEach,
 		ExecuteGasBase: executeGasBase,
 		ExecuteGasEach: executeGasEach,
-		SourceChannel:  sourceChannel,
 		FeeLimit:       feeLimit,
 	}
 }
@@ -72,7 +68,6 @@ func DefaultParams() Params {
 		DefaultPrepareGasEach,
 		DefaultExecuteGasBase,
 		DefaultExecuteGasEach,
-		DefaultSourceChannel,
 		DefaultFeeLimit,
 	)
 }
@@ -87,7 +82,6 @@ func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 		paramtypes.NewParamSetPair(KeyPrepareGasEach, &p.PrepareGasEach, validateUint64("prepare gas each", true)),
 		paramtypes.NewParamSetPair(KeyExecuteGasBase, &p.ExecuteGasBase, validateUint64("execute gas base", true)),
 		paramtypes.NewParamSetPair(KeyExecuteGasEach, &p.ExecuteGasEach, validateUint64("execute gas each", true)),
-		paramtypes.NewParamSetPair(KeySourceChannel, &p.SourceChannel, validateString("source channel")),
 		paramtypes.NewParamSetPair(KeyFeeLimit, &p.FeeLimit, validateFeeLimit),
 	}
 }
