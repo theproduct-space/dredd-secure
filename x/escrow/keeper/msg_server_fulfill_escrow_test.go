@@ -435,13 +435,14 @@ func setupMsgServerFulfillEscrow02(tb testing.TB) (types.MsgServer, keeper.Keepe
 	return server, *k, context, ctrl, bankMock, ibcTransferMock
 }
 
-func setupMsgServerFulfillEscrow03(tb testing.TB) (types.MsgServer, keeper.Keeper, context.Context, *gomock.Controller, *testutil.MockBankKeeper) {
+func setupMsgServerFulfillEscrow03(tb testing.TB) (types.MsgServer, keeper.Keeper, context.Context, *gomock.Controller, *testutil.MockBankKeeper, *testutil.MockTransferKeeper) {
 	tb.Helper()
 
 	// Setup the necessary dependencies
 	ctrl := gomock.NewController(tb)
 	bankMock := testutil.NewMockBankKeeper(ctrl)
-	k, ctx := keepertest.EscrowKeeperWithMocks(tb, bankMock)
+	ibcTransferMock := testutil.NewMockTransferKeeper(ctrl)
+	k, ctx := keepertest.EscrowKeeperWithMocks(tb, bankMock, ibcTransferMock)
 	escrow.InitGenesis(ctx, *k, *types.DefaultGenesis())
 	server := keeper.NewMsgServerImpl(*k)
 	context := sdk.WrapSDKContext(ctx)
@@ -818,7 +819,7 @@ func setupMsgServerFulfillEscrow03(tb testing.TB) (types.MsgServer, keeper.Keepe
 	require.Nil(tb, errTwelvethCreate)
 
 	// Return the necessary components for testing
-	return server, *k, context, ctrl, bankMock
+	return server, *k, context, ctrl, bankMock, ibcTransferMock
 }
 
 // TestFulfillEscrow tests the fulfillment of an escrow that can be closed when the second party fulfills it.
@@ -1274,7 +1275,7 @@ func TestFulfillEscrowsPendingList03(t *testing.T) {
 
 // Testing the pending list tracking
 func TestFulfillEscrowsPendingList04(t *testing.T) {
-	msgServer, k, context, ctrl, bankMock := setupMsgServerFulfillEscrow03(t)
+	msgServer, k, context, ctrl, bankMock, ibcTransferMock := setupMsgServerFulfillEscrow03(t)
 	defer ctrl.Finish()
 
 	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
@@ -1282,9 +1283,18 @@ func TestFulfillEscrowsPendingList04(t *testing.T) {
 		Denom:  "stake",
 		Amount: sdk.NewInt(2),
 	}})
+
+	ibcTransferMock.ExpectGetDenomTrace(context, "stake")
+
 	_, err1 := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      0,
+		DenomMap: []*types.KeyVal{
+			{
+				Key:   "stake",
+				Value: "stake",
+			},
+		},
 	})
 	// The bank is expected to "refund" the fulfiller (send escrowed InitiatorCoins to the fulfiller)
 	bankMock.ExpectRefund(context, testutil.Bob, []sdk.Coin{
@@ -1300,9 +1310,18 @@ func TestFulfillEscrowsPendingList04(t *testing.T) {
 			Amount: sdk.NewInt(4),
 		},
 	})
+
+	ibcTransferMock.ExpectGetDenomTrace(context, "stake")
+
 	_, err2 := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      2,
+		DenomMap: []*types.KeyVal{
+			{
+				Key:   "stake",
+				Value: "stake",
+			},
+		},
 	})
 	// The bank is expected to "refund" the fulfiller (send escrowed InitiatorCoins to the fulfiller)
 	bankMock.ExpectRefund(context, testutil.Bob, []sdk.Coin{
@@ -1318,18 +1337,36 @@ func TestFulfillEscrowsPendingList04(t *testing.T) {
 			Amount: sdk.NewInt(5),
 		},
 	})
+
+	ibcTransferMock.ExpectGetDenomTrace(context, "stake")
+
 	_, err3 := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      10,
+		DenomMap: []*types.KeyVal{
+			{
+				Key:   "stake",
+				Value: "stake",
+			},
+		},
 	})
 	// the bank is expected to receive the FulfillerCoins from the fulfiller (to be escrowed)
 	bankMock.ExpectPay(context, testutil.Bob, []sdk.Coin{{
 		Denom:  "stake",
 		Amount: sdk.NewInt(6),
 	}})
+
+	ibcTransferMock.ExpectGetDenomTrace(context, "stake")
+
 	_, err4 := msgServer.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      11,
+		DenomMap: []*types.KeyVal{
+			{
+				Key:   "stake",
+				Value: "stake",
+			},
+		},
 	})
 
 	// Pending escrows list needs to be in order of start date
@@ -1337,7 +1374,7 @@ func TestFulfillEscrowsPendingList04(t *testing.T) {
 	pendingEscrowsIdList := k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context))
 	controlPendingEscrowsIdList := []uint64{0, 11}
 
-	require.EqualValues(t, pendingEscrowsIdList, controlPendingEscrowsIdList)
+	require.EqualValues(t, controlPendingEscrowsIdList, pendingEscrowsIdList)
 	require.Nil(t, err1)
 	require.Nil(t, err2)
 	require.Nil(t, err3)
