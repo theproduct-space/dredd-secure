@@ -29,13 +29,13 @@ func createNOraclePrice(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.O
 func TestOraclePriceGet(t *testing.T) {
 	keeper, ctx := keepertest.EscrowKeeper(t)
 	items := createNOraclePrice(keeper, ctx, 10)
-	for _, item := range items {
+	for i := range items {
 		rst, found := keeper.GetOraclePrice(ctx,
-			item.Symbol,
+			items[i].Symbol,
 		)
 		require.True(t, found)
 		require.Equal(t,
-			nullify.Fill(&item),
+			nullify.Fill(&items[i]),
 			nullify.Fill(&rst),
 		)
 	}

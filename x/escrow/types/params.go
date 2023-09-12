@@ -108,16 +108,6 @@ func validateUint64(name string) func(interface{}) error {
 	}
 }
 
-func validateString(name string) func(interface{}) error {
-	return func(i interface{}) error {
-		_, ok := i.(string)
-		if !ok {
-			return fmt.Errorf("%s must be string: %T", name, i)
-		}
-		return nil
-	}
-}
-
 func validateFeeLimit(i interface{}) error {
 	_, ok := i.(sdk.Coins)
 	if !ok {

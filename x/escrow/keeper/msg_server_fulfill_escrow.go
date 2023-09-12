@@ -62,11 +62,9 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 				return nil, errors.Wrapf(types.ErrIncompatibleDenom, "%v", baseDenom)
 			}
 
-		} else {
+		} else if storedDenom != denom {
 			// token is not IBC, compare the denom and return error if they do not match
-			if storedDenom != denom {
-				return nil, errors.Wrapf(types.ErrIncompatibleDenom, "%v", denom)
-			}
+			return nil, errors.Wrapf(types.ErrIncompatibleDenom, "%v", denom)
 		}
 
 		// if no error is found, append a new coin with the amount found in the contract, but with the denom provided in the msg.

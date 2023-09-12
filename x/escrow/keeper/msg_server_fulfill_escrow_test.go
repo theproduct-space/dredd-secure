@@ -1071,10 +1071,10 @@ func TestFulfillEscrowsNearFuture(t *testing.T) {
 	// Pending escrows list needs to be in order of start date
 	// They have been added in the order 3, 5, 8, 4, 7, 6 and should be ordered as 3, 4, 5, 6, 7, 8
 	// Which coincidently corresponds to the ID order
-	pendingEscrowsIdList := k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context))
-	controlPendingEscrowsIdList := []uint64{3, 4, 5, 6, 7, 8}
+	pendingEscrowsIDList := k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context))
+	controlPendingEscrowsIDList := []uint64{3, 4, 5, 6, 7, 8}
 
-	require.EqualValues(t, pendingEscrowsIdList, controlPendingEscrowsIdList)
+	require.EqualValues(t, pendingEscrowsIDList, controlPendingEscrowsIDList)
 
 	// Wait 20 seconds
 	time.Sleep(10 * time.Second)
@@ -1109,10 +1109,10 @@ func TestFulfillEscrowsNearFuture(t *testing.T) {
 	k.FulfillPendingEscrows(sdk.UnwrapSDKContext(context))
 
 	// Confirm they have been removed from the pending list
-	pendingEscrowsIdListAfter := k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context))
-	controlPendingEscrowsIdListAfter := []uint64{6, 7, 8}
+	pendingEscrowsIDListAfter := k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context))
+	controlPendingEscrowsIDListAfter := []uint64{6, 7, 8}
 
-	require.EqualValues(t, pendingEscrowsIdListAfter, controlPendingEscrowsIdListAfter)
+	require.EqualValues(t, pendingEscrowsIDListAfter, controlPendingEscrowsIDListAfter)
 
 	require.Nil(t, err1)
 	require.Nil(t, err2)
@@ -1184,10 +1184,10 @@ func TestFulfillEscrowsPendingList(t *testing.T) {
 
 	// Pending escrows list needs to be in order of start date
 	// They have been added in the order 6, 7, 8 and should be ordered as 6, 7, 8
-	pendingEscrowsIdList := k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context))
-	controlPendingEscrowsIdList := []uint64{6, 7, 8}
+	pendingEscrowsIDList := k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context))
+	controlPendingEscrowsIDList := []uint64{6, 7, 8}
 
-	require.EqualValues(t, pendingEscrowsIdList, controlPendingEscrowsIdList)
+	require.EqualValues(t, pendingEscrowsIDList, controlPendingEscrowsIDList)
 	require.Nil(t, err1)
 	require.Nil(t, err2)
 	require.Nil(t, err3)
@@ -1237,10 +1237,10 @@ func TestFulfillEscrowsPendingList02(t *testing.T) {
 
 	// Pending escrows list needs to be in order of start date
 	// They have been added in the order 1, 0 and should be ordered as 1, 0
-	pendingEscrowsIdList := k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context))
-	controlPendingEscrowsIdList := []uint64{1, 0}
+	pendingEscrowsIDList := k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context))
+	controlPendingEscrowsIDList := []uint64{1, 0}
 
-	require.EqualValues(t, pendingEscrowsIdList, controlPendingEscrowsIdList)
+	require.EqualValues(t, pendingEscrowsIDList, controlPendingEscrowsIDList)
 	require.Nil(t, err1)
 	require.Nil(t, err2)
 }
@@ -1289,10 +1289,10 @@ func TestFulfillEscrowsPendingList03(t *testing.T) {
 
 	// Pending escrows list needs to be in order of start date
 	// They have been added in the order 0, 1 and should be ordered as 0, 1
-	pendingEscrowsIdList := k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context))
-	controlPendingEscrowsIdList := []uint64{0, 1}
+	pendingEscrowsIDList := k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context))
+	controlPendingEscrowsIDList := []uint64{0, 1}
 
-	require.EqualValues(t, pendingEscrowsIdList, controlPendingEscrowsIdList)
+	require.EqualValues(t, pendingEscrowsIDList, controlPendingEscrowsIDList)
 	require.Nil(t, err1)
 	require.Nil(t, err2)
 }
@@ -1395,10 +1395,10 @@ func TestFulfillEscrowsPendingList04(t *testing.T) {
 
 	// Pending escrows list needs to be in order of start date
 	// They have been added in the order 0, 1 and should be ordered as 0, 1
-	pendingEscrowsIdList := k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context))
-	controlPendingEscrowsIdList := []uint64{0, 11}
+	pendingEscrowsIDList := k.GetAllPendingEscrows(sdk.UnwrapSDKContext(context))
+	controlPendingEscrowsIDList := []uint64{0, 11}
 
-	require.EqualValues(t, controlPendingEscrowsIdList, pendingEscrowsIdList)
+	require.EqualValues(t, controlPendingEscrowsIDList, pendingEscrowsIDList)
 	require.Nil(t, err1)
 	require.Nil(t, err2)
 	require.Nil(t, err3)
@@ -1412,10 +1412,10 @@ func TestFulfillEscrowsExpiringList02(t *testing.T) {
 
 	// Expiring escrows list needs to be in order of end date
 	// They have been added in the order 0, 1, 2 and should be ordered as 1, 0, 2
-	expiringEscrowsIdList := k.GetAllExpiringEscrows(sdk.UnwrapSDKContext(context))
-	controlExpiringEscrowsIdList := []uint64{1, 0, 2}
+	expiringEscrowsIDList := k.GetAllExpiringEscrows(sdk.UnwrapSDKContext(context))
+	controlExpiringEscrowsIDList := []uint64{1, 0, 2}
 
-	require.EqualValues(t, expiringEscrowsIdList, controlExpiringEscrowsIdList)
+	require.EqualValues(t, expiringEscrowsIDList, controlExpiringEscrowsIDList)
 }
 
 func test1Function(args ...interface{}) interface{} {

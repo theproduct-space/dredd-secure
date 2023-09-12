@@ -310,8 +310,8 @@ func (k Keeper) GetAllExpiringEscrows(ctx sdk.Context) (list []uint64) {
 
 // Fulfills escrows ordered in start date as ascending, removes fulfilled escrows from the array
 func (k Keeper) FulfillPendingEscrows(ctx sdk.Context) {
-	var pendingEscrows []uint64 = k.GetAllPendingEscrows(ctx)
-	var i int = -1
+	pendingEscrows := k.GetAllPendingEscrows(ctx)
+	i := -1
 	for index, v := range pendingEscrows {
 		escrow, found := k.GetEscrow(ctx, v)
 		if found && k.ValidateConditions(ctx, escrow) {
@@ -526,10 +526,7 @@ func (k Keeper) GetLastExecs(ctx sdk.Context) map[string]string {
 	bz := store.Get(byteKey)
 	var lastExecs map[string]string
 	err := json.Unmarshal(bz, &lastExecs)
-	if err != nil {
-		panic(err.Error())
-	}
-	if len(lastExecs) == 0 {
+	if err != nil || len(lastExecs) == 0 {
 		lastExecs = make(map[string]string)
 	}
 	return lastExecs
@@ -569,12 +566,10 @@ func (k Keeper) ExecuteAfterNSeconds(
 		epochInt, err := strconv.ParseInt(epochString, 10, 64)
 		if err != nil {
 			fmt.Println("Error converting epoch string to int:", err)
-		} else {
-			if epochInt+exec.DelayS < epoch {
-				result := exec.Function(exec.Args...)
-				results = append(results, result)
-				lastExecs[exec.ID] = strconv.FormatInt(epoch, 10)
-			}
+		} else if epochInt+exec.DelayS < epoch {
+			result := exec.Function(exec.Args...)
+			results = append(results, result)
+			lastExecs[exec.ID] = strconv.FormatInt(epoch, 10)
 		}
 	}
 
@@ -631,8 +626,8 @@ func (k Keeper) SyncOracleData(ctx sdk.Context) {
 		calldataBytes, _ := bandtypes.EncodeCalldata(sliceSymbols, uint8(params.MinDsCount))
 
 		uid := uuid.New()
-		oracleScriptIdString := constants.OracleCryptoCurrencyPriceScriptID
-		oracleScriptId, errParseInt := strconv.ParseUint(oracleScriptIdString, 10, 64)
+		oracleScriptIDString := constants.OracleCryptoCurrencyPriceScriptID
+		oracleScriptID, errParseInt := strconv.ParseUint(oracleScriptIDString, 10, 64)
 		if errParseInt != nil {
 			fmt.Println("Error:", errParseInt)
 			return
@@ -642,8 +637,8 @@ func (k Keeper) SyncOracleData(ctx sdk.Context) {
 		executeGas := params.ExecuteGasBase + params.ExecuteGasEach*uint64(len(sliceSymbols))
 
 		oracleRequestPacket := bandtypes.NewOracleRequestPacketData(
-			oracleScriptIdString+"_"+uid.String(),
-			oracleScriptId,
+			oracleScriptIDString+"_"+uid.String(),
+			oracleScriptID,
 			calldataBytes,
 			params.AskCount,
 			params.MinCount,

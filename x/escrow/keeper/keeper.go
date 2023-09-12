@@ -95,8 +95,8 @@ func (k Keeper) IsBound(ctx sdk.Context, portID string) bool {
 // BindPort defines a wrapper function for the port Keeper's function in
 // order to expose it to module's InitGenesis function
 func (k Keeper) BindPort(ctx sdk.Context, portID string) error {
-	cap := k.portKeeper.BindPort(ctx, portID)
-	return k.ClaimCapability(ctx, cap, host.PortPath(portID))
+	capab := k.portKeeper.BindPort(ctx, portID)
+	return k.ClaimCapability(ctx, capab, host.PortPath(portID))
 }
 
 // GetPort returns the portID for the IBC app module. Used in ExportGenesis
@@ -129,9 +129,9 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 // StoreOracleResponsePacket is a function that receives an OracleResponsePacketData from BandChain.
 func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res types.OracleResponsePacketDataPacketData) error {
 	// Find the oracleId from the clientID
-	oracleId := strings.Split(res.ClientId, "_")[0]
+	oracleID := strings.Split(res.ClientId, "_")[0]
 
-	switch oracleId {
+	switch oracleID {
 	case constants.OracleCryptoCurrencyPriceScriptID:
 		// Decode the result from the response packet.
 		result, err := bandtypes.DecodeResult(res.Result)

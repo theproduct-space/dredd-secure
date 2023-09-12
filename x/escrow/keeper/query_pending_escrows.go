@@ -16,7 +16,7 @@ func (k Keeper) PendingEscrows(goCtx context.Context, req *types.QueryPendingEsc
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	var ids []uint64 = k.GetAllPendingEscrows(ctx)
+	ids := k.GetAllPendingEscrows(ctx)
 
 	return &types.QueryPendingEscrowsResponse{Ids: ids}, nil
 }

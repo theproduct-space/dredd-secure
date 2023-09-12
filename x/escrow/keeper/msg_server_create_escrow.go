@@ -12,7 +12,10 @@ import (
 
 // CreateEscrow creates a new escrow with with the provided msg details
 func (k msgServer) CreateEscrow(goCtx context.Context, msg *types.MsgCreateEscrow) (*types.MsgCreateEscrowResponse, error) {
-	tipAddress, err := sdk.AccAddressFromBech32(constants.Tips)
+	tipAddress, errTipsAddr := sdk.AccAddressFromBech32(constants.Tips)
+	if errTipsAddr != nil {
+		panic(errTipsAddr.Error())
+	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -31,7 +34,7 @@ func (k msgServer) CreateEscrow(goCtx context.Context, msg *types.MsgCreateEscro
 
 	initiator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		panic(err)
+		panic(err.Error())
 	}
 
 	// Transfer the initiator's coins from their account to the escrow module
