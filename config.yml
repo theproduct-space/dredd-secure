@@ -4,20 +4,20 @@ accounts:
     coins:
       - 20000token
       - 200000000stake
-      - 2000000utok
-      - 2000000uatom
+      - 1000000000udredd
   - name: bob
     coins:
       - 30000token
       - 300000000stake
+      - 1000000000udredd
   - name: dev
-    coins: [999token, 9999utok, 59999uatom, 9999999999stake]
+    coins: [999token, 9999999999stake, 1000000000udredd]
     mnemonic: disease someone stand surface income long video stock script ripple strike bean
   - name: john
-    coins: [999token, 9999utok, 59999uatom, 999999stake]
+    coins: [999token, 999999stake, 1000000000udredd]
     mnemonic: focus rookie copy baby laptop volcano cherry spend clutch suggest online auction
   - name: xzan
-    coins: [999token, 9999utok, 99999uatom, 999999stake]
+    coins: [999token, 999999stake, 1000000000udredd]
     mnemonic: crane neck erase bottom digital echo truth friend sound inmate biology mind
 faucet:
   name: bob
