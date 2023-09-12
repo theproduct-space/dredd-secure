@@ -4,24 +4,23 @@ import (
 	"dredd-secure/x/escrow/constants"
 	"dredd-secure/x/escrow/types"
 	"fmt"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/cometbft/cometbft/libs/log"
 	"github.com/cosmos/cosmos-sdk/codec"
+	"github.com/cosmos/cosmos-sdk/store/prefix"
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
+	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v7/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v7/modules/core/24-host"
 	"github.com/cosmos/ibc-go/v7/modules/core/exported"
-	"github.com/cosmos/cosmos-sdk/store/prefix"
-	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
-
-	"strconv"
-	"strings"
 
 	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
 )
@@ -37,7 +36,7 @@ type (
 		channelKeeper types.ChannelKeeper
 		portKeeper    types.PortKeeper
 		scopedKeeper  exported.ScopedKeeper
-		govKeeper	  *govkeeper.Keeper
+		govKeeper     *govkeeper.Keeper
 	}
 )
 
@@ -69,7 +68,7 @@ func NewKeeper(
 		channelKeeper: channelKeeper,
 		portKeeper:    portKeeper,
 		scopedKeeper:  scopedKeeper,
-		govKeeper: 	   govKeeper,
+		govKeeper:     govKeeper,
 	}
 }
 
@@ -96,8 +95,8 @@ func (k Keeper) IsBound(ctx sdk.Context, portID string) bool {
 // BindPort defines a wrapper function for the port Keeper's function in
 // order to expose it to module's InitGenesis function
 func (k Keeper) BindPort(ctx sdk.Context, portID string) error {
-	cap := k.portKeeper.BindPort(ctx, portID)
-	return k.ClaimCapability(ctx, cap, host.PortPath(portID))
+	capab := k.portKeeper.BindPort(ctx, portID)
+	return k.ClaimCapability(ctx, capab, host.PortPath(portID))
 }
 
 // GetPort returns the portID for the IBC app module. Used in ExportGenesis
@@ -129,38 +128,37 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 
 // StoreOracleResponsePacket is a function that receives an OracleResponsePacketData from BandChain.
 func (k Keeper) StoreOracleResponsePacket(ctx sdk.Context, res types.OracleResponsePacketDataPacketData) error {
-
 	// Find the oracleId from the clientID
-	oracleId := strings.Split(res.ClientId, "_")[0]
+	oracleID := strings.Split(res.ClientId, "_")[0]
 
-	switch oracleId {
-		case constants.OracleCryptoCurrencyPriceScriptId:
-			// Decode the result from the response packet.
-			result, err := bandtypes.DecodeResult(res.Result)
-			if err != nil {
-				return err
-			}
+	switch oracleID {
+	case constants.OracleCryptoCurrencyPriceScriptID:
+		// Decode the result from the response packet.
+		result, err := bandtypes.DecodeResult(res.Result)
+		if err != nil {
+			return err
+		}
 
-			for _, r := range result {
-				oraclePrice := types.OraclePrice{
-					Symbol:      r.Symbol,
-					ResolveTime: res.RequestTime,
-					Price:       strconv.FormatUint(r.Rate, 10),
-				}
-				changed := k.UpdateOraclePrice(ctx, oraclePrice)
-				if changed {
-					ctx.EventManager().EmitEvent(
-						sdk.NewEvent(
-							types.EventTypePriceUpdate,
-							sdk.NewAttribute(types.AttributeKeySymbol, r.Symbol),
-							sdk.NewAttribute(types.AttributeKeyPrice, fmt.Sprintf("%d", r.Rate)),
-							sdk.NewAttribute(types.AttributeKeyTimestamp, res.ResolveStatus),
-						),
-					)
-				}
+		for _, r := range result {
+			oraclePrice := types.OraclePrice{
+				Symbol:      r.Symbol,
+				ResolveTime: res.RequestTime,
+				Price:       strconv.FormatUint(r.Rate, 10),
 			}
-		default: 
-			return types.ErrOracleScriptNotConfigured
+			changed := k.UpdateOraclePrice(ctx, oraclePrice)
+			if changed {
+				ctx.EventManager().EmitEvent(
+					sdk.NewEvent(
+						types.EventTypePriceUpdate,
+						sdk.NewAttribute(types.AttributeKeySymbol, r.Symbol),
+						sdk.NewAttribute(types.AttributeKeyPrice, fmt.Sprintf("%d", r.Rate)),
+						sdk.NewAttribute(types.AttributeKeyTimestamp, res.ResolveStatus),
+					),
+				)
+			}
+		}
+	default:
+		return types.ErrOracleScriptNotConfigured
 	}
 
 	return nil
@@ -228,7 +226,7 @@ func (k Keeper) RequestBandChainData(
 	return nil
 }
 
-func (k Keeper) GetSrcChannel (ctx sdk.Context) string {
+func (k Keeper) GetSrcChannel(ctx sdk.Context) string {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.SourceChannelKey))
 	b := store.Get(types.KeyPrefix(types.SourceChannelKey))
 	if b == nil {
@@ -244,8 +242,7 @@ func (k Keeper) GetSrcChannel (ctx sdk.Context) string {
 	return srcChannel
 }
 
-func (k Keeper) SetSrcChannel (ctx sdk.Context, channel string) {
-
+func (k Keeper) SetSrcChannel(ctx sdk.Context, channel string) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.SourceChannelKey))
 	b := []byte(channel)
 	if b == nil {

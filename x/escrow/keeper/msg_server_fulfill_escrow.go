@@ -41,7 +41,7 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 		}
 		ibcDenomCheck := strings.Split(denom, "/")[0]
 
-		if (ibcDenomCheck == "ibc") {
+		if ibcDenomCheck == "ibc" {
 			hash := strings.Split(denom, "/")[1]
 
 			hashIbc, err := ibcTransferTypes.ParseHexHash(hash)
@@ -50,24 +50,21 @@ func (k msgServer) FulfillEscrow(goCtx context.Context, msg *types.MsgFulfillEsc
 			}
 
 			denomTrace, found := k.ibcTransfer.GetDenomTrace(ctx, hashIbc)
-			if (!found) {
+			if !found {
 				return nil, errors.Wrapf(types.ErrDenomTraceNotExist, "%v", hash)
 			}
 
-			baseDenom := denomTrace.BaseDenom;
+			baseDenom := denomTrace.BaseDenom
 
 			// the stored denom should be equal to the base_denom found in GetDenomTrace
-			if (storedDenom != baseDenom) {
+			if storedDenom != baseDenom {
 				// TODO return proper type instead of ErrKeyNotFound
 				return nil, errors.Wrapf(types.ErrIncompatibleDenom, "%v", baseDenom)
 			}
-			
-			
-		} else {
+
+		} else if storedDenom != denom {
 			// token is not IBC, compare the denom and return error if they do not match
-			if (storedDenom != denom) {
-				return nil, errors.Wrapf(types.ErrIncompatibleDenom, "%v", denom)
-			}
+			return nil, errors.Wrapf(types.ErrIncompatibleDenom, "%v", denom)
 		}
 
 		// if no error is found, append a new coin with the amount found in the contract, but with the denom provided in the msg.

@@ -19,9 +19,7 @@ const (
 	DefaultExecuteGasEach = uint64(7500)
 )
 
-var (
-	DefaultFeeLimit = sdk.NewCoins(sdk.NewInt64Coin("uband", 1000000))
-)
+var DefaultFeeLimit = sdk.NewCoins(sdk.NewInt64Coin("uband", 1000000))
 
 var (
 	KeyAskCount       = []byte("AskCount")
@@ -75,13 +73,13 @@ func DefaultParams() Params {
 // ParamSetPairs get the params.ParamSet
 func (p *Params) ParamSetPairs() paramtypes.ParamSetPairs {
 	return paramtypes.ParamSetPairs{
-		paramtypes.NewParamSetPair(KeyAskCount, &p.AskCount, validateUint64("ask count", true)),
-		paramtypes.NewParamSetPair(KeyMinCount, &p.MinCount, validateUint64("min count", true)),
-		paramtypes.NewParamSetPair(KeyMinDsCount, &p.MinDsCount, validateUint64("min ds count", true)),
-		paramtypes.NewParamSetPair(KeyPrepareGasBase, &p.PrepareGasBase, validateUint64("prepare gas base", true)),
-		paramtypes.NewParamSetPair(KeyPrepareGasEach, &p.PrepareGasEach, validateUint64("prepare gas each", true)),
-		paramtypes.NewParamSetPair(KeyExecuteGasBase, &p.ExecuteGasBase, validateUint64("execute gas base", true)),
-		paramtypes.NewParamSetPair(KeyExecuteGasEach, &p.ExecuteGasEach, validateUint64("execute gas each", true)),
+		paramtypes.NewParamSetPair(KeyAskCount, &p.AskCount, validateUint64("ask count")),
+		paramtypes.NewParamSetPair(KeyMinCount, &p.MinCount, validateUint64("min count")),
+		paramtypes.NewParamSetPair(KeyMinDsCount, &p.MinDsCount, validateUint64("min ds count")),
+		paramtypes.NewParamSetPair(KeyPrepareGasBase, &p.PrepareGasBase, validateUint64("prepare gas base")),
+		paramtypes.NewParamSetPair(KeyPrepareGasEach, &p.PrepareGasEach, validateUint64("prepare gas each")),
+		paramtypes.NewParamSetPair(KeyExecuteGasBase, &p.ExecuteGasBase, validateUint64("execute gas base")),
+		paramtypes.NewParamSetPair(KeyExecuteGasEach, &p.ExecuteGasEach, validateUint64("execute gas each")),
 		paramtypes.NewParamSetPair(KeyFeeLimit, &p.FeeLimit, validateFeeLimit),
 	}
 }
@@ -97,24 +95,14 @@ func (p Params) String() string {
 	return string(out)
 }
 
-func validateUint64(name string, positiveOnly bool) func(interface{}) error {
+func validateUint64(name string) func(interface{}) error {
 	return func(i interface{}) error {
 		v, ok := i.(uint64)
 		if !ok {
 			return fmt.Errorf("invalid parameter type: %T", i)
 		}
-		if v <= 0 && positiveOnly {
+		if v <= 0 {
 			return fmt.Errorf("%s must be positive: %d", name, v)
-		}
-		return nil
-	}
-}
-
-func validateString(name string) func(interface{}) error {
-	return func(i interface{}) error {
-		_, ok := i.(string)
-		if !ok {
-			return fmt.Errorf("%s must be string: %T", name, i)
 		}
 		return nil
 	}

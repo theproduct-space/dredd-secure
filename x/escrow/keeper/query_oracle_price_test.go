@@ -1,6 +1,8 @@
 package keeper_test
 
 import (
+	"dredd-secure/testutil/nullify"
+	"dredd-secure/x/escrow/types"
 	"strconv"
 	"testing"
 
@@ -11,8 +13,6 @@ import (
 	"google.golang.org/grpc/status"
 
 	keepertest "dredd-secure/testutil/keeper"
-	"dredd-secure/testutil/nullify"
-	"dredd-secure/x/escrow/types"
 )
 
 // Prevent strconv unused error

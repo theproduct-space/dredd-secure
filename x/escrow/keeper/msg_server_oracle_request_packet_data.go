@@ -2,12 +2,10 @@ package keeper
 
 import (
 	"context"
-
+	"dredd-secure/x/escrow/types"
 	"strconv"
 
 	"github.com/google/uuid"
-
-	"dredd-secure/x/escrow/types"
 
 	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -21,7 +19,7 @@ func (k msgServer) SendOracleRequestPacketData(goCtx context.Context, msg *types
 	uid := uuid.New()
 
 	oracleRequestPacket := bandtypes.NewOracleRequestPacketData(
-		strconv.FormatUint(msg.OracleScriptID, 10) + "_" + uid.String(),
+		strconv.FormatUint(msg.OracleScriptID, 10)+"_"+uid.String(),
 		msg.OracleScriptID,
 		msg.Calldata,
 		msg.AskCount,
@@ -32,7 +30,6 @@ func (k msgServer) SendOracleRequestPacketData(goCtx context.Context, msg *types
 	)
 
 	err := k.RequestBandChainData(ctx, msg.ChannelID, oracleRequestPacket, clienttypes.ZeroHeight(), msg.TimeoutTimestamp)
-
 	if err != nil {
 		return nil, err
 	}

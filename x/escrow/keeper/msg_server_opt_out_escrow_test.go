@@ -8,12 +8,11 @@ import (
 	"dredd-secure/x/escrow/testutil"
 	"dredd-secure/x/escrow/types"
 	"errors"
+	"strconv"
 	"testing"
 	"time"
 
 	keepertest "dredd-secure/testutil/keeper"
-
-	"strconv"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -52,12 +51,11 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Denom:  "stake",
 			Amount: sdk.NewInt(9000),
 		}},
-		Tips: nil,
-		StartDate: strconv.FormatInt(now.Unix()+60, 10),
-		EndDate:   "2788148978",
+		Tips:             nil,
+		StartDate:        strconv.FormatInt(now.Unix()+60, 10),
+		EndDate:          "2788148978",
 		OracleConditions: "",
 	})
-
 	if err != nil {
 		tb.Fatalf("Failed to create escrow: %s", err)
 	}
@@ -100,9 +98,9 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Denom:  "stake",
 			Amount: sdk.NewInt(900),
 		}},
-		Tips: nil,
-		StartDate: "1588148578",
-		EndDate:   "2788148978",
+		Tips:             nil,
+		StartDate:        "1588148578",
+		EndDate:          "2788148978",
 		OracleConditions: "",
 	})
 
@@ -235,7 +233,6 @@ func TestOptOutEscrowModuleCannotPay(t *testing.T) {
 		Creator: testutil.Bob,
 		Id:      0,
 	})
-
 	if err != nil {
 		require.Equal(t, "Module cannot release Fulfiller assets%!(EXTRA string=oops)", err.Error())
 	}

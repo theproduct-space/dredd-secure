@@ -1,14 +1,12 @@
 package main
 
 import (
-	//nolint:typecheck // Ignore lint error for unused os import
+	"dredd-secure/app"
+	"dredd-secure/cmd/dredd-secured/cmd"
 	"os"
 
 	"github.com/cosmos/cosmos-sdk/server"
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
-
-	"dredd-secure/app"
-	"dredd-secure/cmd/dredd-secured/cmd"
 )
 
 func main() {

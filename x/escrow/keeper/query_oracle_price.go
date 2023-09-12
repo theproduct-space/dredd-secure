@@ -2,8 +2,8 @@ package keeper
 
 import (
 	"context"
-
 	"dredd-secure/x/escrow/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -31,7 +31,6 @@ func (k Keeper) OraclePriceAll(goCtx context.Context, req *types.QueryAllOracleP
 		oraclePrices = append(oraclePrices, oraclePrice)
 		return nil
 	})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}

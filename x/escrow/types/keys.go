@@ -13,7 +13,7 @@ const (
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_escrow"
 
-    // Version defines the current version the IBC module supports
+	// Version defines the current version the IBC module supports
 	Version = "bandchain-1"
 
 	// PortID is the default port id that module binds to
@@ -23,10 +23,8 @@ const (
 	NotSet = "[not_set]"
 )
 
-var (
-	// PortKey defines the key to store the port ID in store
-	PortKey = KeyPrefix("escrow-port-")
-)
+// PortKey defines the key to store the port ID in store
+var PortKey = KeyPrefix("escrow-port-")
 
 func KeyPrefix(p string) []byte {
 	return []byte(p)

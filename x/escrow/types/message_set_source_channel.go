@@ -12,8 +12,8 @@ var _ sdk.Msg = &MsgSetSourceChannel{}
 
 func NewMsgSetSourceChannel(creator string, channel string) *MsgSetSourceChannel {
 	return &MsgSetSourceChannel{
-		Creator:        creator,
-		Channel: 		channel,
+		Creator: creator,
+		Channel: channel,
 	}
 }
 

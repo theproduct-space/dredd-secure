@@ -1,5 +1,5 @@
 package constants
 
 const (
-	NotSet      = "not_set"
+	NotSet = "not_set"
 )
