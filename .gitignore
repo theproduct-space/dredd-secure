@@ -1,11 +1,3 @@
-react/node_modules
-vue/dist
-release/
 .idea/
 .vscode/
 .DS_Store
-ts-client/node_modules
-prod-sim/
-build/
-.vercel
-dev.json
