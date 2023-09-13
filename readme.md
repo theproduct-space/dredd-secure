@@ -315,7 +315,7 @@ The current default value for the source channel is `[not_set]`. If you wish to 
 #### Submit proposal
 
 ```
-dredd-secured tx gov submit-proposal source-channel-params-change.json --from alice
+dredd-secured tx gov submit-proposal exemple_proposal_source_channel.json --from alice
 ```
 
 #### Vote the proposal
