@@ -50,6 +50,7 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	}
 	escrowGenesis := types.GenesisState{
 		Params: types.DefaultParams(),
+		PortId: types.PortID,
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&escrowGenesis)

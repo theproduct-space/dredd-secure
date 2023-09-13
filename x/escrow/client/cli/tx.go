@@ -13,10 +13,10 @@ import (
 
 var DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
 
-// const (
-// 	flagPacketTimeoutTimestamp = "packet-timeout-timestamp"
-// 	listSeparator              = ","
-// )
+const (
+	flagPacketTimeoutTimestamp = "packet-timeout-timestamp"
+	listSeparator              = ","
+)
 
 // GetTxCmd returns the transaction commands for this module
 func GetTxCmd() *cobra.Command {
@@ -32,6 +32,8 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdCancelEscrow())
 	cmd.AddCommand(CmdFulfillEscrow())
 	cmd.AddCommand(CmdOptOutEscrow())
+	cmd.AddCommand(CmdSendOracleRequestPacketData())
+	cmd.AddCommand(CmdSetSourceChannel())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

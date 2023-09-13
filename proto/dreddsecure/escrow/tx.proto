@@ -9,10 +9,12 @@ option go_package = "dredd-secure/x/escrow/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc CreateEscrow  (MsgCreateEscrow ) returns (MsgCreateEscrowResponse );
-  rpc CancelEscrow  (MsgCancelEscrow ) returns (MsgCancelEscrowResponse );
-  rpc FulfillEscrow (MsgFulfillEscrow) returns (MsgFulfillEscrowResponse);
-  rpc OptOutEscrow  (MsgOptOutEscrow ) returns (MsgOptOutEscrowResponse);
+  rpc CreateEscrow                (MsgCreateEscrow               ) returns (MsgCreateEscrowResponse               );
+  rpc CancelEscrow                (MsgCancelEscrow               ) returns (MsgCancelEscrowResponse               );
+  rpc FulfillEscrow               (MsgFulfillEscrow              ) returns (MsgFulfillEscrowResponse              );
+  rpc OptOutEscrow                (MsgOptOutEscrow               ) returns (MsgOptOutEscrowResponse               );
+  rpc SendOracleRequestPacketData (MsgSendOracleRequestPacketData) returns (MsgSendOracleRequestPacketDataResponse);
+  rpc SetSourceChannel            (MsgSetSourceChannel           ) returns (MsgSetSourceChannelResponse           );
 }
 message MsgCreateEscrow {
            string                   creator        = 1;
@@ -21,7 +23,7 @@ message MsgCreateEscrow {
   repeated cosmos.base.v1beta1.Coin tips = 4 [(gogoproto.nullable) = false];
            string                   startDate      = 5;
            string                   endDate        = 6;
-           string                   apiConditions  = 7;
+           string                   oracleConditions  = 7;
 }
 
 message MsgCreateEscrowResponse {}
@@ -33,9 +35,15 @@ message MsgCancelEscrow {
 
 message MsgCancelEscrowResponse {}
 
+message KeyVal {
+  string key = 1;
+  string value = 2;
+}
+
 message MsgFulfillEscrow {
   string creator = 1;
-  uint64 id      = 2;
+  uint64 id = 2;
+  repeated KeyVal denomMap = 3;
 }
 
 message MsgFulfillEscrowResponse {}
@@ -46,3 +54,27 @@ message MsgOptOutEscrow {
 }
 
 message MsgOptOutEscrowResponse {}
+
+message MsgSendOracleRequestPacketData {
+           string                   clientID         =  5;
+           uint64                   oracleScriptID   =  6;
+           bytes                    calldata         =  7;
+           uint64                   askCount         =  8;
+           uint64                   minCount         =  9;
+  repeated cosmos.base.v1beta1.Coin feeLimit         = 10 [(gogoproto.nullable) = false];
+           uint64                   prepareGas       = 11;
+           uint64                   executeGas       = 12;
+           string                   creator          =  1;
+           string                   port             =  2;
+           string                   channelID        =  3;
+           uint64                   timeoutTimestamp =  4;
+}
+
+message MsgSendOracleRequestPacketDataResponse {}
+
+message MsgSetSourceChannel {
+  string creator = 1;
+  string channel = 2;
+}
+
+message MsgSetSourceChannelResponse {}

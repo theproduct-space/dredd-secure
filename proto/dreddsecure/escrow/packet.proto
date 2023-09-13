@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package dreddsecure.escrow;
+
+import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
+
+option go_package = "dredd-secure/x/escrow/types";
+
+message EscrowPacketData {
+  oneof packet {
+    NoData                            noData                        = 1;
+    OracleRequestPacketDataPacketData oracleRequestPacketDataPacket = 2;
+  }
+}
+
+message NoData {}
+
+// OracleRequestPacketDataPacketData defines a struct for the packet payload
+message OracleRequestPacketDataPacketData {
+           string                   clientID       = 1;
+           uint64                   oracleScriptID = 2;
+           bytes                    calldata       = 3;
+           uint64                   askCount       = 4;
+           uint64                   minCount       = 5;
+  repeated cosmos.base.v1beta1.Coin feeLimit       = 6 [(gogoproto.nullable) = false];
+           uint64                   prepareGas     = 7;
+           uint64                   executeGas     = 8;
+}
+
+// OracleResponsePacketDataPacketData defines a struct for the response from the oracle request
+message OracleResponsePacketDataPacketData {
+  uint64 ans_count = 1;
+  string client_id = 2;
+  string request_id = 3; 
+  string request_time = 4;
+  string resolve_status = 5;
+  string resolve_time = 6;
+  bytes result = 7;
+}
+
+// OracleRequestPacketDataPacketAck defines a struct for the packet acknowledgment
+message OracleRequestPacketDataPacketAck {
+  uint64 requestId = 1;
+}
+

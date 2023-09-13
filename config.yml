@@ -11,7 +11,7 @@ accounts:
       - 30000token
       - 300000000stake
   - name: dev
-    coins: [999token, 9999utok, 59999uatom, 999999stake]
+    coins: [999token, 9999utok, 59999uatom, 9999999999stake]
     mnemonic: disease someone stand surface income long video stock script ripple strike bean
   - name: john
     coins: [999token, 9999utok, 59999uatom, 999999stake]
@@ -34,3 +34,8 @@ client:
 validators:
   - name: alice
     bonded: 100000000stake
+genesis:
+  app_state:
+    gov:
+      params:
+        voting_period: "120s"

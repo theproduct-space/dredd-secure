@@ -1,0 +1,13 @@
+{
+  "messages": [
+    {
+      "@type": "/dreddsecure.escrow.MsgSetSourceChannel",
+      "creator": "cosmos10d07y265gmmuvt4z0w9aw880jnsr700j6zn9kn",
+      "channel": "channel-0"
+    }
+  ],
+  "metadata": "AQ==",
+  "deposit": "10000000stake",
+  "title": "Proposal Title",
+  "summary": "Proposal Summary"
+}

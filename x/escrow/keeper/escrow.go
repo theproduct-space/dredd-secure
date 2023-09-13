@@ -8,17 +8,14 @@ import (
 	"fmt"
 	"sort"
 	"strconv"
-	"strings"
 	"time"
 
-	"io/ioutil"
-	"net/http"
+	"github.com/google/uuid"
 
-	"cosmossdk.io/errors"
+	bandtypes "github.com/bandprotocol/oracle-consumer/types/band"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-
-	"github.com/tidwall/gjson"
+	clienttypes "github.com/cosmos/ibc-go/v7/modules/core/02-client/types"
 )
 
 // GetEscrowCount get the total number of escrow
@@ -110,8 +107,8 @@ func (k Keeper) GetAllEscrow(ctx sdk.Context) (list []types.Escrow) {
 
 // ValidateConditions validates the escrow conditions
 func (k Keeper) ValidateConditions(ctx sdk.Context, escrow types.Escrow) bool {
-	// Validate the StartDate, EndDate and ApiConditions
-	if !k.ValidateStartDate(ctx, escrow) || !k.ValidateEndDate(ctx, escrow) || !k.ValidateApiConditions(ctx, escrow) {
+	// Validate the StartDate, EndDate and OracleConditions
+	if !k.ValidateStartDate(ctx, escrow) || !k.ValidateEndDate(ctx, escrow) || !k.ValidateOracleCondition(ctx, escrow) {
 		return false
 	}
 
@@ -125,11 +122,11 @@ func (k Keeper) ValidateStartDate(ctx sdk.Context, escrow types.Escrow) bool {
 
 	startDateInt, errParseIntStartDate := strconv.ParseInt(escrow.StartDate, 10, 64)
 
-	if (errParseIntStartDate != nil) {
+	if errParseIntStartDate != nil {
 		panic(errParseIntStartDate.Error())
 	}
 
-	if (unixTimeNow < startDateInt) {
+	if unixTimeNow < startDateInt {
 		return false
 	}
 	return true
@@ -152,28 +149,37 @@ func (k Keeper) ValidateEndDate(ctx sdk.Context, escrow types.Escrow) bool {
 	return true
 }
 
-// ValidateApiConditions validates the ApiConditions by making the api calls and comparing the relevant fields with their expected values
-func (k Keeper) ValidateApiConditions(ctx sdk.Context, escrow types.Escrow) bool {
-	apiConditionsString := escrow.ApiConditions;
+// ValidateOracleCondition validates the OracleConditions by fetching the stored oracle data and comparing the relevant fields with their expected values
+func (k Keeper) ValidateOracleCondition(ctx sdk.Context, escrow types.Escrow) bool {
+	OracleConditionsString := escrow.OracleConditions
 
-	var apiConditions []types.ApiCondition
-	err := json.Unmarshal([]byte(apiConditionsString), &apiConditions)
-	if err != nil {
-		fmt.Println("Error:", err)
-		return false
-	}
-
-	for _, condition := range apiConditions {
-		apiRes, err := makeAPIRequest(condition.Name, strconv.Itoa(condition.TokenOfInterest.ID))
-
-		if (err != nil) {
+	if OracleConditionsString != "" {
+		var OracleConditions []types.OracleCondition
+		err := json.Unmarshal([]byte(OracleConditionsString), &OracleConditions)
+		if err != nil {
+			fmt.Println("Error:", err)
 			return false
 		}
 
-		for _, subCondition := range condition.SubConditions {
-			result := ValidateSubCondition(subCondition, apiRes);
-			// If the result is false, return false immediately; otherwise, continue validating
-			if !result {
+		for _, condition := range OracleConditions {
+			switch condition.Name {
+			case "oracle-token-price":
+				price, found := k.GetOraclePrice(ctx, condition.TokenOfInterest.Symbol)
+				if !found {
+					fmt.Println("Error: Oracle price not found for ", condition.TokenOfInterest.Symbol)
+					return false
+				}
+
+				for _, subCondition := range condition.SubConditions {
+					result := CompareTokenPrice(subCondition, price)
+					// If the result is false, return false immediately; otherwise, continue validating
+					if !result {
+						return false
+					}
+				}
+				// TODO, configure new oracle condition options !
+			default:
+				fmt.Println("Error, this condition is not configured on the module.")
 				return false
 			}
 		}
@@ -183,85 +189,31 @@ func (k Keeper) ValidateApiConditions(ctx sdk.Context, escrow types.Escrow) bool
 }
 
 // Validates a SubCondition by comparing the subCondition value with the one fetched from the API
-func ValidateSubCondition(subCondition types.SubCondition, apiRes string) (bool) {
-	// access the data of interest (navigate apiRes using subcondition.path) in the appropriate type (using subCondition.dataType)
-	pathString := strings.Join(subCondition.Path, ".")
-	var dataToCompare interface{};
-	if (subCondition.DataType == "number") {
-		dataToCompare = gjson.Get(apiRes, pathString).Float()
-	} else if (subCondition.DataType == "text") {
-		dataToCompare = gjson.Get(apiRes, pathString).String()
-	} else {
-		fmt.Println("Invalid data type")
+func CompareTokenPrice(subCondition types.SubCondition, oraclePrice types.OraclePrice) bool {
+	// retrieve the expected value as a float64
+	expectedValue := subCondition.Value.(float64)
+
+	// the bandchain oracle provides the price as a string of the value * 1e9
+	// so we convert it to a float and divide it by 1e9
+	oracleValue, err := strconv.ParseFloat(oraclePrice.Price, 64)
+	if err != nil {
+		fmt.Println("Error:", err)
 		return false
 	}
+	oracleValueFormatted := oracleValue / 1e9
 
-	// Depending on the dataToCompare type,
-	switch value := dataToCompare.(type) {
-		case float64:
-			// retrieve the expected value as a float64
-			expectedValue := subCondition.Value.(float64);
-			// make the appropriate comparison as described in subCondition.ConditionType
-			switch (subCondition.ConditionType) {
-				case "eq":
-					return value == expectedValue
-				case "lt":
-					return value < expectedValue
-				case "gt":
-					return value > expectedValue
-				default: 
-					fmt.Println("Unknown data type")
-					return false
-			}
-		case string:
-			// retrieve the expected value as a string
-			expectedValue := subCondition.Value.(string);
-			// make a strict string comparison
-			return  value == expectedValue
-		default:
-			fmt.Println("Unknown data type")
-			return false
+	// make the appropriate comparison as described in subCondition.ConditionType
+	switch subCondition.ConditionType {
+	case "eq":
+		return oracleValueFormatted == expectedValue
+	case "lt":
+		return oracleValueFormatted < expectedValue
+	case "gt":
+		return oracleValueFormatted > expectedValue
+	default:
+		fmt.Println("Unknown condition type")
+		return false
 	}
-}
-
-// Make an API Request to the configured endpoints. Uses the "name" identifier to know which endpoint to use.
-func makeAPIRequest(name string, tokenId string) (string, error) {
-	var url string;
-	var headers []types.Header;
-
-	switch name {
-		case "coinmarketcap-token-info": 
-			url = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?id=" + tokenId; // TODO have a more flexible "additionalParams" instead of tokenId which is only for token api calls
-			headers = append(headers, types.Header{Key: "X-CMC_PRO_API_KEY", Value: "0c27f13f-c6fe-45f8-8829-2d82404d7ef9"}) // TODO do not hardcode the API KEY...
-		default:
-			return "", errors.Wrapf(types.ErrInvalidApiConditionName, "%v", name)
-	}
-
-	// Create a new HTTP request
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return "", err
-	}
-
-	// Add headers to the request
-	for _, header := range headers {
-		req.Header.Add(header.Key, header.Value)
-	}
-
-	// Perform the request
-	client := &http.Client{}
-	response, err := client.Do(req)
-	if err != nil {
-		return "", err
-	}
-	defer response.Body.Close()
-
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return "", err
-	}
-
-    return string(body), nil
 }
 
 // ReleaseAssets releases the escrowed assets to the respective parties. The Initiator receives the FulfillerCoins, vice-versa
@@ -331,14 +283,14 @@ func (k Keeper) GetAllPendingEscrows(ctx sdk.Context) (list []uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
 	byteKey := types.KeyPrefix(types.PendingEscrowKey)
 	bz := store.Get(byteKey)
-	if (len(bz) == 0) {
+	if len(bz) == 0 {
 		return
-	} 
+	}
 	err := json.Unmarshal(bz, &list)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
-	return 
+	return
 }
 
 // GetAllExpiringEscrows returns all expiring escrows ID
@@ -346,44 +298,44 @@ func (k Keeper) GetAllExpiringEscrows(ctx sdk.Context) (list []uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
 	byteKey := types.KeyPrefix(types.ExpiringEscrowKey)
 	bz := store.Get(byteKey)
-	if (len(bz) == 0) {
+	if len(bz) == 0 {
 		return
-	} 
+	}
 	err := json.Unmarshal(bz, &list)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
-	return 
+	return
 }
 
 // Fulfills escrows ordered in start date as ascending, removes fulfilled escrows from the array
 func (k Keeper) FulfillPendingEscrows(ctx sdk.Context) {
-	var pendingEscrows []uint64 = k.GetAllPendingEscrows(ctx)
-	var i int = -1
+	pendingEscrows := k.GetAllPendingEscrows(ctx)
+	i := -1
 	for index, v := range pendingEscrows {
 		escrow, found := k.GetEscrow(ctx, v)
-		if (found && k.ValidateConditions(ctx, escrow)) {
+		if found && k.ValidateConditions(ctx, escrow) {
 			k.ReleaseAssets(ctx, escrow)
 			escrow.Status = constants.StatusClosed
 			k.RemoveFromExpiringList(ctx, escrow)
 			k.SetEscrow(ctx, escrow)
 			i = index
-		} else if (found && !k.ValidateStartDate(ctx, escrow)) {
+		} else if found && !k.ValidateStartDate(ctx, escrow) {
 			break
 		}
 	}
 
-	if (len(pendingEscrows) > i + 1) {
-		pendingEscrows = pendingEscrows[i + 1:]
+	if len(pendingEscrows) > i+1 {
+		pendingEscrows = pendingEscrows[i+1:]
 	} else {
 		pendingEscrows = []uint64{}
 	}
-	
+
 	k.SetPendingEscrows(ctx, pendingEscrows)
 }
 
 func (k Keeper) RemoveFromPendingList(ctx sdk.Context, escrow types.Escrow) {
-	pendingEscrows := k.GetAllPendingEscrows(ctx) 
+	pendingEscrows := k.GetAllPendingEscrows(ctx)
 	index := sort.Search(len(pendingEscrows), func(i int) bool {
 		return escrow.GetId() == pendingEscrows[i]
 	})
@@ -401,7 +353,7 @@ func (k Keeper) RemoveFromPendingList(ctx sdk.Context, escrow types.Escrow) {
 }
 
 func (k Keeper) RemoveFromExpiringList(ctx sdk.Context, escrow types.Escrow) {
-	expiringEscrows := k.GetAllExpiringEscrows(ctx) 
+	expiringEscrows := k.GetAllExpiringEscrows(ctx)
 	index := sort.Search(len(expiringEscrows), func(i int) bool {
 		return escrow.GetId() == expiringEscrows[i]
 	})
@@ -421,7 +373,7 @@ func (k Keeper) RemoveFromExpiringList(ctx sdk.Context, escrow types.Escrow) {
 func (k Keeper) SetExpiringEscrows(ctx sdk.Context, expiringEscrows []uint64) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
 	byteKey := types.KeyPrefix(types.ExpiringEscrowKey)
-	
+
 	jsonData, err := json.Marshal(expiringEscrows)
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -464,34 +416,35 @@ func (k Keeper) CancelExpiredEscrows(ctx sdk.Context) {
 	} else {
 		expiringEscrows = []uint64{}
 	}
-	
+
 	k.SetExpiringEscrows(ctx, expiringEscrows)
 }
 
 // Add escrow id to pending escrows id array in order
 func (k Keeper) AddPendingEscrow(ctx sdk.Context, escrow types.Escrow) {
-    pendingEscrows := k.GetAllPendingEscrows(ctx)
+	pendingEscrows := k.GetAllPendingEscrows(ctx)
 
 	// Either add in order or add to the list if its the first element
 	if len(pendingEscrows) > 0 {
 		_, f := sort.Find(len(pendingEscrows), func(i int) int {
+			esc, found := k.GetEscrow(ctx, pendingEscrows[i])
 			if escrow.GetId() == pendingEscrows[i] {
 				return 0
-			} else if (escrow.GetId() > pendingEscrows[i]) {
+			} else if found && escrow.GetStartDate() > esc.GetStartDate() && escrow.GetId() != pendingEscrows[i] {
 				return 1
-			} 
+			}
 			return -1
 		})
-	
+
 		// Escrow already in the list
 		if f {
 			return
 		}
 
-		i := sort.Search(len(pendingEscrows), func(i int) bool { 
+		i := sort.Search(len(pendingEscrows), func(i int) bool {
 			escr, found := k.GetEscrow(ctx, pendingEscrows[i])
-			if (found) {
-				return escr.GetStartDate() >= escrow.GetStartDate() 
+			if found {
+				return escr.GetStartDate() >= escrow.GetStartDate()
 			}
 			return false
 		})
@@ -512,11 +465,12 @@ func (k Keeper) AddExpiringEscrow(ctx sdk.Context, escrow types.Escrow) {
 	// Either add in order or add to the list if its the first element
 	if len(expiringEscrows) > 0 {
 		_, f := sort.Find(len(expiringEscrows), func(i int) int {
+			esc, found := k.GetEscrow(ctx, expiringEscrows[i])
 			if escrow.GetId() == expiringEscrows[i] {
 				return 0
-			} else if (escrow.GetId() > expiringEscrows[i]) {
+			} else if found && escrow.GetEndDate() > esc.GetEndDate() && escrow.GetId() != expiringEscrows[i] {
 				return 1
-			} 
+			}
 			return -1
 		})
 
@@ -546,19 +500,19 @@ func (k Keeper) AddExpiringEscrow(ctx sdk.Context, escrow types.Escrow) {
 func (k Keeper) SetStatus(ctx sdk.Context, escrow *types.Escrow, newStatus string) {
 	oldStatus := escrow.Status
 
-	if (newStatus == constants.StatusOpen) {
+	if newStatus == constants.StatusOpen {
 		k.AddExpiringEscrow(ctx, *escrow)
 	}
 
-	if (newStatus == constants.StatusClosed || newStatus == constants.StatusCancelled) {
+	if newStatus == constants.StatusClosed || newStatus == constants.StatusCancelled {
 		k.RemoveFromExpiringList(ctx, *escrow)
 	}
 
-	if (oldStatus == constants.StatusPending && newStatus != constants.StatusPending) {
+	if oldStatus == constants.StatusPending && newStatus != constants.StatusPending {
 		k.RemoveFromPendingList(ctx, *escrow)
 	}
 
-	if (newStatus == constants.StatusPending) {
+	if oldStatus != constants.StatusPending && newStatus == constants.StatusPending {
 		k.AddPendingEscrow(ctx, *escrow)
 	}
 
@@ -566,23 +520,20 @@ func (k Keeper) SetStatus(ctx sdk.Context, escrow *types.Escrow, newStatus strin
 }
 
 // Getter for the last execs in the store
-func (k Keeper) GetLastExecs (ctx sdk.Context) map[string]string {
+func (k Keeper) GetLastExecs(ctx sdk.Context) map[string]string {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.LastExecsKey))
 	byteKey := types.KeyPrefix(types.LastExecsKey)
 	bz := store.Get(byteKey)
 	var lastExecs map[string]string
 	err := json.Unmarshal(bz, &lastExecs)
-	if err != nil {
-		panic(err.Error())
-	}
-	if len(lastExecs) == 0 {
+	if err != nil || len(lastExecs) == 0 {
 		lastExecs = make(map[string]string)
 	}
 	return lastExecs
 }
 
 // Setter for the last execs in the store
-func (k Keeper) SetLastExecs (ctx sdk.Context, lastExecs map[string]string) {
+func (k Keeper) SetLastExecs(ctx sdk.Context, lastExecs map[string]string) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.LastExecsKey))
 	byteKey := types.KeyPrefix(types.LastExecsKey)
 	jsonData, err := json.Marshal(lastExecs)
@@ -595,15 +546,16 @@ func (k Keeper) SetLastExecs (ctx sdk.Context, lastExecs map[string]string) {
 
 // Utility function used for executing functions after a certain amount of time
 func (k Keeper) ExecuteAfterNSeconds(
-	ctx sdk.Context, 
-	execs []Exec) []interface{} {
+	ctx sdk.Context,
+	execs []Exec,
+) []interface{} {
 	results := make([]interface{}, 0)
 
 	lastExecs := k.GetLastExecs(ctx)
 
 	currentTime := time.Now()
 	epoch := currentTime.Unix()
-	
+
 	for _, exec := range execs {
 		epochString, found := lastExecs[exec.ID]
 		if !found {
@@ -614,16 +566,93 @@ func (k Keeper) ExecuteAfterNSeconds(
 		epochInt, err := strconv.ParseInt(epochString, 10, 64)
 		if err != nil {
 			fmt.Println("Error converting epoch string to int:", err)
-		} else {
-			if (epochInt + exec.DelayS < epoch) {
-				result := exec.Function(exec.Args...)
-				results = append(results, result)
-				lastExecs[exec.ID] = strconv.FormatInt(epoch, 10)
-			}
+		} else if epochInt+exec.DelayS < epoch {
+			result := exec.Function(exec.Args...)
+			results = append(results, result)
+			lastExecs[exec.ID] = strconv.FormatInt(epoch, 10)
 		}
 	}
 
 	k.SetLastExecs(ctx, lastExecs)
 
 	return results
+}
+
+func (k Keeper) SyncOracleData(ctx sdk.Context) {
+	params := k.GetParams(ctx)
+
+	sourceChannel := k.GetSrcChannel(ctx)
+
+	// Verify that SourceChannel params is set by open params proposal already
+	if sourceChannel == types.NotSet {
+		return
+	}
+
+	pendingEscrows := k.GetAllPendingEscrows(ctx)
+
+	mapSymbols := make(map[string]string, 0)
+
+	for _, pendingEscrow := range pendingEscrows {
+		escrow, found := k.GetEscrow(ctx, pendingEscrow)
+		if found {
+			oracleConditionsString := escrow.OracleConditions
+			var oracleConditions []types.OracleCondition
+			err := json.Unmarshal([]byte(oracleConditionsString), &oracleConditions)
+			if err != nil {
+				fmt.Println("Error:", err)
+				continue
+			}
+
+			for _, condition := range oracleConditions {
+				switch condition.Name {
+				case "oracle-token-price":
+					if _, ok := mapSymbols[condition.TokenOfInterest.Symbol]; !ok {
+						mapSymbols[condition.TokenOfInterest.Symbol] = condition.TokenOfInterest.Symbol
+					}
+				default:
+					continue
+				}
+			}
+		}
+	}
+
+	sliceSymbols := make([]string, 0, len(mapSymbols))
+
+	for _, value := range mapSymbols {
+		sliceSymbols = append(sliceSymbols, value)
+	}
+
+	if len(sliceSymbols) > 0 {
+		calldataBytes, _ := bandtypes.EncodeCalldata(sliceSymbols, uint8(params.MinDsCount))
+
+		uid := uuid.New()
+		oracleScriptIDString := constants.OracleCryptoCurrencyPriceScriptID
+		oracleScriptID, errParseInt := strconv.ParseUint(oracleScriptIDString, 10, 64)
+		if errParseInt != nil {
+			fmt.Println("Error:", errParseInt)
+			return
+		}
+
+		prepareGas := params.PrepareGasBase + params.PrepareGasEach*uint64(len(sliceSymbols))
+		executeGas := params.ExecuteGasBase + params.ExecuteGasEach*uint64(len(sliceSymbols))
+
+		oracleRequestPacket := bandtypes.NewOracleRequestPacketData(
+			oracleScriptIDString+"_"+uid.String(),
+			oracleScriptID,
+			calldataBytes,
+			params.AskCount,
+			params.MinCount,
+			params.FeeLimit,
+			prepareGas,
+			executeGas,
+		)
+
+		timeoutTimestamp := uint64(ctx.BlockTime().UnixNano() + int64(20*time.Minute))
+
+		err := k.RequestBandChainData(ctx, sourceChannel, oracleRequestPacket, clienttypes.ZeroHeight(), timeoutTimestamp)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+	}
 }

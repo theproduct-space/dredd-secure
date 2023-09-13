@@ -1,6 +1,7 @@
 package app
 
 import (
+	"dredd-secure/docs"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -117,7 +118,6 @@ import (
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	appparams "dredd-secure/app/params"
-	"dredd-secure/docs"
 )
 
 const (
@@ -251,7 +251,8 @@ type App struct {
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
 
-	EscrowKeeper escrowmodulekeeper.Keeper
+	ScopedEscrowKeeper capabilitykeeper.ScopedKeeper
+	EscrowKeeper       escrowmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -521,15 +522,22 @@ func New(
 		),
 	)
 
+	scopedEscrowKeeper := app.CapabilityKeeper.ScopeToModule(escrowmoduletypes.ModuleName)
+	app.ScopedEscrowKeeper = scopedEscrowKeeper
 	app.EscrowKeeper = *escrowmodulekeeper.NewKeeper(
 		app.BankKeeper,
+		app.TransferKeeper,
 		appCodec,
 		keys[escrowmoduletypes.StoreKey],
 		keys[escrowmoduletypes.MemStoreKey],
 		app.GetSubspace(escrowmoduletypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedEscrowKeeper,
+		&app.GovKeeper,
 	)
-	escrowModule := escrowmodule.NewAppModule(appCodec, app.EscrowKeeper, app.AccountKeeper, app.BankKeeper)
-
+	escrowModule := escrowmodule.NewAppModule(appCodec, app.EscrowKeeper, app.AccountKeeper, app.BankKeeper, app.TransferKeeper)
+	escrowIBCModule := escrowmodule.NewIBCModule(app.EscrowKeeper)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	/**** IBC Routing ****/
@@ -541,6 +549,7 @@ func New(
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
 		AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
+	ibcRouter.AddRoute(escrowmoduletypes.ModuleName, escrowIBCModule)
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
 
@@ -900,7 +909,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(minttypes.ModuleName)
 	paramsKeeper.Subspace(distrtypes.ModuleName)
 	paramsKeeper.Subspace(slashingtypes.ModuleName)
-	paramsKeeper.Subspace(govtypes.ModuleName).WithKeyTable(govv1.ParamKeyTable()) //nolint:staticcheck
+	paramsKeeper.Subspace(govtypes.ModuleName).WithKeyTable(govv1.ParamKeyTable())
 	paramsKeeper.Subspace(crisistypes.ModuleName)
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibcexported.ModuleName)

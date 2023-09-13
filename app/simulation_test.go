@@ -1,6 +1,7 @@
 package app_test
 
 import (
+	"dredd-secure/app"
 	"encoding/json"
 	"fmt"
 	"math/rand"
@@ -35,8 +36,6 @@ import (
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/stretchr/testify/require"
-
-	"dredd-secure/app"
 )
 
 type storeKeysPrefixes struct {

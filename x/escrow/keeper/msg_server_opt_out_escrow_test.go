@@ -3,11 +3,12 @@ package keeper_test
 import (
 	"context"
 	"dredd-secure/x/escrow"
+	"dredd-secure/x/escrow/constants"
 	"dredd-secure/x/escrow/keeper"
 	"dredd-secure/x/escrow/testutil"
 	"dredd-secure/x/escrow/types"
-	"dredd-secure/x/escrow/constants"
 	"errors"
+	"strconv"
 	"testing"
 	"time"
 
@@ -17,7 +18,6 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-	"strconv"
 )
 
 // setupMsgServerOptOutEscrow is a test helper function to setup the necessary dependencies for testing the OptOutEscrow message server function
@@ -27,7 +27,8 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 	// Setup the necessary dependencies
 	ctrl := gomock.NewController(tb)
 	bankMock := testutil.NewMockBankKeeper(ctrl)
-	k, ctx := keepertest.EscrowKeeperWithMocks(tb, bankMock)
+	ibcTransferMock := testutil.NewMockTransferKeeper(ctrl)
+	k, ctx := keepertest.EscrowKeeperWithMocks(tb, bankMock, ibcTransferMock)
 	escrow.InitGenesis(ctx, *k, *types.DefaultGenesis())
 	server := keeper.NewMsgServerImpl(*k)
 	context := sdk.WrapSDKContext(ctx)
@@ -50,12 +51,11 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Denom:  "stake",
 			Amount: sdk.NewInt(9000),
 		}},
-		Tips: nil,
-		StartDate: strconv.FormatInt(now.Unix()+60, 10),
-		EndDate:   "2788148978",
-		ApiConditions: "[]",
+		Tips:             nil,
+		StartDate:        strconv.FormatInt(now.Unix()+60, 10),
+		EndDate:          "2788148978",
+		OracleConditions: "",
 	})
-
 	if err != nil {
 		tb.Fatalf("Failed to create escrow: %s", err)
 	}
@@ -72,6 +72,12 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 	_, errFulfill := server.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      0,
+		DenomMap: []*types.KeyVal{
+			{
+				Key:   "stake",
+				Value: "stake",
+			},
+		},
 	})
 	require.Nil(tb, errFulfill)
 
@@ -92,10 +98,10 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Denom:  "stake",
 			Amount: sdk.NewInt(900),
 		}},
-		Tips: nil,
-		StartDate: "1588148578",
-		EndDate:   "2788148978",
-		ApiConditions: "[]",
+		Tips:             nil,
+		StartDate:        "1588148578",
+		EndDate:          "2788148978",
+		OracleConditions: "",
 	})
 
 	if err2 != nil {
@@ -108,7 +114,7 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Amount: sdk.NewInt(900),
 		},
 	})
-	
+
 	bankMock.ExpectRefund(context, testutil.Bob, []sdk.Coin{{
 		Denom:  "token",
 		Amount: sdk.NewInt(100),
@@ -118,6 +124,12 @@ func setupMsgServerOptOutEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 	_, errFulfill2 := server.FulfillEscrow(context, &types.MsgFulfillEscrow{
 		Creator: testutil.Bob,
 		Id:      1,
+		DenomMap: []*types.KeyVal{
+			{
+				Key:   "stake",
+				Value: "stake",
+			},
+		},
 	})
 	require.Nil(tb, errFulfill2)
 
@@ -221,7 +233,6 @@ func TestOptOutEscrowModuleCannotPay(t *testing.T) {
 		Creator: testutil.Bob,
 		Id:      0,
 	})
-
 	if err != nil {
 		require.Equal(t, "Module cannot release Fulfiller assets%!(EXTRA string=oops)", err.Error())
 	}

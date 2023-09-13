@@ -7,6 +7,7 @@ import (
 	"dredd-secure/x/escrow/testutil"
 	"dredd-secure/x/escrow/types"
 	"errors"
+	"strconv"
 	"testing"
 	"time"
 
@@ -16,7 +17,6 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-	"strconv"
 )
 
 // setupMsgServerCancelEscrow is a test helper function to setup the necessary dependencies for testing the CancelEscrow message server function
@@ -26,7 +26,8 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 	// Setup the necessary dependencies
 	ctrl := gomock.NewController(tb)
 	bankMock := testutil.NewMockBankKeeper(ctrl)
-	k, ctx := keepertest.EscrowKeeperWithMocks(tb, bankMock)
+	ibcTransferMock := testutil.NewMockTransferKeeper(ctrl)
+	k, ctx := keepertest.EscrowKeeperWithMocks(tb, bankMock, ibcTransferMock)
 	escrow.InitGenesis(ctx, *k, *types.DefaultGenesis())
 	server := keeper.NewMsgServerImpl(*k)
 	context := sdk.WrapSDKContext(ctx)
@@ -49,11 +50,10 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Denom:  "stake",
 			Amount: sdk.NewInt(9000),
 		}},
-		Tips: nil,
+		Tips:      nil,
 		StartDate: "1588148578",
 		EndDate:   "2788148978",
 	})
-
 	if err != nil {
 		tb.Fatalf("Failed to create escrow: %s", err)
 	}
@@ -74,9 +74,9 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Denom:  "stake",
 			Amount: sdk.NewInt(900),
 		}},
-		Tips: nil,
+		Tips:      nil,
 		StartDate: "1288148578",
-		EndDate:    strconv.FormatInt(now.Unix()-2, 10),
+		EndDate:   strconv.FormatInt(now.Unix()-2, 10),
 	})
 	if err2 != nil {
 		tb.Fatalf("Failed to create escrow: %s", err2)
@@ -98,9 +98,9 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Denom:  "stake",
 			Amount: sdk.NewInt(900),
 		}},
-		Tips: nil,
+		Tips:      nil,
 		StartDate: "1288148578",
-		EndDate:    strconv.FormatInt(now.Unix()-3, 10),
+		EndDate:   strconv.FormatInt(now.Unix()-3, 10),
 	})
 	if err3 != nil {
 		tb.Fatalf("Failed to create escrow: %s", err3)
@@ -111,7 +111,7 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 		Denom:  "token",
 		Amount: sdk.NewInt(100),
 	}})
-	
+
 	// Create an escrow using the message server and a valid MsgCreateEscrow
 	_, err4 := server.CreateEscrow(context, &types.MsgCreateEscrow{
 		Creator: testutil.Alice,
@@ -123,9 +123,9 @@ func setupMsgServerCancelEscrow(tb testing.TB) (types.MsgServer, keeper.Keeper, 
 			Denom:  "stake",
 			Amount: sdk.NewInt(900),
 		}},
-		Tips: nil,
+		Tips:      nil,
 		StartDate: "1288148578",
-		EndDate:    strconv.FormatInt(now.Unix()-1, 10),
+		EndDate:   strconv.FormatInt(now.Unix()-1, 10),
 	})
 	if err4 != nil {
 		tb.Fatalf("Failed to create escrow: %s", err4)
@@ -158,7 +158,6 @@ func TestCancelExpiredEscrows(t *testing.T) {
 
 	k.CancelExpiredEscrows(sdk.UnwrapSDKContext(context))
 }
-
 
 // TestCancelEscrow tests the CancelEscrow message server function
 func TestCancelEscrow(t *testing.T) {
@@ -265,7 +264,6 @@ func TestCancelEscrowModuleCannotPay(t *testing.T) {
 		Creator: testutil.Alice,
 		Id:      0,
 	})
-
 	if err != nil {
 		require.Equal(t, "Module cannot release Initiator assets%!(EXTRA string=oops)", err.Error())
 	}

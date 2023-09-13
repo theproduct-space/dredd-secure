@@ -14,7 +14,7 @@ ENV PATH=$GOROOT/bin:$GOPATH/bin:$PATH
 
 RUN mkdir -p $GOPATH/bin
 
-ENV PACKAGES curl gcc jq
+ENV PACKAGES curl gcc jq nano
 RUN apt-get update
 RUN apt-get install -y $PACKAGES
 
@@ -27,6 +27,11 @@ RUN curl -L https://get.ignite.com/cli@v${IGNITE_VERSION}! | bash
 # Install Node
 RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION} | bash -
 RUN apt-get install -y nodejs
+
+# Install Hermes
+RUN mkdir -p $HOME/.hermes/bin
+RUN curl -L https://github.com/informalsystems/hermes/releases/download/v1.6.0/hermes-v1.6.0-x86_64-unknown-linux-gnu.tar.gz | tar -C $HOME/.hermes/bin/ -vxzf -
+RUN echo 'export PATH="$HOME/.hermes/bin:$PATH"' >> $HOME/.bashrc
 
 EXPOSE 1317 3000 4500 5000 26657
 

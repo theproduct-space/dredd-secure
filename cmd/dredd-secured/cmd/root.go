@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"dredd-secure/app"
 	"errors"
 	"io"
 	"os"
@@ -19,6 +20,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/keys"
 	"github.com/cosmos/cosmos-sdk/client/rpc"
+	"github.com/cosmos/cosmos-sdk/client/snapshot"
 	"github.com/cosmos/cosmos-sdk/server"
 	serverconfig "github.com/cosmos/cosmos-sdk/server/config"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
@@ -31,7 +33,6 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/crisis"
 
-	//nolint:typecheck // Ignore lint error for unused genutil import
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
@@ -41,7 +42,6 @@ import (
 
 	// this line is used by starport scaffolding # root/moduleImport
 
-	"dredd-secure/app"
 	appparams "dredd-secure/app/params"
 )
 
@@ -109,6 +109,10 @@ func initRootCmd(
 	// Set config
 	initSDKConfig()
 
+	a := appCreator{
+		encodingConfig,
+	}
+
 	gentxModule := app.ModuleBasics[genutiltypes.ModuleName].(genutil.AppModuleBasic)
 	rootCmd.AddCommand(
 		genutilcli.InitCmd(app.ModuleBasics, app.DefaultNodeHome),
@@ -125,12 +129,9 @@ func initRootCmd(
 		tmcli.NewCompletionCmd(rootCmd, true),
 		debug.Cmd(),
 		config.Cmd(),
+		snapshot.Cmd(a.newApp),
 		// this line is used by starport scaffolding # root/commands
 	)
-
-	a := appCreator{
-		encodingConfig,
-	}
 
 	// add server commands
 	server.AddCommands(
@@ -211,7 +212,10 @@ func overwriteFlagDefaults(c *cobra.Command, defaults map[string]string) {
 	set := func(s *pflag.FlagSet, key, val string) {
 		if f := s.Lookup(key); f != nil {
 			f.DefValue = val
-			f.Value.Set(val)
+			err := f.Value.Set(val)
+			if err != nil {
+				panic(err)
+			}
 		}
 	}
 	for key, val := range defaults {

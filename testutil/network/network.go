@@ -1,6 +1,7 @@
 package network
 
 import (
+	"dredd-secure/app"
 	"fmt"
 	"testing"
 	"time"
@@ -17,8 +18,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/stretchr/testify/require"
-
-	"dredd-secure/app"
 )
 
 type (
@@ -29,6 +28,8 @@ type (
 // New creates instance with fully configured cosmos network.
 // Accepts optional config, that will be used in place of the DefaultConfig() if provided.
 func New(t *testing.T, configs ...Config) *Network {
+	t.Helper()
+
 	if len(configs) > 1 {
 		panic("at most one config should be provided")
 	}

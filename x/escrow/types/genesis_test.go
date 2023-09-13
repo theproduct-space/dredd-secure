@@ -21,6 +21,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
+				PortId: types.PortID,
 				EscrowList: []types.Escrow{
 					{
 						Id: 0,
@@ -30,6 +31,14 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				EscrowCount: 2,
+				OraclePriceList: []types.OraclePrice{
+					{
+						Symbol: "0",
+					},
+					{
+						Symbol: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -57,6 +66,20 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 				},
 				EscrowCount: 0,
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated oraclePrice",
+			genState: &types.GenesisState{
+				OraclePriceList: []types.OraclePrice{
+					{
+						Symbol: "0",
+					},
+					{
+						Symbol: "0",
+					},
+				},
 			},
 			valid: false,
 		},

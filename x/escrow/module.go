@@ -20,11 +20,13 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
+	porttypes "github.com/cosmos/ibc-go/v7/modules/core/05-port/types"
 )
 
 var (
 	_ module.AppModule      = AppModule{}
 	_ module.AppModuleBasic = AppModuleBasic{}
+	_ porttypes.IBCModule   = IBCModule{}
 )
 
 // ----------------------------------------------------------------------------
@@ -96,9 +98,10 @@ func (AppModuleBasic) GetQueryCmd() *cobra.Command {
 type AppModule struct {
 	AppModuleBasic
 
-	keeper        keeper.Keeper
-	accountKeeper types.AccountKeeper
-	bankKeeper    types.BankKeeper
+	keeper            keeper.Keeper
+	accountKeeper     types.AccountKeeper
+	bankKeeper        types.BankKeeper
+	ibcTransferKeeper types.TransferKeeper
 }
 
 func NewAppModule(
@@ -106,12 +109,14 @@ func NewAppModule(
 	keeper keeper.Keeper,
 	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
+	ibcTransferKeeper types.TransferKeeper,
 ) AppModule {
 	return AppModule{
-		AppModuleBasic: NewAppModuleBasic(cdc),
-		keeper:         keeper,
-		accountKeeper:  accountKeeper,
-		bankKeeper:     bankKeeper,
+		AppModuleBasic:    NewAppModuleBasic(cdc),
+		keeper:            keeper,
+		accountKeeper:     accountKeeper,
+		bankKeeper:        bankKeeper,
+		ibcTransferKeeper: ibcTransferKeeper,
 	}
 }
 
@@ -151,14 +156,23 @@ func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {}
 func (am AppModule) EndBlock(ctx sdk.Context, a abci.RequestEndBlock) []abci.ValidatorUpdate {
 	am.keeper.CancelExpiredEscrows(ctx)
 	// am.keeper.FulfillPendingEscrows(ctx)
-	execs := []keeper.Exec {
+	execs := []keeper.Exec{
 		{
-			ID: "fetchAPI15mins",
-			Function: func (args ...interface{}) interface{} {
+			ID: "fulfillEscrows15mins",
+			Function: func(args ...interface{}) interface{} {
 				am.keeper.FulfillPendingEscrows(args[0].(sdk.Context))
 				return nil
-			}, 
-			Args: []interface{}{ctx},
+			},
+			Args:   []interface{}{ctx},
+			DelayS: 15 * 60,
+		},
+		{
+			ID: "syncOracleData15mins",
+			Function: func(args ...interface{}) interface{} {
+				am.keeper.SyncOracleData(args[0].(sdk.Context))
+				return nil
+			},
+			Args:   []interface{}{ctx},
 			DelayS: 15 * 60,
 		},
 	}
