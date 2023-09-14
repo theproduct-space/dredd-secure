@@ -33,7 +33,7 @@ RUN mkdir -p $HOME/.hermes/bin
 RUN curl -L https://github.com/informalsystems/hermes/releases/download/v1.6.0/hermes-v1.6.0-x86_64-unknown-linux-gnu.tar.gz | tar -C $HOME/.hermes/bin/ -vxzf -
 RUN echo 'export PATH="$HOME/.hermes/bin:$PATH"' >> $HOME/.bashrc
 
-EXPOSE 1317 3000 4500 5000 26657
+EXPOSE 1317 3000 4500 9090 26657
 
 WORKDIR /dredd-secure
 
