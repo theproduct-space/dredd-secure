@@ -7,8 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "build": "docker build -f Dockerfile . -t dredd-secure_i && docker create --name dredd-secure -i -v $(pwd):/dredd-secure -w /dredd-secure -p 1317:1317 -p 3000:3000 -p 4500:4500 -p 5000:5000 -p 26657:26657 dredd-secure_i",
-    "build-windows": "docker build -f Dockerfile . -t dredd-secure_i && docker create --name dredd-secure -i -v %cd%:/dredd-secure -w /dredd-secure -p 1317:1317 -p 3000:3000 -p 4500:4500 -p 5000:5000 -p 26657:26657 dredd-secure_i",
+    "build": "docker build -f Dockerfile . -t dredd-secure_i && docker create --name dredd-secure -i -v $(pwd):/dredd-secure -w /dredd-secure -p 1317:1317 -p 3000:3000 -p 4500:4500 -p 9090:9090 -p 26657:26657 dredd-secure_i",
+    "build-windows": "docker build -f Dockerfile . -t dredd-secure_i && docker create --name dredd-secure -i -v %cd%:/dredd-secure -w /dredd-secure -p 1317:1317 -p 3000:3000 -p 4500:4500 -p 9090:9090 -p 26657:26657 dredd-secure_i",
     "start": "docker start dredd-secure && docker exec -it dredd-secure ignite chain serve"
   },
   "author": "",
