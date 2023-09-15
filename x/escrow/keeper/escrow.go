@@ -331,7 +331,7 @@ func (k Keeper) FulfillPendingEscrows(ctx sdk.Context) {
 			i = index
 		case found && k.ValidateStartDate(ctx, escrow):
 			// If the conditions are not fulfilled but the start date is still valid, we add it to the new pending list
-			newPendingEscrows = append(newPendingEscrows, pendingEscrows[i])
+			newPendingEscrows = append(newPendingEscrows, pendingEscrows[index])
 		case found:
 			break
 		}
@@ -339,7 +339,7 @@ func (k Keeper) FulfillPendingEscrows(ctx sdk.Context) {
 
 	// If the index is bigger than -1 and the index is not the last escrow (if i == -1 then len(pendingEscrows) has to be > 0),
 	// we append the rest of the slice to the new pending escrows
-	if len(pendingEscrows) > i+1 {
+	if i > -1 && len(pendingEscrows) > i+1 {
 		newPendingEscrows = append(newPendingEscrows, pendingEscrows[i+1:]...)
 	}
 
