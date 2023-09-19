@@ -310,28 +310,40 @@ func (k Keeper) GetAllExpiringEscrows(ctx sdk.Context) (list []uint64) {
 
 // Fulfills escrows ordered in start date as ascending, removes fulfilled escrows from the array
 func (k Keeper) FulfillPendingEscrows(ctx sdk.Context) {
+	// Get pending escrows
 	pendingEscrows := k.GetAllPendingEscrows(ctx)
+	// Remaining pending escrows after fulfilling
+	newPendingEscrows := []uint64{}
+	// Index used later
 	i := -1
+
+	// Itterate through pending escrows
 	for index, v := range pendingEscrows {
 		escrow, found := k.GetEscrow(ctx, v)
-		if found && k.ValidateConditions(ctx, escrow) {
+		switch {
+		case found && k.ValidateConditions(ctx, escrow):
+			// Release the escrow from the expiring list and fulfills it
 			k.ReleaseAssets(ctx, escrow)
 			escrow.Status = constants.StatusClosed
 			k.RemoveFromExpiringList(ctx, escrow)
 			k.SetEscrow(ctx, escrow)
+			// This index corresponds to the last escrow taken into account
 			i = index
-		} else if found && !k.ValidateStartDate(ctx, escrow) {
+		case found && k.ValidateStartDate(ctx, escrow):
+			// If the conditions are not fulfilled but the start date is still valid, we add it to the new pending list
+			newPendingEscrows = append(newPendingEscrows, pendingEscrows[index])
+		case found:
 			break
 		}
 	}
 
-	if len(pendingEscrows) > i+1 {
-		pendingEscrows = pendingEscrows[i+1:]
-	} else {
-		pendingEscrows = []uint64{}
+	// If the index is bigger than -1 and the index is not the last escrow (if i == -1 then len(pendingEscrows) has to be > 0),
+	// we append the rest of the slice to the new pending escrows
+	if i > -1 && len(pendingEscrows) > i+1 {
+		newPendingEscrows = append(newPendingEscrows, pendingEscrows[i+1:]...)
 	}
 
-	k.SetPendingEscrows(ctx, pendingEscrows)
+	k.SetPendingEscrows(ctx, newPendingEscrows)
 }
 
 func (k Keeper) RemoveFromPendingList(ctx sdk.Context, escrow types.Escrow) {
