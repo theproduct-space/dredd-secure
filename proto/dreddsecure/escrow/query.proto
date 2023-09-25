@@ -35,8 +35,16 @@ service Query {
     option (google.api.http).get = "/dredd-secure/escrow/escrows_by_address/{address}";
   
   }
+
+  // Queries a list of pending escrows id
   rpc PendingEscrows   (QueryPendingEscrowsRequest  ) returns (QueryPendingEscrowsResponse  ) {
     option (google.api.http).get = "/dredd-secure/escrow/pending_escrows";
+  
+  }
+
+  // Queries a list of expiring escrows id
+  rpc ExpiringEscrows   (QueryExpiringEscrowsRequest  ) returns (QueryExpiringEscrowsResponse  ) {
+    option (google.api.http).get = "/dredd-secure/escrow/expiring_escrows";
   
   }
   
@@ -94,6 +102,12 @@ message QueryEscrowsByAddressResponse {
 message QueryPendingEscrowsRequest {}
 
 message QueryPendingEscrowsResponse {
+  repeated uint64 ids = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryExpiringEscrowsRequest {}
+
+message QueryExpiringEscrowsResponse {
   repeated uint64 ids = 1 [(gogoproto.nullable) = false];
 }
 

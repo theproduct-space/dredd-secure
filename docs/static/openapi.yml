@@ -35409,6 +35409,41 @@ paths:
           type: boolean
       tags:
         - Query
+  /dredd-secure/escrow/expiring_escrows:
+    get:
+      summary: Queries a list of expiring escrows id
+      operationId: DreddsecureEscrowExpiringEscrows
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              ids:
+                type: array
+                items:
+                  type: string
+                  format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /dredd-secure/escrow/oracle_price:
     get:
       operationId: DreddsecureEscrowOraclePriceAll
@@ -35655,6 +35690,7 @@ paths:
         - Query
   /dredd-secure/escrow/pending_escrows:
     get:
+      summary: Queries a list of pending escrows id
       operationId: DreddsecureEscrowPendingEscrows
       responses:
         '200':
@@ -71693,6 +71729,14 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  dreddsecure.escrow.QueryExpiringEscrowsResponse:
+    type: object
+    properties:
+      ids:
+        type: array
+        items:
+          type: string
+          format: uint64
   dreddsecure.escrow.QueryGetEscrowResponse:
     type: object
     properties:

@@ -218,6 +218,10 @@ func CompareTokenPrice(subCondition types.SubCondition, oraclePrice types.Oracle
 
 // ReleaseAssets releases the escrowed assets to the respective parties. The Initiator receives the FulfillerCoins, vice-versa
 func (k Keeper) ReleaseAssets(ctx sdk.Context, escrow types.Escrow) {
+	if len(escrow.Fulfiller) == 0 {
+		panic("Called release assets on an escrow without fulfiller : " + strconv.FormatUint(escrow.GetId(), 10))
+	}
+
 	// Release initiator assets
 	initiator, err := sdk.AccAddressFromBech32(escrow.Initiator)
 	if err != nil {
@@ -331,7 +335,8 @@ func (k Keeper) FulfillPendingEscrows(ctx sdk.Context) {
 			i = index
 		case found && k.ValidateStartDate(ctx, escrow):
 			// If the conditions are not fulfilled but the start date is still valid, we add it to the new pending list
-			newPendingEscrows = append(newPendingEscrows, pendingEscrows[index])
+			newPendingEscrows = append(newPendingEscrows, escrow.GetId())
+			i = index
 		case found:
 			break
 		}
