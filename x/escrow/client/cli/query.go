@@ -29,6 +29,7 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 	cmd.AddCommand(CmdShowEscrow())
 	cmd.AddCommand(CmdEscrowsByAddress())
 	cmd.AddCommand(CmdPendingEscrows())
+	cmd.AddCommand(CmdExpiringEscrows())
 
 	cmd.AddCommand(CmdListOraclePrice())
 	cmd.AddCommand(CmdShowOraclePrice())
